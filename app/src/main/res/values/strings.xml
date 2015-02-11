@@ -1,0 +1,76 @@
+<resources>
+    <string name="appName">Vestige</string>
+    
+    <!-- Main Menu -->
+    <string name="play">Play</string>
+    <string name="options">Options</string>
+    <string name="credits">Credits</string>
+    <string name="exitGame">Exit Game</string>
+    <string name="tutorial">Tutorial</string>
+    <string name="easy">Easy</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
+    
+    <!-- Options Menu -->
+    <string name="music">Music</string>
+    <string name="sfx">SFX</string>
+    <string name="displayFPS">Display FPS (In-Game)</string>
+    <string name="displayWave">Display Wave (In-Game)</string>
+    
+    <!-- Credits Menu -->
+    <string name="art">Art</string>
+    <string name="graceZhang">Grace Zhang</string>
+    <string name="softwareDevelopment">Software Development</string>
+    <string name="lesComber">Les Comber</string>
+    <string name="audio">Audio</string>
+    <string name="musicBy">Music By audionautix.com</string>
+    <string name="soundEffects">Sound Effects</string>
+    <string name="freeSFX">http://www.freesfx.co.uk</string>
+    <string name="audioMicro">http://www.audiomicro.com</string>
+    
+    <!-- Stage / Level Select -->
+    <string name="darkWoods">Dark Woods</string>
+    <string name="unknown">Unknown</string>
+    <string name="levelSelect">Level Select</string>
+    
+    <!-- Loading Screen -->
+    <string name="mapIsLoaded">TAP TO CONTINUE</string>
+    
+    <!-- In-game / Pause Menu -->
+    <string name="paused">Paused</string>
+    <string name="mainMenu">Main Menu</string>
+    <string name="restart">Restart</string>
+    <string name="resume">Resume</string>
+    <string name="fps">FPS</string>
+    <string name="wave">Wave</string>
+    <string name="displayFPSCounter">Display FPS Counter</string>
+    <string name="displayWaveCounter">Display Wave Counter</string>
+    
+    <!-- Game Over -->
+    <string name="gameOver">Game Over</string>
+    <string name="retry">Retry</string>
+    
+    <!-- Tutorial -->
+    <string name="welcome">Welcome to the Vestige tutorial. Let\'s learn the basics.</string>
+    <string name="move">Tap anywhere on the screen to move to that location.</string>
+    <string name="moveReminder">Tap the screen to move to that location</string>
+    <string name="portal">Good job! Move to the blue portal to begin the next lesson.</string>
+    <string name="portalReminder">Move to the blue portal</string>
+    <string name="pathing">Your character will walk around obstacles, such as these purple walls. Enter the portal to complete this lesson.</string>
+    <string name="pathingReminder">Move to the blue portal</string>
+    <string name="swipe">Let\'s fire some projectiles. Slide your finger across the screen a short distance to shoot a projectile with a Swipe ability.</string>
+    <string name="swipeReminder">Touch, drag across the screen, and release</string>
+    <string name="chargeSwipe">Now for a bigger projectile. To fire a Charge Swipe ability, swipe again but hold your finger down a little while before releasing.</string>
+    <string name="chargeSwipeReminder">Touch, drag, hold a bit, release</string>
+    <string name="doubleTapOne">Next up: Double Tap ability. Quickly tap the same spot on the screen twice to teleport there.</string>
+    <string name="doubleTapTwo">For future reference, this Double Tap ability would strike a nearby enemy (if one was close enough).</string>
+    <string name="doubleTapReminder">Quickly tap the same screen location twice</string>
+    <string name="multiTap">Let\'s try a "Multi-Tap". Tap the screen with two fingers at the same time to shield yourself.</string>
+    <string name="multiTapReminder">Using two fingers, tap the screen in two places at once</string>
+    <string name="combatOne">Let\'s try some combat. Keep in mind that your abilities need time to recharge after each use.</string>
+    <string name="combatTwo">Swipe can be fired often but other abilities have longer cooldowns (displayed in the top left).</string>
+    <string name="combatReminder">Use your abilities to defeat the enemy</string>
+    <string name="exitTutorial">Congratulations! You have completed the Vestige tutorial. Feel free to practice against the enemy or move to the portal to exit.</string>
+    <string name="exitTutorialReminder">Move to the portal to finish the tutorial</string>
+    
+</resources>

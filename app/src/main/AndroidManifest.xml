@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.lescomber.vestige"
+    android:versionCode="14"
+    android:versionName="0.203" >
+
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="21" />
+
+    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
+    <uses-feature android:name="android.hardware.touchscreen.multitouch" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher_vestige"
+        android:label="@string/appName" >
+        <activity
+            android:name="com.lescomber.vestige.framework.AndroidGameActivity"
+            android:label="@string/appName"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:screenOrientation="sensorLandscape" >
+            <!-- android:theme="@android:style/Theme.NoTitleBar.Fullscreen" > -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
