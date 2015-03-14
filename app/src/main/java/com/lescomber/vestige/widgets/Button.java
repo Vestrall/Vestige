@@ -339,6 +339,24 @@ public class Button extends Widget
 		}
 		this.sprite = sprite;
 	}*/
+
+	public void setText(TextStyle style, String text)
+	{
+		final boolean isVisible = isVisible();
+		if (this.text != null)
+			this.text.setVisible(false);
+
+		this.text = new Text(style, text, getX(), getY());
+		this.text.setVisible(isVisible);
+
+		// Note: Consider scaling button size if button is too small
+	}
+
+	public void setText(String text)
+	{
+		TextStyle style = this.text != null ? this.text.getStyle() : new TextStyle("BLANCH_CAPS.otf", 25, 255, 255, 255, 0.65f);
+		setText(style, text);
+	}
 	
 	public void setImage(UIThreePatchSprite sprite)
 	{

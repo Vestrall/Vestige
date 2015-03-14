@@ -1,13 +1,13 @@
 package com.lescomber.vestige.units;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.lescomber.vestige.aiabilities.AIAbility;
 import com.lescomber.vestige.framework.Util;
 import com.lescomber.vestige.screens.GameScreen;
 import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.statuseffects.StatPack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AIUnit extends Unit
 {
@@ -31,8 +31,6 @@ public abstract class AIUnit extends Unit
 		queuedAbility = null;
 		
 		isEntering = false;
-		
-		topGap = 30;	// Default
 	}
 	
 	public AIUnit(AIUnit copyMe)

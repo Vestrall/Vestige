@@ -1,10 +1,10 @@
 package com.lescomber.vestige.units.sone;
 
-import java.util.ArrayList;
-
 import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.units.Caster;
+
+import java.util.ArrayList;
 
 public class DancingCaster extends Caster
 {

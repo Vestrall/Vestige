@@ -1,8 +1,5 @@
 package com.lescomber.vestige.playerabilities;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import com.lescomber.vestige.audio.AudioManager;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.geometry.Line;
@@ -12,14 +9,17 @@ import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.units.Player;
 import com.lescomber.vestige.units.Unit;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class SOneDoubleTap extends DoubleTapAbility
 {
 	private static final float DAMAGE = 12;
-	private static final int RANGE_SQUARED = 400 * 400;
+	static final int RANGE_SQUARED = 400 * 400;
 	
 	private final HitBundle hitBundle;
 	
-	private final ArrayList<SOneDoubleTapLaser> activeLasers;
+	final ArrayList<SOneDoubleTapLaser> activeLasers;
 	
 	public SOneDoubleTap(Player player)
 	{

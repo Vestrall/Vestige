@@ -1,10 +1,10 @@
 package com.lescomber.vestige.gestures;
 
-import java.util.ArrayList;
-
 import com.lescomber.vestige.framework.Input.TouchEvent;
 import com.lescomber.vestige.geometry.Line;
 import com.lescomber.vestige.geometry.Point;
+
+import java.util.ArrayList;
 
 public class GestureHandler
 {

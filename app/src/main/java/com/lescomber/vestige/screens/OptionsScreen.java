@@ -1,7 +1,5 @@
 package com.lescomber.vestige.screens;
 
-import java.util.List;
-
 import android.content.res.Resources;
 
 import com.lescomber.vestige.Assets;
@@ -21,6 +19,8 @@ import com.lescomber.vestige.widgets.CheckBox;
 import com.lescomber.vestige.widgets.Slider;
 import com.lescomber.vestige.widgets.WidgetEvent;
 import com.lescomber.vestige.widgets.WidgetListener;
+
+import java.util.List;
 
 public class OptionsScreen extends Screen implements WidgetListener
 {

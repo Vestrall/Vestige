@@ -1,12 +1,12 @@
 package com.lescomber.vestige.map;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.lescomber.vestige.framework.Util;
 import com.lescomber.vestige.projectiles.HealPickUp;
 import com.lescomber.vestige.units.AIUnit;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Wave
 {

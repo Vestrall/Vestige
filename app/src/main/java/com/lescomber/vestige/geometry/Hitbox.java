@@ -1,9 +1,9 @@
 package com.lescomber.vestige.geometry;
 
+import com.lescomber.vestige.framework.Screen;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.lescomber.vestige.framework.Screen;
 
 public class Hitbox
 {

@@ -1,7 +1,5 @@
 package com.lescomber.vestige.screens;
 
-import java.util.List;
-
 import android.content.res.Resources;
 
 import com.lescomber.vestige.Assets;
@@ -17,6 +15,8 @@ import com.lescomber.vestige.widgets.Button;
 import com.lescomber.vestige.widgets.ButtonGroup;
 import com.lescomber.vestige.widgets.WidgetEvent;
 import com.lescomber.vestige.widgets.WidgetListener;
+
+import java.util.List;
 
 public class GameOverScreen extends Screen implements WidgetListener
 {

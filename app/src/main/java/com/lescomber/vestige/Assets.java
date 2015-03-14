@@ -1,8 +1,5 @@
 package com.lescomber.vestige;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -11,6 +8,9 @@ import android.graphics.BitmapFactory.Options;
 import android.graphics.Typeface;
 
 import com.lescomber.vestige.cgl.CGLTexture;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class Assets
 {

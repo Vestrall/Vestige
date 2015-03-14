@@ -1,7 +1,5 @@
 package com.lescomber.vestige.units.sone;
 
-import java.util.ArrayList;
-
 import com.lescomber.vestige.aiabilities.AIAbility;
 import com.lescomber.vestige.aiabilities.AIShooter;
 import com.lescomber.vestige.aiabilities.DummyAbility;
@@ -19,6 +17,8 @@ import com.lescomber.vestige.projectiles.Projectile;
 import com.lescomber.vestige.projectiles.sone.Seeker;
 import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.Boss;
+
+import java.util.ArrayList;
 
 public class OneSixBoss extends Boss
 {

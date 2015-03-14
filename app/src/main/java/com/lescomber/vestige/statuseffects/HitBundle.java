@@ -1,10 +1,10 @@
 package com.lescomber.vestige.statuseffects;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.lescomber.vestige.audio.AudioManager.SoundEffect;
 import com.lescomber.vestige.graphics.SpriteAnimation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HitBundle
 {

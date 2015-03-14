@@ -1,7 +1,5 @@
 package com.lescomber.vestige;
 
-import java.util.ArrayList;
-
 import com.lescomber.vestige.framework.Util;
 import com.lescomber.vestige.geometry.Angle;
 import com.lescomber.vestige.geometry.Circle;
@@ -14,6 +12,8 @@ import com.lescomber.vestige.graphics.Image;
 import com.lescomber.vestige.graphics.Sprite;
 import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.graphics.Swapper;
+
+import java.util.ArrayList;
 
 public class Entity
 {

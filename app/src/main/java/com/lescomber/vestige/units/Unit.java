@@ -1,11 +1,5 @@
 package com.lescomber.vestige.units;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.lescomber.vestige.MobileEntity;
 import com.lescomber.vestige.aiabilities.Dash;
 import com.lescomber.vestige.audio.AudioManager;
@@ -27,6 +21,12 @@ import com.lescomber.vestige.statuseffects.DisplacementEffect;
 import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.statuseffects.StatPack;
 import com.lescomber.vestige.statuseffects.StatusEffect;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public abstract class Unit extends MobileEntity implements Dash
 {
@@ -204,8 +204,10 @@ public abstract class Unit extends MobileEntity implements Dash
 		if (copyMe.deathAnimationRight != null)
 			deathAnimationRight = new SpriteAnimation(copyMe.deathAnimationRight);
 		deathAnimXOffset = copyMe.deathAnimXOffset;
-		healthBarBackground = new UISprite(copyMe.healthBarBackground);
-		healthBar = new UISprite(copyMe.healthBar);
+		if (copyMe.healthBarBackground != null)
+			healthBarBackground = new UISprite(copyMe.healthBarBackground);
+		if (copyMe.healthBar != null)
+			healthBar = new UISprite(copyMe.healthBar);
 		constrainHealthBar = copyMe.constrainHealthBar;
 		healthBarVirtualXGap = copyMe.healthBarVirtualXGap;
 		healthBarVirtualX = copyMe.healthBarVirtualX;
@@ -239,6 +241,13 @@ public abstract class Unit extends MobileEntity implements Dash
 			healthBarBackground.close();
 		if (healthBar != null)
 			healthBar.close();
+
+		if (healthBackground == null || health == null)
+		{
+			healthBarBackground = null;
+			healthBar = null;
+			return;
+		}
 		
 		healthBarVirtualX = getImageX();
 		healthBarVirtualXGap = healthBackground.getWidth() / 2;
@@ -269,6 +278,9 @@ public abstract class Unit extends MobileEntity implements Dash
 	
 	protected void updateHealthBar()
 	{
+		if (healthBar == null)
+			return;
+
 		final float healthFraction = hp / getMaxHp();
 		healthBar.setTexWidth(healthFraction);
 	}
@@ -1061,6 +1073,9 @@ public abstract class Unit extends MobileEntity implements Dash
 	
 	protected void offsetHealthBar(float dx, float dy)
 	{
+		if (healthBar == null)
+			return;
+
 		float barDx;
 		float barDy;
 		
@@ -1090,6 +1105,11 @@ public abstract class Unit extends MobileEntity implements Dash
 	{
 		if (this.constrainHealthBar == constrainHealthBar)
 			return;
+		else if (healthBar == null)
+		{
+			this.constrainHealthBar = constrainHealthBar;
+			return;
+		}
 		
 		float barDx;
 		float barDy;
@@ -1108,14 +1128,19 @@ public abstract class Unit extends MobileEntity implements Dash
 			else
 				barDy = healthBarVirtualY - healthBarBackground.getY();
 			
-			healthBarBackground.offset(barDx, barDy);
-			healthBar.offset(barDx, barDy);
+			//healthBarBackground.offset(barDx, barDy);
+			//healthBar.offset(barDx, barDy);
 		}
 		else
 		{
 			barDx = getImageX() - healthBarBackground.getX();
 			barDy = hitbox.getBottom() - ((hitbox.getBottom() - getImageY()) * 2) - HEALTH_BAR_GAP - healthBarBackground.getY();
 		}
+
+		// TESTME: these offsets were moved from the if section above (previously the else section set barDx and barDy but they were
+		//never used)
+		healthBarBackground.offset(barDx, barDy);
+		healthBar.offset(barDx, barDy);
 		
 		this.constrainHealthBar = constrainHealthBar;
 	}
@@ -1333,8 +1358,10 @@ public abstract class Unit extends MobileEntity implements Dash
 			se.setAnimVisible(isVisible);
 		
 		// Set health bar visibility
-		healthBarBackground.setVisible(isVisible);
-		healthBar.setVisible(isVisible);
+		if (healthBarBackground != null)
+			healthBarBackground.setVisible(isVisible);
+		if (healthBar != null)
+			healthBar.setVisible(isVisible);
 	}
 	
 	public void queueProjectile(Projectile p)

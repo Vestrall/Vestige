@@ -1,10 +1,10 @@
 package com.lescomber.vestige.graphics;
 
-import java.util.ArrayList;
-
 import com.lescomber.vestige.crossover.SpriteManager.SpriteInfo;
 import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
 import com.lescomber.vestige.geometry.Point;
+
+import java.util.ArrayList;
 
 public class SpriteAnimation implements Image
 {

@@ -1,9 +1,5 @@
 package com.lescomber.vestige.crossover;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import android.graphics.Rect;
 import android.opengl.GLES20;
 
@@ -12,6 +8,10 @@ import com.lescomber.vestige.cgl.CGLTexture;
 import com.lescomber.vestige.cgl.CGLTexturedRect;
 import com.lescomber.vestige.cgl.CGLThreePatchTexturedRect;
 import com.lescomber.vestige.framework.Screen;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class SpriteManager
 {
@@ -371,7 +371,7 @@ public class SpriteManager
 	}
 	
 	private static SpriteTemplate[] createTemplates(CGLTexture texture, int imagesPerRow, int startNum, int endNum, int width,
-												 int height)
+								int height)
 	{
 		return createTemplates(texture, 0, 0, imagesPerRow, startNum, endNum, width, height);
 	}

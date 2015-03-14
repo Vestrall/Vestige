@@ -1,9 +1,5 @@
 package com.lescomber.vestige.projectiles;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.lescomber.vestige.MobileEntity;
 import com.lescomber.vestige.audio.AudioManager.SoundEffect;
 import com.lescomber.vestige.crossover.SpriteManager;
@@ -21,6 +17,10 @@ import com.lescomber.vestige.statuseffects.DisplacementEffect;
 import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.statuseffects.StatusEffect;
 import com.lescomber.vestige.units.Unit;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Projectile extends MobileEntity
 {
@@ -65,6 +65,8 @@ public class Projectile extends MobileEntity
 	private boolean arrivalRemoval;
 	private float damageReductionOnHit;
 	private float minDamageFromReductions;
+
+	Object lastHit;		// Used for PewBall only
 	
 	// No hitbox constructor (still creates a 0 radius circle hitbox for offScreen detection)
 	public Projectile(SpriteTemplate template, float damage)
@@ -113,6 +115,8 @@ public class Projectile extends MobileEntity
 		minDamageFromReductions = 1;
 		
 		isFinished = false;
+
+		lastHit = null;		// PewBall only
 	}
 	
 	// RotatedRect hitbox constructor
@@ -279,8 +283,8 @@ public class Projectile extends MobileEntity
 	{
 		super.setImageOffsets(imageOffsetX, imageOffsetY);
 		
-		if (getDestination() != null)
-			calculateImageDrop();
+		//if (getDestination() != null)
+		calculateImageDrop();
 	}
 	
 	@Override
@@ -291,8 +295,8 @@ public class Projectile extends MobileEntity
 			glow.offset(dx, dy);
 		
 		// Recalculate image drop since we have been moved in some fashion outside of a normal "move()"
-		if (getDestination() != null)
-			calculateImageDrop();
+		//if (getDestination() != null)
+		calculateImageDrop();
 	}
 	
 	@Override
@@ -306,6 +310,9 @@ public class Projectile extends MobileEntity
 	
 	private void calculateImageDrop()
 	{
+		if (getDestination() == null)
+			return;
+
 		// Calculate image offset reduction per MS
 		final float distance = (float)(getCenter().distanceToPoint(getDestination()));
 		final float msToDestination = distance / getVelocity();
@@ -400,7 +407,7 @@ public class Projectile extends MobileEntity
 			unit.hit(hitBundle);
 			unitsHit.add(unit);
 		}
-		
+
 		if (!unitPassThrough)
 			explode();
 		else if (damageReductionOnHit > 0 && getHitBundle().getDamage() > minDamageFromReductions)
@@ -491,6 +498,7 @@ public class Projectile extends MobileEntity
 	public HitBundle getHitBundle() { return hitBundle; }
 	public List<Integer> getTargets() { return targets; }
 	public float getDamage() { return hitBundle.getDamage(); }
+	public boolean getUnitPassThrough() { return unitPassThrough; }
 	
 	// Behavior flag setters
 	public void setWallPassThrough(boolean wallPassThrough) { this.wallPassThrough = wallPassThrough; }

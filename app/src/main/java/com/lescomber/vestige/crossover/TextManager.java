@@ -1,9 +1,9 @@
 package com.lescomber.vestige.crossover;
 
+import com.lescomber.vestige.cgl.CGLText;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
-
-import com.lescomber.vestige.cgl.CGLText;
 
 public class TextManager
 {

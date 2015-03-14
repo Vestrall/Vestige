@@ -1,8 +1,8 @@
 package com.lescomber.vestige.widgets;
 
-import java.util.ArrayList;
-
 import com.lescomber.vestige.framework.Input.TouchEvent;
+
+import java.util.ArrayList;
 
 public abstract class Widget
 {

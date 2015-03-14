@@ -1,8 +1,5 @@
 package com.lescomber.vestige.cgl;
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.Matrix;
@@ -12,6 +9,9 @@ import com.lescomber.vestige.FPSCounter;
 import com.lescomber.vestige.crossover.ColorRectManager;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.crossover.TextManager;
+
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
 
 public class CGLRenderer implements Renderer
 {

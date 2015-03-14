@@ -17,14 +17,14 @@ import com.lescomber.vestige.units.Unit;
 public class Seeker extends Projectile
 {
 	private static final float RADIANS_PER_MS[] = new float[] { 0.00070f, 0.00085f, 0.00110f };
-	private static final float RADIUS = 60;
+	private static final float EXPLOSION_RADIUS = 60;
 	private static final float DAMAGE[] = new float[] { 7, 9, 11 };
 	
 	private final Hitbox glowHitbox;	// Pass this hitbox to glow instead of our enlarged hitbox
 	
 	public Seeker()
 	{
-		super(null, 0, RADIUS * 0.4f);	// Increased hitbox size allows Seeker to explode when it gets near enough to the target
+		super(null, 0, EXPLOSION_RADIUS * 0.4f);	// Increased hitbox size allows Seeker to explode when it gets near enough to the target
 		
 		setVelocityPerSecond(275);		// Reduce velocity a little (default is 300)
 		
@@ -37,7 +37,7 @@ public class Seeker extends Projectile
 		setImage(anim);
 		setGlow(SpriteManager.purpleGlow);
 		
-		setExplosion(new Explosion(RADIUS, DAMAGE[OptionsScreen.difficulty]));
+		setExplosion(new Explosion(EXPLOSION_RADIUS, DAMAGE[OptionsScreen.difficulty]));
 		setExplosionSound(AudioManager.purpleExplosion);
 	}
 	

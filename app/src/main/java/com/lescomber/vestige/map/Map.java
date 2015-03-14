@@ -1,9 +1,5 @@
 package com.lescomber.vestige.map;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
 import com.lescomber.vestige.framework.Screen;
@@ -13,6 +9,10 @@ import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.graphics.Sprite;
 import com.lescomber.vestige.units.AIUnit;
 import com.lescomber.vestige.units.Player;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Map
 {
@@ -50,6 +50,8 @@ public class Map
 	
 	private final ArrayList<AIUnit> enemiesBuffer;
 	private final ArrayList<AIUnit> enemiesReady;
+	private final ArrayList<AIUnit> friendsBuffer;
+	private final ArrayList<AIUnit> friendsReady;
 	
 	public static final float PLAYER_HALF_WIDTH = 24.5f;	// playerHalfWidth
 	public static final float PLAYER_HALF_HEIGHT = 19.5f;	// playerHalfHeight
@@ -79,6 +81,8 @@ public class Map
 		
 		enemiesBuffer = new ArrayList<AIUnit>(5);
 		enemiesReady = new ArrayList<AIUnit>(5);
+		friendsBuffer = new ArrayList<AIUnit>(3);
+		friendsReady = new ArrayList<AIUnit>(3);
 	}
 	
 	public void setBackgroundTiles(int[][] tileNums)
@@ -521,6 +525,19 @@ public class Map
 		enemiesReady.addAll(enemiesBuffer);
 		enemiesBuffer.clear();
 		return enemiesReady;
+	}
+
+	public void queueGregsUnit(AIUnit unit)
+	{
+		friendsBuffer.add(unit);
+	}
+
+	public List<AIUnit> getFriendsQueue()
+	{
+		friendsReady.clear();
+		friendsReady.addAll(friendsBuffer);
+		friendsBuffer.clear();
+		return friendsReady;
 	}
 	
 	public void setBackground()

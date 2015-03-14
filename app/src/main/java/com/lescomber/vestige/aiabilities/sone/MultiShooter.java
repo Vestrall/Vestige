@@ -1,13 +1,13 @@
 package com.lescomber.vestige.aiabilities.sone;
 
-import java.util.ArrayList;
-
 import com.lescomber.vestige.aiabilities.AIShooter;
 import com.lescomber.vestige.geometry.Line;
 import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.projectiles.Projectile;
 import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.AIUnit;
+
+import java.util.ArrayList;
 
 public class MultiShooter extends AIShooter
 {

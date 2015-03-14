@@ -1,7 +1,5 @@
 package com.lescomber.vestige.units;
 
-import java.util.List;
-
 import com.lescomber.vestige.aiabilities.AIAbility;
 import com.lescomber.vestige.aiabilities.AIShooter;
 import com.lescomber.vestige.crossover.SpriteManager;
@@ -9,6 +7,8 @@ import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.projectiles.Projectile;
 import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.statuseffects.StatPack;
+
+import java.util.List;
 
 public class TestTutorialCaster extends AIUnit
 {

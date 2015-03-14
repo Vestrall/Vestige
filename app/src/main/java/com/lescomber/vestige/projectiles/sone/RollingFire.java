@@ -1,8 +1,5 @@
 package com.lescomber.vestige.projectiles.sone;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.Screen;
 import com.lescomber.vestige.geometry.Hitbox;
@@ -10,6 +7,9 @@ import com.lescomber.vestige.geometry.Rectangle;
 import com.lescomber.vestige.projectiles.AreaEffect;
 import com.lescomber.vestige.projectiles.FireAnimation;
 import com.lescomber.vestige.screens.OptionsScreen;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RollingFire extends AreaEffect
 {

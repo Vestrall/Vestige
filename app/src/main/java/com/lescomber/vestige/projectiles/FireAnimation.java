@@ -1,7 +1,5 @@
 package com.lescomber.vestige.projectiles;
 
-import java.util.List;
-
 import com.lescomber.vestige.audio.AudioManager;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.Util;
@@ -9,6 +7,8 @@ import com.lescomber.vestige.graphics.Sprite;
 import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.graphics.Swapper;
 import com.lescomber.vestige.screens.GameScreen;
+
+import java.util.List;
 
 public class FireAnimation extends SpriteAnimation
 {

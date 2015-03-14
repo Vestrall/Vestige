@@ -209,6 +209,7 @@ public class Text
 	
 	public float getX() { return swingX; }
 	public float getY() { return swingY; }
+	public TextStyle getStyle() { return style; }
 	
 	public void setVisible(boolean isVisible)
 	{

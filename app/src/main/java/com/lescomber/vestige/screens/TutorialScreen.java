@@ -1,11 +1,8 @@
 package com.lescomber.vestige.screens;
 
-import java.util.List;
-
 import android.content.res.Resources;
 
 import com.lescomber.vestige.R;
-import com.lescomber.vestige.audio.AudioManager;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.AndroidGame;
 import com.lescomber.vestige.framework.Input.TouchEvent;
@@ -22,6 +19,8 @@ import com.lescomber.vestige.map.TutorialMap;
 import com.lescomber.vestige.units.TutorialPlayer;
 import com.lescomber.vestige.widgets.Button;
 import com.lescomber.vestige.widgets.WidgetEvent;
+
+import java.util.List;
 
 public class TutorialScreen extends GameScreen implements GestureHandlerListener
 {
@@ -392,7 +391,7 @@ public class TutorialScreen extends GameScreen implements GestureHandlerListener
 	{
 		GameScreen.map = map;
 		
-		AudioManager.playMusic(AudioManager.GAME_MUSIC);
+		//AudioManager.playMusic(AudioManager.GAME_MUSIC);
 		
 		map.setBackground();
 		

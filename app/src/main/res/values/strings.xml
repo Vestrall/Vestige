@@ -3,6 +3,7 @@
     
     <!-- Main Menu -->
     <string name="play">Play</string>
+    <string name="pewBall">Pew Ball</string>
     <string name="options">Options</string>
     <string name="credits">Credits</string>
     <string name="exitGame">Exit Game</string>
@@ -72,5 +73,27 @@
     <string name="combatReminder">Use your abilities to defeat the enemy</string>
     <string name="exitTutorial">Congratulations! You have completed the Vestige tutorial. Feel free to practice against the enemy or move to the portal to exit.</string>
     <string name="exitTutorialReminder">Move to the portal to finish the tutorial</string>
+
+    <!-- Pew Ball -->
+    <string name="pewBallDescription">Redirect pew balls by hitting them with your abilities. Earn a point each time a pew ball gets past your opponents but they earn a point whenever one gets past you. First team to the posted score wins but you must win by 2.</string>
+    <string name="pewBallRestartWarning">Your current Pew Ball progress will be lost. Are you sure you wish to start over from level 1?</string>
+    <string name="pewBallRestartConfirm">Yes, Restart</string>
+    <string name="pewBallCurrentLevel">Current Level</string>
+    <string name="pewBallHighScore">High Score</string>
+    <string name="pewBallBegin">Begin</string>
+    <string name="pewBallStartOver">Restart</string>
+    <string name="pewBallContinue">Continue</string>
+    <string name="pewBallLevel">Level</string>
+    <string name="pewBallConcede">Concede</string>
+    <string name="pewBallVictoryHeading">Victory!</string>
+    <string name="pewBallVictoryBody">Proceeding to the next level...</string>
+    <string name="pewBallDefeatHeading">Defeat</string>
+    <string name="pewBallDefeatBody">Going back a few levels...</string>
+    <string name="pewBallWarning">Warning</string>
+    <string name="pewBallMainMenuBody">Leaving now will cause you to concede this match and you will need to complete the previous three levels before you can attempt this one again. Are you sure you wish to leave?</string>
+    <string name="pewBallConcedeBody">Conceding this match means you will need to complete the previous three levels before you can attempt this one again. Are you sure you wish to concede?</string>
+    <string name="pewBallConfirmConcede">Yes, Concede</string>
+    <string name="pewBallConfirmMainMenu">Yes, Leave</string>
+    <string name="pewBallCancel">Cancel</string>
     
 </resources>

@@ -1,7 +1,5 @@
 package com.lescomber.vestige.projectiles;
 
-import java.util.ArrayList;
-
 import com.lescomber.vestige.Entity;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.geometry.Point;
@@ -9,6 +7,8 @@ import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.screens.GameScreen;
 import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.units.Unit;
+
+import java.util.ArrayList;
 
 public class Explosion extends Entity
 {

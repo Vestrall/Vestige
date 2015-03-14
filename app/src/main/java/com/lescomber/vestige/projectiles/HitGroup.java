@@ -1,10 +1,10 @@
 package com.lescomber.vestige.projectiles;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-
 import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.units.Unit;
+
+import java.util.Iterator;
+import java.util.LinkedList;
 
 public class HitGroup
 {

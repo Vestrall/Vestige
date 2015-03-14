@@ -187,15 +187,16 @@ public class Line
 	public Point getStart() { return point0; }
 	public Point getEnd() { return point1; }
 	
-	// Extends the swipe off the screen and returns the resulting endpoint
+	// Extends the line off screen and returns the resulting endpoint
 	public Point getExtEnd()
 	{
-		if (point0.equals(point1))
+		return getExtEnd(0, 0);
+		/*if (point0.equals(point1))
 			return new Point(point1);
 		
 		final float dx = point1.x - point0.x;
 		final float dy = point1.y - point0.y;
-		final Point ret = new Point(point1.x + (dx * Screen.WIDTH), point1.y + (dy * Screen.WIDTH));
+		final Point ret = new Point(point1);
 		
 		while (Screen.contains(ret))
 		{
@@ -203,6 +204,24 @@ public class Line
 			ret.y += dy * Screen.WIDTH;
 		}
 		
+		return ret;*/
+	}
+
+	public Point getExtEnd(float xBuffer, float yBuffer)
+	{
+		if (point0.equals(point1))
+			return new Point(point1);
+
+		final float dx = point1.x - point0.x;
+		final float dy = point1.y - point0.y;
+		final Point ret = new Point(point1);
+
+		while (ret.x > -xBuffer && ret.y > -yBuffer && ret.x < Screen.WIDTH + xBuffer && ret.y < Screen.HEIGHT + yBuffer)
+		{
+			ret.x += dx * Screen.WIDTH;
+			ret.y += dy * Screen.WIDTH;
+		}
+
 		return ret;
 	}
 	

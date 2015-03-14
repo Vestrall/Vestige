@@ -1,10 +1,10 @@
 package com.lescomber.vestige.statuseffects;
 
-import java.util.Comparator;
-
 import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.graphics.Swapper;
 import com.lescomber.vestige.units.Unit;
+
+import java.util.Comparator;
 
 public class StatusEffect
 {

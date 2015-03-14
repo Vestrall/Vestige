@@ -1,7 +1,5 @@
 package com.lescomber.vestige.screens;
 
-import java.util.List;
-
 import com.lescomber.vestige.Assets;
 import com.lescomber.vestige.R;
 import com.lescomber.vestige.audio.AudioManager;
@@ -16,6 +14,8 @@ import com.lescomber.vestige.graphics.Text;
 import com.lescomber.vestige.graphics.TextStyle;
 import com.lescomber.vestige.map.Levels;
 import com.lescomber.vestige.map.Map;
+
+import java.util.List;
 
 public class MapLoadingScreen extends Screen implements Runnable
 {
@@ -113,7 +113,38 @@ public class MapLoadingScreen extends Screen implements Runnable
 			}
 			else if (passCount == PASS_DELAY_COUNT + 2)
 			{
-				if (stageNum <= 0)	// Load TutorialScreen
+				prepScreenChange();
+
+				setProgress(40, 58);
+				progressFakeCooldown = 0;	// Speed up the first fake percent
+
+				final GameScreen gs;
+				if (stageNum == Levels.TUTORIAL_STAGE)
+					gs = new TutorialScreen(game);
+				else if (stageNum == Levels.PEW_BALL_STAGE)
+					gs = new PewBallScreen(game);
+				else
+					gs = new GameScreen(game);
+				//final TutorialScreen ts = new TutorialScreen(game);
+
+				setProgress(60, 78);
+
+				final Map level = Levels.loadLevel(stageNum, levelNum);
+
+				setProgress(80, 93);
+
+				gs.loadMap(level);
+				gameScreen = gs;
+
+				setProgress(95, 98);
+
+				System.gc();
+
+				setProgress(100, 100);
+
+				isLoading = false;
+
+				/*if (stageNum == Levels.TUTORIAL_STAGE)	// Load TutorialScreen
 				{
 					prepScreenChange();
 					
@@ -164,7 +195,7 @@ public class MapLoadingScreen extends Screen implements Runnable
 					setProgress(100, 100);
 					
 					isLoading = false;
-				}
+				}*/
 			}
 			
 			passCount++;
@@ -232,11 +263,18 @@ public class MapLoadingScreen extends Screen implements Runnable
 		TextManager.clearBuild();
 		ColorRectManager.clearBuild();
 		AudioManager.clearQueue();
-		
-		if (stageNum > 0)
-			game.setScreen(new LevelSelectionScreen(game, stageNum));
-		else	// Case: Tutorial was loading
+
+		if (stageNum == Levels.TUTORIAL_STAGE)
 			game.setScreen(new MainMenuScreen(game, false));
+		else if (stageNum == Levels.PEW_BALL_STAGE)
+			game.setScreen(new PewBallPrepScreen(game));
+		else
+			game.setScreen(new LevelSelectionScreen(game, stageNum));
+		
+		//if (stageNum > 0)
+		//	game.setScreen(new LevelSelectionScreen(game, stageNum));
+		//else	// Case: Tutorial was loading
+		//	game.setScreen(new MainMenuScreen(game, false));
 	}
 	
 	private void setProgress(int progressPercent, int progressPercentCap)

@@ -1,7 +1,5 @@
 package com.lescomber.vestige.screens;
 
-import java.util.List;
-
 import com.lescomber.vestige.Assets;
 import com.lescomber.vestige.R;
 import com.lescomber.vestige.crossover.SpriteManager;
@@ -17,6 +15,8 @@ import com.lescomber.vestige.map.Levels;
 import com.lescomber.vestige.widgets.Button;
 import com.lescomber.vestige.widgets.WidgetEvent;
 import com.lescomber.vestige.widgets.WidgetListener;
+
+import java.util.List;
 
 public class LevelSelectionScreen extends Screen implements WidgetListener
 {

@@ -1,8 +1,8 @@
 package com.lescomber.vestige.map;
 
-import java.util.List;
-
 import com.lescomber.vestige.units.AIUnit;
+
+import java.util.List;
 
 public class ContinuousWave extends Wave
 {

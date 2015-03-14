@@ -10,7 +10,7 @@ public class TutorialMap extends Map
 	
 	public TutorialMap(TutorialScreen tScreen, boolean withWalls)
 	{
-		super(0, 0);
+		super(Levels.TUTORIAL_STAGE, 0);
 		
 		this.tScreen = tScreen;
 		

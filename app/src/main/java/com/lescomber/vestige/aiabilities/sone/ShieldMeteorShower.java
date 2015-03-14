@@ -1,7 +1,5 @@
 package com.lescomber.vestige.aiabilities.sone;
 
-import java.util.LinkedList;
-
 import com.lescomber.vestige.aiabilities.AIChanneledAbility;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.Screen;
@@ -14,6 +12,8 @@ import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.statuseffects.StatPack;
 import com.lescomber.vestige.statuseffects.StatusEffect;
 import com.lescomber.vestige.units.AIUnit;
+
+import java.util.LinkedList;
 
 public class ShieldMeteorShower extends AIChanneledAbility
 {

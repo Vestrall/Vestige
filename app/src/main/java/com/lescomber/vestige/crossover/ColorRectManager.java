@@ -1,9 +1,9 @@
 package com.lescomber.vestige.crossover;
 
+import com.lescomber.vestige.cgl.CGLColorRect;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
-
-import com.lescomber.vestige.cgl.CGLColorRect;
 
 public class ColorRectManager
 {

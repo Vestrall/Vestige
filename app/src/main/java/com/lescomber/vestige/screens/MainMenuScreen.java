@@ -1,7 +1,5 @@
 package com.lescomber.vestige.screens;
 
-import java.util.List;
-
 import android.content.res.Resources;
 
 import com.lescomber.vestige.Assets;
@@ -18,18 +16,18 @@ import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.graphics.Swapper;
 import com.lescomber.vestige.graphics.Text;
 import com.lescomber.vestige.graphics.TextStyle;
+import com.lescomber.vestige.map.Levels;
 import com.lescomber.vestige.widgets.Button;
 import com.lescomber.vestige.widgets.ButtonGroup;
 import com.lescomber.vestige.widgets.WidgetEvent;
 import com.lescomber.vestige.widgets.WidgetListener;
 
+import java.util.List;
+
 public class MainMenuScreen extends Screen implements WidgetListener
 {
 	private static final float BUTTON_WIDTH = 200;
 	private static final float BUTTON_HEIGHT = 54;
-	
-	//private boolean buttonAnimating;	// true while a button click animation is playing (in which case, ignore other
-										//buttons until animation complete)
 	
 	private int state;		// -10 -> -2 = eyes loading. -1 = title loading
 	private static final int MAIN_STATE = 0;
@@ -47,8 +45,8 @@ public class MainMenuScreen extends Screen implements WidgetListener
 	private static final int EYES_DELAY_MAX = 250;	// Delay (in ms) between beginning of each pair of eyes fading in
 	private int eyesDelay;
 	
-	private final TextStyle buttonStyle;
-	private final TextStyle grayButtonStyle;
+	//private final TextStyle buttonStyle;
+	//private final TextStyle grayButtonStyle;
 	private final Button[] mainMenuButtons;
 	private final Button[] newGameButtons;
 	private final Button backButton;
@@ -64,7 +62,6 @@ public class MainMenuScreen extends Screen implements WidgetListener
 		SpriteManager.getInstance().setBackground(Assets.mainMenuScreen);
 		SpriteManager.getInstance().setUITextureHandle(Assets.menuUITexture.getTextureHandle());
 		
-		//buttonAnimating = false;
 		isTutorialComplete = Preferences.getInt("easyStageProgress", 0) > 0;
 		
 		titleAnim = new SpriteAnimation(SpriteManager.title);
@@ -93,9 +90,9 @@ public class MainMenuScreen extends Screen implements WidgetListener
 		popIn = !introAnimation;
 		
 		final ButtonGroup buttonGroup = new ButtonGroup();
-		buttonStyle = new TextStyle("BLANCH_CAPS.otf", 57, 87, 233, 255);
+		final TextStyle buttonStyle = new TextStyle("BLANCH_CAPS.otf", 57, 87, 233, 255);
 		buttonStyle.setSpacing(2.5f);
-		grayButtonStyle = new TextStyle("BLANCH_CAPS.otf", 57, 128, 128, 128);
+		final TextStyle grayButtonStyle = new TextStyle("BLANCH_CAPS.otf", 57, 128, 128, 128);
 		grayButtonStyle.setSpacing(2.5f);
 		
 		// TODO: Use string resources to populate button text
@@ -105,15 +102,11 @@ public class MainMenuScreen extends Screen implements WidgetListener
 		mainMenuButtons[0] = new Button(Screen.MIDX, 231, BUTTON_WIDTH, BUTTON_HEIGHT, buttonStyle,
 				res.getString(R.string.play), SpriteManager.menuButtonPieces);
 		mainMenuButtons[1] = new Button(Screen.MIDX, 288, BUTTON_WIDTH, BUTTON_HEIGHT, buttonStyle,
-				res.getString(R.string.options), SpriteManager.menuButtonPieces);
+				res.getString(R.string.pewBall), SpriteManager.menuButtonPieces);
 		mainMenuButtons[2] = new Button(Screen.MIDX, 344, BUTTON_WIDTH, BUTTON_HEIGHT, buttonStyle,
 				res.getString(R.string.credits), SpriteManager.menuButtonPieces);
 		mainMenuButtons[3] = new Button(Screen.MIDX, 400, BUTTON_WIDTH, BUTTON_HEIGHT, buttonStyle,
 				res.getString(R.string.exitGame), SpriteManager.menuButtonPieces);
-		/*mainMenuButtons[0] = new Button(Screen.MIDX, 231, BUTTON_WIDTH, BUTTON_HEIGHT, buttonStyle, "PLAY", SpriteManager.menuButtonPieces);
-		mainMenuButtons[1] = new Button(Screen.MIDX, 288, BUTTON_WIDTH, BUTTON_HEIGHT, buttonStyle, "OPTIONS", SpriteManager.menuButtonPieces);
-		mainMenuButtons[2] = new Button(Screen.MIDX, 344, BUTTON_WIDTH, BUTTON_HEIGHT, buttonStyle, "CREDITS", SpriteManager.menuButtonPieces);
-		mainMenuButtons[3] = new Button(Screen.MIDX, 400, BUTTON_WIDTH, BUTTON_HEIGHT, buttonStyle, "EXIT GAME", SpriteManager.menuButtonPieces);*/
 		
 		for (final Button b : mainMenuButtons)
 		{
@@ -133,10 +126,6 @@ public class MainMenuScreen extends Screen implements WidgetListener
 				res.getString(R.string.medium), SpriteManager.menuButtonPieces);
 		newGameButtons[3] = new Button(Screen.MIDX, 400, BUTTON_WIDTH, BUTTON_HEIGHT, difficultyStyle,
 				res.getString(R.string.hard), SpriteManager.menuButtonPieces);
-		/*newGameButtons[0] = new Button(Screen.MIDX, 231, BUTTON_WIDTH, BUTTON_HEIGHT, buttonStyle, "TUTORIAL", SpriteManager.menuButtonPieces);
-		newGameButtons[1] = new Button(Screen.MIDX, 288, BUTTON_WIDTH, BUTTON_HEIGHT, difficultyStyle, "EASY", SpriteManager.menuButtonPieces);
-		newGameButtons[2] = new Button(Screen.MIDX, 344, BUTTON_WIDTH, BUTTON_HEIGHT, difficultyStyle, "MEDIUM", SpriteManager.menuButtonPieces);
-		newGameButtons[3] = new Button(Screen.MIDX, 400, BUTTON_WIDTH, BUTTON_HEIGHT, difficultyStyle, "HARD", SpriteManager.menuButtonPieces);*/
 		
 		for (final Button b : newGameButtons)
 		{
@@ -192,7 +181,6 @@ public class MainMenuScreen extends Screen implements WidgetListener
 	{
 		if (titleAnim.update(deltaTime))
 		{
-			//loadMainMenu();
 			buttonAppearDelay = 90 + deltaTime;
 			Swapper.swapImages(titleAnim, titleSprite);
 		}
@@ -256,7 +244,6 @@ public class MainMenuScreen extends Screen implements WidgetListener
 				{
 					titleAnim.play();
 					titleAnim.setVisible(true);
-					//buttonAppearDelay = 25 * titleAnim.getFrameTime();	// Menu buttons appear after the 25th frame
 				}
 				
 				state++;
@@ -276,11 +263,8 @@ public class MainMenuScreen extends Screen implements WidgetListener
 		{
 			final TouchEvent event = touchEvents.get(i);
 			
-			//if (!buttonAnimating)
-			//{
 			for (final Button b : mainMenuButtons)
 				b.handleEvent(event);
-			//}
 		}
 	}
 	
@@ -298,8 +282,6 @@ public class MainMenuScreen extends Screen implements WidgetListener
 		{
 			final TouchEvent event = touchEvents.get(i);
 			
-			//if (!buttonAnimating)
-			//{
 			newGameButtons[0].handleEvent(event);
 			
 			if (isTutorialComplete)
@@ -309,7 +291,6 @@ public class MainMenuScreen extends Screen implements WidgetListener
 			}
 			
 			backButton.handleEvent(event);
-			//}
 		}
 	}
 	
@@ -317,11 +298,6 @@ public class MainMenuScreen extends Screen implements WidgetListener
 	public void widgetEvent(WidgetEvent we)
 	{
 		final Object source = we.getSource();
-		
-		//if (we.getCommand().equals(Button.BUTTON_PRESSED))
-		//	buttonAnimating = true;
-		//else if (we.getCommand().equals(Button.ANIMATION_FINISHED))
-		//	buttonAnimating = false;
 		
 		// Main menu buttons
 		if (source == mainMenuButtons[0])
@@ -334,7 +310,8 @@ public class MainMenuScreen extends Screen implements WidgetListener
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
 			{
 				prepScreenChange();
-				game.setScreen(new OptionsScreen(game));
+				game.setScreen(new PewBallPrepScreen(game));
+				//game.setScreen(new OptionsScreen(game));	// TODO: Re-enable OptionsScreen
 			}
 		}
 		else if (source == mainMenuButtons[2])
@@ -342,7 +319,6 @@ public class MainMenuScreen extends Screen implements WidgetListener
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
 			{
 				prepScreenChange();
-                //game.setScreen(new TempAnimScreen(game));
 				game.setScreen(new CreditsScreen(game));
 			}
 		}
@@ -358,7 +334,7 @@ public class MainMenuScreen extends Screen implements WidgetListener
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
 			{
 				prepScreenChange();
-				game.setScreen(new MapLoadingScreen(game, 0, 0));
+				game.setScreen(new MapLoadingScreen(game, Levels.TUTORIAL_STAGE, 0));
 			}
 		}
 		else if (source == newGameButtons[1])

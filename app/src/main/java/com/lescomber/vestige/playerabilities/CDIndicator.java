@@ -2,6 +2,7 @@ package com.lescomber.vestige.playerabilities;
 
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
+import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.graphics.UISprite;
 import com.lescomber.vestige.graphics.UISwingSprite;
 
@@ -187,4 +188,6 @@ public class CDIndicator
 		
 		this.isVisible = isVisible;
 	}
+
+	public Point getCenter() { return new Point(iconReady.getX(), iconReady.getY()); }
 }

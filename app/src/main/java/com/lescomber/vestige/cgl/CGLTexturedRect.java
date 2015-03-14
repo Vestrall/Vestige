@@ -1,9 +1,9 @@
 package com.lescomber.vestige.cgl;
 
-import java.nio.FloatBuffer;
-
 import android.graphics.Rect;
 import android.opengl.GLES20;
+
+import java.nio.FloatBuffer;
 
 public class CGLTexturedRect extends CGLDrawingRect
 {

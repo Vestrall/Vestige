@@ -1,9 +1,9 @@
 package com.lescomber.vestige.projectiles;
 
-import java.util.ArrayList;
-
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.Util;
+
+import java.util.ArrayList;
 
 public class WildFire extends AreaEffect
 {

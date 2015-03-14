@@ -80,4 +80,6 @@ public abstract class PlayerAbility extends Ability
 		if (cdIndicator != null)
 			cdIndicator.setVisible(isVisible);
 	}
+
+	public CDIndicator getCDIndicator() { return cdIndicator; }
 }

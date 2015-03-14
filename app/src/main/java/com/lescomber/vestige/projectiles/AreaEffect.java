@@ -1,9 +1,5 @@
 package com.lescomber.vestige.projectiles;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.lescomber.vestige.Entity;
 import com.lescomber.vestige.geometry.Cone;
 import com.lescomber.vestige.geometry.Hitbox;
@@ -15,6 +11,10 @@ import com.lescomber.vestige.statuseffects.DisplacementEffect;
 import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.statuseffects.StatusEffect;
 import com.lescomber.vestige.units.Unit;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class AreaEffect extends Entity
 {

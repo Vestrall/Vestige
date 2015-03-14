@@ -1,10 +1,5 @@
 package com.lescomber.vestige.screens;
 
-import java.text.DecimalFormat;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import android.content.res.Resources;
 
 import com.lescomber.vestige.Assets;
@@ -45,6 +40,11 @@ import com.lescomber.vestige.widgets.Slider;
 import com.lescomber.vestige.widgets.WidgetEvent;
 import com.lescomber.vestige.widgets.WidgetListener;
 
+import java.text.DecimalFormat;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 public class GameScreen extends Screen implements WidgetListener
 {
 	// Screen change values
@@ -67,23 +67,23 @@ public class GameScreen extends Screen implements WidgetListener
 	private int pButtonDelay;
 	Button pButton;
 	private ColorRect pCover;
-	private Text pHeadingText;
-	private Button pRestartButton;
-	private Button pMainMenuButton;
-	private Button pResumeButton;
-	private Text pMusicVolumeText;
-	private Slider pMusicVolumeSlider;
-	private Text pSfxText;
-	private Slider pSfxSlider;
-	private Text pDisplayFPSText;
-	private CheckBox pDisplayFPSBox;
-	private Text pDisplayWaveText;
-	private CheckBox pDisplayWaveBox;
+	Text pHeadingText;
+	Button pRestartButton;
+	Button pMainMenuButton;
+	Button pResumeButton;
+	Text pMusicVolumeText;
+	Slider pMusicVolumeSlider;
+	Text pSfxText;
+	Slider pSfxSlider;
+	Text pDisplayFPSText;
+	CheckBox pDisplayFPSBox;
+	Text pDisplayWaveText;
+	CheckBox pDisplayWaveBox;
 	
 	// Game over transition fields
 	private static final float ALPHA_PER_MS = 0.001f;	// 0-100% alpha in 1s
-	private float coverAlpha;
-	private ColorRect gameOverCover;
+	float coverAlpha;
+	ColorRect gameOverCover;
 	
 	GestureHandler gestureHandler;
 	
@@ -110,7 +110,7 @@ public class GameScreen extends Screen implements WidgetListener
 	public static final int steves = 1;		// units index for scumbag steve units
 	
 	// Active projectiles / areaEffects
-	private LinkedList<Projectile> projectiles;
+	public static LinkedList<Projectile> projectiles;
 	private LinkedList<AreaEffect> areaEffects;
 	private LinkedList<Explosion> explosions;
 	private static LinkedList<SpriteAnimation> standaloneAnims;
@@ -140,7 +140,7 @@ public class GameScreen extends Screen implements WidgetListener
 		final TextStyle pausedOptionsStyle = new TextStyle("BLANCH_CAPS.otf", 57, 255, 255, 255);
 		pausedOptionsStyle.setSpacing(2.5f);
 		final TextStyle pausedButtonStyle = new TextStyle("BLANCH_CAPS.otf", 57, 87, 233, 255);
-		pausedOptionsStyle.setSpacing(2.5f);
+		pausedButtonStyle.setSpacing(2.5f);
 		
 		// Pause button
 		pButton = new Button(750, 35, null, null, SpriteManager.pauseButton);
@@ -157,20 +157,17 @@ public class GameScreen extends Screen implements WidgetListener
 		// Pause menu buttons
 		final ButtonGroup pButtonGroup = new ButtonGroup();
 		
-		pRestartButton = new Button(Screen.MIDX, 412, 232, 54, pausedButtonStyle,
-				res.getString(R.string.restart), SpriteManager.menuButton);
+		pRestartButton = new Button(Screen.MIDX, 412, 232, 54, pausedButtonStyle, res.getString(R.string.restart), SpriteManager.menuButton);
 		pRestartButton.setClickAnimation(SpriteManager.menuButtonClick);
 		pRestartButton.registerGroup(pButtonGroup);
 		pRestartButton.addWidgetListener(this);
 		
-		pMainMenuButton = new Button(144, 412, 232, 54, pausedButtonStyle,
-				res.getString(R.string.mainMenu), SpriteManager.menuButton);
+		pMainMenuButton = new Button(144, 412, 232, 54, pausedButtonStyle, res.getString(R.string.mainMenu), SpriteManager.menuButton);
 		pMainMenuButton.setClickAnimation(SpriteManager.menuButtonClick);
 		pMainMenuButton.registerGroup(pButtonGroup);
 		pMainMenuButton.addWidgetListener(this);
 		
-		pResumeButton = new Button(656, 412, 232, 54, pausedButtonStyle,
-				res.getString(R.string.resume), SpriteManager.menuButton);
+		pResumeButton = new Button(656, 412, 232, 54, pausedButtonStyle, res.getString(R.string.resume), SpriteManager.menuButton);
 		pResumeButton.setClickAnimation(SpriteManager.menuButtonClick);
 		pResumeButton.registerGroup(pButtonGroup);
 		pResumeButton.addWidgetListener(this);
@@ -178,8 +175,7 @@ public class GameScreen extends Screen implements WidgetListener
 		// Pause menu options
 		final float LEFT_COLUMN_X = 220;
 		
-		pMusicVolumeText = new Text(pausedOptionsStyle, res.getString(R.string.music),
-				LEFT_COLUMN_X, 172, Alignment.CENTER, false);
+		pMusicVolumeText = new Text(pausedOptionsStyle, res.getString(R.string.music), LEFT_COLUMN_X, 172, Alignment.CENTER, false);
 		pMusicVolumeSlider = new Slider(460, 174, 368, 30, 0, 100);
 		pMusicVolumeSlider.setValue((int)(OptionsScreen.musicVolume * 100));
 		pMusicVolumeSlider.addWidgetListener(this);
@@ -189,14 +185,12 @@ public class GameScreen extends Screen implements WidgetListener
 		pSfxSlider.setValue((int)(OptionsScreen.sfxVolume * 100));
 		pSfxSlider.addWidgetListener(this);
 		
-		pDisplayFPSText = new Text(pausedOptionsStyle, res.getString(R.string.displayFPSCounter),
-				276, 280, Alignment.LEFT, false);
+		pDisplayFPSText = new Text(pausedOptionsStyle, res.getString(R.string.displayFPSCounter), 276, 280, Alignment.LEFT, false);
 		pDisplayFPSBox = new CheckBox(LEFT_COLUMN_X, 280);
 		pDisplayFPSBox.setValue(OptionsScreen.displayFPS);
 		pDisplayFPSBox.addWidgetListener(this);
 		
-		pDisplayWaveText = new Text(pausedOptionsStyle, res.getString(R.string.displayWaveCounter),
-				276, 335, Alignment.LEFT, false);
+		pDisplayWaveText = new Text(pausedOptionsStyle, res.getString(R.string.displayWaveCounter), 276, 335, Alignment.LEFT, false);
 		pDisplayWaveBox = new CheckBox(LEFT_COLUMN_X, 335);
 		pDisplayWaveBox.setValue(OptionsScreen.displayWave);
 		pDisplayWaveBox.addWidgetListener(this);
@@ -260,22 +254,25 @@ public class GameScreen extends Screen implements WidgetListener
 		else if (state == PAUSED_STATE)
 			updatePaused(deltaTime);
 		else if (state == GAME_OVER_TRANSITION)
-		{
-			coverAlpha += (deltaTime * ALPHA_PER_MS);
-			if (coverAlpha >= 1)
-			{
-				coverAlpha = 1;
-				screenChangeQueue = GAME_OVER_SCREEN;
-			}
-			
-			gameOverCover.setAlpha(coverAlpha);
-		}
-		
+			updateGameOverTransition(deltaTime);
+
 		// Process the screen change queue. This is done here at the end of the update method so that this update method
 		//does not perform a screen change and then throw errors when control falls back to this update method
 		processScreenChangeQueue();
 	}
-	
+
+	void updateGameOverTransition(int deltaTime)
+	{
+		coverAlpha += (deltaTime * ALPHA_PER_MS);
+		if (coverAlpha >= 1)
+		{
+			coverAlpha = 1;
+			screenChangeQueue = GAME_OVER_SCREEN;
+		}
+
+		gameOverCover.setAlpha(coverAlpha);
+	}
+
 	private void updatePaused(int deltaTime)
 	{
 		pButtonDelay -= deltaTime;
@@ -443,6 +440,12 @@ public class GameScreen extends Screen implements WidgetListener
 		for (final AIUnit aiu : newEnemies)
 			aiu.setVisible(true);
 		units[steves].addAll(newEnemies);
+
+		// Add any new friendly units from map
+		final List<AIUnit> newFriends = map.getFriendsQueue();
+		for (final AIUnit aiu : newFriends)
+			aiu.setVisible(true);
+		units[gregs].addAll(newFriends);
 				
 		// Check for level completion
 		if (map.isLevelComplete(player))

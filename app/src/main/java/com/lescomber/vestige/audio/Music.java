@@ -1,9 +1,9 @@
 package com.lescomber.vestige.audio;
 
-import java.io.IOException;
-
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
+
+import java.io.IOException;
 
 public class Music
 {

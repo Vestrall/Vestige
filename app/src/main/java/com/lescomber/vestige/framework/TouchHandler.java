@@ -1,10 +1,10 @@
 package com.lescomber.vestige.framework;
 
-import java.util.List;
-
 import android.view.View.OnTouchListener;
 
 import com.lescomber.vestige.framework.Input.TouchEvent;
+
+import java.util.List;
 
 public interface TouchHandler extends OnTouchListener
 {

@@ -1,13 +1,13 @@
 package com.lescomber.vestige.framework;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.lescomber.vestige.framework.Input.TouchEvent;
 import com.lescomber.vestige.framework.Pool.PoolObjectFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SingleTouchHandler implements TouchHandler

@@ -68,7 +68,7 @@ public class CGLText
 	// Font padding on each side, ie. doubled on both x and y axis (in pixels)
 	private int fontPadX;
 	private int fontPadY;
-			
+
 	private float fontHeight;	// Font height (actual pixels)
 	private float fontAscent;	// Font ascent (above baseline, in pixels)
 	private float fontDescent;	// Font descent (Below Baseline, in pixels)
@@ -201,16 +201,16 @@ public class CGLText
 		//cellWidth = (int) charWidthMax + (2 * fontPadX); // Set cell width
 		//cellHeight = (int) charHeight + (2 * fontPadY); // Set cell height
 		//cellWidth = (int)(Math.ceil(charWidthMax + (2 * fontPadX))); // Set cell width
-		// TODO: Proper fix for improper character drawing. Currently adding +2 to both cellWidth and cellHeight because
+		// TODO: Proper fix for improper character drawing. Currently adding +5 to both cellWidth and cellHeight because
 		//otheriwse the drawing might accidentally draw pieces of other characters that are nearby on the text texture
-		cellWidth = (int)(Math.ceil(charWidthMax + (2 * fontPadX))) + 2; // Set cell width
+		cellWidth = (int)(Math.ceil(charWidthMax + (2 * fontPadX))) + 5; // Set cell width
 		//cellHeight = (int)(Math.ceil(charHeight + (2 * fontPadY))); // Set cell height
-		cellHeight = (int)(Math.ceil(charHeight + (2 * fontPadY))) + 2; // Set cell height
+		cellHeight = (int)(Math.ceil(charHeight + (2 * fontPadY))) + 5; // Set cell height
 		final int maxSize = cellWidth > cellHeight ? cellWidth : cellHeight; // Save max size (width/height)
 		//float maxSize = cellWidth > cellHeight ? cellWidth : cellHeight; // Save max size (width/height)
 		if (maxSize < FONT_SIZE_MIN || maxSize > FONT_SIZE_MAX) // Maximum size outside valid bounds
 			return false;	// Return error
-			
+
 		// Set texture size based on max font size (width or height)
 		// NOTE: these values are fixed, based on the defined characters. when  changing start/end characters
 		//(CHAR_START/CHAR_END) this will need adjustment too!
@@ -257,8 +257,8 @@ public class CGLText
 		y = 0;
 		for (int c = 0; c < CHAR_CNT; c++)	// For each character (on texture)
 		{
-			// TODO: Proper fix for overlapping characters. Currently putting in a -2 here for cellWidth/cellHeight to workaround
-			charRgn[c] = new CGLTextureRegion(textureSize, textureSize, x, y, cellWidth - 2, cellHeight - 2);
+			// TODO: Proper fix for overlapping characters. Currently putting in a -5 here for cellWidth/cellHeight to workaround
+			charRgn[c] = new CGLTextureRegion(textureSize, textureSize, x, y, cellWidth - 5, cellHeight - 5);
 			x += cellWidth;		// Move to next char (cell)
 			if (x + cellWidth > textureSize)
 			{
@@ -299,7 +299,7 @@ public class CGLText
 		
 		// TODO: Fix this awful hack. It seems that our current system would prefer we use 0 as the 4th (alpha) value in the
 		//color[] array for black, but 1 as the 4th (alpha) value for white. Not sure why. Setting color[3] in this fashion
-		//mitigates the damage (i.e. works well enough for the colors being used in-game)
+		//mitigates the damage (i.e. works well enough for the colors currently being used in-game)
 		
 		// Set color
 		color[0] = red * alpha;

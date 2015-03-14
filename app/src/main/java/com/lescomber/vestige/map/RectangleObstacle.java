@@ -1,13 +1,13 @@
 package com.lescomber.vestige.map;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.lescomber.vestige.Entity;
 import com.lescomber.vestige.framework.Screen;
 import com.lescomber.vestige.geometry.Line;
 import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.geometry.Rectangle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class RectangleObstacle extends Entity implements Obstacle
 {

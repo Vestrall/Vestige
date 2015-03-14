@@ -1,8 +1,8 @@
 package com.lescomber.vestige.framework;
 
-import java.util.List;
-
 import android.view.View;
+
+import java.util.List;
 
 public class AndroidInput implements Input
 {

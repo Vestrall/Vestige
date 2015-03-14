@@ -16,14 +16,19 @@ import com.lescomber.vestige.units.sone.OneTenBoss;
 
 public class Levels
 {
+	public static final int TUTORIAL_STAGE = 0;
+	public static final int PEW_BALL_STAGE = -1;
+
 	public static final int STAGE_COUNT = 2;
 	//public static final int[] LEVEL_COUNT = new int[] { 11, 0 };
 	public static final int[] LEVEL_COUNT = new int[] { 10, 0 };
 	
 	public static Map loadLevel(int stageNum, int levelNum)
 	{
-		if (stageNum <= 0)
+		if (stageNum == TUTORIAL_STAGE)
 			return tutorialStage();
+		else if (stageNum == PEW_BALL_STAGE)
+			return pewBallStage(levelNum);
 		else if (stageNum == 1)
 			return stageOne(levelNum);
 		else if (stageNum == 2)
@@ -31,12 +36,19 @@ public class Levels
 		else
 			return null;
 	}
-	
+
 	private static Map tutorialStage()
 	{
 		// Init basic level requirements
 		final TutorialMap level = new TutorialMap();
 		
+		return level;
+	}
+
+	private static Map pewBallStage(int levelNum)
+	{
+		final PewBallMap level = new PewBallMap(levelNum);
+
 		return level;
 	}
 	

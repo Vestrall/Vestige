@@ -1,8 +1,5 @@
 package com.lescomber.vestige.units;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.lescomber.vestige.framework.Screen;
 import com.lescomber.vestige.framework.Util;
 import com.lescomber.vestige.geometry.Hitbox;
@@ -10,6 +7,9 @@ import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.geometry.Rectangle;
 import com.lescomber.vestige.map.Map;
 import com.lescomber.vestige.screens.GameScreen;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AIRailUnit extends AIUnit
 {

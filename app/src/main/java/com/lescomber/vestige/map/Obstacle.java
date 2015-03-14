@@ -1,10 +1,10 @@
 package com.lescomber.vestige.map;
 
-import java.util.List;
-
 import com.lescomber.vestige.Entity;
 import com.lescomber.vestige.geometry.Line;
 import com.lescomber.vestige.geometry.Point;
+
+import java.util.List;
 
 public interface Obstacle
 {

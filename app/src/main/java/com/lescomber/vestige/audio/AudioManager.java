@@ -1,14 +1,14 @@
 package com.lescomber.vestige.audio;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.SoundPool;
 
 import com.lescomber.vestige.framework.AndroidGameActivity;
 import com.lescomber.vestige.screens.OptionsScreen;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class AudioManager
 {

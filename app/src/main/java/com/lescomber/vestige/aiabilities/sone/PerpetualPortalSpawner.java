@@ -1,7 +1,5 @@
 package com.lescomber.vestige.aiabilities.sone;
 
-import java.util.ArrayList;
-
 import com.lescomber.vestige.aiabilities.AIChanneledAbility;
 import com.lescomber.vestige.framework.Util;
 import com.lescomber.vestige.geometry.Rectangle;
@@ -9,6 +7,8 @@ import com.lescomber.vestige.projectiles.HealPickUp;
 import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.sone.OneTenBoss;
 import com.lescomber.vestige.units.sone.PerpetualSpawnPortal;
+
+import java.util.ArrayList;
 
 public class PerpetualPortalSpawner extends AIChanneledAbility
 {

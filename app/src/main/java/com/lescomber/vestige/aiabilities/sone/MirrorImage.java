@@ -1,7 +1,5 @@
 package com.lescomber.vestige.aiabilities.sone;
 
-import java.util.ArrayList;
-
 import com.lescomber.vestige.aiabilities.AIAbility;
 import com.lescomber.vestige.framework.Util;
 import com.lescomber.vestige.projectiles.PickUp;
@@ -9,6 +7,8 @@ import com.lescomber.vestige.screens.GameScreen;
 import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.statuseffects.StatPack;
 import com.lescomber.vestige.units.AIUnit;
+
+import java.util.ArrayList;
 
 public class MirrorImage extends AIAbility
 {

@@ -1,7 +1,5 @@
 package com.lescomber.vestige.units;
 
-import java.util.ArrayList;
-
 import com.lescomber.vestige.aiabilities.AIAbility;
 import com.lescomber.vestige.aiabilities.AIShooter;
 import com.lescomber.vestige.aiabilities.BeamShooter;
@@ -13,6 +11,8 @@ import com.lescomber.vestige.projectiles.Explosion;
 import com.lescomber.vestige.projectiles.HealPickUp;
 import com.lescomber.vestige.projectiles.Projectile;
 import com.lescomber.vestige.statuseffects.StatPack;
+
+import java.util.ArrayList;
 
 public class Caster extends AIRailUnit
 {
