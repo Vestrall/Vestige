@@ -9,12 +9,14 @@ public abstract class DoubleTapAbility extends PlayerAbility
 	{
 		super(player);
 	}
-	
+
 	public DoubleTapAbility(DoubleTapAbility copyMe)
 	{
 		super(copyMe);
 	}
-	
+
 	public abstract void fire(Point p);
-	@Override public abstract DoubleTapAbility copy();
+
+	@Override
+	public abstract DoubleTapAbility copy();
 }

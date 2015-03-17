@@ -20,44 +20,32 @@ import java.util.Iterator;
 
 public class PewBallMap extends Map
 {
-	public static final float BUMPER_HEIGHT = 35;
+	public static final float BUMPER_HEIGHT = 35;	// Height of the walls at the top and bottom of the map
 
-	//private static final int[] SCORE_LIMITS = new int[] { 5, 8, 11 };
 	private static final int[] SCORE_LIMITS = new int[] { 5, 10 };
 
 	private PewBallScreen pewBallScreen;
 
-	private static final Point[] PORTAL_LOCATIONS = { new Point(590, 120), new Point(650, 240), new Point(590, 360) };
+	private static final Point[] PORTAL_LOCATIONS = {new Point(590, 120), new Point(650, 240), new Point(590, 360)};
 	private final SpriteAnimation PORTAL_ANIM;
 	private final int BALL_SPAWN_DELAY;
 	private int ballSpawnDelay;
-	//private static final int BALL_DOUBLE_SPAWN_LEVEL = 10;
 
 	// Difficulty scaling mechanics change at these levels (e.g. # of balls spawning at once)
 	public static final int[] KEY_LEVELS = new int[] { 10, 20 };
-	//public static final int KEY_LEVEL = 10;
 
-	//private static final int BALL_SPAWN_INTERVAL = 10000;	// In ms
 	// Interval drops from KEY_LEVELS[0] to KEY_LEVELS[1]
 	private static final int PORTAL_SPAWN_INTERVAL[] = new int[] { 30000, 20000 };
-	private int portalSpawnInterval;
-	//private static final int BASE_SPAWN_INTERVAL = 30000;		// In ms
-	//private static final int SPAWN_REDUCTION_PER_LEVEL = 1500;	// In ms. Occurs starting at KEL_LEVEL
-	//private static final int MIN_SPAWN_INTERVAL = 15000;		// In ms
+	private final int portalSpawnInterval;
 	private int portalSpawnCountdown;
 
-	private AIUnit spawner;
+	private final AIUnit spawner;	// Used to spawn projectiles (since Map has no mechanism in place to spawn them directly)
 
-	private ArrayList<PewBall> balls;
+	private final ArrayList<PewBall> balls;		// Keep track of balls. Used for managing goalies and tracking points scored
 
-	private ArrayList<PewBallGoalie> goalies;
-	private ArrayList<PewBall> orderedBalls;	// Used for goalie ball tracking in manageGoalies() only. Reference is kept here to
-												//prevent re-creating this list every frame
+	private final ArrayList<PewBallGoalie> goalies;
 
-	//private static final int GOALIE_INTERVAL[] = { 1000, 2000 };
-	//private int goalieSpawnInterval;
-
-	private int levelNum;
+	private final int levelNum;
 
 	public PewBallMap(int levelNum)
 	{
@@ -85,23 +73,25 @@ public class PewBallMap extends Map
 
 		balls = new ArrayList<PewBall>();
 
+		// Calculate portal spawn interval
 		if (levelNum <= KEY_LEVELS[0])
 			portalSpawnInterval = PORTAL_SPAWN_INTERVAL[0];
 		else if (levelNum < KEY_LEVELS[1])
 		{
-			int totalDif = PORTAL_SPAWN_INTERVAL[0] - PORTAL_SPAWN_INTERVAL[1];
-			float reduction = totalDif * (((float)levelNum - KEY_LEVELS[0]) / (KEY_LEVELS[1] - KEY_LEVELS[0]));
+			final int totalDif = PORTAL_SPAWN_INTERVAL[0] - PORTAL_SPAWN_INTERVAL[1];
+			final float reduction = totalDif * (((float) levelNum - KEY_LEVELS[0]) / (KEY_LEVELS[1] - KEY_LEVELS[0]));
 			portalSpawnInterval = PORTAL_SPAWN_INTERVAL[0] - Math.round(reduction);
 		}
 		else
 			portalSpawnInterval = PORTAL_SPAWN_INTERVAL[1];
 
-		//portalSpawnCountdown = BALL_SPAWN_INTERVAL;
-		portalSpawnCountdown = 2000;	// 2s delay before first ball spawn
+		portalSpawnCountdown = 1500;    // 1.5s delay before first ball spawn
 
 		// Init dummy unit used to spawn projectiles (Map does not have projectile spawning capabilities)
-		spawner = new AIUnit(0, 0, 0, 0) {
-			@Override public AIUnit copy() {
+		spawner = new AIUnit(0, 0, 0, 0)
+		{
+			@Override public AIUnit copy()
+			{
 				return null;
 			}
 			@Override public void hit(HitBundle bundle) { }
@@ -110,30 +100,22 @@ public class PewBallMap extends Map
 		baseStats.maxHp = 10000;
 		baseStats.moveSpeed = 0;
 		spawner.setBaseStats(baseStats);
-
 		spawner.offsetTo(1000, 1000);
 		queueGregsUnit(spawner);
 
+		// Init goalies
 		goalies = new ArrayList<PewBallGoalie>(2);
 		if (levelNum < KEY_LEVELS[0])
 			goalies.add(new PewBallGoalie(levelNum, Screen.MIDY));
 		else
 		{
-			float oneHeight = (Screen.HEIGHT - (2 * BUMPER_HEIGHT)) / 2;
+			final float oneHeight = (Screen.HEIGHT - (2 * BUMPER_HEIGHT)) / 2;
 			goalies.add(new PewBallGoalie(levelNum, BUMPER_HEIGHT + (oneHeight / 2)));
 			goalies.add(new PewBallGoalie(levelNum, BUMPER_HEIGHT + (oneHeight * 1.5f)));
 		}
 
 		for (PewBallGoalie pbg : goalies)
 			queueGregsUnit(pbg);
-
-		orderedBalls = new ArrayList<PewBall>();
-
-		/*PewBall wallBall = new PewBall(levelNum);
-		wallBall.setVelocity(0);
-		wallBall.offsetTo(550, 240);
-		wallBall.setDestination(100, 240);
-		spawner.queueProjectile(wallBall);*/
 	}
 
 	public void attachScreen(PewBallScreen pewBallScreen)
@@ -141,6 +123,7 @@ public class PewBallMap extends Map
 		this.pewBallScreen = pewBallScreen;
 	}
 
+	// Begins portal spawning animation
 	public void startBallSpawn()
 	{
 		// Case: ball spawn has already started
@@ -148,22 +131,11 @@ public class PewBallMap extends Map
 			return;
 
 		portalSpawnCountdown = portalSpawnInterval;
-
-		/*if (levelNum < KEY_LEVELS[0])
-			portalSpawnCountdown = BASE_SPAWN_INTERVAL;
-		else
-		{
-			int reduction = SPAWN_REDUCTION_PER_LEVEL * (levelNum - KEY_LEVELS[0]);
-			portalSpawnCountdown = BASE_SPAWN_INTERVAL - reduction;
-			if (portalSpawnCountdown < MIN_SPAWN_INTERVAL)
-				portalSpawnCountdown = MIN_SPAWN_INTERVAL;
-		}*/
-
 		ballSpawnDelay = BALL_SPAWN_DELAY;
 
 		for (Point p : PORTAL_LOCATIONS)
 		{
-			SpriteAnimation anim = new SpriteAnimation(PORTAL_ANIM);
+			final SpriteAnimation anim = new SpriteAnimation(PORTAL_ANIM);
 			anim.offsetTo(p);
 			GameScreen.playAnimation(anim);
 		}
@@ -173,14 +145,14 @@ public class PewBallMap extends Map
 	{
 		if (levelNum < KEY_LEVELS[0])
 		{
-			int index = Util.rand.nextInt(PORTAL_LOCATIONS.length);
+			final int index = Util.rand.nextInt(PORTAL_LOCATIONS.length);
 			createBall(index);
 		}
 		else
 		{
-			int index = Util.rand.nextInt(PORTAL_LOCATIONS.length);
+			final int index = Util.rand.nextInt(PORTAL_LOCATIONS.length);
 
-			for (int i=0; i<PORTAL_LOCATIONS.length; i++)
+			for (int i = 0; i < PORTAL_LOCATIONS.length; i++)
 			{
 				if (i != index)
 					createBall(i);
@@ -190,22 +162,12 @@ public class PewBallMap extends Map
 
 	private void createBall(int portalLocationIndex)
 	{
-		/*PewBall ball = new PewBall(levelNum);
-		ball.offsetTo(650, 240);
-
-		// Give the ball a random initial destination
-		Line startDest = new Line(ball.getX(), ball.getY(), ball.getX() - 10, ball.getY());
-		ball.setDestination(startDest.getExtEnd());
-
-		balls.add(ball);
-		spawner.queueProjectile(ball);*/
-
-		PewBall ball = new PewBall(levelNum);
+		final PewBall ball = new PewBall(levelNum);
 		ball.offsetTo(PORTAL_LOCATIONS[portalLocationIndex]);
 
 		// Give the ball a random initial destination
-		Line startDest = new Line(ball.getX(), ball.getY(), ball.getX() + 10, ball.getY());
-		float angle = (float)(Math.PI * 3 / 4) + (Util.rand.nextFloat() * (float)Math.PI / 2);
+		final Line startDest = new Line(ball.getX(), ball.getY(), ball.getX() + 10, ball.getY());
+		final float angle = (float) (Math.PI * 3 / 4) + (Util.rand.nextFloat() * (float) Math.PI / 2);
 		Point.rotate(startDest.point1, angle, startDest.point0.x, startDest.point0.y);
 		ball.setDestination(startDest.getExtEnd());
 
@@ -229,27 +191,16 @@ public class PewBallMap extends Map
 		{
 			portalSpawnCountdown -= deltaTime;
 			if (portalSpawnCountdown <= 0)
-			{
-				// Note: portalSpawnCountdown = BALL_SPAWN_INTERVAL takes place in startBallSpawn()
-				startBallSpawn();
-			}
+				startBallSpawn();	// Note: portalSpawnCountdown = BALL_SPAWN_INTERVAL takes place in startBallSpawn()
 		}
 
 		// Decide which ball each goalie is tracking
 		manageGoalies();
 
-		// Spawn the next goalie if appropriate
-		/*goalieSpawnInterval -= deltaTime;
-		if (goalieSpawnInterval <= 0)
-		{
-			goalieSpawnInterval += GOALIE_INTERVAL[0] + (Util.rand.nextFloat() * (GOALIE_INTERVAL[1] - GOALIE_INTERVAL[0]));
-			spawner.queueProjectile(new PewBallGoalieOld());
-		}*/
-
-		Iterator<PewBall> itr = balls.iterator();
+		final Iterator<PewBall> itr = balls.iterator();
 		while (itr.hasNext())
 		{
-			PewBall ball = itr.next();
+			final PewBall ball = itr.next();
 
 			// If ball is off the screen, notify pewBallScreen about who gets the point
 			if (!Screen.overlaps(ball.getHitbox()))
@@ -263,6 +214,7 @@ public class PewBallMap extends Map
 		}
 	}
 
+	// Assigns each goalie to track a ball (if any exist)
 	private void manageGoalies()
 	{
 		if (balls.isEmpty())
@@ -272,18 +224,18 @@ public class PewBallMap extends Map
 		}
 		else
 		{
-			Collections.sort(balls);
-			ArrayList<PewBallGoalie> goalieCopy = new ArrayList<PewBallGoalie>(goalies);
+			Collections.sort(balls);	// Sort by yPosition
+			final ArrayList<PewBallGoalie> goalieCopy = new ArrayList<PewBallGoalie>(goalies);
 
-			int size = Math.min(balls.size(), goalieCopy.size());
-			for (int i=0; i<size; i++)
+			final int size = Math.min(balls.size(), goalieCopy.size());
+			for (int i = 0; i < size; i++)
 			{
-				PewBall ball = balls.get(i);
+				final PewBall ball = balls.get(i);
 				int goalieIndex = 0;
 				float minDist = Float.MAX_VALUE;
-				for (int j=0; j<goalieCopy.size(); j++)
+				for (int j = 0; j < goalieCopy.size(); j++)
 				{
-					float thisDist = goalieCopy.get(j).distanceFromRange(ball.getY());
+					final float thisDist = goalieCopy.get(j).distanceFromRange(ball.getY());
 					if (thisDist < minDist)
 					{
 						minDist = thisDist;
@@ -299,9 +251,7 @@ public class PewBallMap extends Map
 			if (!balls.isEmpty())
 			{
 				for (PewBallGoalie pbg : goalieCopy)
-				{
 					pbg.track(balls.get(0));
-				}
 			}
 		}
 	}
@@ -312,17 +262,17 @@ public class PewBallMap extends Map
 			return SCORE_LIMITS[0];
 		else
 			return SCORE_LIMITS[1];
-		/*if (levelNum < KEY_LEVELS[0])
-			return SCORE_LIMITS[0];
-		else if (levelNum < KEY_LEVELS[1])
-			return SCORE_LIMITS[1];
-		else
-			return SCORE_LIMITS[2];*/
 	}
 
 	@Override public void gameScreenEmpty() { }
 
-	public boolean noActiveBalls() { return balls.isEmpty(); }
+	public boolean noActiveBalls()
+	{
+		return balls.isEmpty();
+	}
 
-	public int ballTimer() { return portalSpawnCountdown; }
+	public int ballTimer()
+	{
+		return portalSpawnCountdown;
+	}
 }

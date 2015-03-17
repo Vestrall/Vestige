@@ -11,16 +11,16 @@ public class DancingCreep extends FloatingCreep
 	private final int dancingLeftAnim;
 	private int dancingRightAnim;
 	private int danceSequenceDuration;
-	
-	private boolean isAngry;	// Dances until isAngry == false
-	private final boolean isCaptain;	// Only the captain calls danceCoordinator.update() (rather than making a custom map class do it)
+
+	private boolean isAngry;    // Dances until isAngry == false
+	private final boolean isCaptain;    // Only the captain calls danceCoordinator.update() (rather than making a custom map class do it)
 	private final DanceCoordinator danceCoordinator;
-	private boolean isActuallyEntering;		// Replaces usual isEntering boolean because isEntering will be used during dancing
-	
+	private boolean isActuallyEntering;        // Replaces usual isEntering boolean because isEntering will be used during dancing
+
 	public DancingCreep(DanceCoordinator danceCoordinator)
 	{
 		super();
-		
+
 		// Init dancing animations
 		SpriteAnimation anim = new SpriteAnimation();
 		anim.addFrame(SpriteManager.floatingCreepAttackLeft[0]);
@@ -38,7 +38,7 @@ public class DancingCreep extends FloatingCreep
 		anim.setFrameTime(200);
 		anim.setSequenceLimit(-1);
 		dancingLeftAnim = addAnimation(anim);
-		
+
 		anim = new SpriteAnimation();
 		anim.addFrame(SpriteManager.floatingCreepAttackRight[0]);
 		anim.addFrame(SpriteManager.floatingCreepAttackRight[3]);
@@ -55,75 +55,75 @@ public class DancingCreep extends FloatingCreep
 		anim.setFrameTime(200);
 		anim.setSequenceLimit(-1);
 		dancingRightAnim = addAnimation(anim);
-		
+
 		danceSequenceDuration = anim.getFrameTime() * anim.getFrameCount();
-		
+
 		isAngry = false;
 		isCaptain = false;
 		isActuallyEntering = true;
 		this.danceCoordinator = danceCoordinator;
 	}
-	
+
 	public DancingCreep(DancingCreep copyMe)
 	{
 		super(copyMe);
-		
+
 		dancingLeftAnim = copyMe.dancingLeftAnim;
 		isAngry = copyMe.isAngry;
 		isCaptain = copyMe.isCaptain;
 		danceCoordinator = copyMe.danceCoordinator;
 		isActuallyEntering = copyMe.isActuallyEntering;
 	}
-	
+
 	public void danceLeft()
 	{
 		setEntering(true);
 		restartAnimation(dancingLeftAnim);
 	}
-	
+
 	public void danceRight()
 	{
 		setEntering(true);
 		restartAnimation(dancingRightAnim);
 	}
-	
+
 	public void dancePosition(Point dest)
 	{
 		setEntering(false);
 		setDestination(dest);
 		setEntering(true);
 	}
-	
+
 	public void aggro()
 	{
 		isAngry = true;
 		setEntering(isActuallyEntering);
 		chooseDestination();
 	}
-	
+
 	public int getDanceSequenceDuration()
 	{
 		return danceSequenceDuration;
 	}
-	
+
 	@Override
 	public void hasEntered()
 	{
 		super.hasEntered();
-		
+
 		setEntering(!isAngry);
 		isActuallyEntering = false;
 	}
-	
+
 	@Override
 	public void hit(HitBundle bundle)
 	{
 		super.hit(bundle);
-		
+
 		if (!isAngry)
 			danceCoordinator.aggro();
 	}
-	
+
 	@Override
 	public DancingCreep copy()
 	{

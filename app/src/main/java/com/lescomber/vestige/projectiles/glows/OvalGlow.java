@@ -9,12 +9,12 @@ public class OvalGlow extends Glow
 	{
 		super(template);
 	}
-	
+
 	public OvalGlow(OvalGlow copyMe)
 	{
 		super(copyMe);
 	}
-	
+
 	@Override
 	public void updateShape(Hitbox hitbox, float sizePercentage)
 	{
@@ -22,7 +22,7 @@ public class OvalGlow extends Glow
 		scaleHeightTo(sizePercentage * getSprite().getTemplate().getHeight());
 		offsetTo(hitbox.getX(), hitbox.getBottom());
 	}
-	
+
 	@Override
 	public OvalGlow copy()
 	{

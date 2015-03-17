@@ -12,19 +12,19 @@ public class Swapper
 			{
 				if (addMe.isVisible() && (addMe.getIndex() != removeMe.getIndex()))
 					addMe.setVisible(false);
-				
+
 				if (addMe instanceof ThreePatchSprite)
 				{
 					SpriteManager.getInstance().replaceSprite(removeMe.getIndex(), addMe.getSprite().getInfo(),
-							((ThreePatchSprite)addMe).getLeftTemplate(), ((ThreePatchSprite)addMe).getRightTemplate());
+							((ThreePatchSprite) addMe).getLeftTemplate(), ((ThreePatchSprite) addMe).getRightTemplate());
 				}
 				else
 					SpriteManager.getInstance().replaceSprite(removeMe.getIndex(), addMe.getSprite().getInfo());
-				
+
 				addMe.wasAdded(removeMe.getIndex());
 				if (removeMe != addMe)
 					removeMe.wasReplaced();
-				
+
 				// If addMe and removeMe refer to the same image, do not addMe.setVisible(false) or else we'll set
 				//removeMe.setVisible(false) right before we assume it is visible
 				/*if (addMe.isVisible() && (addMe.getIndex() != removeMe.getIndex()))
@@ -51,7 +51,7 @@ public class Swapper
 				if (addMe instanceof ThreePatchSprite)
 				{
 					index = SpriteManager.getInstance().newThreePatchSprite(addMe.getSprite().getInfo(),
-							((ThreePatchSprite)addMe).getLeftTemplate(), ((ThreePatchSprite)addMe).getRightTemplate());
+							((ThreePatchSprite) addMe).getLeftTemplate(), ((ThreePatchSprite) addMe).getRightTemplate());
 				}
 				else
 					index = SpriteManager.getInstance().newSprite(addMe.getSprite().getInfo());

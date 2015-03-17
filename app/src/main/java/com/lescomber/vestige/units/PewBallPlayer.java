@@ -16,7 +16,7 @@ public class PewBallPlayer extends Player
 		super();
 
 		// Remember CDIndicator position for current doubleTapAbility
-		Point pos = doubleTapAbility.getCDIndicator().getCenter();
+		final Point pos = doubleTapAbility.getCDIndicator().getCenter();
 
 		// Create PewBall version of doubleTapAbility
 		doubleTapAbility = new PewBallDoubleTap(this);
@@ -25,23 +25,10 @@ public class PewBallPlayer extends Player
 		doubleTapAbility.offsetCDIndicatorTo(pos.x, pos.y);
 	}
 
+	// Send ball directly away from the player's hitbox center
 	public void repulse(PewBall ball)
 	{
-		Line centers = new Line(getCenter(), ball.getCenter());
-
-		// Offset ball until it is outside the shield. TODO: Offset ball left or right (if needed) to avoid walls
-		/*Hitbox pBox = new Hitbox(ball.getHitbox());
-		float dx = centers.point1.x - centers.point0.x;
-		float dy = centers.point1.y - centers.point0.y;
-		float xPortion = dx / (Math.abs(dx) + Math.abs(dy));
-		float yPortion = 1 - Math.abs(xPortion);
-		if (dy < 0)
-			yPortion = -yPortion;
-		while (overlaps(pBox))
-			pBox.offset(-xPortion, -yPortion);
-
-		ball.offsetTo(pBox.getX(), pBox.getY());*/
-
+		final Line centers = new Line(getCenter(), ball.getCenter());
 		ball.setDestination(centers.getExtEnd(PewBall.RADIUS, PewBall.RADIUS));
 	}
 
@@ -50,14 +37,14 @@ public class PewBallPlayer extends Player
 	{
 		super.update(deltaTime);
 
-		// Check for and handle shield-based repulsion
+		// Check for and handle shield-based repulsion. Note: uses image centers instead of hitbox centers for distance check
 		if (getShields() > 0)
 		{
 			final Point iCenter = getImageCenter();
 			for (Projectile p : GameScreen.projectiles)
 			{
 				if (p instanceof PewBall && iCenter.distanceToPointSquared(p.getImageCenter()) < SHIELD_RADIUS_SQUARED + PewBall.RADIUS)
-					repulse((PewBall)p);
+					repulse((PewBall) p);
 			}
 		}
 	}

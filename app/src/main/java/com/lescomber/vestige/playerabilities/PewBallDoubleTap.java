@@ -6,7 +6,6 @@ import com.lescomber.vestige.projectiles.PewBall;
 import com.lescomber.vestige.projectiles.Projectile;
 import com.lescomber.vestige.screens.GameScreen;
 import com.lescomber.vestige.units.PewBallPlayer;
-import com.lescomber.vestige.units.Player;
 
 public class PewBallDoubleTap extends SOneDoubleTap
 {

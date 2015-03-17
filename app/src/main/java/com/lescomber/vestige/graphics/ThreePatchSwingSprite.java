@@ -9,37 +9,37 @@ public class ThreePatchSwingSprite extends ThreePatchSprite
 	private float swingY;
 	private final float offsetX;
 	private final float offsetY;
-	
+
 	public ThreePatchSwingSprite(SpriteTemplate[] templates, float x, float y, float offsetX, float offsetY, boolean isVisible)
 	{
 		super(templates, x - offsetX, y - offsetY, isVisible);
-		
+
 		swingX = x;
 		swingY = y;
 		this.offsetX = offsetX;
 		this.offsetY = offsetY;
 	}
-	
+
 	public ThreePatchSwingSprite(SpriteTemplate[] templates, float x, float y, float offsetX, float offsetY)
 	{
 		this(templates, x, y, offsetX, offsetY, false);
 	}
-	
+
 	public ThreePatchSwingSprite(SpriteTemplate[] templates, float offsetX, float offsetY)
 	{
 		this(templates, 0, 0, offsetX, offsetY, false);
 	}
-	
+
 	public ThreePatchSwingSprite(ThreePatchSwingSprite copyMe)
 	{
 		super(copyMe);
-		
+
 		swingX = copyMe.swingX;
 		swingY = copyMe.swingY;
 		offsetX = copyMe.offsetX;
 		offsetY = copyMe.offsetY;
 	}
-	
+
 	@Override
 	public void offset(float dx, float dy)
 	{
@@ -47,13 +47,13 @@ public class ThreePatchSwingSprite extends ThreePatchSprite
 		swingY += dy;
 		super.offset(dx, dy);
 	}
-	
+
 	@Override
 	public void offsetTo(float x, float y)
 	{
 		offset(x - swingX, y - swingY);
 	}
-	
+
 	@Override
 	public void rotate(float radians)
 	{
@@ -62,12 +62,12 @@ public class ThreePatchSwingSprite extends ThreePatchSprite
 		Point.rotate(center, radians, swingX, swingY);
 		final float dx = center.x - getX();
 		final float dy = center.y - getY();
-		super.offset(dx, dy);		// Note super.offset() will move the center point of the sprite
-		
+		super.offset(dx, dy);        // Note super.offset() will move the center point of the sprite
+
 		// Then rotate the Sprite in place
 		super.rotate(radians);
 	}
-	
+
 	@Override
 	public void rotateAbout(float radians, float rotateX, float rotateY)
 	{
@@ -76,26 +76,33 @@ public class ThreePatchSwingSprite extends ThreePatchSprite
 		offsetTo(swingPoint);
 		rotate(radians);
 	}
-	
+
 	@Override
 	public void scale(double widthRatio, double heightRatio)
 	{
-		final float halfWidthDif = (float)((widthRatio - 1.0) * getWidth()) / 2;
-		final float halfHeightDif = (float)((heightRatio - 1.0) * getHeight()) / 2;
-		
+		final float halfWidthDif = (float) ((widthRatio - 1.0) * getWidth()) / 2;
+		final float halfHeightDif = (float) ((heightRatio - 1.0) * getHeight()) / 2;
+
 		super.scale(widthRatio, heightRatio);
-		
+
 		final float widthSign = offsetX <= 0 ? 1 : -1;
 		final float heightSign = offsetY <= 0 ? 1 : -1;
-		
-		float xOff = widthSign * ((float)(Math.cos(getDirection()) * halfWidthDif));
-		float yOff = widthSign * ((float)(Math.sin(getDirection()) * halfWidthDif));
-		xOff += heightSign * ((float)(Math.cos(getDirection() + (Math.PI / 2)) * halfHeightDif));
-		yOff += heightSign * ((float)(Math.sin(getDirection() + (Math.PI / 2)) * halfHeightDif));
-		
+
+		float xOff = widthSign * ((float) (Math.cos(getDirection()) * halfWidthDif));
+		float yOff = widthSign * ((float) (Math.sin(getDirection()) * halfWidthDif));
+		xOff += heightSign * ((float) (Math.cos(getDirection() + (Math.PI / 2)) * halfHeightDif));
+		yOff += heightSign * ((float) (Math.sin(getDirection() + (Math.PI / 2)) * halfHeightDif));
+
 		super.offset(xOff, yOff);
 	}
-	
-	public float getSwingX() { return swingX; }
-	public float getSwingY() { return swingY; }
+
+	public float getSwingX()
+	{
+		return swingX;
+	}
+
+	public float getSwingY()
+	{
+		return swingY;
+	}
 }

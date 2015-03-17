@@ -14,22 +14,22 @@ public class TestTutorialCaster extends AIUnit
 {
 	private boolean isAngry;
 	private final List<AIAbility> abilities;
-	
+
 	public TestTutorialCaster()
 	{
 		super(60, 36, -21, 30);
-		
+
 		setIdleLeftSprite(SpriteManager.casterFiringLeft[0]);
 		setIdleRightSprite(SpriteManager.casterFiringRight[0]);
-		
+
 		isAngry = false;
-		
+
 		// Init default stats
 		final StatPack baseStats = new StatPack();
 		baseStats.maxHp = 1000;
 		baseStats.moveSpeed = 0;
 		setDifficultyScaledBaseStats(baseStats);
-		
+
 		// Init abilities
 		final Projectile shot = new Projectile(SpriteManager.enemyProjectile, 0,
 				Projectile.ENEMY_PROJECTILE_WIDTH, Projectile.ENEMY_PROJECTILE_HEIGHT);
@@ -38,27 +38,27 @@ public class TestTutorialCaster extends AIUnit
 		shooter.setCooldown(1000);
 		addAbility(shooter);
 		abilities = getAbilities();
-		
+
 		// Init firing animation
 		final SpriteAnimation preFiringLeftAnim = new SpriteAnimation(SpriteManager.casterFiringLeft, 0, 3);
 		setPreFiringLeftAnimation(preFiringLeftAnim);
 		final SpriteAnimation postFiringLeftAnim = new SpriteAnimation(SpriteManager.casterFiringLeft, 4, 6);
 		setPostFiringLeftAnimation(postFiringLeftAnim);
-		
+
 		final SpriteAnimation preFiringRightAnim = new SpriteAnimation(SpriteManager.casterFiringRight, 0, 3);
 		setPreFiringRightAnimation(preFiringRightAnim);
 		final SpriteAnimation postFiringRightAnim = new SpriteAnimation(SpriteManager.casterFiringRight, 4, 6);
 		setPostFiringRightAnimation(postFiringRightAnim);
 	}
-	
+
 	public TestTutorialCaster(TestTutorialCaster copyMe)
 	{
 		super(copyMe);
-		
+
 		isAngry = copyMe.isAngry;
 		abilities = getAbilities();
 	}
-	
+
 	@Override
 	public void hit(HitBundle bundle)
 	{
@@ -68,10 +68,10 @@ public class TestTutorialCaster extends AIUnit
 				aia.setCooldown(0.5);
 			isAngry = true;
 		}
-		
+
 		super.hit(bundle);
 	}
-	
+
 	@Override
 	public TestTutorialCaster copy()
 	{

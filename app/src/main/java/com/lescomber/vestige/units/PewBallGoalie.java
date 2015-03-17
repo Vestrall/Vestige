@@ -11,20 +11,25 @@ import com.lescomber.vestige.statuseffects.StatPack;
 
 public class PewBallGoalie extends AIUnit
 {
-	private static final float BASE_SPEED = 30;
-	private static final float[] SPEED_INCREASE_PER_LEVEL = new float[] { 7, 6 };
-	//private static final float SPEED_INCREASE_MAX = 90;
+	// Levels 1-9 base + increasePerLevel[0]
+	// Levels 10-20 = base + (increasePerLevel[1] * (levelNum - 10))
+	// Levels 21+ = Levels 10-20 + (increasePerLevel[2] * (levelNum - 20))
+	private static final float BASE_SPEED = 24;
+	private static final float[] SPEED_INCREASE_PER_LEVEL = new float[] { 5.4f, 5, 6.15f };
 
 	private static final double SCALE = 0.65;
 
-	private static final float X = 735;
-	private float[] yRange;
+	// Goalie position vars
+	private static final float X = 750;
+	private final float[] yRange;
 
+	// Goalie will move in moveRange increments in the direction of whatever PewBall it is currently tracking. Larger moveRange results
+	//in a less responsive goalie (since he won't pick their next destination until they reach their current one). The decreasePerLevel
+	//part occurs between KEY_LEVELS[0] and KEY_LEVELS[1]
 	private static final float BASE_MOVE_RANGE = 60;
 	private static final float MOVE_RANGE_DECREASE_PER_LEVEL = 4;
 	private static final float MOVE_RANGE_DECREASE_MAX = 40;
-	private float moveRange;
-	//private static final float MOVE_RANGE = 40;
+	private final float moveRange;
 
 	private PewBall targetBall;		// targetBall is the ball this goalie has been assigned (by PewBallMap) to track and stop (for now)
 
@@ -32,7 +37,7 @@ public class PewBallGoalie extends AIUnit
 
 	public PewBallGoalie(int levelNum, float startY)
 	{
-		super(60, 40, -23, 30);
+		super(50, 40, -23, 30);
 
 		// PewBallGoalies are treated like good guys so they don't eat player projectiles
 		setFaction(GameScreen.gregs);
@@ -41,17 +46,17 @@ public class PewBallGoalie extends AIUnit
 		final StatPack baseStats = new StatPack();
 		baseStats.maxHp = 100;
 
-		float speedIncrease;
+		final float speedIncrease;
 		if (levelNum < PewBallMap.KEY_LEVELS[0])
 			speedIncrease = levelNum * SPEED_INCREASE_PER_LEVEL[0];
 		else
 		{
-			speedIncrease = (levelNum - PewBallMap.KEY_LEVELS[0]) * SPEED_INCREASE_PER_LEVEL[1];
-			//if (speedIncrease > SPEED_INCREASE_MAX)
-			//	speedIncrease = SPEED_INCREASE_MAX;
+			int midCount = Math.min(PewBallMap.KEY_LEVELS[1] - PewBallMap.KEY_LEVELS[0], levelNum - PewBallMap.KEY_LEVELS[0]);
+			int highCount = Math.max(levelNum - PewBallMap.KEY_LEVELS[1], 0);
+			speedIncrease = (midCount * SPEED_INCREASE_PER_LEVEL[1]) + (highCount * SPEED_INCREASE_PER_LEVEL[2]);
 		}
 		baseStats.moveSpeed = BASE_SPEED + speedIncrease;
-		setDifficultyScaledBaseStats(baseStats);
+		setBaseStats(baseStats);
 
 		// Init idle sprites
 		setIdleLeftSprite(SpriteManager.casterWalkLeft[0]);
@@ -64,12 +69,11 @@ public class PewBallGoalie extends AIUnit
 		createHealthBar(null, null);
 
 		scale(SCALE, SCALE);
-
 		offsetTo(X, startY);
 
 		// Calculate yRange
-		float halfRange;
-		float totalRange = Screen.HEIGHT - (2 * PewBallMap.BUMPER_HEIGHT);
+		final float halfRange;
+		final float totalRange = Screen.HEIGHT - (2 * PewBallMap.BUMPER_HEIGHT);
 		if (levelNum < PewBallMap.KEY_LEVELS[0])
 			halfRange = totalRange / 2;
 		else
@@ -81,7 +85,7 @@ public class PewBallGoalie extends AIUnit
 		yRange[1] = startY + halfRange;
 
 		// Prevent goalie overlap
-		float halfGoalieHeight = getHitbox().getHeight() / 2;
+		final float halfGoalieHeight = getHitbox().getHeight() / 2;
 		if (Math.abs(yRange[0] - PewBallMap.BUMPER_HEIGHT) > 5)
 			yRange[0] += halfGoalieHeight;
 		if (Math.abs(Screen.HEIGHT - yRange[1] - PewBallMap.BUMPER_HEIGHT) > 5)
@@ -123,6 +127,8 @@ public class PewBallGoalie extends AIUnit
 		return y >= yRange[0] && y <= yRange[1];
 	}
 
+	// Used to determine how close a given PewBall's y-coord is to this goalie's yRange in order to determine which goalie should
+	//track which ball. We return the distance rather than a simple boolean in order to support > 2 goalies (which isn't curently used)
 	public float distanceFromRange(float y)
 	{
 		if (isInRange(y))
@@ -199,7 +205,7 @@ public class PewBallGoalie extends AIUnit
 		}
 	}
 
-	@Override public void hit(HitBundle bundle) { }		// Invincible
+	@Override public void hit(HitBundle bundle) { }        // Invincible
 
 	@Override
 	public AIUnit copy()

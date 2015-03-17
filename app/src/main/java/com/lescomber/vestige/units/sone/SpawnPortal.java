@@ -14,32 +14,32 @@ public class SpawnPortal extends AIUnit
 	private static final int[] GROWTH_INTERVAL = new int[] { 180, 145, 110 };
 	private static final int SIZE_MAX = 100;
 	private static final float SPAWN_DISTANCE = 70;
-	
+
 	private int size;
 	private int growthCooldown;
 	private double curSize;
 	private final StatusEffect growthPrototype;
-	
+
 	private final int portalInitAnim;
 	private final int portalSpawnAnim;
 	private final int portalOpenAnim;
 	private final int portalUnitSpawnAnim;
 	private boolean allSpawned;
-	
+
 	public SpawnPortal()
 	{
 		super(48, 34, -22, 25);
-		
+
 		setIdleLeftSprite(SpriteManager.spawnPortalSpawn[0]);
-		
+
 		// Init stats
 		final StatPack baseStats = new StatPack();
 		baseStats.maxHp = 36 + (OptionsScreen.difficulty * 5);
 		baseStats.moveSpeed = 350 + (OptionsScreen.difficulty * 25);
 		setBaseStats(baseStats);
-		
+
 		setSlowable(false);
-		
+
 		// Init portal animations
 		portalInitAnim = addAnimation(new SpriteAnimation(SpriteManager.spawnPortalSpawn, 0, 10));
 		SpriteAnimation anim = new SpriteAnimation(SpriteManager.spawnPortalSpawn, 11, 13);
@@ -49,9 +49,9 @@ public class SpawnPortal extends AIUnit
 		anim = new SpriteAnimation(SpriteManager.spawnPortalOpen, 8, 11);
 		anim.setDuration(200);
 		portalUnitSpawnAnim = addAnimation(anim);
-		
+
 		allSpawned = false;
-		
+
 		size = 0;
 		growthCooldown = GROWTH_INTERVAL[OptionsScreen.difficulty];
 		curSize = 100;
@@ -59,14 +59,14 @@ public class SpawnPortal extends AIUnit
 		sp.maxHp = 0.3f * (1 + OptionsScreen.difficulty);
 		growthPrototype = new StatusEffect(sp, 1000);
 		growthPrototype.setStacks(1, 100, 0);
-		
+
 		scale(0.7, 0.7);
 	}
-	
+
 	public SpawnPortal(SpawnPortal copyMe)
 	{
 		super(copyMe);
-		
+
 		portalInitAnim = copyMe.portalInitAnim;
 		portalSpawnAnim = copyMe.portalSpawnAnim;
 		portalOpenAnim = copyMe.portalOpenAnim;
@@ -77,18 +77,18 @@ public class SpawnPortal extends AIUnit
 		curSize = copyMe.curSize;
 		growthPrototype = new StatusEffect(copyMe.growthPrototype);
 	}
-	
+
 	@Override
 	public void update(int deltaTime)
 	{
 		super.update(deltaTime);
-		
+
 		growthCooldown -= deltaTime;
-		
+
 		while (growthCooldown <= 0)
 		{
 			growthCooldown = GROWTH_INTERVAL[OptionsScreen.difficulty];
-			
+
 			size++;
 			if (size == SIZE_MAX)
 				playAnimation(portalOpenAnim);
@@ -98,13 +98,13 @@ public class SpawnPortal extends AIUnit
 				final double scale = (curSize + 1.2) / curSize;
 				scale(scale, scale);
 				curSize += 1.2;
-				
+
 				// Increase maxHp
 				addStatusEffect(growthPrototype.copy());
 			}
 		}
 	}
-	
+
 	@Override
 	protected void animationFinished(int animID)
 	{
@@ -115,7 +115,7 @@ public class SpawnPortal extends AIUnit
 		else if (animID == portalOpenAnim)
 		{
 			spawnUnit();
-			
+
 			// Begin unitSpawning animation which will trigger the 2nd unit to spawn once it has completed its sequence
 			playAnimation(portalUnitSpawnAnim);
 		}
@@ -124,18 +124,18 @@ public class SpawnPortal extends AIUnit
 			if (!allSpawned)
 			{
 				spawnUnit();
-				
+
 				// Restart portalUnitSpawnAnim one more time so this last unit has a portal to walk through
 				getAnimation(portalUnitSpawnAnim).setDuration(200);
 				restartAnimation(portalUnitSpawnAnim);
-				
+
 				allSpawned = true;
 			}
 			else
 				die();
 		}
 	}
-	
+
 	private void spawnUnit()
 	{
 		final FloatingCreep creep = new FloatingCreep();
@@ -144,23 +144,23 @@ public class SpawnPortal extends AIUnit
 		creep.setEntering(true);
 		queueAIUnit(creep);
 	}
-	
+
 	@Override
 	protected void pathDestinationReached()
 	{
 		playAnimation(portalInitAnim);
 	}
-	
+
 	@Override
 	public void die()
 	{
 		super.die();
-		
+
 		final SpriteAnimation anim = new SpriteAnimation(SpriteManager.spawnPortalEnd);
 		anim.offsetTo(getCenter().x, getCenter().y + getImageOffsetY());
 		GameScreen.playAnimation(anim);
 	}
-	
+
 	@Override
 	public SpawnPortal copy()
 	{

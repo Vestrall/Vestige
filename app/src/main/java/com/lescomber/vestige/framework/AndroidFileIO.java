@@ -19,29 +19,29 @@ public class AndroidFileIO
 	Context context;
 	AssetManager assets;
 	String externalStoragePath;
-	
+
 	public AndroidFileIO(Context context)
 	{
 		this.context = context;
 		assets = context.getAssets();
 		externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator;
 	}
-	
+
 	public InputStream readAsset(String file) throws IOException
 	{
 		return assets.open(file);
 	}
-	
+
 	public InputStream readFile(String file) throws IOException
 	{
 		return new FileInputStream(externalStoragePath + file);
 	}
-	
+
 	public OutputStream writeFile(String file) throws IOException
 	{
 		return new FileOutputStream(externalStoragePath + file);
 	}
-	
+
 	public SharedPreferences getSharedPref()
 	{
 		return PreferenceManager.getDefaultSharedPreferences(context);

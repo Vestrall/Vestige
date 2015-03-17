@@ -15,62 +15,62 @@ public class MultiShooter extends AIShooter
 	{
 		super(owner, prototype, cooldownSeconds);
 	}
-	
+
 	public MultiShooter(MultiShooter copyMe)
 	{
 		super(copyMe);
 	}
-	
+
 	@Override
 	protected void fire(Line path)
 	{
 		final ArrayList<Line> paths = new ArrayList<Line>(4);
-		
+
 		if (OptionsScreen.difficulty == OptionsScreen.HARD)
 		{
 			Line line = new Line(path);
-			Point.rotate(line.point1, -(float)(Math.PI / 7), line.point0.x, line.point0.y);
+			Point.rotate(line.point1, -(float) (Math.PI / 7), line.point0.x, line.point0.y);
 			paths.add(line);
-			
+
 			line = new Line(path);
-			Point.rotate(line.point1, -(float)(Math.PI / 21), line.point0.x, line.point0.y);
+			Point.rotate(line.point1, -(float) (Math.PI / 21), line.point0.x, line.point0.y);
 			paths.add(line);
-			
+
 			line = new Line(path);
-			Point.rotate(line.point1, (float)(Math.PI / 21), line.point0.x, line.point0.y);
+			Point.rotate(line.point1, (float) (Math.PI / 21), line.point0.x, line.point0.y);
 			paths.add(line);
-			
+
 			line = new Line(path);
-			Point.rotate(line.point1, (float)(Math.PI / 7), line.point0.x, line.point0.y);
+			Point.rotate(line.point1, (float) (Math.PI / 7), line.point0.x, line.point0.y);
 			paths.add(line);
 		}
 		else if (OptionsScreen.difficulty == OptionsScreen.MEDIUM)
 		{
 			Line line = new Line(path);
-			Point.rotate(line.point1, -(float)(Math.PI / 12), line.point0.x, line.point0.y);
+			Point.rotate(line.point1, -(float) (Math.PI / 12), line.point0.x, line.point0.y);
 			paths.add(line);
-			
+
 			paths.add(new Line(path));
-			
+
 			line = new Line(path);
-			Point.rotate(line.point1, (float)(Math.PI / 12), line.point0.x, line.point0.y);
+			Point.rotate(line.point1, (float) (Math.PI / 12), line.point0.x, line.point0.y);
 			paths.add(line);
 		}
-		else	// difficulty = EASY
+		else    // difficulty = EASY
 		{
 			Line line = new Line(path);
-			Point.rotate(line.point1, -(float)(Math.PI / 12), line.point0.x, line.point0.y);
+			Point.rotate(line.point1, -(float) (Math.PI / 12), line.point0.x, line.point0.y);
 			paths.add(line);
-			
+
 			line = new Line(path);
-			Point.rotate(line.point1, (float)(Math.PI / 12), line.point0.x, line.point0.y);
+			Point.rotate(line.point1, (float) (Math.PI / 12), line.point0.x, line.point0.y);
 			paths.add(line);
 		}
-		
+
 		for (final Line l : paths)
 			super.fire(l);
 	}
-	
+
 	@Override
 	public MultiShooter copy()
 	{

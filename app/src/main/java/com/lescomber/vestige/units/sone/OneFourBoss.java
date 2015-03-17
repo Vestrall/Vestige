@@ -18,11 +18,11 @@ public class OneFourBoss extends Boss
 	public OneFourBoss()
 	{
 		super(600 + (350 * OptionsScreen.difficulty), 200 + (15 * OptionsScreen.difficulty));
-		
+
 		final SpinnyLaserScatter sls = new SpinnyLaserScatter(this, 10);
 		sls.setCooldown(4);
 		addAbility(sls);
-		
+
 		final Projectile basicShot = new Projectile(SpriteManager.enemyProjectile, 4, Projectile.ENEMY_PROJECTILE_WIDTH,
 				Projectile.ENEMY_PROJECTILE_HEIGHT);
 		basicShot.setUnitHitSound(AudioManager.enemyProjectileHit);
@@ -33,7 +33,7 @@ public class OneFourBoss extends Boss
 		basicShooter.setCooldownRandomness(false);
 		basicShooter.setUsesAnimation(false);
 		addAbility(basicShooter);
-		
+
 		final float imageHp = 40 + 15 * OptionsScreen.difficulty;
 		final MirrorImage mirrorImage = new MirrorImage(this, imageHp, 14);
 		basicShooter = new AIShooter(this, basicShot, 1.3);
@@ -42,15 +42,15 @@ public class OneFourBoss extends Boss
 		mirrorImage.addImageAbility(basicShooter);
 		mirrorImage.setImagePickUp(new HealPickUp(15));
 		addAbility(mirrorImage);
-		
+
 		addAbility(new ShieldMeteorShower(this, 18));
 	}
-	
+
 	public OneFourBoss(OneFourBoss copyMe)
 	{
 		super(copyMe);
 	}
-	
+
 	@Override
 	protected void updateHealthBar()
 	{
@@ -62,30 +62,30 @@ public class OneFourBoss extends Boss
 		else
 			super.updateHealthBar();
 	}
-	
+
 	@Override
 	public void startAbility(AIAbility ability)
 	{
 		if (ability instanceof ShieldMeteorShower)
 			createHealthBar(SpriteManager.hpBarBackground, SpriteManager.hpShieldHealth);
-		
+
 		super.startAbility(ability);
 	}
-	
+
 	@Override
 	public void hit(HitBundle bundle)
 	{
 		final boolean hadShields = getShields() > 0;
-		
+
 		super.hit(bundle);
-		
+
 		if (hadShields && getShields() <= 0)
 		{
 			createHealthBar(SpriteManager.hpBossBackground, SpriteManager.hpBossHealth);
 			updateHealthBar();
 		}
 	}
-	
+
 	@Override
 	public OneFourBoss copy()
 	{

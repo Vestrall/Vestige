@@ -12,21 +12,21 @@ public abstract class Screen
 {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 480;
-	
+
 	public static final float MIDX = WIDTH / 2f;
 	public static final float MIDY = HEIGHT / 2f;
-	
+
 	private static boolean isChanging = false;
-	
+
 	private static final Hitbox SCREEN_HITBOX = new Hitbox(new Rectangle(0, 0, WIDTH, HEIGHT));
-	
+
 	protected final AndroidGame game;
-	
+
 	public Screen(AndroidGame game)
 	{
 		this.game = game;
 	}
-	
+
 	protected void prepScreenChange()
 	{
 		isChanging = true;
@@ -35,32 +35,35 @@ public abstract class Screen
 		ColorRectManager.switchBuild();
 		AudioManager.queueMode();
 	}
-	
+
 	public static void notifyScreenChanged()
 	{
 		AudioManager.activateQueue();
 		isChanging = false;
 	}
-	
-	public static boolean isScreenChanging() { return isChanging; }
-	
+
+	public static boolean isScreenChanging()
+	{
+		return isChanging;
+	}
+
 	public static boolean contains(Point p)
 	{
 		return SCREEN_HITBOX.contains(p);
 	}
-	
+
 	public static boolean overlaps(Hitbox hitbox)
 	{
 		return SCREEN_HITBOX.overlaps(hitbox);
 	}
-	
+
 	public abstract void update(int deltaTime);
-	
+
 	public abstract void pause();
-	
+
 	public abstract void resume();
-	
+
 	public abstract void dispose();
-	
+
 	public abstract void backButton();
 }

@@ -8,13 +8,13 @@ import com.lescomber.vestige.framework.AndroidGame;
 import com.lescomber.vestige.framework.Input;
 import com.lescomber.vestige.framework.Screen;
 import com.lescomber.vestige.graphics.Text;
+import com.lescomber.vestige.graphics.TextArea;
 import com.lescomber.vestige.graphics.TextStyle;
-import com.lescomber.vestige.graphics.UISprite;
+import com.lescomber.vestige.graphics.UIThreePatchSprite;
 import com.lescomber.vestige.map.Levels;
 import com.lescomber.vestige.map.Map;
 import com.lescomber.vestige.map.PewBallMap;
 import com.lescomber.vestige.units.PewBallPlayer;
-import com.lescomber.vestige.units.Player;
 import com.lescomber.vestige.widgets.Button;
 import com.lescomber.vestige.widgets.ButtonGroup;
 import com.lescomber.vestige.widgets.WidgetEvent;
@@ -30,35 +30,35 @@ public class PewBallScreen extends GameScreen
 	private int homeScore;
 	private int awayScore;
 
-	private DecimalFormat timerFormat;
+	private final DecimalFormat timerFormat;
 
-	private UISprite scoreBackground;
-	private UISprite timerBackground;
-	private UISprite levelBackground;
-	private Text scoreText;
-	private Text timerText;
-	private Text levelText;
+	private final UIThreePatchSprite scoreBackground;
+	private final UIThreePatchSprite timerBackground;
+	private final UIThreePatchSprite levelBackground;
+	private final Text scoreText;
+	private final Text timerText;
+	private final Text levelText;
 
 	// Victory/Defeat result display
 	private static final int RESULT_TEXT_DELAY = 700;
 	private static final float RESULT_COVER_ALPHA_PER_MS = 0.6f / RESULT_TEXT_DELAY;
 	private static final int RESULT_TEXT_TIME = 2500;
 	private int resultTextDelay;
-	private Text victoryHeading;
-	private Text victoryBody;
-	private Text defeatHeading;
-	private Text defeatBody;
+	private final Text victoryHeading;
+	private final Text victoryBody;
+	private final Text defeatHeading;
+	private final Text defeatBody;
 
 	// Auto-concede warning
 	private static final int CHARS_PER_LINE = 48;
 	private static final int WARNING_TOP_Y = 160;
 	private static final int LINE_SPACING = 45;
-	private Text concedeHeading;
-	private ArrayList<Text> concedeWarning;
-	private ArrayList<Text> mainMenuWarning;
-	private Button confirmConcedeButton;
-	private Button confirmMainMenuButton;
-	private Button cancelButton;
+	private final Text concedeHeading;
+	private final TextArea concedeWarning;
+	private final TextArea mainMenuWarning;
+	private final Button confirmConcedeButton;
+	private final Button confirmMainMenuButton;
+	private final Button cancelButton;
 
 	public PewBallScreen(AndroidGame game)
 	{
@@ -68,29 +68,31 @@ public class PewBallScreen extends GameScreen
 		awayScore = 0;
 
 		final Resources res = AndroidGame.res;
-		final TextStyle uiStyle = new TextStyle("BLANCH_CAPS.otf", 25, 255, 255, 255, 0.65f);
+		final TextStyle uiStyle = TextStyle.bodyStyleWhite(25);
+		uiStyle.setAlpha(0.65f);
 
 		timerFormat = new DecimalFormat("#0.0");
 		timerText = new Text(uiStyle, " ", Screen.MIDX - 145, 35);
-		timerBackground = new UISprite(SpriteManager.uiTextBackground, Screen.MIDX - 145, 35);
+		timerBackground = new UIThreePatchSprite(SpriteManager.uiTextBackgroundPieces, Screen.MIDX - 145, 35);
 		timerBackground.scaleWidthTo(80);
 		timerBackground.setLayerHeight(SpriteManager.UI_LAYER_OVER_THREE);
 		timerBackground.setVisible(true);
 
 		scoreText = new Text(uiStyle, " ", Screen.MIDX, 35);
-		scoreBackground = new UISprite(SpriteManager.uiTextBackground, Screen.MIDX, 35);
+		scoreBackground = new UIThreePatchSprite(SpriteManager.uiTextBackgroundPieces, Screen.MIDX, 35);
 		scoreBackground.scaleWidthTo(90);
 		scoreBackground.setLayerHeight(SpriteManager.UI_LAYER_OVER_THREE);
 		scoreBackground.setVisible(true);
 
 		levelText = new Text(uiStyle, res.getString(R.string.pewBallLevel) + ": " + PewBallPrepScreen.currentLevel, Screen.MIDX + 185, 35);
-		levelBackground = new UISprite(SpriteManager.uiTextBackground, Screen.MIDX + 185, 35);
+		levelBackground = new UIThreePatchSprite(SpriteManager.uiTextBackgroundPieces, Screen.MIDX + 185, 35);
 		levelBackground.setLayerHeight(SpriteManager.UI_LAYER_OVER_THREE);
 		levelBackground.setVisible(true);
 
 		resultTextDelay = RESULT_TEXT_DELAY;
-		final TextStyle resultHeadingStyle = new TextStyle("BLANCH_CAPS.otf", 80, 255, 255, 255);
-		final TextStyle resultBodyStyle = new TextStyle("BLANCH_CAPS.otf", 57, 255, 255, 255);
+		final TextStyle resultHeadingStyle = TextStyle.bodyStyleWhite(80);
+		final TextStyle resultBodyStyle = TextStyle.bodyStyleWhite();
+		resultBodyStyle.setSpacing(0);
 		victoryHeading = new Text(resultHeadingStyle, res.getString(R.string.pewBallVictoryHeading), Screen.MIDX, 160, false);
 		victoryBody = new Text(resultBodyStyle, res.getString(R.string.pewBallVictoryBody), Screen.MIDX, 310, false);
 		defeatHeading = new Text(resultHeadingStyle, res.getString(R.string.pewBallDefeatHeading), Screen.MIDX, 160, false);
@@ -99,69 +101,26 @@ public class PewBallScreen extends GameScreen
 		// Change restart button into a concede button
 		pRestartButton.setText(AndroidGame.res.getString(R.string.pewBallConcede));
 
-		final TextStyle warningHeadingStyle = new TextStyle("Tommaso.otf", 83, 87, 233, 255);
-		warningHeadingStyle.setSpacing(2.5f);
+		final TextStyle warningHeadingStyle = TextStyle.headingStyle();
 
 		concedeHeading = new Text(warningHeadingStyle, res.getString(R.string.pewBallWarning), Screen.MIDX, 75, false);
-		concedeWarning = new ArrayList<Text>(5);
-		mainMenuWarning = new ArrayList<Text>(5);
-
-		// Format concede warning text
-		ArrayList<String> lines = new ArrayList<String>(5);
-		String remaining = res.getString(R.string.pewBallConcedeBody);
-		while (remaining.length() > CHARS_PER_LINE)
-		{
-			// Find the last space before charsPerLine (i.e. locate where the line break should happen)
-			int spaceIndex = CHARS_PER_LINE + 1;
-			for (int i=CHARS_PER_LINE; remaining.charAt(i) != ' '; i--)
-				spaceIndex = i;
-			spaceIndex--;
-
-			lines.add(remaining.substring(0, spaceIndex));
-			remaining = remaining.substring(spaceIndex + 1);
-		}
-		lines.add(remaining);	// Add the last line
-
-		// Store concede warning text
-		for (int i=0; i<lines.size(); i++)
-			concedeWarning.add(new Text(resultBodyStyle, lines.get(i), Screen.MIDX, WARNING_TOP_Y + (i * LINE_SPACING), false));
-
-		// Format main menu warning text
-		lines.clear();
-		remaining = res.getString(R.string.pewBallMainMenuBody);
-		while (remaining.length() > CHARS_PER_LINE)
-		{
-			// Find the last space before charsPerLine (i.e. locate where the line break should happen)
-			int spaceIndex = CHARS_PER_LINE + 1;
-			for (int i=CHARS_PER_LINE; remaining.charAt(i) != ' '; i--)
-				spaceIndex = i;
-			spaceIndex--;
-
-			lines.add(remaining.substring(0, spaceIndex));
-			remaining = remaining.substring(spaceIndex + 1);
-		}
-		lines.add(remaining);	// Add the last line
-
-		// Store main menu warning text
-		for (int i=0; i<lines.size(); i++)
-			mainMenuWarning.add(new Text(resultBodyStyle, lines.get(i), Screen.MIDX, WARNING_TOP_Y + (i * LINE_SPACING), false));
+		concedeWarning = new TextArea(Screen.MIDX, WARNING_TOP_Y, CHARS_PER_LINE, LINE_SPACING, resultBodyStyle,
+				res.getString(R.string.pewBallConcedeBody), false);
+		mainMenuWarning = new TextArea(Screen.MIDX, WARNING_TOP_Y, CHARS_PER_LINE, LINE_SPACING, resultBodyStyle,
+				res.getString(R.string.pewBallMainMenuBody, false), false);
 
 		final ButtonGroup buttonGroup = new ButtonGroup();
-		final TextStyle buttonStyle = new TextStyle("BLANCH_CAPS.otf", 57, 87, 233, 255);
-		buttonStyle.setSpacing(2.5f);
+		final TextStyle buttonStyle = TextStyle.bodyStyleCyan();
 
-		confirmConcedeButton = new Button(225, 380, 300, 60, buttonStyle, AndroidGame.res.getString(R.string.pewBallConfirmConcede), SpriteManager.menuButtonPieces);
-		confirmConcedeButton.setClickAnimation(SpriteManager.menuButtonClickPieces);
+		confirmConcedeButton = new Button(225, 380, 300, 60, buttonStyle, AndroidGame.res.getString(R.string.pewBallConfirmConcede));
 		confirmConcedeButton.addWidgetListener(this);
 		confirmConcedeButton.registerGroup(buttonGroup);
 
-		confirmMainMenuButton = new Button(225, 380, 300, 60, buttonStyle, AndroidGame.res.getString(R.string.pewBallConfirmMainMenu), SpriteManager.menuButtonPieces);
-		confirmMainMenuButton.setClickAnimation(SpriteManager.menuButtonClickPieces);
+		confirmMainMenuButton = new Button(225, 380, 300, 60, buttonStyle, AndroidGame.res.getString(R.string.pewBallConfirmMainMenu));
 		confirmMainMenuButton.addWidgetListener(this);
 		confirmMainMenuButton.registerGroup(buttonGroup);
 
-		cancelButton = new Button(575, 380, 300, 60, buttonStyle, AndroidGame.res.getString(R.string.pewBallCancel), SpriteManager.menuButtonPieces);
-		cancelButton.setClickAnimation(SpriteManager.menuButtonClickPieces);
+		cancelButton = new Button(575, 380, 300, 60, buttonStyle, AndroidGame.res.getString(R.string.pewBallCancel));
 		cancelButton.addWidgetListener(this);
 		cancelButton.registerGroup(buttonGroup);
 	}
@@ -169,18 +128,18 @@ public class PewBallScreen extends GameScreen
 	private void updateScore()
 	{
 		int scoreLimit = ((PewBallMap)map).getScoreLimit();
-		int scoreMin = Math.min(awayScore, homeScore);
+		final int scoreMin = Math.min(awayScore, homeScore);
 		if (scoreLimit - scoreMin <= 1)
 			scoreLimit = scoreMin + 2;
 
-		scoreText.setText(homeScore + "  (" + scoreLimit + ")  " + awayScore);
+		scoreText.setText(homeScore + " (" + scoreLimit + ") " + awayScore);
 	}
 
 	private void updateTimer()
 	{
 		if (map != null)
 		{
-			String time = timerFormat.format(((PewBallMap)map).ballTimer() / 1000.0);
+			final String time = timerFormat.format(((PewBallMap)map).ballTimer() / 1000.0);
 			timerText.setText(time);
 		}
 	}
@@ -248,7 +207,7 @@ public class PewBallScreen extends GameScreen
 
 			final List<Input.TouchEvent> touchEvents = game.getInput().getTouchEvents();
 			final int len = touchEvents.size();
-			for (int i=0; i<len; i++)
+			for (int i = 0; i < len; i++)
 			{
 				final Input.TouchEvent event = touchEvents.get(i);
 
@@ -324,7 +283,6 @@ public class PewBallScreen extends GameScreen
 		updateTimer();
 		updateScore();
 
-		//player = new Player();
 		player = new PewBallPlayer();
 		player.offsetTo(map.getPlayerSpawnPoint().x, map.getPlayerSpawnPoint().y);
 		gestureHandler.addListener(player);
@@ -339,7 +297,7 @@ public class PewBallScreen extends GameScreen
 	{
 		super.pauseGame();
 
-		// No wave/fps text for PewBallMap
+		// No FPS/wave text for PewBallMap so we hide FPS/wave-related options
 		pDisplayFPSText.setVisible(false);
 		pDisplayFPSBox.setVisible(false);
 		pDisplayWaveText.setVisible(false);
@@ -374,7 +332,7 @@ public class PewBallScreen extends GameScreen
 	@Override
 	public void widgetEvent(WidgetEvent we)
 	{
-		Object source = we.getSource();
+		final Object source = we.getSource();
 
 		if (source == confirmConcedeButton)
 		{
@@ -409,16 +367,10 @@ public class PewBallScreen extends GameScreen
 					screenChangeQueue = MAIN_MENU_SCREEN;
 			}
 		}
-		else if (source == pRestartButton)	// Concede button
+		else if (source == pRestartButton)    // Concede button
 		{
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
-			{
 				displayConcedeWarning();
-				//if (isConcedeTerritory())
-				//	displayConcedeWarning();
-				//else
-				//	screenChangeQueue = RESTART_LEVEL;
-			}
 		}
 		else
 			super.widgetEvent(we);
@@ -441,8 +393,7 @@ public class PewBallScreen extends GameScreen
 		pauseUIVisible(false);
 
 		concedeHeading.setVisible(true);
-		for (Text t : concedeWarning)
-			t.setVisible(true);
+		concedeWarning.setVisible(true);
 		confirmConcedeButton.setVisible(true);
 		cancelButton.setVisible(true);
 	}
@@ -454,8 +405,7 @@ public class PewBallScreen extends GameScreen
 		pauseUIVisible(false);
 
 		concedeHeading.setVisible(true);
-		for (Text t : mainMenuWarning)
-			t.setVisible(true);
+		mainMenuWarning.setVisible(true);
 		confirmMainMenuButton.setVisible(true);
 		cancelButton.setVisible(true);
 	}
@@ -465,10 +415,8 @@ public class PewBallScreen extends GameScreen
 		state = PAUSED_STATE;
 
 		concedeHeading.setVisible(false);
-		for (Text t : concedeWarning)
-			t.setVisible(false);
-		for (Text t : mainMenuWarning)
-			t.setVisible(false);
+		concedeWarning.setVisible(false);
+		mainMenuWarning.setVisible(false);
 		confirmConcedeButton.setVisible(false);
 		confirmMainMenuButton.setVisible(false);
 		cancelButton.setVisible(false);
@@ -476,7 +424,7 @@ public class PewBallScreen extends GameScreen
 		pauseUIVisible(true);
 	}
 
-	// Keeps pause cover up but hides everything else
+	// Keeps pause cover up but hides/displays everything else
 	private void pauseUIVisible(boolean isVisible)
 	{
 		pHeadingText.setVisible(isVisible);

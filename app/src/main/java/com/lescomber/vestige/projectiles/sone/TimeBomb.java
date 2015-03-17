@@ -11,59 +11,59 @@ public class TimeBomb extends Projectile
 {
 	private static final float[] DAMAGE = new float[] { 5, 7.5f, 10 };
 	private static final float EXPLOSION_RADIUS = 50;
-	
+
 	private int timer;
-	
+
 	// FIXME: Whyyyy does the glow from one of these things expand continuously very rarely?
-	
+
 	public TimeBomb(float x, float y, float destX, float destY, int timer)
 	{
 		super(null, 0, 8);
-		
+
 		setWallPassThrough(true);
 		setUnitPassThrough(true);
 		setArrivalRemoval(false);
 		setOffScreenRemoval(false);
-		
+
 		final SpriteAnimation anim = new SpriteAnimation(SpriteManager.plasmaBall);
 		anim.setSequenceLimit(-1);
 		setImage(anim);
-		
+
 		offsetTo(x, y);
 		setDestination(destX, destY);
-		
+
 		setGlow(SpriteManager.purpleGlow);
-		
+
 		this.timer = timer;
-		
-		setVelocityPerSecond(450 + 225* OptionsScreen.difficulty);
-		
+
+		setVelocityPerSecond(450 + 225 * OptionsScreen.difficulty);
+
 		final Explosion e = new Explosion(EXPLOSION_RADIUS, DAMAGE[OptionsScreen.difficulty]);
 		setExplosion(e);
 	}
-	
+
 	public TimeBomb(int timer)
 	{
 		this(0, 0, 0, 0, timer);
 	}
-	
+
 	public TimeBomb(TimeBomb copyMe)
 	{
 		super(copyMe);
-		
+
 		timer = copyMe.timer;
 	}
-	
+
 	@Override
 	public void update(int deltaTime)
 	{
 		super.update(deltaTime);
-		
+
 		timer -= deltaTime;
 		if (timer <= 0)
 			explode();
 	}
-	
+
 	@Override
 	public AIProjectileBehavior getBehavior()
 	{
@@ -71,7 +71,7 @@ public class TimeBomb extends Projectile
 		aip.isExtended = false;
 		return aip;
 	}
-	
+
 	@Override
 	public TimeBomb copy()
 	{

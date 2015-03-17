@@ -5,19 +5,19 @@ import com.lescomber.vestige.screens.OptionsScreen;
 public class MusicEffect
 {
 	private Music music;
-	
+
 	private final String filename;
 	private final float baseVolume;
-	
+
 	private float volume;
-	
+
 	public MusicEffect(String filename, float baseVolume)
 	{
 		this.filename = filename;
 		this.baseVolume = baseVolume;
 		updateVolume();
 	}
-	
+
 	public void play()
 	{
 		if (music == null)
@@ -27,10 +27,10 @@ public class MusicEffect
 		}
 		else if (music.isPlaying())
 			return;
-		
+
 		music.play();
 	}
-	
+
 	public void stop()
 	{
 		if (music != null)
@@ -39,26 +39,26 @@ public class MusicEffect
 			music = null;
 		}
 	}
-	
+
 	public void pause()
 	{
 		if (music != null)
 			music.pause();
 	}
-	
+
 	public void resume()
 	{
 		if (music != null)
 			music.resume();
 	}
-	
+
 	public void updateVolume()
 	{
 		volume = OptionsScreen.sfxVolume * baseVolume;
 		if (music != null)
 			music.setVolume(volume);
 	}
-	
+
 	public void dispose()
 	{
 		if (music != null)

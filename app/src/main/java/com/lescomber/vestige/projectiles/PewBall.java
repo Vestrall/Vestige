@@ -20,35 +20,23 @@ public class PewBall extends Projectile implements Comparable<PewBall>
 
 	// This list tracks only projectiles that pass through units that this PewBall has collided with. PewBall can only collide with
 	//each of these once once
-	private ArrayList<Projectile> passThroughHits;
+	private final ArrayList<Projectile> passThroughHits;
 
 	private static final int BASE_VELOCITY = 200;
-	private static final int VELOCITY_CHANGE_PER_LEVEL = 10;	// Acts as velocity reduction until KEY_LEVELS[0] and a bonus after
+	private static final int VELOCITY_CHANGE_PER_LEVEL = 10;    // Acts as velocity reduction until KEY_LEVELS[0] and a bonus after
 																//KEY_LEVELS[1]
-	private final float NORMAL_VELOCITY;	// Refers to base velocity + difficulty scaled velocity increase (but no speed boosts)
+	private final float NORMAL_VELOCITY;    // Refers to base velocity + difficulty scaled velocity increase (but no speed boosts)
 
-	//private static final float SPEED_BOOST_DECAY_PER_MS = 0.2f;
 	private static final float[] SPEED_BOOST_RANGE = new float[] { 0.7f, 1.2f };
-	//private static final int[] SPEED_BOOST_RANGE = new int[] { 75, 225 };
-	//private static final float BOOST_DIFF_INCREASE = 0.06f;		// Occurs after KEY_LEVELS[1] (in PewBallMap)
 	private float boost;
 	private final float BOOST_DECAY_PER_MS;
-
-	// Cooldown before this ball can hit another goalie (prevents hitting multiple goalies simultaneously)
-	//private static final int GOALIE_HIT_INTERVAL = 200;
-	//private int goalieHitCD;
-
-	//private int levelNum;
 
 	public PewBall(int levelNum)
 	{
 		super(null, 0, RADIUS);
 
-		//setTargets(GameScreen.gregs);
-
-		//this.levelNum = levelNum;
-
-		int velocityIncrease;
+		// Calculate PewBall's non-boosted velocity for this levelNum
+		final int velocityIncrease;
 		if (levelNum < PewBallMap.KEY_LEVELS[0])
 			velocityIncrease = (levelNum - PewBallMap.KEY_LEVELS[0]) * VELOCITY_CHANGE_PER_LEVEL;
 		else if (levelNum > PewBallMap.KEY_LEVELS[1])
@@ -57,10 +45,12 @@ public class PewBall extends Projectile implements Comparable<PewBall>
 			velocityIncrease = 0;
 		NORMAL_VELOCITY = BASE_VELOCITY + velocityIncrease;
 		setVelocityPerSecond(NORMAL_VELOCITY);
+
 		disableImageDrop();
 		setArrivalRemoval(false);
 		setUnitPassThrough(true);
 
+		// Init pulsing animation
 		final SpriteAnimation anim = new SpriteAnimation(SpriteManager.plasmaBall);
 		anim.scale(2, 2);
 		anim.setSequenceLimit(-1);
@@ -72,16 +62,12 @@ public class PewBall extends Projectile implements Comparable<PewBall>
 
 		boost = 0;
 		BOOST_DECAY_PER_MS = NORMAL_VELOCITY / 1200;
-		//goalieHitCD = 0;
 	}
 
 	@Override
 	public void update(int deltaTime)
 	{
 		super.update(deltaTime);
-
-		//if (goalieHitCD > 0)
-		//	goalieHitCD -= deltaTime;
 
 		// Decay speed boost (if one is active) and update velocity accordingly
 		if (boost > 0)
@@ -137,14 +123,10 @@ public class PewBall extends Projectile implements Comparable<PewBall>
 		lastHit = unit;
 
 		//	             |----Base angle-----| + |---------------------Random range------------------------|
-		float newAngle = (float)((Math.PI / 2) + (0.3f)) + (Util.rand.nextFloat() * ((float)Math.PI - 0.6f));
-		//float newAngle = (float)Math.PI;
-		Line newPath = new Line(getX(), getY(), getX() + 1, getY());
+		final float newAngle = (float) ((Math.PI / 2) + (0.3f)) + (Util.rand.nextFloat() * ((float)Math.PI - 0.6f));
+		final Line newPath = new Line(getX(), getY(), getX() + 1, getY());
 		Point.rotate(newPath.point1, newAngle, newPath.point0.x, newPath.point0.y);
 		setDestination(newPath.getExtEnd(RADIUS, RADIUS));
-
-		// Set cooldown before this ball can hit a goalie again (prevent double hit and/or simultaneous hits)
-		//goalieHitCD = GOALIE_HIT_INTERVAL;
 
 		// Add random, decaying burst of speed
 		speedBoost();
@@ -152,10 +134,10 @@ public class PewBall extends Projectile implements Comparable<PewBall>
 
 	private void projectileHit(Projectile p)
 	{
-		Hitbox box = new Hitbox(getHitbox());
-		Line path = new Line(getCenter(), getDestination());
-		Hitbox pBox = new Hitbox(p.getHitbox());
-		Line pPath = new Line(p.getCenter(), p.getDestination());
+		final Hitbox box = new Hitbox(getHitbox());
+		final Line path = new Line(getCenter(), getDestination());
+		final Hitbox pBox = new Hitbox(p.getHitbox());
+		final Line pPath = new Line(p.getCenter(), p.getDestination());
 
 		// Correct for overlap by backing up (a copy of) the faster projectile's hitbox along its path. We must back up the faster
 		//projectile because otherwise we may get strange results when two projectiles are travelling in more or less the same
@@ -163,9 +145,9 @@ public class PewBall extends Projectile implements Comparable<PewBall>
 		//erroneous to back up the slower projectile's hitbox until it was behind the faster projectile.
 		if (getVelocity() > p.getVelocity())
 		{
-			float dx = path.point1.x - path.point0.x;
-			float dy = path.point1.y - path.point0.y;
-			float xPortion = dx / (Math.abs(dx) + Math.abs(dy));
+			final float dx = path.point1.x - path.point0.x;
+			final float dy = path.point1.y - path.point0.y;
+			final float xPortion = dx / (Math.abs(dx) + Math.abs(dy));
 			float yPortion = 1 - Math.abs(xPortion);
 			if (dy < 0)
 				yPortion = -yPortion;
@@ -174,9 +156,9 @@ public class PewBall extends Projectile implements Comparable<PewBall>
 		}
 		else
 		{
-			float dx = pPath.point1.x - pPath.point0.x;
-			float dy = pPath.point1.y - pPath.point0.y;
-			float xPortion = dx / (Math.abs(dx) + Math.abs(dy));
+			final float dx = pPath.point1.x - pPath.point0.x;
+			final float dy = pPath.point1.y - pPath.point0.y;
+			final float xPortion = dx / (Math.abs(dx) + Math.abs(dy));
 			float yPortion = 1 - Math.abs(xPortion);
 			if (dy < 0)
 				yPortion = -yPortion;
@@ -184,21 +166,20 @@ public class PewBall extends Projectile implements Comparable<PewBall>
 				pBox.offset(-xPortion, -yPortion);
 		}
 
-		//Line centers = new Line(pBox.getCenter(), getCenter());
-		Line centers = new Line(pBox.getCenter(), box.getCenter());
+		final Line centers = new Line(pBox.getCenter(), box.getCenter());
 		setDestination(centers.getExtEnd(RADIUS, RADIUS));
 
 		// Case: p is another PewBall
 		if (p instanceof PewBall)
 		{
-			Line reverseCenters = new Line(centers.point1, centers.point0);
+			final Line reverseCenters = new Line(centers.point1, centers.point0);
 			p.setDestination(reverseCenters.getExtEnd(RADIUS, RADIUS));
 		}
 
 		// Case: p is a player projectile that can deflect (i.e. does not pass through units)
 		else if (!p.getUnitPassThrough())
 		{
-			int isRight = pPath.isPointRight(getX(), getY());
+			final int isRight = pPath.isPointRight(getX(), getY());
 			float deflectAngle = 0;
 
 			// Case: p is heading at least slightly south or is travelling exactly horizontally east
@@ -229,19 +210,19 @@ public class PewBall extends Projectile implements Comparable<PewBall>
 	{
 		lastHit = o;
 
-		Line path = new Line(getCenter(), getDestination());
-		float rotationAngle = -2 * path.getDirection();
+		final Line path = new Line(getCenter(), getDestination());
+		final float rotationAngle = -2 * path.getDirection();
 
 		Point.rotate(path.point1, rotationAngle, path.point0.x, path.point0.y);
 		path.point1 = path.getExtEnd(RADIUS, RADIUS);
 
 		// Move the ball slightly so it is no longer overlapping o to prevent repeatedly hitting the same obstacle
-		float dx = path.point1.x - path.point0.x;
-		float dy = path.point1.y - path.point0.y;
-		float xPortion = dx / (Math.abs(dx) + Math.abs(dy));
+		final float dx = path.point1.x - path.point0.x;
+		final float dy = path.point1.y - path.point0.y;
+		final float xPortion = dx / (Math.abs(dx) + Math.abs(dy));
 		float yPortion = 1 - Math.abs(xPortion);
 		if (dy < 0)
-			yPortion *= -1;
+			yPortion = -yPortion;
 		while (o.overlaps(this))
 			offset(xPortion, yPortion);
 

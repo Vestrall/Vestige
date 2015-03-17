@@ -10,17 +10,18 @@ public interface Input
 		public static final int TOUCH_UP = 1;
 		public static final int TOUCH_DRAGGED = 2;
 		public static final int TOUCH_HOLD = 3;
-		
+
 		public int type;
 		public float x;
 		public float y;
 		public int pointer;
 	}
-	
+
 	public boolean isTouchDown(int pointer);
-	
+
 	public float getTouchX(int pointer);
+
 	public float getTouchY(int pointer);
-	
+
 	public List<TouchEvent> getTouchEvents();
 }

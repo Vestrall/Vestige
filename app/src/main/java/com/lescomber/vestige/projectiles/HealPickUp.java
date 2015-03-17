@@ -8,7 +8,7 @@ public class HealPickUp extends PickUp
 	public HealPickUp(float healAmount)
 	{
 		super(SpriteManager.healthPickUp, 40, 30, -healAmount);
-		
+
 		setSoundEffect(AudioManager.healPickUp);
 	}
 }

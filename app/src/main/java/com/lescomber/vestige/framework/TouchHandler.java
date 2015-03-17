@@ -9,10 +9,10 @@ import java.util.List;
 public interface TouchHandler extends OnTouchListener
 {
 	public boolean isTouchDown(int pointer);
-	
+
 	public float getTouchX(int pointer);
-	
+
 	public float getTouchY(int pointer);
-	
+
 	public List<TouchEvent> getTouchEvents();
 }

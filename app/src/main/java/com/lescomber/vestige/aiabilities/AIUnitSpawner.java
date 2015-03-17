@@ -8,64 +8,64 @@ import com.lescomber.vestige.units.AIUnit;
 public class AIUnitSpawner extends AIAbility
 {
 	AIUnit spawn;
-	
+
 	// If non-null, destBox defines where spawned unit destinations can be applied to
 	private Hitbox destBox;
-	
+
 	// X and Y ranges for spawned unit destination. destBox takes priority if it is non-null
 	private float destXRange;
 	private float destYRange;
-	
+
 	// Number of spawn's that will be spawned on each activation. Default: 1
 	private int copiesPerSpawn;
-	
-	public AIUnitSpawner(AIUnit owner, double cooldownSeconds, AIUnit spawn/*, boolean scaleForDifficulty*/)
+
+	public AIUnitSpawner(AIUnit owner, double cooldownSeconds, AIUnit spawn)
 	{
 		super(owner, cooldownSeconds/*, false*/);
-		
+
 		this.spawn = spawn.copy();
-		
+
 		destBox = null;
 		destXRange = 0;
 		destYRange = 0;
-		
+
 		copiesPerSpawn = 1;
 	}
-	
+
 	public AIUnitSpawner(AIUnitSpawner copyMe)
 	{
 		super(copyMe);
-		
+
 		spawn = copyMe.spawn.copy();
 		destBox = null;
 		if (copyMe.destBox != null)
 			destBox = new Hitbox(copyMe.destBox);
 		destXRange = copyMe.destXRange;
 		destYRange = copyMe.destYRange;
-		
+
 		copiesPerSpawn = copyMe.copiesPerSpawn;
 	}
-	
+
 	// Spawns spawn.copy() at the owner's firing location and, if destBox or destXRange/destYRange have been set, gives
 	//the newly spawned unit a destination within destBox or within the range specified by destXRange/destYRange
 	@Override
 	public void activate()
 	{
-		for (int i=0; i<copiesPerSpawn; i++)
+		for (int i = 0; i < copiesPerSpawn; i++)
 		{
 			final AIUnit newSpawn = spawn.copy();
-			newSpawn.offsetTo(owner.getX () + owner.getFiringOffsetX(), owner.getY() + owner.getFiringOffsetY());
-			
+			newSpawn.offsetTo(owner.getX() + owner.getFiringOffsetX(), owner.getY() + owner.getFiringOffsetY());
+
 			if (destBox != null)
 			{
 				final Hitbox testBox = new Hitbox(newSpawn.getHitbox());
 				testBox.offsetTo(-100, -100);
-				
+
 				final float destBoxHalfWidth = destBox.getWidth() / 2;
 				final float destBoxHalfHeight = destBox.getHeight() / 2;
 				float newX = 0;
 				float newY = 0;
-				
+
 				float loopCount = 0;
 				while (!testBox.isCompletelyOnScreen())
 				{
@@ -74,7 +74,7 @@ public class AIUnitSpawner extends AIAbility
 					newX = destBox.getX() + randX;
 					newY = destBox.getY() + randY;
 					testBox.offsetTo(newX, newY);
-					
+
 					// Prevent infinite loops.. but probably should throw an exception here
 					if (++loopCount > 25)
 						break;
@@ -85,10 +85,10 @@ public class AIUnitSpawner extends AIAbility
 			{
 				final Hitbox testBox = new Hitbox(newSpawn.getHitbox());
 				testBox.offsetTo(-100, -100);
-				
+
 				float newX = 0;
 				float newY = 0;
-				
+
 				float loopCount = 0;
 				while (!testBox.isCompletelyOnScreen())
 				{
@@ -97,7 +97,7 @@ public class AIUnitSpawner extends AIAbility
 					newX = newSpawn.getX() + randX;
 					newY = newSpawn.getY() + randY;
 					testBox.offsetTo(newX, newY);
-					
+
 					// Prevent infinite loops.. but probably should throw an exception here
 					if (++loopCount > 25)
 						break;
@@ -109,11 +109,11 @@ public class AIUnitSpawner extends AIAbility
 				// Trigger newSpawn's destination choosing code (if any)
 				newSpawn.setDestination(newSpawn.getX(), newSpawn.getY());
 			}
-			
+
 			owner.queueAIUnit(newSpawn);
 		}
 	}
-	
+
 	public void setDestinationBox(Hitbox destBox)
 	{
 		if (destBox == null)
@@ -121,15 +121,18 @@ public class AIUnitSpawner extends AIAbility
 		else
 			this.destBox = new Hitbox(destBox);
 	}
-	
+
 	public void setDestinationRange(float rangeX, float rangeY)
 	{
 		destXRange = rangeX;
 		destYRange = rangeY;
 	}
-	
-	public void setCopiesPerSpawn(int copiesPerSpawn) { this.copiesPerSpawn = copiesPerSpawn; }
-	
+
+	public void setCopiesPerSpawn(int copiesPerSpawn)
+	{
+		this.copiesPerSpawn = copiesPerSpawn;
+	}
+
 	@Override
 	public AIUnitSpawner copy()
 	{

@@ -14,11 +14,11 @@ public class OneEightBoss extends Boss
 	public OneEightBoss()
 	{
 		super(450 + (200 * OptionsScreen.difficulty), 100 + (15 * OptionsScreen.difficulty));
-		
+
 		final TimeBombScatter tbs = new TimeBombScatter(this, 6);
 		tbs.setCooldownRandomness(false);
 		addAbility(tbs);
-		
+
 		final SpawnPortal prototype = new SpawnPortal();
 		final AIUnitSpawner podSpawner = new AIUnitSpawner(this, 20, prototype);
 		podSpawner.setCooldown(12);
@@ -26,11 +26,11 @@ public class OneEightBoss extends Boss
 		podSpawner.setCopiesPerSpawn(2);
 		podSpawner.setCooldownRandomness(false);
 		addAbility(podSpawner);
-		
+
 		final FireDash fireDash = new FireDash(this, 1.3);
 		fireDash.scaleForDifficulty();
 		addAbility(fireDash);
-		
+
 		scale(0.65, 0.65);
 	}
 }

@@ -7,17 +7,17 @@ import com.lescomber.vestige.geometry.Hitbox;
 public class BeamGlow extends RotatedRectGlow
 {
 	private static final float WIDTH_SCALE = 1.2f;
-	
+
 	public BeamGlow()
 	{
 		super(SpriteManager.rectangleRedGlow);
 	}
-	
+
 	public BeamGlow(BeamGlow copyMe)
 	{
 		super(copyMe);
 	}
-	
+
 	@Override
 	public void updateShape(Hitbox hitbox, float sizePercentage)
 	{
@@ -26,7 +26,7 @@ public class BeamGlow extends RotatedRectGlow
 			rotateTo(hitbox.getDirection());
 		offsetTo(hitbox.getX(), hitbox.getY() + (0.4f * hitbox.getHeight()));
 	}
-	
+
 	@Override
 	public BeamGlow copy()
 	{

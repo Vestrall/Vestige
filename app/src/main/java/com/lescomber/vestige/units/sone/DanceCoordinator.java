@@ -5,32 +5,32 @@ import com.lescomber.vestige.geometry.Point;
 public class DanceCoordinator
 {
 	private static final float HALF_SIDE_LENGTH = 85;
-	private static final float HALF_HEIGHT = (float)((Math.sqrt(3) / 2) * HALF_SIDE_LENGTH);
-	
+	private static final float HALF_HEIGHT = (float) ((Math.sqrt(3) / 2) * HALF_SIDE_LENGTH);
+
 	private final float x;
 	private final float y;
-	
+
 	private final DancingCreep[] creeps;
 	private DancingCaster caster;
-	
+
 	private int phaseNum;
 	private int countdown;
-	
+
 	public DanceCoordinator(float x, float y)
 	{
 		this.x = x;
 		this.y = y;
-		
+
 		creeps = new DancingCreep[3];
 		caster = null;
-		
+
 		phaseNum = 0;
 		countdown = 0;
 	}
-	
+
 	public void addCreep(DancingCreep creep)
 	{
-		for (int i=0; i<3; i++)
+		for (int i = 0; i < 3; i++)
 		{
 			if (creeps[i] == null)
 			{
@@ -39,27 +39,27 @@ public class DanceCoordinator
 			}
 		}
 	}
-	
+
 	public void setCaster(DancingCaster caster)
 	{
 		this.caster = caster;
 	}
-	
+
 	public void update(int deltaTime)
 	{
 		// Do nothing (not even countdown) while units are moving into place for the next phase
 		if (isMoving())
 			return;
-		
+
 		countdown -= deltaTime;
 		if (countdown <= 0)
 			nextPhase();
 	}
-	
+
 	protected void nextPhase()
 	{
 		phaseNum++;
-		
+
 		if (phaseNum == 1)
 		{
 			// Move into starting positions
@@ -104,7 +104,7 @@ public class DanceCoordinator
 		else
 			phaseNum = 0;
 	}
-	
+
 	public void aggro()
 	{
 		for (final DancingCreep dc : creeps)
@@ -112,19 +112,46 @@ public class DanceCoordinator
 			if (dc != null)
 				dc.aggro();
 		}
-		
+
 		if (caster != null)
 			caster.aggro();
 	}
-	
-	private Point getMiddle() { return new Point(x, y + 10); }
-	private Point getTopLeft() { return new Point(x - HALF_SIDE_LENGTH, y - HALF_HEIGHT); }
-	private Point getTopMiddle() { return new Point(x, y - HALF_HEIGHT); }
-	private Point getTopRight() { return new Point(x + HALF_SIDE_LENGTH, y - HALF_HEIGHT); }
-	private Point getBottomLeft() { return new Point(x - HALF_SIDE_LENGTH, y + HALF_HEIGHT); }
-	private Point getBottomMiddle() { return new Point(x, y + HALF_HEIGHT); }
-	private Point getBottomRight() { return new Point(x + HALF_SIDE_LENGTH, y + HALF_HEIGHT); }
-	
+
+	private Point getMiddle()
+	{
+		return new Point(x, y + 10);
+	}
+
+	private Point getTopLeft()
+	{
+		return new Point(x - HALF_SIDE_LENGTH, y - HALF_HEIGHT);
+	}
+
+	private Point getTopMiddle()
+	{
+		return new Point(x, y - HALF_HEIGHT);
+	}
+
+	private Point getTopRight()
+	{
+		return new Point(x + HALF_SIDE_LENGTH, y - HALF_HEIGHT);
+	}
+
+	private Point getBottomLeft()
+	{
+		return new Point(x - HALF_SIDE_LENGTH, y + HALF_HEIGHT);
+	}
+
+	private Point getBottomMiddle()
+	{
+		return new Point(x, y + HALF_HEIGHT);
+	}
+
+	private Point getBottomRight()
+	{
+		return new Point(x + HALF_SIDE_LENGTH, y + HALF_HEIGHT);
+	}
+
 	private boolean isMoving()
 	{
 		for (final DancingCreep dc : creeps)
@@ -134,7 +161,7 @@ public class DanceCoordinator
 		}
 		if (caster != null && caster.getDestination() != null && !caster.isMoonwalking())
 			return true;
-		
+
 		return false;
 	}
 }

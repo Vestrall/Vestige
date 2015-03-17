@@ -16,38 +16,38 @@ public class SOneDoubleTap extends DoubleTapAbility
 {
 	private static final float DAMAGE = 12;
 	static final int RANGE_SQUARED = 400 * 400;
-	
+
 	private final HitBundle hitBundle;
-	
+
 	final ArrayList<SOneDoubleTapLaser> activeLasers;
-	
+
 	public SOneDoubleTap(Player player)
 	{
 		super(player);
-		
+
 		setMaxCooldown(8);
-		
+
 		setCDIndicator(SpriteManager.cdTeleportFull, SpriteManager.cdTeleportEmpty);
 		hitBundle = new HitBundle(DAMAGE);
 		hitBundle.setHitSound(AudioManager.sOneDoubleTapHit);
-		
+
 		activeLasers = new ArrayList<SOneDoubleTapLaser>(2);
 	}
-	
+
 	public SOneDoubleTap(SOneDoubleTap copyMe)
 	{
 		super(copyMe);
-		
+
 		hitBundle = new HitBundle(copyMe.hitBundle);
-		
+
 		activeLasers = new ArrayList<SOneDoubleTapLaser>(2);
 	}
-	
+
 	@Override
 	public void update(int deltaTime)
 	{
 		super.update(deltaTime);
-		
+
 		// Update any active lasers
 		final Iterator<SOneDoubleTapLaser> itr = activeLasers.iterator();
 		while (itr.hasNext())
@@ -58,7 +58,7 @@ public class SOneDoubleTap extends DoubleTapAbility
 				itr.remove();
 		}
 	}
-	
+
 	@Override
 	public void fire(Point p)
 	{
@@ -66,21 +66,21 @@ public class SOneDoubleTap extends DoubleTapAbility
 		p = GameScreen.map.adjustDestination(p, player.getTopGap());
 		player.offsetTo(p);
 		player.setPath(null);
-		
+
 		// Pick target
 		final Unit target = Unit.getNearestMember(player.getCenter(), GameScreen.steves, RANGE_SQUARED);
-		
+
 		// Fire projectile
 		if (target != null)
 		{
 			final Line path = new Line(player.getImageCenter(), target.getImageCenter());
 			activeLasers.add(new SOneDoubleTapLaser(path));
-			
+
 			// Deal the damage
 			target.hit(hitBundle);
 		}
 	}
-	
+
 	@Override
 	public SOneDoubleTap copy()
 	{

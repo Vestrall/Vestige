@@ -9,17 +9,17 @@ public class TutorialPlayer extends Player
 {
 	private final TutorialScreen tScreen;
 	private final boolean[] abilityAvailable;
-	
+
 	public TutorialPlayer(TutorialScreen tScreen)
 	{
 		super();
-		
+
 		this.tScreen = tScreen;
 		abilityAvailable = new boolean[4];
-		for (int i=0; i<4; i++)
+		for (int i = 0; i < 4; i++)
 			abilityAvailable[i] = false;
 	}
-	
+
 	public void unlockAbility(int abilityNum)
 	{
 		if (!abilityAvailable[abilityNum])
@@ -33,43 +33,43 @@ public class TutorialPlayer extends Player
 				multiTapAbility.setCDIndicatorVisible(true);
 		}
 	}
-	
+
 	public boolean isAbilityUnlocked(int abilityNum)
 	{
 		return abilityAvailable[abilityNum];
 	}
-	
+
 	@Override
 	protected void destinationReached()
 	{
 		super.destinationReached();
-		
+
 		tScreen.tapLessonCompleted();
 	}
-	
+
 	@Override
 	void fireSwipe()
 	{
 		super.fireSwipe();
-		
+
 		tScreen.swipeLessonCompleted();
 	}
-	
+
 	@Override
 	void fireChargeSwipe()
 	{
 		super.fireChargeSwipe();
-		
+
 		tScreen.chargeSwipeLessonCompleted();
 	}
-	
+
 	@Override
 	public void handleSwipe(Line swipe)
 	{
 		if (abilityAvailable[0])
 			super.handleSwipe(swipe);
 	}
-	
+
 	@Override
 	public void handleChargeSwipe(Line swipe)
 	{
@@ -78,30 +78,30 @@ public class TutorialPlayer extends Player
 		else
 			handleSwipe(swipe);
 	}
-	
+
 	@Override
 	public void handleDoubleTap(Point tapPoint)
 	{
 		if (abilityAvailable[2])
 			super.handleDoubleTap(tapPoint);
 	}
-	
+
 	@Override
 	public void handleMultiTap()
 	{
 		if (abilityAvailable[3])
 			super.handleMultiTap();
 	}
-	
-	@Override	// Invincible!
+
+	@Override    // Invincible!
 	public void hit(HitBundle bundle)
 	{
 		super.hit(bundle);
-		
+
 		if (getHp() <= 0)
 			hit(new HitBundle(getHp() - 1));
 	}
-	
+
 	public void clearActions()
 	{
 		swipeQueue = null;
@@ -111,7 +111,7 @@ public class TutorialPlayer extends Player
 		tapPoint = null;
 		previousTapPoint = null;
 	}
-	
+
 	@Override
 	public void setCDIndicatorsVisible(boolean isVisible)
 	{

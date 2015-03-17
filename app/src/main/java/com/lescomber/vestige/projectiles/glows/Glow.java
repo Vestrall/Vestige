@@ -10,12 +10,14 @@ public abstract class Glow extends Sprite
 	{
 		super(template);
 	}
-	
+
 	public Glow(Glow copyMe)
 	{
 		super(copyMe);
 	}
-	
+
 	public abstract void updateShape(Hitbox hitbox, float sizePercentage);
-	@Override public abstract Glow copy();
+
+	@Override
+	public abstract Glow copy();
 }

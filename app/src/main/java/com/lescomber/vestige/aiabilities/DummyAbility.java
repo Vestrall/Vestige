@@ -8,18 +8,18 @@ public class DummyAbility extends AIAbility
 	{
 		super(owner, cooldownSeconds);
 	}
-	
+
 	public DummyAbility(DummyAbility copyMe)
 	{
 		super(copyMe);
 	}
-	
+
 	@Override
 	public void activate()
 	{
 		// Does nothing, hence the dummy part of the name
 	}
-	
+
 	@Override
 	public DummyAbility copy()
 	{

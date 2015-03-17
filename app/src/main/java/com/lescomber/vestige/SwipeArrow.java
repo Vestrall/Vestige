@@ -12,31 +12,31 @@ public class SwipeArrow implements GestureHandlerListener
 {
 	private final GestureHandler gestureHandler;
 	private Player player;
-	
+
 	private final UISwingSprite swipeArrow;
-	
+
 	// For tutorial screen purposes
 	private boolean isDisabled;
 	private boolean isBothSwipes;
-	
+
 	public SwipeArrow(GestureHandler gestureHandler)
 	{
 		this.gestureHandler = gestureHandler;
 		gestureHandler.addListener(this);
-		
+
 		swipeArrow = new UISwingSprite(SpriteManager.swipeArrow, 0, 0, -(SpriteManager.swipeArrow.getWidth() / 2), 0);
 		swipeArrow.scale(0.65, 1);
 		swipeArrow.setLayerHeight(SpriteManager.UI_LAYER_UNDER_TWO);
-		
+
 		isDisabled = false;
 		isBothSwipes = false;
 	}
-	
+
 	public void setPlayer(Player player)
 	{
 		this.player = player;
 	}
-	
+
 	public void update(int deltaTime)
 	{
 		if (!gestureHandler.isSwiping())
@@ -49,13 +49,13 @@ public class SwipeArrow implements GestureHandlerListener
 				setVisible(false);
 		}
 	}
-	
+
 	@Override
 	public void handleTap(Point tapPoint)
 	{
 		setVisible(false);
 	}
-	
+
 	@Override
 	public void swipeBuilding(Line swipe)
 	{
@@ -63,7 +63,7 @@ public class SwipeArrow implements GestureHandlerListener
 		swipeArrow.rotateTo(swipe.getDirection());
 		setVisible(true);
 	}
-	
+
 	@Override
 	public void chargeSwipeBuilding(Line swipe)
 	{
@@ -74,27 +74,44 @@ public class SwipeArrow implements GestureHandlerListener
 		}
 		setVisible(isBothSwipes);
 	}
-	
+
 	@Override
 	public void swipeCancelled()
 	{
 		setVisible(false);
 	}
-	
-	@Override public void handleSwipe(Line swipe) { }
-	@Override public void handleChargeSwipe(Line swipe) { }
-	
+
+	@Override
+	public void handleSwipe(Line swipe)
+	{
+	}
+
+	@Override
+	public void handleChargeSwipe(Line swipe)
+	{
+	}
+
 	@Override
 	public void handleDoubleTap(Point tapPoint)
 	{
 		setVisible(false);
 	}
-	
-	@Override public void handleMultiTap() { }
-	
-	public void setDisabled(boolean isDisabled) { this.isDisabled = isDisabled; }
-	public void setBothSwipes(boolean isBothSwipes) { this.isBothSwipes = isBothSwipes; }
-	
+
+	@Override
+	public void handleMultiTap()
+	{
+	}
+
+	public void setDisabled(boolean isDisabled)
+	{
+		this.isDisabled = isDisabled;
+	}
+
+	public void setBothSwipes(boolean isBothSwipes)
+	{
+		this.isBothSwipes = isBothSwipes;
+	}
+
 	public void setVisible(boolean isVisible)
 	{
 		if (!isDisabled || !isVisible)

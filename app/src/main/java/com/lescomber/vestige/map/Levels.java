@@ -22,7 +22,7 @@ public class Levels
 	public static final int STAGE_COUNT = 2;
 	//public static final int[] LEVEL_COUNT = new int[] { 11, 0 };
 	public static final int[] LEVEL_COUNT = new int[] { 10, 0 };
-	
+
 	public static Map loadLevel(int stageNum, int levelNum)
 	{
 		if (stageNum == TUTORIAL_STAGE)
@@ -41,7 +41,7 @@ public class Levels
 	{
 		// Init basic level requirements
 		final TutorialMap level = new TutorialMap();
-		
+
 		return level;
 	}
 
@@ -51,7 +51,7 @@ public class Levels
 
 		return level;
 	}
-	
+
 	private static Map stageOne(int levelNum)
 	{
 		if (levelNum == 1)
@@ -63,23 +63,23 @@ public class Levels
 			level.addEnemySpawnPoint(875, 240);
 			level.addEnemySpawnPoint(875, 360);
 			level.setPortalPoint(700, 240);
-			
+
 			// Init obstacles
 			level.addObstacle(new Wall(600, 150, 630, 330));
 			level.buildNodeNetwork();
-			
+
 			// Create enemy unit waves
 			// 1
 			Wave wave = new Wave(0);
 			wave.addUnit(new FloatingCreep(), 2);
 			level.addWave(wave);
-			
+
 			// 2
 			wave = new Wave(30);
 			wave.addUnit(new FloatingCreep(), 0);
 			wave.addUnit(new FloatingCreep(), 1);
 			level.addWave(wave);
-			
+
 			// 3
 			wave = new Wave(30);
 			wave.addUnit(new FloatingCreep(), 0);
@@ -87,7 +87,7 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 3);
 			wave.addUnit(new FloatingCreep(), 0);
 			level.addWave(wave);
-			
+
 			return level;
 		}
 		else if (levelNum == 2)
@@ -99,24 +99,24 @@ public class Levels
 			level.addEnemySpawnPoint(875, 240);
 			level.addEnemySpawnPoint(650, 530);
 			level.setPortalPoint(700, 240);
-			
+
 			// Init obstacles
 			level.addObstacle(new Wall(600, 0, 620, 100));
 			level.addObstacle(new Wall(600, 380, 620, 480));
 			level.addObstacle(new Tree(550, 240));
 			level.buildNodeNetwork();
-			
+
 			// Init RailCasters
 			final Caster c = new Caster();
 			c.createRailLocations(new Hitbox(new Rectangle(600, 0, 800, 480)), 15);
-			
+
 			// Create enemy unit waves
 			// 1
 			Wave wave = new Wave(30);
 			wave.addUnit(new FloatingCreep(), 2);
 			wave.addUnit(new FloatingCreep(), 2);
 			level.addWave(wave);
-			
+
 			// 2
 			wave = new Wave(30);
 			wave.addUnit(new FloatingCreep(), 0);
@@ -124,7 +124,7 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 3);
 			wave.addUnit(new FloatingCreep(), 0);
 			level.addWave(wave);
-			
+
 			// 3
 			wave = new Wave(30);
 			wave.addUnit(new FloatingCreep(), 0);
@@ -132,12 +132,12 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 0.2);
 			wave.addUnit(new FloatingCreep(), 0);
 			level.addWave(wave);
-			
+
 			// 4
 			wave = new Wave(30);
 			wave.addUnit(c.copy(), 0);
 			level.addWave(wave);
-			
+
 			return level;
 		}
 		else if (levelNum == 3)
@@ -149,17 +149,17 @@ public class Levels
 			level.addEnemySpawnPoint(875, 240);
 			level.addEnemySpawnPoint(875, 360);
 			level.setPortalPoint(765, 240);
-			
+
 			// Init obstacles
 			level.addObstacle(new Tree(615, 80));
 			level.addObstacle(new Tree(300, 135));
 			level.addObstacle(new Tree(700, 400));
 			level.buildNodeNetwork();
-			
+
 			// Init RailCasters
 			final Caster rc = new Caster();
 			rc.createRailLocations(new Hitbox(new Rectangle(600, 0, 800, 480)), 15);
-			
+
 			// Create enemy unit waves
 			// 1
 			Wave wave = new Wave(0);
@@ -167,13 +167,13 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 0);
 			wave.addUnit(rc.copy(), 0);
 			level.addWave(wave);
-			
+
 			// 2
 			wave = new Wave(20);
 			wave.addUnit(rc.copy(), 0);
 			wave.addUnit(rc.copy(), 2);
 			level.addWave(wave);
-			
+
 			// 3
 			wave = new Wave(20);
 			wave.addUnit(rc.copy(), 0);
@@ -181,7 +181,7 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 0);
 			wave.addUnit(new FloatingCreep(), 0);
 			level.addWave(wave);
-			
+
 			// 4
 			wave = new Wave(20);
 			wave.addUnit(rc.copy(), 0);
@@ -189,14 +189,14 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 0);
 			wave.addUnit(rc.copy(), 5);
 			level.addWave(wave);
-			
+
 			// 5
 			wave = new Wave(30);
 			wave.addUnit(rc.copy(), 0);
 			wave.addUnit(rc.copy(), 0);
 			wave.addUnit(rc.copy(), 1.5);
 			level.addWave(wave);
-			
+
 			// 6
 			wave = new Wave(40);
 			wave.addUnit(rc.copy(), 0);
@@ -208,7 +208,7 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 0.2);
 			wave.addUnit(new FloatingCreep(), 0);
 			level.addWave(wave);
-			
+
 			return level;
 		}
 		else if (levelNum == 4)
@@ -220,12 +220,12 @@ public class Levels
 			level.addEnemySpawnPoint(900, 360);
 			level.setPortalPoint(765, 430);
 			level.setBossLevel(true);
-			
+
 			// Create boss wave
 			final Wave wave = new Wave(0);
 			wave.addUnit(new OneFourBoss(), 2);
 			level.addWave(wave);
-			
+
 			return level;
 		}
 		else if (levelNum == 5)
@@ -236,17 +236,17 @@ public class Levels
 			level.addEnemySpawnPoint(900, 240);
 			level.addEnemySpawnPoint(900, 360);
 			level.setPortalPoint(765, 430);
-			
+
 			// Init obstacles
 			level.addObstacle(new Wall(250, 190, 300, 290));
 			level.addObstacle(new Wall(300, 220, 500, 260));
 			level.addObstacle(new Wall(500, 190, 550, 290));
 			level.buildNodeNetwork();
-			
+
 			// Init RailCasters
 			final Caster rc = new Caster();
 			rc.createRailLocations(level);
-			
+
 			// Create enemy unit waves
 			// 1
 			Wave wave = new Wave(0);
@@ -255,19 +255,19 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 0.5);
 			wave.addUnit(new FloatingCreep(), 0.5);
 			level.addWave(wave);
-			
+
 			// 2
 			wave = new Wave(8);
 			wave.addUnit(rc.copy(), 0);
 			level.addWave(wave);
-			
+
 			// 3
 			wave = new Wave(9);
 			wave.addUnit(rc.copy(), 0);
 			wave.addUnit(new FloatingCreep(), 2);
 			wave.addUnit(new FloatingCreep(), 2);
 			level.addWave(wave);
-			
+
 			// 4
 			wave = new Wave(11);
 			wave.addUnit(new FloatingCreep(), 2);
@@ -276,13 +276,13 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 1.5);
 			wave.addUnit(new FloatingCreep(), 0.2);
 			level.addWave(wave);
-			
+
 			// 5
 			wave = new Wave(12);
 			wave.addUnit(rc.copy(), 0);
 			wave.addUnit(rc.copy(), 0.5);
 			level.addWave(wave);
-			
+
 			// 6
 			wave = new Wave(30);
 			wave.addUnit(new FloatingCreep(), 0.2);
@@ -303,14 +303,14 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 0.2);
 			wave.addUnit(new FloatingCreep(), 0.2);
 			wave.addUnit(new FloatingCreep(), 0.2);
-			
+
 			final ContinuousWave cWave = new ContinuousWave(16, wave, 30);
 			cWave.addUnit(rc.copy(), 0);
 			cWave.addUnit(rc.copy(), 0.5);
 			cWave.addUnit(new FloatingCreep(), 1);
 			cWave.addUnit(new FloatingCreep(), 0.2);
 			level.addWave(cWave);
-			
+
 			return level;
 		}
 		else if (levelNum == 6)
@@ -319,11 +319,11 @@ public class Levels
 			level.setPlayerSpawnPoint(100, 240);
 			level.addEnemySpawnPoint(875, 240);
 			level.setPortalPoint(765, 240);
-			
+
 			final Wave wave = new Wave(0);
 			wave.addUnit(new OneSixBoss(), 2);
 			level.addWave(wave);
-			
+
 			return level;
 		}
 		else if (levelNum == 7)
@@ -336,22 +336,22 @@ public class Levels
 			level.addEnemySpawnPoint(500, -75);
 			level.addEnemySpawnPoint(500, 555);
 			level.setPortalPoint(765, 240);
-			
+
 			// Init obstacles
 			level.addObstacle(new Wall(100, 160, 150, 320));
 			level.addObstacle(new Wall(650, 160, 700, 320));
 			level.buildNodeNetwork();
-			
+
 			// Init RailCasters
 			final Caster rc = new Caster();
 			rc.createRailLocations(level);
-			
+
 			// Create enemy unit waves
 			// 1
 			Wave wave = new Wave(0);
 			wave.addUnit(new BabyCreep(), 0);
 			level.addWave(wave);
-			
+
 			// 2
 			wave = new Wave(60);
 			wave.addUnit(new FloatingCreep(), 0);
@@ -360,7 +360,7 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 1);
 			wave.addUnit(rc.copy(), 1);
 			level.addWave(wave);
-			
+
 			// 3
 			wave = new Wave(200);
 			wave.addUnit(rc.copy(), 0);
@@ -370,7 +370,7 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 2);
 			wave.addHealthPickUp();
 			level.addWave(wave);
-			
+
 			// 4
 			wave = new Wave(30);
 			wave.addUnit(rc.copy(), 0);
@@ -380,7 +380,7 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 0);
 			wave.addUnit(new FloatingCreep(), 0);
 			level.addWave(wave);
-			
+
 			// 5
 			wave = new Wave(30);
 			wave.addUnit(new FloatingCreep(), 0);
@@ -391,7 +391,7 @@ public class Levels
 			wave.addUnit(rc.copy(), 5);
 			wave.addHealthPickUp();
 			level.addWave(wave);
-			
+
 			// 6
 			wave = new Wave(30);
 			wave.addUnit(new FloatingCreep(), 0);
@@ -404,11 +404,11 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 2);
 			wave.addHealthPickUp();
 			level.addWave(wave);
-			
+
 			// 7
 			final Wave cWave = new Wave(15);
 			cWave.addUnit(new FloatingCreep(), 0);
-			
+
 			wave = new ContinuousWave(40, cWave, 10);
 			wave.addUnit(rc.copy(), 0);
 			wave.addUnit(rc.copy(), 0);
@@ -417,7 +417,7 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 5);
 			wave.addUnit(new FloatingCreep(), 0);
 			level.addWave(wave);
-			
+
 			return level;
 		}
 		else if (levelNum == 8)
@@ -429,12 +429,12 @@ public class Levels
 			level.addEnemySpawnPoint(900, 360);
 			level.setPortalPoint(765, 430);
 			level.setBossLevel(true);
-			
+
 			// Create boss wave
 			final Wave wave = new Wave(0);
 			wave.addUnit(new OneEightBoss(), 3);
 			level.addWave(wave);
-			
+
 			return level;
 		}
 		else if (levelNum == 9)
@@ -446,16 +446,16 @@ public class Levels
 			level.addEnemySpawnPoint(900, 300);
 			level.addEnemySpawnPoint(900, 420);
 			level.setPortalPoint(765, 430);
-			
+
 			// Init obstacles
 			level.addObstacle(new Tree(500, 180));
 			level.addObstacle(new Tree(425, 380));
 			level.buildNodeNetwork();
-			
+
 			// Init RailCasters
 			final Caster c = new Caster();
 			c.createRailLocations(level);
-			
+
 			// Init dancers
 			final DanceCoordinator coordinator = new DanceCoordinator(650, 240);
 			final DancingCaster dancingCaster = new DancingCaster(coordinator);
@@ -466,7 +466,7 @@ public class Levels
 			coordinator.addCreep(creepOne);
 			coordinator.addCreep(creepTwo);
 			coordinator.addCreep(creepThree);
-			
+
 			// 1
 			Wave wave = new Wave(0);
 			wave.addUnit(dancingCaster, 0);
@@ -474,7 +474,7 @@ public class Levels
 			wave.addUnit(creepTwo, 0);
 			wave.addUnit(creepThree, 0);
 			level.addWave(wave);
-			
+
 			// 2
 			wave = new Wave(600);
 			wave.addUnit(c.copy(), 0);
@@ -484,14 +484,14 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 0);
 			wave.addHealthPickUp();
 			level.addWave(wave);
-			
+
 			// 3
 			wave = new Wave(30);
 			wave.addUnit(c.copy(), 0);
 			wave.addUnit(c.copy(), 0);
 			wave.addUnit(c.copy(), 0);
 			level.addWave(wave);
-			
+
 			// 4
 			wave = new Wave(30);
 			wave.addUnit(new FloatingCreep(), 0);
@@ -501,7 +501,7 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 0);
 			wave.addHealthPickUp();
 			level.addWave(wave);
-			
+
 			// 5
 			wave = new Wave(30);
 			wave.addUnit(c.copy(), 0);
@@ -509,7 +509,7 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 1);
 			wave.addUnit(new FloatingCreep(), 1);
 			level.addWave(wave);
-			
+
 			// 6
 			wave = new Wave(30);
 			wave.addUnit(c.copy(), 0);
@@ -519,7 +519,7 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 0.5);
 			wave.addHealthPickUp();
 			level.addWave(wave);
-			
+
 			// 7
 			wave = new Wave(30);
 			wave.addUnit(c.copy(), 0);
@@ -531,7 +531,7 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 0.7);
 			wave.addHealthPickUp();
 			level.addWave(wave);
-			
+
 			// 8
 			wave = new Wave(40);
 			wave.addUnit(c.copy(), 0);
@@ -540,7 +540,7 @@ public class Levels
 			wave.addUnit(c.copy(), 1);
 			wave.addHealthPickUp();
 			level.addWave(wave);
-			
+
 			// 9
 			wave = new Wave(45);
 			wave.addUnit(c.copy(), 0);
@@ -550,7 +550,7 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 0);
 			wave.addHealthPickUp();
 			level.addWave(wave);
-			
+
 			// 10
 			wave = new Wave(45);
 			wave.addUnit(c.copy(), 0);
@@ -561,7 +561,7 @@ public class Levels
 			wave.addUnit(new FloatingCreep(), 0);
 			wave.addHealthPickUp();
 			level.addWave(wave);
-			
+
 			// 11
 			wave = new Wave(50);
 			wave.addUnit(c.copy(), 0);
@@ -572,7 +572,7 @@ public class Levels
 			wave.addUnit(c.copy(), 6);
 			wave.addUnit(c.copy(), 0);
 			level.addWave(wave);
-			
+
 			return level;
 		}
 		else if (levelNum == 10)
@@ -584,38 +584,38 @@ public class Levels
 			level.addEnemySpawnPoint(900, 360);
 			level.setPortalPoint(765, 430);
 			level.setBossLevel(true);
-			
+
 			// Create boss wave
 			final Wave wave = new Wave(0);
 			wave.addUnit(new OneTenBoss(), 2);
 			level.addWave(wave);
-			
+
 			return level;
 		}
-		else if (levelNum == 11)	// Test level
+		else if (levelNum == 11)    // Test level
 		{
 			final Map level = new Map(1, levelNum);
 			level.setPlayerSpawnPoint(50, 240);
 			level.addEnemySpawnPoint(600, 100);
 			level.addEnemySpawnPoint(500, 200);
 			level.addEnemySpawnPoint(700, 300);
-			
+
 			level.setPortalPoint(765, 430);
-			
+
 			final Wave wave = new Wave(0);
-			
+
 			wave.addUnit(new TestBoss(), 0);
 			wave.addUnit(new TestBoss(), 0);
 			wave.addUnit(new TestBoss(), 0);
-			
+
 			level.addWave(wave);
-			
+
 			return level;
 		}
 		else
 			return null;
 	}
-	
+
 	private static Map stageTwo(int levelNum)
 	{
 		/*if (levelNum == 1)
@@ -668,6 +668,6 @@ public class Levels
 			return level;
 		}
 		else*/
-			return null;
+		return null;
 	}
 }

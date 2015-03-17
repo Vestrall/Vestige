@@ -21,64 +21,65 @@ import com.lescomber.vestige.screens.SplashScreen;
 @SuppressLint("NewApi")
 public class AndroidGame implements Runnable
 {
-	private static final int DESIRED_FRAME_TIME = 1000 / 60;	// ~60 fps
+	private static final int DESIRED_FRAME_TIME = 1000 / 60;    // ~60 fps
 	private static final int MAX_FRAME_TIME = 60;
-	
+
 	public static Resources res;
-	
+
 	private String gameVersion;
-	
+
 	private final Input input;
 	private final AndroidFileIO fileIO;
 	private Screen curScreen;
-	
+
 	private Thread gameThread = null;
 	private volatile boolean running = false;
-	
+
 	private final AndroidGameActivity gameActivity;
-	
+
 	private final FPSCounter upsCounter;
-	
+
 	public AndroidGame(AndroidGameActivity gameActivity)
 	{
 		this.gameActivity = gameActivity;
-		
+
 		res = gameActivity.getResources();
-		
+
 		final boolean isPortrait = gameActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
 		final int deviceWidth = isPortrait ? Screen.HEIGHT : Screen.WIDTH;
 		final int deviceHeight = isPortrait ? Screen.WIDTH : Screen.HEIGHT;
-		float scaleX;
-		float scaleY;
-		
+		final float scaleX;
+		final float scaleY;
+
 		final Point screenSize = getScreenSize();
-		
+
 		// TODO: Adjust screenSize for status/navigation bars if either are present
-		
+
 		scaleX = (float) deviceWidth / screenSize.x;
 		scaleY = (float) deviceHeight / screenSize.y;
-		
-		try {
+
+		try
+		{
 			final PackageInfo pInfo = gameActivity.getPackageManager().getPackageInfo(gameActivity.getPackageName(), 0);
 			gameVersion = pInfo.versionName;
-		}
-		catch (final NameNotFoundException nnfe) {
+		} catch (final NameNotFoundException nnfe)
+		{
 			gameVersion = "";
 		}
-		
+
 		input = new AndroidInput(gameActivity.getView(), scaleX, scaleY);
 		fileIO = new AndroidFileIO(gameActivity);
 		upsCounter = new FPSCounter();
 		curScreen = new SplashScreen(this);
 	}
-	
+
 	// Returns the size of the screen if status/nav bars are not visible. Will need to subtract status/nav bar sizes if desired
 	private Point getScreenSize()
 	{
 		final Point size = new Point();
-		
+
 		final Display display = gameActivity.getWindowManager().getDefaultDisplay();
-		if(Build.VERSION.SDK_INT < 14)
+		if (Build.VERSION.SDK_INT < 14)
 		{
 			final DisplayMetrics metrics = new DisplayMetrics();
 			display.getMetrics(metrics);
@@ -87,35 +88,40 @@ public class AndroidGame implements Runnable
 		}
 		else if (Build.VERSION.SDK_INT < 17)
 		{
-			try {
+			try
+			{
 				size.x = (Integer) Display.class.getMethod("getRawWidth").invoke(display);
 				size.y = (Integer) Display.class.getMethod("getRawHeight").invoke(display);
-			} catch (final Exception e) { }
+			} catch (final Exception e)
+			{
+			}
 		}
 		else
 		{
 			display.getRealSize(size);
 		}
-		
+
 		return size;
 	}
-	
+
 	public String gameVersion()
 	{
 		return gameVersion;
 	}
-	
+
 	@Override
 	public void run()
 	{
 		while (!CGLRenderer.isReady())
 		{
-        	try {
-        		Thread.sleep(50);
-        	}
-        	catch (final InterruptedException ie) { }
+			try
+			{
+				Thread.sleep(50);
+			} catch (final InterruptedException ie)
+			{
+			}
 		}
-		
+
 		long startTime = System.nanoTime();
 		long deltaTime = 0;
 		while (running)
@@ -126,52 +132,68 @@ public class AndroidGame implements Runnable
 			{
 				if (deltaTime < DESIRED_FRAME_TIME)
 					Thread.sleep(DESIRED_FRAME_TIME - deltaTime);
+			} catch (final InterruptedException ie)
+			{
 			}
-			catch(final InterruptedException ie) { }
-			
-			deltaTime = (System.nanoTime() - startTime) / 1000000;		// Note: deltaTime is in ms
+
+			deltaTime = (System.nanoTime() - startTime) / 1000000;        // Note: deltaTime is in ms
 			startTime = System.nanoTime();
-			
-			upsCounter.addFrame((int)deltaTime);
-			
+
+			upsCounter.addFrame((int) deltaTime);
+
 			if (deltaTime > MAX_FRAME_TIME)
 				deltaTime = MAX_FRAME_TIME;
-			
-			curScreen.update((int)deltaTime);
+
+			curScreen.update((int) deltaTime);
 		}
 	}
-	
+
 	public void setScreen(Screen screen)
 	{
 		if (screen == null)
 			throw new IllegalArgumentException("Screen must not be null");
-		
+
 		curScreen.pause();
 		curScreen.dispose();
-		
+
 		SpriteManager.getInstance().swapBuffer();
 		TextManager.switchDraw();
 		ColorRectManager.switchDraw();
-		
+
 		TextManager.clearOtherBuild();
 		ColorRectManager.clearOtherBuild();
-		
+
 		screen.resume();
 		curScreen = screen;
-		
+
 		Screen.notifyScreenChanged();
 	}
-	
-	public Input getInput()	{ return input; }
-	public AndroidFileIO getFileIO() { return fileIO; }
-	public Screen getCurrentScreen() { return curScreen; }
-	public double getFPS() { return upsCounter.getFPS(); }
-	
+
+	public Input getInput()
+	{
+		return input;
+	}
+
+	public AndroidFileIO getFileIO()
+	{
+		return fileIO;
+	}
+
+	public Screen getCurrentScreen()
+	{
+		return curScreen;
+	}
+
+	public double getFPS()
+	{
+		return upsCounter.getFPS();
+	}
+
 	public void pauseScreen()
 	{
 		curScreen.pause();
 	}
-	
+
 	public void resume()
 	{
 		AudioManager.resume();
@@ -180,7 +202,7 @@ public class AndroidGame implements Runnable
 		gameThread = new Thread(this);
 		gameThread.start();
 	}
-	
+
 	public void pause(boolean isFinishing)
 	{
 		running = false;
@@ -190,18 +212,19 @@ public class AndroidGame implements Runnable
 			{
 				gameThread.join();
 				break;
-			} catch (final InterruptedException e) {
+			} catch (final InterruptedException e)
+			{
 				// retry
 			}
 		}
-		
+
 		curScreen.pause();
 		AudioManager.pause(isFinishing);
-		
+
 		if (isFinishing)
 			curScreen.dispose();
 	}
-	
+
 	public void backButton()
 	{
 		if (curScreen != null)

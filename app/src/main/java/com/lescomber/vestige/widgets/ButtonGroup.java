@@ -3,12 +3,12 @@ package com.lescomber.vestige.widgets;
 public class ButtonGroup
 {
 	private boolean busy;
-	
+
 	public ButtonGroup()
 	{
-		
+
 	}
-	
+
 	public boolean requestLock()
 	{
 		if (!busy)
@@ -19,7 +19,7 @@ public class ButtonGroup
 		else
 			return false;
 	}
-	
+
 	public void releaseLock()
 	{
 		busy = false;

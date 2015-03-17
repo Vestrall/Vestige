@@ -10,6 +10,7 @@ import com.lescomber.vestige.framework.Input;
 import com.lescomber.vestige.framework.Preferences;
 import com.lescomber.vestige.framework.Screen;
 import com.lescomber.vestige.graphics.Text;
+import com.lescomber.vestige.graphics.TextArea;
 import com.lescomber.vestige.graphics.TextStyle;
 import com.lescomber.vestige.map.Levels;
 import com.lescomber.vestige.widgets.Button;
@@ -38,17 +39,19 @@ public class PewBallPrepScreen extends Screen implements WidgetListener
 	private static final int LINE_SPACING = 45;
 
 	private boolean warningVisible;
-	private Text headingText;
-	private ArrayList<Text> pewBallDescription;
-	private ArrayList<Text> restartWarning;
+	private final Text headingText;
+	private final TextArea pewBallDescription;
+	private final TextArea restartWarning;
+	private final Text highScoreText;
+	private final Text currentLevelText;
 
-	private Button restartButton;
+	private final Button restartButton;
 	private Button continueButton;
-	private Button backButton;
+	private final Button backButton;
 
 	// testing
-	private Slider levelSlider;
-	private Text levelText;
+	private final Slider levelSlider;
+	private final Text levelText;
 
 	public PewBallPrepScreen(AndroidGame game)
 	{
@@ -67,84 +70,49 @@ public class PewBallPrepScreen extends Screen implements WidgetListener
 
 		final Resources res = AndroidGame.res;
 
-		final TextStyle headingStyle = new TextStyle("Tommaso.otf", 83, 87, 233, 255);
-		final TextStyle descriptionStyle = new TextStyle("BLANCH_CAPS.otf", 57, 255, 255, 255);
-		final TextStyle buttonStyle = new TextStyle("BLANCH_CAPS.otf", 57, 87, 233, 255);
-		buttonStyle.setSpacing(2.5f);
+		final TextStyle headingStyle = TextStyle.headingStyle();
+		final TextStyle descriptionStyle = TextStyle.bodyStyleWhite();
+		descriptionStyle.setSpacing(0);
+		final TextStyle buttonStyle = TextStyle.bodyStyleWhite();
 
 		headingText = new Text(headingStyle, res.getString(R.string.pewBall), Screen.MIDX, 65);
 
-		// Break pew ball description text onto multiple lines (adhering to DESCRIPTION_CHARS_PER_LINE)
-		ArrayList<String> lines = new ArrayList<String>();
-		String remaining = res.getString(R.string.pewBallDescription);
-		while (remaining.length() > DESCRIPTION_CHARS_PER_LINE)
-		{
-			// Find the last space before DESCRIPTION_CHARS_PER_LINE (i.e. locate where the line break should happen)
-			int spaceIndex = DESCRIPTION_CHARS_PER_LINE + 1;
-			for (int i= DESCRIPTION_CHARS_PER_LINE; remaining.charAt(i) != ' '; i--)
-				spaceIndex = i;
-			spaceIndex--;
+		pewBallDescription = new TextArea(Screen.MIDX, TEXT_TOP_Y, DESCRIPTION_CHARS_PER_LINE, LINE_SPACING, descriptionStyle,
+				res.getString(R.string.pewBallDescription));
 
-			lines.add(remaining.substring(0, spaceIndex));
-			remaining = remaining.substring(spaceIndex + 1);
-		}
-		lines.add(remaining);	// Add the last line
-
-		// Display pew ball description text
-		pewBallDescription = new ArrayList<Text>();
-		for (int i=0; i<lines.size(); i++)
-			pewBallDescription.add(new Text(descriptionStyle, lines.get(i), Screen.MIDX, TEXT_TOP_Y + (i * LINE_SPACING)));
-
-		// Break restart warning text onto multiple lines (adhering to DESCRIPTION_CHARS_PER_LINE)
-		lines = new ArrayList<String>();
-		remaining = res.getString(R.string.pewBallRestartWarning);
-		while (remaining.length() > WARNING_CHARS_PER_LINE)
-		{
-			// Find the last space before WARNING_CHARS_PER_LINE (i.e. locate where the line break should happen)
-			int spaceIndex = WARNING_CHARS_PER_LINE + 1;
-			for (int i= WARNING_CHARS_PER_LINE; remaining.charAt(i) != ' '; i--)
-				spaceIndex = i;
-			spaceIndex--;
-
-			lines.add(remaining.substring(0, spaceIndex));
-			remaining = remaining.substring(spaceIndex + 1);
-		}
-		lines.add(remaining);	// Add the last line
-
-		// Display pew ball description text
-		restartWarning = new ArrayList<Text>();
-		for (int i=0; i<lines.size(); i++)
-			restartWarning.add(new Text(descriptionStyle, lines.get(i), Screen.MIDX, TEXT_TOP_Y + (i * LINE_SPACING), false));
+		restartWarning = new TextArea(Screen.MIDX, TEXT_TOP_Y, DESCRIPTION_CHARS_PER_LINE, LINE_SPACING, descriptionStyle,
+				res.getString(R.string.pewBallRestartWarning), false);
 
 		warningVisible = false;
 
+		// Case: there is a run in progress
 		if (currentLevel > 1)
 		{
-			new Text(descriptionStyle, res.getString(R.string.pewBallHighScore) + ": " + highScore, 185, 380);
-			new Text(descriptionStyle, res.getString(R.string.pewBallCurrentLevel) + ": " + currentLevel, 545, 380);
+			highScoreText = new Text(descriptionStyle, res.getString(R.string.pewBallHighScore) + ": " + highScore, 185, 380);
+			currentLevelText = new Text(descriptionStyle, res.getString(R.string.pewBallCurrentLevel) + ": " + currentLevel, 545, 380);
 
-			continueButton = new Button(545, 440, 350, 62, buttonStyle, res.getString(R.string.pewBallContinue), SpriteManager.menuButtonPieces);
-			continueButton.setClickAnimation(SpriteManager.menuButtonClickPieces);
+			continueButton = new Button(545, 440, 350, 62, buttonStyle, res.getString(R.string.pewBallContinue));
 			continueButton.addWidgetListener(this);
 			continueButton.setVisible(true);
 
-			restartButton = new Button(185, 440, 350, 62, buttonStyle, res.getString(R.string.pewBallStartOver), SpriteManager.menuButtonPieces);
-			restartButton.setClickAnimation(SpriteManager.menuButtonClickPieces);
+			restartButton = new Button(185, 440, 350, 62, buttonStyle, res.getString(R.string.pewBallStartOver));
 			restartButton.addWidgetListener(this);
 			restartButton.setVisible(true);
 		}
-		else
+		else	// Case: No run in progress
 		{
 			if (highScore > 0)
-				new Text(descriptionStyle, res.getString(R.string.pewBallHighScore) + ": " + highScore, 360, 380);
-			restartButton = new Button(360, 440, 710, 62, buttonStyle, res.getString(R.string.pewBallBegin), SpriteManager.menuButtonPieces);
-			restartButton.setClickAnimation(SpriteManager.menuButtonClickPieces);
+				highScoreText = new Text(descriptionStyle, res.getString(R.string.pewBallHighScore) + ": " + highScore, 360, 380);
+			else
+				highScoreText = new Text(descriptionStyle, "", 360, 380);
+			currentLevelText = new Text(descriptionStyle, "", 545, 380);
+			restartButton = new Button(360, 440, 710, 62, buttonStyle, res.getString(R.string.pewBallBegin));
 			restartButton.addWidgetListener(this);
 			restartButton.setVisible(true);
 		}
 
 		backButton = new Button(760, 440, null, null, SpriteManager.backButton);
-		backButton.scaleRect(1.25, 1.25);	// Enlarge "back" button hitbox slightly
+		backButton.scaleRect(1.25, 1.25);    // Enlarge "back" button hitbox slightly
 		backButton.setClickAnimation(SpriteManager.backButtonClick);
 		backButton.addWidgetListener(this);
 		backButton.setVisible(true);
@@ -153,20 +121,19 @@ public class PewBallPrepScreen extends Screen implements WidgetListener
 		levelSlider = new Slider(Screen.MIDX, Screen.MIDY, 400, 80, 1, 30);
 		levelSlider.setValue(currentLevel);
 		levelSlider.addWidgetListener(this);
-		levelSlider.setVisible(true);
+		//levelSlider.setVisible(true);
 		levelText = new Text(descriptionStyle, Integer.toString(currentLevel), 50, 50, false);
-		levelText.setVisible(true);
+		///levelText.setVisible(true);
 	}
 
 	private void displayRestartWarning(boolean warningVisible)
 	{
 		this.warningVisible = warningVisible;
 
-		for (Text t : pewBallDescription)
-			t.setVisible(!warningVisible);
-
-		for (Text t: restartWarning)
-			t.setVisible(warningVisible);
+		pewBallDescription.setVisible(!warningVisible);
+		restartWarning.setVisible(warningVisible);
+		highScoreText.setVisible(!warningVisible);
+		currentLevelText.setVisible(!warningVisible);
 
 		if (warningVisible)
 		{
@@ -206,6 +173,8 @@ public class PewBallPrepScreen extends Screen implements WidgetListener
 		}
 	}
 
+	// Used to track loss-dodge attempt. Toggled on when a game starts and toggled off after it is over. If the user enters
+	//PewBallPrepScreen with this flag still on, they must have left a game in-progress and shall be credited with a loss
 	static void gameInProgress(boolean isInProgress)
 	{
 		pewBallInProgress = isInProgress;
@@ -223,7 +192,7 @@ public class PewBallPrepScreen extends Screen implements WidgetListener
 		backButton.update(deltaTime);
 
 		final int len = touchEvents.size();
-		for (int i=0; i<len; i++)
+		for (int i = 0; i < len; i++)
 		{
 			final Input.TouchEvent event = touchEvents.get(i);
 
@@ -259,6 +228,7 @@ public class PewBallPrepScreen extends Screen implements WidgetListener
 		{
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
 			{
+				// Case: restartButton is currently a "Begin" button or it is currently the "Yes, Restart" button
 				if (currentLevel == 1 || warningVisible)
 				{
 					currentLevel = 1;

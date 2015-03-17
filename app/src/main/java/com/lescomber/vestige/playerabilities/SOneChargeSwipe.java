@@ -8,11 +8,11 @@ import com.lescomber.vestige.units.Player;
 public class SOneChargeSwipe extends ProjectileShooter
 {
 	private static final float DAMAGE = 30;
-	
+
 	public SOneChargeSwipe(Player player)
 	{
 		super(player);
-		
+
 		final Projectile shot = new Projectile(SpriteManager.sOneChargeSwipe, DAMAGE);
 		shot.setUnitHitSound(AudioManager.sOneChargeSwipeHit);
 		shot.createRotatedRectHitbox(35, 74);
@@ -20,13 +20,13 @@ public class SOneChargeSwipe extends ProjectileShooter
 		shot.setGlow(SpriteManager.bigGlow);
 		shot.setVelocityPerSecond(900);
 		setMaxCooldown(8);
-		
+
 		shot.setUnitPassThrough(true);
 		shot.setDamageReductionOnHit(0.125, 0.5);
 		setPrototype(shot);
-		
+
 		setCDIndicator(SpriteManager.cdArcFull, SpriteManager.cdArcEmpty);
-		
+
 		setSoundEffect(AudioManager.playerAttack);
 	}
 }

@@ -10,13 +10,13 @@ public class RotatedRectGlow extends Glow
 	{
 		super(template);
 	}
-	
+
 	public RotatedRectGlow(RotatedRectGlow copyMe)
 	{
 		super(copyMe);
 	}
-	
-	@Override	// Note: disregards sizePercentage
+
+	@Override    // Note: disregards sizePercentage
 	public void updateShape(Hitbox hitbox, float sizePercentage)
 	{
 		scaleTo(hitbox.getWidth(), hitbox.getHeight());
@@ -24,7 +24,7 @@ public class RotatedRectGlow extends Glow
 			rotateTo(hitbox.getDirection());
 		offsetTo(hitbox.getX(), hitbox.getY() + (0.4f * hitbox.getHeight()));
 	}
-	
+
 	@Override
 	public RotatedRectGlow copy()
 	{

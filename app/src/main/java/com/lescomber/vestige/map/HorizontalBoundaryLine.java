@@ -7,21 +7,21 @@ public class HorizontalBoundaryLine implements BoundaryLine
 	float x1;
 	float x2;
 	float y;
-	
+
 	public HorizontalBoundaryLine(float x1, float x2, float y)
 	{
 		this.x1 = x1;
 		this.x2 = x2;
 		this.y = y;
 	}
-	
+
 	public HorizontalBoundaryLine(HorizontalBoundaryLine copyMe)
 	{
 		x1 = copyMe.x1;
 		x2 = copyMe.x2;
 		y = copyMe.y;
 	}
-	
+
 	@Override
 	public Point getClosestToPoint(Point p)
 	{
@@ -35,13 +35,13 @@ public class HorizontalBoundaryLine implements BoundaryLine
 			ret.x = p.x;
 		return ret;
 	}
-	
+
 	@Override
 	public boolean contains(float x, float y)
 	{
 		return (x >= x1 && x <= x2 && this.y == y);
 	}
-	
+
 	@Override
 	public HorizontalBoundaryLine copy()
 	{

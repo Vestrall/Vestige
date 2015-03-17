@@ -9,24 +9,24 @@ import com.lescomber.vestige.framework.Screen;
 public class SplashScreen extends Screen
 {
 	private boolean firstTimeCreate;
-	
+
 	public SplashScreen(AndroidGame game)
 	{
 		super(game);
-		
+
 		firstTimeCreate = true;
 	}
-	
+
 	@Override
 	public void update(int deltaTime)
 	{
 		if (firstTimeCreate)
 		{
 			SpriteManager.getInstance().setBackground(Assets.mainMenuScreen);
-			
+
 			// Init audio
 			AudioManager.initSoundEffects();
-			
+
 			firstTimeCreate = false;
 		}
 		else
@@ -35,11 +35,22 @@ public class SplashScreen extends Screen
 			game.setScreen(new MainMenuScreen(game, true));
 		}
 	}
-	
-	@Override public void pause() { }
-	@Override public void resume() { }
-	@Override public void dispose() { }
-	
+
+	@Override
+	public void pause()
+	{
+	}
+
+	@Override
+	public void resume()
+	{
+	}
+
+	@Override
+	public void dispose()
+	{
+	}
+
 	@Override
 	public void backButton()
 	{

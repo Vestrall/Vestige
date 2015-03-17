@@ -8,12 +8,14 @@ public abstract class MultiTapAbility extends PlayerAbility
 	{
 		super(player);
 	}
-	
+
 	public MultiTapAbility(MultiTapAbility copyMe)
 	{
 		super(copyMe);
 	}
-	
+
 	public abstract void activate();
-	@Override public abstract MultiTapAbility copy();
+
+	@Override
+	public abstract MultiTapAbility copy();
 }
