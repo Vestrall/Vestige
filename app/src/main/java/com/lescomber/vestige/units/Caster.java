@@ -39,21 +39,21 @@ public class Caster extends AIRailUnit
 		setWalkRightAnimation(walkRightAnim);
 
 		// Init firingLeft animations
-		final SpriteAnimation preFiringLeftAnim = new SpriteAnimation(SpriteManager.casterFiringLeft, 0, 3);
+		final SpriteAnimation preFiringLeftAnim = new SpriteAnimation(SpriteManager.casterAttackLeft, 0, 3);
 		setPreFiringLeftAnimation(preFiringLeftAnim);
-		final SpriteAnimation postFiringLeftAnim = new SpriteAnimation(SpriteManager.casterFiringLeft, 4, 6);
+		final SpriteAnimation postFiringLeftAnim = new SpriteAnimation(SpriteManager.casterAttackLeft, 4, 6);
 		setPostFiringLeftAnimation(postFiringLeftAnim);
 
 		// Init firingRight animations
-		final SpriteAnimation preFiringRightAnim = new SpriteAnimation(SpriteManager.casterFiringRight, 0, 3);
+		final SpriteAnimation preFiringRightAnim = new SpriteAnimation(SpriteManager.casterAttackRight, 0, 3);
 		setPreFiringRightAnimation(preFiringRightAnim);
-		final SpriteAnimation postFiringRightAnim = new SpriteAnimation(SpriteManager.casterFiringRight, 4, 6);
+		final SpriteAnimation postFiringRightAnim = new SpriteAnimation(SpriteManager.casterAttackRight, 4, 6);
 		setPostFiringRightAnimation(postFiringRightAnim);
 
 		// Init channel animations
-		final SpriteAnimation channelLeftAnim = new SpriteAnimation(SpriteManager.casterFiringLeft, 3, 3);
+		final SpriteAnimation channelLeftAnim = new SpriteAnimation(SpriteManager.casterAttackLeft, 3, 3);
 		setChannelingLeftAnimation(channelLeftAnim);
-		final SpriteAnimation channelRightAnim = new SpriteAnimation(SpriteManager.casterFiringRight, 3, 3);
+		final SpriteAnimation channelRightAnim = new SpriteAnimation(SpriteManager.casterAttackRight, 3, 3);
 		setChannelingRightAnimation(channelRightAnim);
 
 		// Init death animations

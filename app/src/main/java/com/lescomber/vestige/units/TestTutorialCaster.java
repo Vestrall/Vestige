@@ -19,8 +19,8 @@ public class TestTutorialCaster extends AIUnit
 	{
 		super(60, 36, -21, 30);
 
-		setIdleLeftSprite(SpriteManager.casterFiringLeft[0]);
-		setIdleRightSprite(SpriteManager.casterFiringRight[0]);
+		setIdleLeftSprite(SpriteManager.casterAttackLeft[0]);
+		setIdleRightSprite(SpriteManager.casterAttackRight[0]);
 
 		isAngry = false;
 
@@ -40,14 +40,14 @@ public class TestTutorialCaster extends AIUnit
 		abilities = getAbilities();
 
 		// Init firing animation
-		final SpriteAnimation preFiringLeftAnim = new SpriteAnimation(SpriteManager.casterFiringLeft, 0, 3);
+		final SpriteAnimation preFiringLeftAnim = new SpriteAnimation(SpriteManager.casterAttackLeft, 0, 3);
 		setPreFiringLeftAnimation(preFiringLeftAnim);
-		final SpriteAnimation postFiringLeftAnim = new SpriteAnimation(SpriteManager.casterFiringLeft, 4, 6);
+		final SpriteAnimation postFiringLeftAnim = new SpriteAnimation(SpriteManager.casterAttackLeft, 4, 6);
 		setPostFiringLeftAnimation(postFiringLeftAnim);
 
-		final SpriteAnimation preFiringRightAnim = new SpriteAnimation(SpriteManager.casterFiringRight, 0, 3);
+		final SpriteAnimation preFiringRightAnim = new SpriteAnimation(SpriteManager.casterAttackRight, 0, 3);
 		setPreFiringRightAnimation(preFiringRightAnim);
-		final SpriteAnimation postFiringRightAnim = new SpriteAnimation(SpriteManager.casterFiringRight, 4, 6);
+		final SpriteAnimation postFiringRightAnim = new SpriteAnimation(SpriteManager.casterAttackRight, 4, 6);
 		setPostFiringRightAnimation(postFiringRightAnim);
 	}
 

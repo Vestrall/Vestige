@@ -91,22 +91,22 @@ public class OneSixBoss extends Boss
 		anim = new SpriteAnimation(SpriteManager.casterWalkRight);
 		anim.setSequenceLimit(-1);
 		casterAnims[1] = addAnimation(anim);
-		anim = new SpriteAnimation(SpriteManager.casterFiringLeft, 0, 3);
+		anim = new SpriteAnimation(SpriteManager.casterAttackLeft, 0, 3);
 		anim.setFrameTime(55);
 		casterAnims[2] = addAnimation(anim);
-		anim = new SpriteAnimation(SpriteManager.casterFiringRight, 0, 3);
+		anim = new SpriteAnimation(SpriteManager.casterAttackRight, 0, 3);
 		anim.setFrameTime(55);
 		casterAnims[3] = addAnimation(anim);
-		anim = new SpriteAnimation(SpriteManager.casterFiringLeft, 3, 3);
+		anim = new SpriteAnimation(SpriteManager.casterAttackLeft, 3, 3);
 		anim.setFrameTime(55);
 		casterAnims[4] = addAnimation(anim);
-		anim = new SpriteAnimation(SpriteManager.casterFiringRight, 3, 3);
+		anim = new SpriteAnimation(SpriteManager.casterAttackRight, 3, 3);
 		anim.setFrameTime(55);
 		casterAnims[5] = addAnimation(anim);
-		anim = new SpriteAnimation(SpriteManager.casterFiringLeft, 4, 6);
+		anim = new SpriteAnimation(SpriteManager.casterAttackLeft, 4, 6);
 		anim.setFrameTime(55);
 		casterAnims[6] = addAnimation(anim);
-		anim = new SpriteAnimation(SpriteManager.casterFiringRight, 4, 6);
+		anim = new SpriteAnimation(SpriteManager.casterAttackRight, 4, 6);
 		anim.setFrameTime(55);
 		casterAnims[7] = addAnimation(anim);
 
@@ -124,27 +124,27 @@ public class OneSixBoss extends Boss
 		casterDeathRightAnim = addAnimation(anim);
 
 		// Create charge-specific animations
-		anim = new SpriteAnimation(SpriteManager.bossFiringLeft, 0, 5);
+		anim = new SpriteAnimation(SpriteManager.bossAttackLeft, 0, 5);
 		anim.setHoldLastFrame(true);
 		preChargeLeft = addAnimation(anim);
-		anim = new SpriteAnimation(SpriteManager.bossFiringRight, 0, 5);
+		anim = new SpriteAnimation(SpriteManager.bossAttackRight, 0, 5);
 		anim.setHoldLastFrame(true);
 		preChargeRight = addAnimation(anim);
-		anim = new SpriteAnimation(SpriteManager.bossFiringLeft, 6, 16);
+		anim = new SpriteAnimation(SpriteManager.bossAttackLeft, 6, 16);
 		anim.setHoldLastFrame(true);
 		successfulChargeLeft = addAnimation(anim);
-		anim = new SpriteAnimation(SpriteManager.bossFiringRight, 6, 16);
+		anim = new SpriteAnimation(SpriteManager.bossAttackRight, 6, 16);
 		anim.setHoldLastFrame(true);
 		successfulChargeRight = addAnimation(anim);
 
 		anim = new SpriteAnimation();
 		for (int i = 4; i >= 0; i--)
-			anim.addFrame(SpriteManager.bossFiringLeft[i]);
+			anim.addFrame(SpriteManager.bossAttackLeft[i]);
 		anim.setHoldLastFrame(true);
 		unsuccessfulChargeLeft = addAnimation(anim);
 		anim = new SpriteAnimation();
 		for (int i = 4; i >= 0; i--)
-			anim.addFrame(SpriteManager.bossFiringRight[i]);
+			anim.addFrame(SpriteManager.bossAttackRight[i]);
 		anim.setHoldLastFrame(true);
 		unsuccessfulChargeRight = addAnimation(anim);
 
@@ -314,12 +314,12 @@ public class OneSixBoss extends Boss
 		{
 			if (charge.isTargetLeft())
 			{
-				setIdleLeftSprite(SpriteManager.bossFiringLeft[5]);
+				setIdleLeftSprite(SpriteManager.bossAttackLeft[5]);
 				chargeLeft = true;
 			}
 			else
 			{
-				setIdleRightSprite(SpriteManager.bossFiringRight[5]);
+				setIdleRightSprite(SpriteManager.bossAttackRight[5]);
 				chargeLeft = false;
 			}
 
@@ -330,12 +330,12 @@ public class OneSixBoss extends Boss
 			if (charge.isTargetLeft())
 			{
 				chargeLeft = true;
-				setIdleLeftSprite(SpriteManager.bossFiringLeft[5]);
+				setIdleLeftSprite(SpriteManager.bossAttackLeft[5]);
 			}
 			else
 			{
 				chargeLeft = false;
-				setIdleRightSprite(SpriteManager.bossFiringRight[5]);
+				setIdleRightSprite(SpriteManager.bossAttackRight[5]);
 			}
 
 			charge.fire();

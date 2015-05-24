@@ -11,69 +11,68 @@ import com.lescomber.vestige.cgl.CGLTexture;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
 
-public class Assets
-{
+public class Assets {
 	private static AssetManager assets;
 
 	// Background images
 	public static CGLTexture genericBackground, mainMenuScreen;
 
 	// Menu images
-	public static CGLTexture menuImages, title;
+	public static CGLTexture title[], smallEyes[], mediumEyes[], bigEyes[], loadingCircleBackground, loadingCircleFill, scoreEmpty, scoreHalf, scoreFull;
+
+	// Stages
+	public static CGLTexture stageLocked, stageLockedSelected, stage01, stage01Selected;
 
 	// Map objects
-	public static CGLTexture backgroundTexture, portal;
+	public static CGLTexture backgroundTexture, portal[];
 
 	// Glows
-	public static CGLTexture glows;
+	public static CGLTexture smallGlow, bigGlow, purpleGlow, redGlow, rectangleRedGlow;
 
 	// Buffs
-	public static CGLTexture shield;
+	public static CGLTexture shield[];
 
 	// Layered map objects
-	public static CGLTexture trees;
+	public static CGLTexture trees[];
 
 	// Units
-	public static CGLTexture boss, bossDeath, floatingCreep, floatingCreepDeath, caster, casterDeath, player, spawnPortal,
-			spawnPortalEnd;
+	public static CGLTexture playerWalkLeft[], playerWalkRight[], playerFiringLeft[], playerFiringRight[], bossWalkLeft[], bossWalkRight[],
+			bossAttackLeft[], bossAttackRight[], bossChannelLeft[], bossChannelRight[], bossDeathLeft[], bossDeathRight[], floatingCreepWalkLeft[],
+			floatingCreepWalkRight[], floatingCreepAttackLeft[], floatingCreepAttackRight[], floatingCreepDeathLeft[], floatingCreepDeathRight[],
+			casterWalkLeft[], casterWalkRight[], casterAttackLeft[], casterAttackRight[], casterDeathLeft[], casterDeathRight[], spawnPortalSpawn[],
+			spawnPortalOpen[], spawnPortalEnd[];
 
 	// Projectiles/AreaEffects
-	public static CGLTexture explosion, groundFire, /*enemyLaser, */
-			doubleEnemyLaser, stageOneProjectiles, enemyProjectile,
-			purpleProjectile, purpleComet, sOneDoubleTapLaser, plasmaBall;
+	public static CGLTexture sOneSwipe, sOneChargeSwipe, sOneDoubleTapLaser, explosion[], groundFire[], doubleEnemyLaser, enemyProjectile,
+			purpleProjectile, purpleComet, plasmaBall[];
 
 	// PickUps
-	public static CGLTexture pickUpGlow, healthPickUp, healthPickUpAnimation;
+	public static CGLTexture pickUpGlow, healthPickUp, healthPickUpAnimation[];
 
 	// UI textures
 	public static CGLTexture gameUITexture, menuUITexture;
 
-	public static Bitmap newBitmap(String filename, Config format)
-	{
+	public static Bitmap newBitmap(String filename, Config format) {
 		final Options options = new Options();
 		options.inPreferredConfig = format;
 		options.inScaled = false;    // No pre-scaling
 
 		InputStream in = null;
 		Bitmap bitmap = null;
-		try
-		{
+		try {
 			in = assets.open(filename);
 			bitmap = BitmapFactory.decodeStream(in, null, options);
 			if (bitmap == null)
 				throw new RuntimeException("Couldn't load bitmap from asset '" + filename + "'");
-		} catch (final IOException e)
-		{
+		} catch (final IOException e) {
 			throw new RuntimeException("Couldn't load bitmap from asset '" + filename + "'");
-		} finally
-		{
+		} finally {
 			if (in != null)
-				try
-				{
+				try {
 					in.close();
-				} catch (final IOException e)
-				{
+				} catch (final IOException e) {
 				}
 		}
 
@@ -81,125 +80,205 @@ public class Assets
 	}
 
 	// Create a new Typeface from font file
-	public static Typeface newTypeface(String filename)
-	{
+	public static Typeface newTypeface(String filename) {
 		return Typeface.createFromAsset(assets, filename);
 	}
 
-	public static void initAssetManager(AssetManager assets)
-	{
+	public static void initAssetManager(AssetManager assets) {
 		Assets.assets = assets;
 	}
 
-	public static void initTextures()
-	{
+	public static void initTextures() {
 		// Background images
 		genericBackground = new CGLTexture();
 		mainMenuScreen = new CGLTexture();
 
 		// Menu images
-		menuImages = new CGLTexture();
-		title = new CGLTexture();
+		title = initCGLTextureArray(40);
+		smallEyes = initCGLTextureArray(8);
+		mediumEyes = initCGLTextureArray(8);
+		bigEyes = initCGLTextureArray(7);
+		scoreEmpty = new CGLTexture();
+		scoreHalf = new CGLTexture();
+		scoreFull = new CGLTexture();
+		loadingCircleBackground = new CGLTexture();
+		loadingCircleFill = new CGLTexture();
+
+		// Stages
+		stageLocked = new CGLTexture();
+		stageLockedSelected = new CGLTexture();
+		stage01 = new CGLTexture();
+		stage01Selected = new CGLTexture();
 
 		// Map objects
 		backgroundTexture = new CGLTexture();
-		portal = new CGLTexture();
+		portal = initCGLTextureArray(20);
 
 		// Glows
-		glows = new CGLTexture();
+		smallGlow = new CGLTexture();
+		bigGlow = new CGLTexture();
+		purpleGlow = new CGLTexture();
+		redGlow = new CGLTexture();
+		rectangleRedGlow = new CGLTexture();
 
 		// Buffs
-		shield = new CGLTexture();
+		shield = initCGLTextureArray(10);
 
 		// Layered map objects
-		trees = new CGLTexture();
+		trees = initCGLTextureArray(6);
 
 		// Units
-		boss = new CGLTexture();
-		bossDeath = new CGLTexture();
-		floatingCreep = new CGLTexture();
-		floatingCreepDeath = new CGLTexture();
-		caster = new CGLTexture();
-		casterDeath = new CGLTexture();
-		player = new CGLTexture();
-		spawnPortal = new CGLTexture();
-		spawnPortalEnd = new CGLTexture();
+		bossWalkLeft = initCGLTextureArray(7);
+		bossWalkRight = initCGLTextureArray(7);
+		bossAttackLeft = initCGLTextureArray(17);
+		bossAttackRight = initCGLTextureArray(17);
+		bossChannelLeft = initCGLTextureArray(14);
+		bossChannelRight = initCGLTextureArray(14);
+		bossDeathLeft = initCGLTextureArray(30);
+		bossDeathRight = initCGLTextureArray(30);
+		floatingCreepWalkLeft = initCGLTextureArray(14);
+		floatingCreepWalkRight = initCGLTextureArray(14);
+		floatingCreepAttackLeft = initCGLTextureArray(4);
+		floatingCreepAttackRight = initCGLTextureArray(4);
+		floatingCreepDeathLeft = initCGLTextureArray(10);
+		floatingCreepDeathRight = initCGLTextureArray(10);
+		casterWalkLeft = initCGLTextureArray(9);
+		casterWalkRight = initCGLTextureArray(9);
+		casterAttackLeft = initCGLTextureArray(7);
+		casterAttackRight = initCGLTextureArray(7);
+		casterDeathLeft = initCGLTextureArray(12);
+		casterDeathRight = initCGLTextureArray(12);
+		spawnPortalSpawn = initCGLTextureArray(14);
+		spawnPortalOpen = initCGLTextureArray(12);
+		spawnPortalEnd = initCGLTextureArray(9);
+		playerWalkLeft = initCGLTextureArray(8);
+		playerWalkRight = initCGLTextureArray(8);
+		playerFiringLeft = initCGLTextureArray(6);
+		playerFiringRight = initCGLTextureArray(6);
 
 		// Projectiles/Explosions
-		explosion = new CGLTexture();
-		groundFire = new CGLTexture();
-		//enemyLaser = new CGLTexture();
+		explosion = initCGLTextureArray(13);
+		groundFire = initCGLTextureArray(11);
 		doubleEnemyLaser = new CGLTexture();
-		stageOneProjectiles = new CGLTexture();
+		sOneSwipe = new CGLTexture();
+		sOneChargeSwipe = new CGLTexture();
+		sOneDoubleTapLaser = new CGLTexture();
 		enemyProjectile = new CGLTexture();
 		purpleProjectile = new CGLTexture();
 		purpleComet = new CGLTexture();
-		sOneDoubleTapLaser = new CGLTexture();
-		plasmaBall = new CGLTexture();
+		plasmaBall = initCGLTextureArray(3);
 
 		// PickUps
 		pickUpGlow = new CGLTexture();
 		healthPickUp = new CGLTexture();
-		healthPickUpAnimation = new CGLTexture();
+		healthPickUpAnimation = initCGLTextureArray(8);
 
 		// UI Texture
 		gameUITexture = new CGLTexture();
 		menuUITexture = new CGLTexture();
 	}
 
-	public static void createTextures()
-	{
+	private static CGLTexture[] initCGLTextureArray(int size) {
+		CGLTexture[] textureArray = new CGLTexture[size];
+		for (int i = 0; i < size; i++) {
+			textureArray[i] = new CGLTexture();
+		}
+		return textureArray;
+	}
+
+	public static void createTextures() {
 		// Background images
 		genericBackground.createImageTexture("GenericBackground.png");
 		mainMenuScreen.createImageTexture("MainMenuScreen.png");
 
 		// Main menu images
-		menuImages.createImageTexture("MenuImages.png");
-		title.createImageTexture("Title.png");
+		createCGLTextureArray(title, "Title");
+		createCGLTextureArray(smallEyes, "SmallEyes");
+		createCGLTextureArray(mediumEyes, "MediumEyes");
+		createCGLTextureArray(bigEyes, "BigEyes");
+		scoreEmpty.createImageTexture("ScoreEmpty.png");
+		scoreHalf.createImageTexture("ScoreHalf.png");
+		scoreFull.createImageTexture("ScoreFull.png");
+		loadingCircleBackground.createImageTexture("LoadingCircleBackground.png");
+		loadingCircleFill.createImageTexture("LoadingCircleFill.png");
+
+		// Stages
+		stageLocked.createImageTexture("StageLocked.png");
+		stageLockedSelected.createImageTexture("StageLockedSelected.png");
+		stage01.createImageTexture("Stage01.png");
+		stage01Selected.createImageTexture("Stage01Selected.png");
 
 		// Map objects
 		backgroundTexture.createImageTexture("BackgroundTexture.png");
-		portal.createImageTexture("Portal.png");
+		createCGLTextureArray(portal, "Portal");
 
 		// Glows
-		glows.createImageTexture("Glows.png");
+		smallGlow.createImageTexture("SmallGlow.png");
+		bigGlow.createImageTexture("BigGlow.png");
+		purpleGlow.createImageTexture("PurpleGlow.png");
+		redGlow.createImageTexture("RedGlow.png");
+		rectangleRedGlow.createImageTexture("RectangleRedGlow.png");
 
 		// Buffs
-		shield.createImageTexture("Shield.png");
+		createCGLTextureArray(shield, "Shield");
 
 		// Trees
-		trees.createImageTexture("Trees.png");
+		createCGLTextureArray(trees, "Tree");
 
 		// Units
-		boss.createImageTexture("Boss.png");
-		bossDeath.createImageTexture("BossDeath.png");
-		floatingCreep.createImageTexture("FloatingCreep.png");
-		floatingCreepDeath.createImageTexture("FloatingCreepDeath.png");
-		caster.createImageTexture("Caster.png");
-		casterDeath.createImageTexture("CasterDeath.png");
-		player.createImageTexture("Player.png");
-		spawnPortal.createImageTexture("SpawnPortal.png");
-		spawnPortalEnd.createImageTexture("SpawnPortalEnd.png");
+		createCGLTextureArray(bossWalkLeft, "BossWalkLeft");
+		createCGLTextureArray(bossWalkRight, "BossWalkRight");
+		createCGLTextureArray(bossAttackLeft, "BossAttackLeft");
+		createCGLTextureArray(bossAttackRight, "BossAttackRight");
+		createCGLTextureArray(bossChannelLeft, "BossChannelLeft");
+		createCGLTextureArray(bossChannelRight, "BossChannelRight");
+		createCGLTextureArray(bossDeathLeft, "BossDeathLeft");
+		createCGLTextureArray(bossDeathRight, "BossDeathRight");
+		createCGLTextureArray(floatingCreepWalkLeft, "FloatingCreepWalkLeft");
+		createCGLTextureArray(floatingCreepWalkRight, "FloatingCreepWalkRight");
+		createCGLTextureArray(floatingCreepAttackLeft, "FloatingCreepAttackLeft");
+		createCGLTextureArray(floatingCreepAttackRight, "FloatingCreepAttackRight");
+		createCGLTextureArray(floatingCreepDeathLeft, "FloatingCreepDeathLeft");
+		createCGLTextureArray(floatingCreepDeathRight, "FloatingCreepDeathRight");
+		createCGLTextureArray(casterWalkLeft, "CasterWalkLeft");
+		createCGLTextureArray(casterWalkRight, "CasterWalkRight");
+		createCGLTextureArray(casterAttackLeft, "CasterAttackLeft");
+		createCGLTextureArray(casterAttackRight, "CasterAttackRight");
+		createCGLTextureArray(casterDeathLeft, "CasterDeathLeft");
+		createCGLTextureArray(casterDeathRight, "CasterDeathRight");
+		createCGLTextureArray(spawnPortalSpawn, "SpawnPortalSpawn");
+		createCGLTextureArray(spawnPortalOpen, "SpawnPortalOpen");
+		createCGLTextureArray(spawnPortalEnd, "SpawnPortalEnd");
+		createCGLTextureArray(playerWalkLeft, "PlayerWalkLeft");
+		createCGLTextureArray(playerWalkRight, "PlayerWalkRight");
+		createCGLTextureArray(playerFiringLeft, "PlayerFiringLeft");
+		createCGLTextureArray(playerFiringRight, "PlayerFiringRight");
 
 		// Projectiles/AreaEffects
-		explosion.createImageTexture("Explosion.png");
-		groundFire.createImageTexture("GroundFire.png");
-		//enemyLaser.createImageTexture("EnemyLaser.png");
+		createCGLTextureArray(explosion, "Explosion");
+		createCGLTextureArray(groundFire, "GroundFire");
 		doubleEnemyLaser.createImageTexture("DoubleEnemyLaser.png");
-		stageOneProjectiles.createImageTexture("SOneProjectiles.png");
+		sOneSwipe.createImageTexture("SOneSwipe.png");
+		sOneChargeSwipe.createImageTexture("SOneChargeSwipe.png");
+		sOneDoubleTapLaser.createImageTexture("SOneDoubleTapLaser.png");
 		enemyProjectile.createImageTexture("EnemyProjectile.png");
 		purpleProjectile.createImageTexture("PurpleProjectile.png");
 		purpleComet.createImageTexture("PurpleComet.png");
-		sOneDoubleTapLaser.createImageTexture("SOneDoubleTapLaser.png");
-		plasmaBall.createImageTexture("PlasmaBall.png");
+		createCGLTextureArray(plasmaBall, "PlasmaBall");
 
 		// PickUps
 		pickUpGlow.createImageTexture("PickUpGlow.png");
 		healthPickUp.createImageTexture("HealthPickUp.png");
-		healthPickUpAnimation.createImageTexture("HealthPickUpAnimation.png");
+		createCGLTextureArray(healthPickUpAnimation, "HealthPickUpAnimation");
 
 		// UI Texture
 		gameUITexture.createImageTexture("GameUITexture.png");
 		menuUITexture.createImageTexture("MenuUITexture.png");
+	}
+
+	private static void createCGLTextureArray(CGLTexture[] textureArray, String baseFilename) {
+		for (int i = 0; i < textureArray.length; i++) {
+			textureArray[i].createImageTexture(baseFilename + String.format(Locale.US, "%02d", i + 1) + ".png");
+		}
 	}
 }

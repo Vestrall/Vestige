@@ -62,25 +62,24 @@ public class SpriteManager
 	// Map objects
 	public static SpriteTemplate tiles[], wallTops[], wallBottoms[], wallMid, portal[];
 
-	// Main menu images
-	public static SpriteTemplate title[], smallEyes[], mediumEyes[], bigEyes[], stageLocked, stageLockedSelected, darkWoods,
-			darkWoodsSelected, scoreEmpty, scoreHalf, scoreFull, loadingCircleBackground,
-			loadingCircleFill;
+	// Menu images
+	public static SpriteTemplate title[], smallEyes[], mediumEyes[], bigEyes[], scoreEmpty, scoreHalf, scoreFull, loadingCircleBackground, loadingCircleFill;
+
+	// Stages
+	public static SpriteTemplate stageLocked, stageLockedSelected, darkWoods, darkWoodsSelected;
 
 	// Glows
-	public static SpriteTemplate smallGlow, bigGlow, purpleGlow, redGlow, redLaserGlowBody, redLaserGlowEnd, rectangleRedGlow;
+	public static SpriteTemplate smallGlow, bigGlow, purpleGlow, redGlow, rectangleRedGlow;
 
 	// Layered map objects
 	public static SpriteTemplate trees[];
 
 	// Units
-	public static SpriteTemplate bossWalkLeft[], bossWalkRight[], bossFiringLeft[], bossFiringRight[], bossChannelingLeft[],
-			bossChannelingRight[], bossDeathLeft[], bossDeathRight[], /*waveBossTurret,*/
-			floatingCreepWalkLeft[], floatingCreepWalkRight[], floatingCreepAttackLeft[],
-			floatingCreepAttackRight[], floatingCreepDeathLeft[], floatingCreepDeathRight[],
-			casterWalkLeft[], casterWalkRight[], casterFiringLeft[], casterFiringRight[], casterDeathLeft[],
-			casterDeathRight[], playerWalkLeft[], playerWalkRight[], playerFiringLeft[], playerFiringRight[],
-			spawnPortalSpawn[], spawnPortalOpen[], spawnPortalEnd[];
+	public static SpriteTemplate playerWalkLeft[], playerWalkRight[], playerAttackLeft[], playerAttackRight[], bossWalkLeft[], bossWalkRight[],
+			bossAttackLeft[], bossAttackRight[], bossChannelLeft[], bossChannelRight[], bossDeathLeft[], bossDeathRight[], floatingCreepWalkLeft[],
+			floatingCreepWalkRight[], floatingCreepAttackLeft[], floatingCreepAttackRight[], floatingCreepDeathLeft[], floatingCreepDeathRight[],
+			casterWalkLeft[], casterWalkRight[], casterAttackLeft[], casterAttackRight[], casterDeathLeft[], casterDeathRight[], spawnPortalSpawn[],
+			spawnPortalOpen[], spawnPortalEnd[];
 
 	// Projectiles/AreaEffects
 	public static SpriteTemplate explosion[], plasmaBall[], groundFire[], enemyLaserHead, enemyLaserBody, doubleEnemyLaser,
@@ -153,127 +152,115 @@ public class SpriteManager
 		wallBottoms[1] = new SpriteTemplate(Assets.backgroundTexture, new Rect(30, 223, 60, 258));
 		wallBottoms[2] = new SpriteTemplate(Assets.backgroundTexture, new Rect(60, 223, 90, 258));
 
-		portal = createTemplates(Assets.portal, 8, 1, 20, 127, 116);
+		portal = createTemplates(Assets.portal);
 
-		//=================
-		// Main menu images
-		//=================
-		title = createTemplates(Assets.title, 5, 1, 40, 389, 210);
+		//============
+		// Menu images
+		//============
+		title = createTemplates(Assets.title);
 
-		smallEyes = createTemplates(Assets.menuImages, 0, 316, 3, 1, 8, 18, 9);
-		mediumEyes = createTemplates(Assets.menuImages, 54, 316, 2, 1, 8, 22, 11);
-		bigEyes = createTemplates(Assets.menuImages, 98, 316, 2, 1, 7, 30, 12);
+		smallEyes = createTemplates(Assets.smallEyes);
+		mediumEyes = createTemplates(Assets.mediumEyes);
+		bigEyes = createTemplates(Assets.bigEyes);
 
-		stageLocked = new SpriteTemplate(Assets.menuImages, new Rect(0, 0, 168, 316));
-		stageLockedSelected = new SpriteTemplate(Assets.menuImages, new Rect(168, 0, 567, 445));
-		darkWoods = new SpriteTemplate(Assets.menuImages, new Rect(567, 0, 735, 316));
-		darkWoodsSelected = new SpriteTemplate(Assets.menuImages, new Rect(735, 0, 1127, 445));
+		scoreEmpty = new SpriteTemplate(Assets.scoreEmpty);
+		scoreHalf = new SpriteTemplate(Assets.scoreHalf);
+		scoreFull = new SpriteTemplate(Assets.scoreFull);
 
-		scoreEmpty = new SpriteTemplate(Assets.menuImages, new Rect(0, 360, 26, 386));
-		scoreHalf = new SpriteTemplate(Assets.menuImages, new Rect(26, 360, 52, 386));
-		scoreFull = new SpriteTemplate(Assets.menuImages, new Rect(52, 360, 78, 386));
+		loadingCircleBackground = new SpriteTemplate(Assets.loadingCircleBackground);
+		loadingCircleFill = new SpriteTemplate(Assets.loadingCircleFill);
 
-		loadingCircleBackground = new SpriteTemplate(Assets.menuImages, new Rect(1127, 0, 1316, 189));
-		loadingCircleFill = new SpriteTemplate(Assets.menuImages, new Rect(1316, 0, 1572, 256));
+		//=======
+		// Stages
+		//=======
+		stageLocked = new SpriteTemplate(Assets.stageLocked);
+		stageLockedSelected = new SpriteTemplate(Assets.stageLockedSelected);
+		darkWoods = new SpriteTemplate(Assets.stage01);
+		darkWoodsSelected = new SpriteTemplate(Assets.stage01Selected);
 
 		//=================
 		// Projectile Glows
 		//=================
-		smallGlow = new SpriteTemplate(Assets.glows, new Rect(0, 0, 28, 13));
-		bigGlow = new SpriteTemplate(Assets.glows, new Rect(0, 13, 87, 27));
-		purpleGlow = new SpriteTemplate(Assets.glows, new Rect(28, 0, 56, 13));
-		redGlow = new SpriteTemplate(Assets.glows, new Rect(56, 0, 81, 11));
-		redLaserGlowBody = new SpriteTemplate(Assets.glows, new Rect(81, 0, 84, 9));
-		redLaserGlowEnd = new SpriteTemplate(Assets.glows, new Rect(84, 0, 100, 9));
-		rectangleRedGlow = new SpriteTemplate(Assets.glows, new Rect(81, 0, 116, 9));
+		smallGlow = new SpriteTemplate(Assets.smallGlow);
+		bigGlow = new SpriteTemplate(Assets.bigGlow);
+		purpleGlow = new SpriteTemplate(Assets.purpleGlow);
+		redGlow = new SpriteTemplate(Assets.redGlow);
+		rectangleRedGlow = new SpriteTemplate(Assets.rectangleRedGlow);
 
 		//======
 		// Trees
 		//======
-		trees = new SpriteTemplate[6];
-		trees[0] = new SpriteTemplate(Assets.trees, new Rect(0, 0, 160, 142));
-		trees[1] = new SpriteTemplate(Assets.trees, new Rect(160, 0, 320, 142));
-		trees[2] = new SpriteTemplate(Assets.trees, new Rect(320, 0, 460, 146));
-		trees[3] = new SpriteTemplate(Assets.trees, new Rect(0, 142, 140, 288));
-		trees[4] = new SpriteTemplate(Assets.trees, new Rect(140, 142, 260, 276));
-		trees[5] = new SpriteTemplate(Assets.trees, new Rect(260, 146, 380, 280));
+		trees = createTemplates(Assets.trees);
 
 		//======
 		// Units
 		//======
-		bossWalkLeft = createTemplates(Assets.boss, 9, 1, 7, 215, 184);
-		bossWalkRight = createTemplates(Assets.boss, 9, 8, 14, 215, 184);
-		bossFiringLeft = createTemplates(Assets.boss, 9, 15, 31, 215, 184);
-		bossFiringRight = createTemplates(Assets.boss, 9, 32, 48, 215, 184);
-		bossChannelingLeft = createTemplates(Assets.boss, 9, 49, 62, 215, 184);
-		bossChannelingRight = createTemplates(Assets.boss, 9, 63, 76, 215, 184);
+		bossWalkLeft = createTemplates(Assets.bossWalkLeft);
+		bossWalkRight = createTemplates(Assets.bossWalkRight);
+		bossAttackLeft = createTemplates(Assets.bossAttackLeft);
+		bossAttackRight = createTemplates(Assets.bossAttackRight);
+		bossChannelLeft = createTemplates(Assets.bossChannelLeft);
+		bossChannelRight = createTemplates(Assets.bossChannelRight);
+		bossDeathLeft = createTemplates(Assets.bossDeathLeft);
+		bossDeathRight = createTemplates(Assets.bossDeathRight);
 
-		bossDeathLeft = createTemplates(Assets.bossDeath, 8, 1, 30, 232, 184);
-		bossDeathRight = createTemplates(Assets.bossDeath, 8, 31, 60, 232, 184);
+		floatingCreepWalkLeft = createTemplates(Assets.floatingCreepWalkLeft);
+		floatingCreepWalkRight = createTemplates(Assets.floatingCreepWalkRight);
+		floatingCreepAttackLeft = createTemplates(Assets.floatingCreepAttackLeft);
+		floatingCreepAttackRight = createTemplates(Assets.floatingCreepAttackRight);
+		floatingCreepDeathLeft = createTemplates(Assets.floatingCreepDeathLeft);
+		floatingCreepDeathRight = createTemplates(Assets.floatingCreepDeathRight);
 
-		floatingCreepWalkLeft = createTemplates(Assets.floatingCreep, 7, 1, 14, 72, 62);
-		floatingCreepWalkRight = createTemplates(Assets.floatingCreep, 7, 15, 28, 72, 62);
-		floatingCreepAttackLeft = createTemplates(Assets.floatingCreep, 7, 29, 32, 72, 62);
-		floatingCreepAttackRight = createTemplates(Assets.floatingCreep, 7, 33, 36, 72, 62);
+		casterWalkLeft = createTemplates(Assets.casterWalkLeft);
+		casterWalkRight = createTemplates(Assets.casterWalkRight);
+		casterAttackLeft = createTemplates(Assets.casterAttackLeft);
+		casterAttackRight = createTemplates(Assets.casterAttackRight);
+		casterDeathLeft = createTemplates(Assets.casterDeathLeft);
+		casterDeathRight = createTemplates(Assets.casterDeathRight);
 
-		floatingCreepDeathLeft = createTemplates(Assets.floatingCreepDeath, 11, 1, 10, 90, 90);
-		floatingCreepDeathRight = createTemplates(Assets.floatingCreepDeath, 11, 11, 20, 90, 90);
+		playerWalkLeft = createTemplates(Assets.playerWalkLeft);
+		playerWalkRight = createTemplates(Assets.playerWalkRight);
+		playerAttackLeft = createTemplates(Assets.playerFiringLeft);
+		playerAttackRight = createTemplates(Assets.playerFiringRight);
 
-		casterWalkLeft = createTemplates(Assets.caster, 7, 1, 9, 132, 91);
-		casterWalkRight = createTemplates(Assets.caster, 7, 10, 18, 132, 91);
-		casterFiringLeft = createTemplates(Assets.caster, 7, 19, 25, 132, 91);
-		casterFiringRight = createTemplates(Assets.caster, 7, 26, 32, 132, 91);
-
-		casterDeathLeft = createTemplates(Assets.casterDeath, 8, 1, 12, 124, 126);
-		casterDeathRight = createTemplates(Assets.casterDeath, 8, 13, 24, 124, 126);
-
-		playerWalkLeft = createTemplates(Assets.player, 9, 1, 8, 56, 85);
-		playerWalkRight = createTemplates(Assets.player, 9, 9, 16, 56, 85);
-		playerFiringLeft = createTemplates(Assets.player, 9, 17, 22, 56, 85);
-		playerFiringRight = createTemplates(Assets.player, 9, 23, 28, 56, 85);
-
-		spawnPortalSpawn = createTemplates(Assets.spawnPortal, 7, 1, 14, 70, 101);
-		spawnPortalOpen = createTemplates(Assets.spawnPortal, 7, 15, 26, 70, 101);
-
-		spawnPortalEnd = createTemplates(Assets.spawnPortalEnd, 4, 1, 9, 125, 125);
+		spawnPortalSpawn = createTemplates(Assets.spawnPortalSpawn);
+		spawnPortalOpen = createTemplates(Assets.spawnPortalOpen);
+		spawnPortalEnd = createTemplates(Assets.spawnPortalEnd);
 
 		//========================
 		// Projectiles/AreaEffects
 		//========================
-		explosion = createTemplates(Assets.explosion, 8, 1, 13, 128, 128);
+		explosion = createTemplates(Assets.explosion);
 
-		plasmaBall = createTemplates(Assets.plasmaBall, 3, 1, 3, 41, 41);
+		plasmaBall = createTemplates(Assets.plasmaBall);
 
-		groundFire = createTemplates(Assets.groundFire, 11, 1, 11, 46, 64);
+		groundFire = createTemplates(Assets.groundFire);
 
-		//enemyLaserBody = new SpriteTemplate(Assets.enemyLaser, new Rect(0, 1, 3, 25));
-		//enemyLaserHead = new SpriteTemplate(Assets.enemyLaser, new Rect(3, 0, 25, 26));
 		enemyLaserBody = new SpriteTemplate(Assets.doubleEnemyLaser, new Rect(24, 0, 27, 26));
 		enemyLaserHead = new SpriteTemplate(Assets.doubleEnemyLaser, new Rect(27, 0, 49, 26));
-		doubleEnemyLaser = new SpriteTemplate(Assets.doubleEnemyLaser, new Rect(0, 0, 47, 22));
+		doubleEnemyLaser = new SpriteTemplate(Assets.doubleEnemyLaser);
 
-		sOneSwipe = new SpriteTemplate(Assets.stageOneProjectiles, new Rect(0, 0, 67, 34));
-		sOneChargeSwipe = new SpriteTemplate(Assets.stageOneProjectiles, new Rect(67, 0, 121, 83));
+		sOneSwipe = new SpriteTemplate(Assets.sOneSwipe);
+		sOneChargeSwipe = new SpriteTemplate(Assets.sOneChargeSwipe);
+		sOneDoubleTapLaser = new SpriteTemplate(Assets.sOneDoubleTapLaser);
 
-		sOneDoubleTapLaser = new SpriteTemplate(Assets.sOneDoubleTapLaser, new Rect(0, 0, 435, 22));
+		enemyProjectile = new SpriteTemplate(Assets.enemyProjectile);
 
-		enemyProjectile = new SpriteTemplate(Assets.enemyProjectile, new Rect(0, 0, 49, 30));
+		purpleProjectile = new SpriteTemplate(Assets.purpleProjectile);
 
-		purpleProjectile = new SpriteTemplate(Assets.purpleProjectile, new Rect(0, 0, 64, 47));
-
-		purpleComet = new SpriteTemplate(Assets.purpleComet, new Rect(0, 0, 90, 58));
+		purpleComet = new SpriteTemplate(Assets.purpleComet);
 
 		//========
 		// PickUps
 		//========
-		pickUpGlow = new SpriteTemplate(Assets.pickUpGlow, new Rect(0, 0, 38, 12));
-		healthPickUp = new SpriteTemplate(Assets.healthPickUp, new Rect(0, 0, 40, 40));
-		healthPickUpAnimation = createTemplates(Assets.healthPickUpAnimation, 8, 1, 8, 66, 87);
+		pickUpGlow = new SpriteTemplate(Assets.pickUpGlow);
+		healthPickUp = new SpriteTemplate(Assets.healthPickUp);
+		healthPickUpAnimation = createTemplates(Assets.healthPickUpAnimation);
 
 		//======
 		// Buffs
 		//======
-		shield = createTemplates(Assets.shield, 5, 1, 10, 102, 101);
+		shield = createTemplates(Assets.shield);
 
 		//============
 		// UI elements
@@ -313,8 +300,6 @@ public class SpriteManager
 		//========
 		// Widgets
 		//========
-		//menuButton = new SpriteTemplate(Assets.gameUITexture, new Rect(0, 62, 200, 116));
-		//menuButtonClick = new SpriteTemplate(Assets.gameUITexture, new Rect(0, 116, 200, 170));
 		menuButtonPieces = new SpriteTemplate[3];
 		menuButtonPieces[1] = new SpriteTemplate(Assets.gameUITexture, new Rect(0, 62, 19, 116));
 		menuButtonPieces[0] = new SpriteTemplate(Assets.gameUITexture, new Rect(19, 62, 181, 116));
@@ -342,6 +327,25 @@ public class SpriteManager
 		sliderEmpty = new SpriteTemplate(Assets.gameUITexture, new Rect(79, 0, 448, 12));
 		sliderFull = new SpriteTemplate(Assets.gameUITexture, new Rect(79, 12, 448, 24));
 		sliderKnob = new SpriteTemplate(Assets.gameUITexture, new Rect(448, 0, 478, 30));
+	}
+
+	private static SpriteTemplate[] createTemplates(CGLTexture[] textures)
+	{
+		//final int totalImages = endNum - startNum + 1;
+		int size = textures.length;
+		final SpriteTemplate[] templates = new SpriteTemplate[size];
+
+		/*int curImageNum = startNum;
+		int x = startX + (((curImageNum - 1) % imagesPerRow) * width);
+		int y = startY + (((int) Math.floor(curImageNum / imagesPerRow)) * height);
+		if (curImageNum % imagesPerRow == 0)
+			y -= height;*/
+
+		for (int i = 0; i < size; i++) {
+			templates[i] = new SpriteTemplate(textures[i]);
+		}
+
+		return templates;
 	}
 
 	private static SpriteTemplate[] createTemplates(CGLTexture texture, int startX, int startY, int imagesPerRow, int startNum,
@@ -374,8 +378,7 @@ public class SpriteManager
 		return templates;
 	}
 
-	private static SpriteTemplate[] createTemplates(CGLTexture texture, int imagesPerRow, int startNum, int endNum, int width,
-													int height)
+	private static SpriteTemplate[] createTemplates(CGLTexture texture, int imagesPerRow, int startNum, int endNum, int width, int height)
 	{
 		return createTemplates(texture, 0, 0, imagesPerRow, startNum, endNum, width, height);
 	}
@@ -498,8 +501,7 @@ public class SpriteManager
 
 	public void setBackground(CGLTexture texture)
 	{
-		final CGLTexturedRect newSprite = new CGLTexturedRect(texture.getTextureHandle(), Screen.MIDX, Screen.MIDY, texture.getWidth(),
-				texture.getHeight(), new Rect(0, 0, Screen.WIDTH, Screen.HEIGHT));
+		final CGLTexturedRect newSprite = new CGLTexturedRect(texture.getTextureHandle(), Screen.MIDX, Screen.MIDY, texture.getWidth(), texture.getHeight());
 
 		if (isBuffering)
 		{
@@ -973,6 +975,10 @@ public class SpriteManager
 				height = texture.getHeight();
 				this.subTexRect = new Rect(0, 0, width, height);
 			}
+		}
+
+		public SpriteTemplate(CGLTexture texture) {
+			this(texture, null);
 		}
 
 		public int getWidth()

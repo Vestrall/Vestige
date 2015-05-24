@@ -34,29 +34,29 @@ public class Boss extends AIRailUnit
 		setWalkRightAnimation(new SpriteAnimation(SpriteManager.bossWalkRight));
 
 		// Init firing left animations
-		setPreFiringLeftAnimation(new SpriteAnimation(SpriteManager.bossFiringLeft, 0, 15));
-		setPostFiringLeftAnimation(new SpriteAnimation(SpriteManager.bossFiringLeft, 16, 16));
+		setPreFiringLeftAnimation(new SpriteAnimation(SpriteManager.bossAttackLeft, 0, 15));
+		setPostFiringLeftAnimation(new SpriteAnimation(SpriteManager.bossAttackLeft, 16, 16));
 
 		// Init firing right animations
-		setPreFiringRightAnimation(new SpriteAnimation(SpriteManager.bossFiringRight, 0, 15));
-		setPostFiringRightAnimation(new SpriteAnimation(SpriteManager.bossFiringRight, 16, 16));
+		setPreFiringRightAnimation(new SpriteAnimation(SpriteManager.bossAttackRight, 0, 15));
+		setPostFiringRightAnimation(new SpriteAnimation(SpriteManager.bossAttackRight, 16, 16));
 
 		// Init pre-channel animations
-		setPreChannelingLeftAnimation(new SpriteAnimation(SpriteManager.bossFiringLeft, 0, 5));
-		setPreChannelingRightAnimation(new SpriteAnimation(SpriteManager.bossFiringRight, 0, 5));
+		setPreChannelingLeftAnimation(new SpriteAnimation(SpriteManager.bossAttackLeft, 0, 5));
+		setPreChannelingRightAnimation(new SpriteAnimation(SpriteManager.bossAttackRight, 0, 5));
 
 		// Init channel animations
-		setChannelingLeftAnimation(new SpriteAnimation(SpriteManager.bossChannelingLeft));
-		setChannelingRightAnimation(new SpriteAnimation(SpriteManager.bossChannelingRight));
+		setChannelingLeftAnimation(new SpriteAnimation(SpriteManager.bossChannelLeft));
+		setChannelingRightAnimation(new SpriteAnimation(SpriteManager.bossChannelRight));
 
 		// Init post-channel animations
 		final SpriteAnimation postChannelLeftAnim = new SpriteAnimation();
 		for (int i = 4; i >= 0; i--)
-			postChannelLeftAnim.addFrame(SpriteManager.bossFiringLeft[i]);
+			postChannelLeftAnim.addFrame(SpriteManager.bossAttackLeft[i]);
 		setPostChannelingLeftAnimation(postChannelLeftAnim);
 		final SpriteAnimation postChannelRightAnim = new SpriteAnimation();
 		for (int i = 4; i >= 0; i--)
-			postChannelRightAnim.addFrame(SpriteManager.bossFiringRight[i]);
+			postChannelRightAnim.addFrame(SpriteManager.bossAttackRight[i]);
 		setPostChannelingRightAnimation(postChannelRightAnim);
 
 		// Init death animations

@@ -100,14 +100,14 @@ public class Player extends Unit implements GestureHandlerListener
 		setWalkRightAnimation(walkRightAnim);
 
 		// Set firing animations
-		final SpriteAnimation preFiringLeftAnim = new SpriteAnimation(SpriteManager.playerFiringLeft, 0, 2);
+		final SpriteAnimation preFiringLeftAnim = new SpriteAnimation(SpriteManager.playerAttackLeft, 0, 2);
 		setPreFiringLeftAnimation(preFiringLeftAnim);
-		final SpriteAnimation postFiringLeftAnim = new SpriteAnimation(SpriteManager.playerFiringLeft, 3, 5);
+		final SpriteAnimation postFiringLeftAnim = new SpriteAnimation(SpriteManager.playerAttackLeft, 3, 5);
 		setPostFiringLeftAnimation(postFiringLeftAnim);
 
-		final SpriteAnimation preFiringRightAnim = new SpriteAnimation(SpriteManager.playerFiringRight, 0, 2);
+		final SpriteAnimation preFiringRightAnim = new SpriteAnimation(SpriteManager.playerAttackRight, 0, 2);
 		setPreFiringRightAnimation(preFiringRightAnim);
-		final SpriteAnimation postFiringRightAnim = new SpriteAnimation(SpriteManager.playerFiringRight, 3, 5);
+		final SpriteAnimation postFiringRightAnim = new SpriteAnimation(SpriteManager.playerAttackRight, 3, 5);
 		setPostFiringRightAnimation(postFiringRightAnim);
 
 		faceRight();
