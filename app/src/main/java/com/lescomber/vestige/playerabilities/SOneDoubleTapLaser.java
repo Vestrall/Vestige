@@ -4,8 +4,7 @@ import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.geometry.Line;
 import com.lescomber.vestige.graphics.Sprite;
 
-public class SOneDoubleTapLaser
-{
+public class SOneDoubleTapLaser {
 	private static final float INITIAL_LENGTH = 20;
 	private static final float WIDTH_PER_MS = 3.25f;
 
@@ -16,8 +15,7 @@ public class SOneDoubleTapLaser
 	private final float maxWidth;
 	private boolean isExpanding;
 
-	public SOneDoubleTapLaser(Line path)
-	{
+	public SOneDoubleTapLaser(Line path) {
 		image = new Sprite(SpriteManager.sOneDoubleTapLaser);
 		direction = path.getDirection();
 		image.rotateTo(direction);
@@ -30,22 +28,17 @@ public class SOneDoubleTapLaser
 		isExpanding = true;
 	}
 
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		float dWidth = deltaTime * WIDTH_PER_MS;
 
-		if (isExpanding)
-		{
-			if (image.getWidth() + dWidth >= maxWidth)
-			{
+		if (isExpanding) {
+			if (image.getWidth() + dWidth >= maxWidth) {
 				dWidth = maxWidth - image.getWidth();
 				isExpanding = false;
 			}
 
 			image.scaleWidthTo(image.getWidth() + dWidth);
-		}
-		else
-		{
+		} else {
 			if (image.getWidth() - dWidth <= 20)
 				image.setVisible(false);
 			else
@@ -55,8 +48,7 @@ public class SOneDoubleTapLaser
 		image.offset(cos * (dWidth / 2), sin * (dWidth / 2));
 	}
 
-	public boolean isFinished()
-	{
+	public boolean isFinished() {
 		return !image.isVisible();
 	}
 }

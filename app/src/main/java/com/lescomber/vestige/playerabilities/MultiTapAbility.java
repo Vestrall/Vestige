@@ -2,15 +2,12 @@ package com.lescomber.vestige.playerabilities;
 
 import com.lescomber.vestige.units.Player;
 
-public abstract class MultiTapAbility extends PlayerAbility
-{
-	public MultiTapAbility(Player player)
-	{
+public abstract class MultiTapAbility extends PlayerAbility {
+	public MultiTapAbility(Player player) {
 		super(player);
 	}
 
-	public MultiTapAbility(MultiTapAbility copyMe)
-	{
+	public MultiTapAbility(MultiTapAbility copyMe) {
 		super(copyMe);
 	}
 

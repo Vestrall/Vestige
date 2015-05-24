@@ -8,8 +8,7 @@ import com.lescomber.vestige.gestures.GestureHandlerListener;
 import com.lescomber.vestige.graphics.UISwingSprite;
 import com.lescomber.vestige.units.Player;
 
-public class SwipeArrow implements GestureHandlerListener
-{
+public class SwipeArrow implements GestureHandlerListener {
 	private final GestureHandler gestureHandler;
 	private Player player;
 
@@ -19,8 +18,7 @@ public class SwipeArrow implements GestureHandlerListener
 	private boolean isDisabled;
 	private boolean isBothSwipes;
 
-	public SwipeArrow(GestureHandler gestureHandler)
-	{
+	public SwipeArrow(GestureHandler gestureHandler) {
 		this.gestureHandler = gestureHandler;
 		gestureHandler.addListener(this);
 
@@ -32,15 +30,12 @@ public class SwipeArrow implements GestureHandlerListener
 		isBothSwipes = false;
 	}
 
-	public void setPlayer(Player player)
-	{
+	public void setPlayer(Player player) {
 		this.player = player;
 	}
 
-	public void update(int deltaTime)
-	{
-		if (!gestureHandler.isSwiping())
-		{
+	public void update(int deltaTime) {
+		if (!gestureHandler.isSwiping()) {
 			if (player.isSwipeQueued())
 				setVisible(true);
 			else if (player.isChargeSwipeQueued())
@@ -51,24 +46,20 @@ public class SwipeArrow implements GestureHandlerListener
 	}
 
 	@Override
-	public void handleTap(Point tapPoint)
-	{
+	public void handleTap(Point tapPoint) {
 		setVisible(false);
 	}
 
 	@Override
-	public void swipeBuilding(Line swipe)
-	{
+	public void swipeBuilding(Line swipe) {
 		swipeArrow.offsetTo(swipe.getStart());
 		swipeArrow.rotateTo(swipe.getDirection());
 		setVisible(true);
 	}
 
 	@Override
-	public void chargeSwipeBuilding(Line swipe)
-	{
-		if (isBothSwipes)
-		{
+	public void chargeSwipeBuilding(Line swipe) {
+		if (isBothSwipes) {
 			swipeArrow.offsetTo(swipe.getStart());
 			swipeArrow.rotateTo(swipe.getDirection());
 		}
@@ -76,44 +67,36 @@ public class SwipeArrow implements GestureHandlerListener
 	}
 
 	@Override
-	public void swipeCancelled()
-	{
+	public void swipeCancelled() {
 		setVisible(false);
 	}
 
 	@Override
-	public void handleSwipe(Line swipe)
-	{
+	public void handleSwipe(Line swipe) {
 	}
 
 	@Override
-	public void handleChargeSwipe(Line swipe)
-	{
+	public void handleChargeSwipe(Line swipe) {
 	}
 
 	@Override
-	public void handleDoubleTap(Point tapPoint)
-	{
+	public void handleDoubleTap(Point tapPoint) {
 		setVisible(false);
 	}
 
 	@Override
-	public void handleMultiTap()
-	{
+	public void handleMultiTap() {
 	}
 
-	public void setDisabled(boolean isDisabled)
-	{
+	public void setDisabled(boolean isDisabled) {
 		this.isDisabled = isDisabled;
 	}
 
-	public void setBothSwipes(boolean isBothSwipes)
-	{
+	public void setBothSwipes(boolean isBothSwipes) {
 		this.isBothSwipes = isBothSwipes;
 	}
 
-	public void setVisible(boolean isVisible)
-	{
+	public void setVisible(boolean isVisible) {
 		if (!isDisabled || !isVisible)
 			swipeArrow.setVisible(isVisible);
 	}

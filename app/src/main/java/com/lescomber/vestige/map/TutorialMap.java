@@ -3,13 +3,11 @@ package com.lescomber.vestige.map;
 import com.lescomber.vestige.screens.TutorialScreen;
 import com.lescomber.vestige.units.TutorialCaster;
 
-public class TutorialMap extends Map
-{
+public class TutorialMap extends Map {
 	private final TutorialScreen tScreen;
 	private boolean enablePortalSpawn;
 
-	public TutorialMap(TutorialScreen tScreen, boolean withWalls)
-	{
+	public TutorialMap(TutorialScreen tScreen, boolean withWalls) {
 		super(Levels.TUTORIAL_STAGE, 0);
 
 		this.tScreen = tScreen;
@@ -23,8 +21,7 @@ public class TutorialMap extends Map
 
 		enablePortalSpawn = true;
 
-		if (withWalls)
-		{
+		if (withWalls) {
 			addObstacle(new Wall(400, 0, 440, 180));
 			addObstacle(new Wall(250, 110, 290, 370));
 			addObstacle(new Wall(400, 300, 440, 480));
@@ -32,26 +29,22 @@ public class TutorialMap extends Map
 		}
 	}
 
-	public TutorialMap(TutorialScreen tScreen)
-	{
+	public TutorialMap(TutorialScreen tScreen) {
 		this(tScreen, false);
 	}
 
-	public TutorialMap()
-	{
+	public TutorialMap() {
 		this(null, false);
 	}
 
-	public void spawnTurretCaster()
-	{
+	public void spawnTurretCaster() {
 		final TutorialCaster tc = new TutorialCaster();
 		tc.offsetTo(600, 240);
 		queueStevesUnit(tc);
 	}
 
 	@Override
-	public void gameScreenEmpty()
-	{
+	public void gameScreenEmpty() {
 		if (enablePortalSpawn)
 			super.gameScreenEmpty();
 
@@ -61,13 +54,11 @@ public class TutorialMap extends Map
 			tScreen.combatLessonCompleted();
 	}
 
-	public void disablePortalSpawn()
-	{
+	public void disablePortalSpawn() {
 		enablePortalSpawn = false;
 	}
 
-	public void enablePortalSpawn()
-	{
+	public void enablePortalSpawn() {
 		enablePortalSpawn = true;
 	}
 }

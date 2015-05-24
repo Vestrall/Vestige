@@ -10,8 +10,7 @@ import com.lescomber.vestige.graphics.Swapper;
 import com.lescomber.vestige.graphics.UISwingSprite;
 import com.lescomber.vestige.units.Player;
 
-public class ChargeSwipeArrow implements GestureHandlerListener
-{
+public class ChargeSwipeArrow implements GestureHandlerListener {
 	private final GestureHandler gestureHandler;
 	private Player player;
 
@@ -30,8 +29,7 @@ public class ChargeSwipeArrow implements GestureHandlerListener
 
 	private boolean isDisabled;        // For tutorial screen purposes
 
-	public ChargeSwipeArrow(GestureHandler gestureHandler)
-	{
+	public ChargeSwipeArrow(GestureHandler gestureHandler) {
 		this.gestureHandler = gestureHandler;
 		gestureHandler.addListener(this);
 		player = null;
@@ -62,36 +60,29 @@ public class ChargeSwipeArrow implements GestureHandlerListener
 		isDisabled = false;
 	}
 
-	public void setPlayer(Player player)
-	{
+	public void setPlayer(Player player) {
 		this.player = player;
 	}
 
-	public void update(int deltaTime)
-	{
-		if (!gestureHandler.isSwiping())
-		{
+	public void update(int deltaTime) {
+		if (!gestureHandler.isSwiping()) {
 			if (player.isSwipeQueued())
 				setVisible(false);
 			else if (player.isChargeSwipeQueued())
 				setVisible(true);
 			else
 				setVisible(false);
-		}
-		else if (isVisible())
-		{
+		} else if (isVisible()) {
 			if (player.isChargeSwipeReady())
 				displayArrow();
 			else
 				displayCooldownArrow();
 		}
 
-		if (sparks.isVisible())
-		{
+		if (sparks.isVisible()) {
 			sparksCountdown -= deltaTime;
 
-			if (sparksCountdown <= 0)
-			{
+			if (sparksCountdown <= 0) {
 				sparksCountdown += SPARKS_MAX_COUNTDOWN;
 
 				nextSparks();
@@ -99,8 +90,7 @@ public class ChargeSwipeArrow implements GestureHandlerListener
 		}
 	}
 
-	private void displayCooldownArrow()
-	{
+	private void displayCooldownArrow() {
 		cooldownTail.setVisible(!isDisabled);
 		cooldownHead.setVisible(!isDisabled);
 		tail.setVisible(false);
@@ -108,8 +98,7 @@ public class ChargeSwipeArrow implements GestureHandlerListener
 		sparks.setVisible(false);
 	}
 
-	private void displayArrow()
-	{
+	private void displayArrow() {
 		cooldownTail.setVisible(false);
 		cooldownHead.setVisible(false);
 		tail.setVisible(!isDisabled);
@@ -117,8 +106,7 @@ public class ChargeSwipeArrow implements GestureHandlerListener
 		sparks.setVisible(!isDisabled);
 	}
 
-	private void nextSparks()
-	{
+	private void nextSparks() {
 		int newSparksIndex = sparksIndex + 1;
 
 		if (newSparksIndex >= SpriteManager.chargeArrowSparks.length)
@@ -131,8 +119,7 @@ public class ChargeSwipeArrow implements GestureHandlerListener
 		Swapper.swapImages(curSprite, sparks);
 	}
 
-	public void update(Line swipe)
-	{
+	public void update(Line swipe) {
 		final float direction = swipe.getDirection();
 		cooldownTail.offsetTo(swipe.getStart());
 		cooldownTail.rotateTo(direction);
@@ -148,17 +135,13 @@ public class ChargeSwipeArrow implements GestureHandlerListener
 		sparks.rotateTo(direction);
 	}
 
-	public void setVisible(boolean isVisible)
-	{
-		if (isVisible)
-		{
+	public void setVisible(boolean isVisible) {
+		if (isVisible) {
 			if (player.isChargeSwipeReady())
 				displayArrow();
 			else
 				displayCooldownArrow();
-		}
-		else
-		{
+		} else {
 			cooldownTail.setVisible(false);
 			cooldownHead.setVisible(false);
 			tail.setVisible(false);
@@ -168,57 +151,47 @@ public class ChargeSwipeArrow implements GestureHandlerListener
 	}
 
 	@Override
-	public void handleTap(Point tapPoint)
-	{
+	public void handleTap(Point tapPoint) {
 		setVisible(false);
 	}
 
 	@Override
-	public void swipeBuilding(Line swipe)
-	{
+	public void swipeBuilding(Line swipe) {
 	}
 
 	@Override
-	public void chargeSwipeBuilding(Line swipe)
-	{
+	public void chargeSwipeBuilding(Line swipe) {
 		update(swipe);
 		setVisible(true);
 	}
 
 	@Override
-	public void swipeCancelled()
-	{
+	public void swipeCancelled() {
 		setVisible(false);
 	}
 
 	@Override
-	public void handleSwipe(Line swipe)
-	{
+	public void handleSwipe(Line swipe) {
 	}
 
 	@Override
-	public void handleChargeSwipe(Line swipe)
-	{
+	public void handleChargeSwipe(Line swipe) {
 	}
 
 	@Override
-	public void handleDoubleTap(Point tapPoint)
-	{
+	public void handleDoubleTap(Point tapPoint) {
 		setVisible(false);
 	}
 
 	@Override
-	public void handleMultiTap()
-	{
+	public void handleMultiTap() {
 	}
 
-	public void setDisabled(boolean isDisabled)
-	{
+	public void setDisabled(boolean isDisabled) {
 		this.isDisabled = isDisabled;
 	}
 
-	public boolean isVisible()
-	{
+	public boolean isVisible() {
 		return cooldownTail.isVisible() || tail.isVisible();
 	}
 }

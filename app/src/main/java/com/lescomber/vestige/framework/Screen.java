@@ -8,8 +8,7 @@ import com.lescomber.vestige.geometry.Hitbox;
 import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.geometry.Rectangle;
 
-public abstract class Screen
-{
+public abstract class Screen {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 480;
 
@@ -22,13 +21,11 @@ public abstract class Screen
 
 	protected final AndroidGame game;
 
-	public Screen(AndroidGame game)
-	{
+	public Screen(AndroidGame game) {
 		this.game = game;
 	}
 
-	protected void prepScreenChange()
-	{
+	protected void prepScreenChange() {
 		isChanging = true;
 		SpriteManager.getInstance().startBuffer();
 		TextManager.switchBuild();
@@ -36,24 +33,20 @@ public abstract class Screen
 		AudioManager.queueMode();
 	}
 
-	public static void notifyScreenChanged()
-	{
+	public static void notifyScreenChanged() {
 		AudioManager.activateQueue();
 		isChanging = false;
 	}
 
-	public static boolean isScreenChanging()
-	{
+	public static boolean isScreenChanging() {
 		return isChanging;
 	}
 
-	public static boolean contains(Point p)
-	{
+	public static boolean contains(Point p) {
 		return SCREEN_HITBOX.contains(p);
 	}
 
-	public static boolean overlaps(Hitbox hitbox)
-	{
+	public static boolean overlaps(Hitbox hitbox) {
 		return SCREEN_HITBOX.overlaps(hitbox);
 	}
 

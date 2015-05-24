@@ -7,8 +7,8 @@ import com.lescomber.vestige.crossover.ColorRectManager;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.crossover.TextManager;
 import com.lescomber.vestige.framework.AndroidGame;
-import com.lescomber.vestige.framework.Input.TouchEvent;
 import com.lescomber.vestige.framework.Screen;
+import com.lescomber.vestige.framework.TouchHandler.TouchEvent;
 import com.lescomber.vestige.graphics.Sprite;
 import com.lescomber.vestige.graphics.Text;
 import com.lescomber.vestige.graphics.TextStyle;
@@ -17,8 +17,7 @@ import com.lescomber.vestige.map.Map;
 
 import java.util.List;
 
-public class MapLoadingScreen extends Screen implements Runnable
-{
+public class MapLoadingScreen extends Screen implements Runnable {
 	private static final long DESIRED_FRAME_TIME = 1000 / 60;    // Update speed for opacity Thread
 
 	private static final int PROGRESS_FAKE_INTERVAL = 200;    // Time (in ms) between each 1% progress increase
@@ -55,8 +54,7 @@ public class MapLoadingScreen extends Screen implements Runnable
 
 	private boolean backing;
 
-	public MapLoadingScreen(AndroidGame game, int stageNum, int levelNum)
-	{
+	public MapLoadingScreen(AndroidGame game, int stageNum, int levelNum) {
 		super(game);
 
 		AudioManager.playMusic(AudioManager.MENU_MUSIC);
@@ -76,27 +74,20 @@ public class MapLoadingScreen extends Screen implements Runnable
 
 		new Sprite(SpriteManager.loadingCircleBackground, Screen.MIDX, 200, true);
 
-		//final TextStyle progressStyle = new TextStyle("BLANCH_CAPS.otf", 57, 0, 0, 255, 255, 255, 1);
-		//progressStyle.setSpacing(2.5f);
 		final TextStyle progressStyle = TextStyle.bodyStyleWhite();
 		progressText = new Text(progressStyle, "0%", Screen.MIDX, 200);
 
 		backPressed = false;
-
 		downTouch = false;
-
 		backing = false;
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
-		final List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
+	public void update(int deltaTime) {
+		final List<TouchEvent> touchEvents = game.getTouchEvents();
 
-		if (isLoading)
-		{
-			if (passCount == PASS_DELAY_COUNT)
-			{
+		if (isLoading) {
+			if (passCount == PASS_DELAY_COUNT) {
 				progress = 0.4f;
 				loadingCircleFill = new Sprite(SpriteManager.loadingCircleFill, Screen.MIDX, 200, false);
 				final float fillRadius = progress * SpriteManager.loadingCircleFill.getWidth();
@@ -104,18 +95,12 @@ public class MapLoadingScreen extends Screen implements Runnable
 				loadingCircleFill.setAlpha(progress);
 				loadingCircleFill.setVisible(true);
 				progressText.setText("40%");
-			}
-			else if (passCount == PASS_DELAY_COUNT + 1)
-			{
+			} else if (passCount == PASS_DELAY_COUNT + 1) {
 				messageAlpha = 0.33f;
-				//final TextStyle messageFadeStyle = new TextStyle("BLANCH_CAPS.otf", 57, 87, 233, 255, messageAlpha);
-				//messageFadeStyle.setSpacing(2.5f);
 				final TextStyle messageFadeStyle = TextStyle.bodyStyleCyan();
 				messageFadeStyle.setAlpha(messageAlpha);
 				message = new Text(messageFadeStyle, "", Screen.MIDX, 340);
-			}
-			else if (passCount == PASS_DELAY_COUNT + 2)
-			{
+			} else if (passCount == PASS_DELAY_COUNT + 2) {
 				prepScreenChange();
 
 				setProgress(40, 58);
@@ -128,7 +113,6 @@ public class MapLoadingScreen extends Screen implements Runnable
 					gs = new PewBallScreen(game);
 				else
 					gs = new GameScreen(game);
-				//final TutorialScreen ts = new TutorialScreen(game);
 
 				setProgress(60, 78);
 
@@ -146,104 +130,39 @@ public class MapLoadingScreen extends Screen implements Runnable
 				setProgress(100, 100);
 
 				isLoading = false;
-
-				/*if (stageNum == Levels.TUTORIAL_STAGE)	// Load TutorialScreen
-				{
-					prepScreenChange();
-					
-					setProgress(40, 58);
-					progressFakeCooldown = 0;	// Speed up the first fake percent
-					
-					final TutorialScreen ts = new TutorialScreen(game);
-					
-					setProgress(60, 78);
-					
-					final Map level = Levels.loadLevel(stageNum, levelNum);
-					
-					setProgress(80, 93);
-					
-					ts.loadMap(level);
-					gameScreen = ts;
-					
-					setProgress(95, 98);
-					
-					System.gc();
-					
-					setProgress(100, 100);
-					
-					isLoading = false;
-				}
-				else			// Load GameScreen with appropriate stageNum/levelNum
-				{
-					prepScreenChange();
-					
-					setProgress(40, 58);
-					progressFakeCooldown = 0;	// Speed up the first fake percent
-					
-					final GameScreen gs = new GameScreen(game);
-					
-					setProgress(60, 78);
-					
-					final Map level = Levels.loadLevel(stageNum, levelNum);
-					
-					setProgress(80, 93);
-					
-					gs.loadMap(level);
-					gameScreen = gs;
-					
-					setProgress(95, 98);
-					
-					System.gc();
-					
-					setProgress(100, 100);
-					
-					isLoading = false;
-				}*/
 			}
 
 			passCount++;
 
-			game.getInput().getTouchEvents();    // Clear touchEvents
-		}
-		else if (backPressed)
+			game.getTouchEvents();    // Clear touchEvents
+		} else if (backPressed)
 			backUp();
-		else
-		{
-			if (messageAlpha < 1.0f)
-			{
+		else {
+			if (messageAlpha < 1.0f) {
 				messageAlpha += (ALPHA_PER_MS * deltaTime);
 				if (messageAlpha > 1.0f)
 					messageAlpha = 1.0f;
 
-				synchronized (this)
-				{
+				synchronized (this) {
 					if (!backing)
 						message.setAlpha(messageAlpha);
 				}
 			}
 
 			final int len = touchEvents.size();
-			for (int i = 0; i < len; i++)
-			{
+			for (int i = 0; i < len; i++) {
 				final TouchEvent event = touchEvents.get(i);
-				if (event.type == TouchEvent.TOUCH_DOWN)
-				{
+				if (event.type == TouchEvent.TOUCH_DOWN) {
 					downTouch = true;
-				}
-				else if (event.type == TouchEvent.TOUCH_UP)
-				{
-					if (downTouch)
-					{
+				} else if (event.type == TouchEvent.TOUCH_UP) {
+					if (downTouch) {
 						// Close opacity updating thread before continuing to next screen
 						opacityRunning = false;
-						while (true)
-						{
-							try
-							{
+						while (true) {
+							try {
 								opacityThread.join();
 								break;
-							} catch (final InterruptedException e)
-							{
+							} catch (final InterruptedException e) {
 								// Retry
 							}
 						}
@@ -256,10 +175,8 @@ public class MapLoadingScreen extends Screen implements Runnable
 		}
 	}
 
-	private void backUp()
-	{
-		synchronized (this)
-		{
+	private void backUp() {
+		synchronized (this) {
 			backing = true;
 		}
 
@@ -274,23 +191,15 @@ public class MapLoadingScreen extends Screen implements Runnable
 			game.setScreen(new PewBallPrepScreen(game));
 		else
 			game.setScreen(new LevelSelectionScreen(game, stageNum));
-
-		//if (stageNum > 0)
-		//	game.setScreen(new LevelSelectionScreen(game, stageNum));
-		//else	// Case: Tutorial was loading
-		//	game.setScreen(new MainMenuScreen(game, false));
 	}
 
-	private void setProgress(int progressPercent, int progressPercentCap)
-	{
+	private void setProgress(int progressPercent, int progressPercentCap) {
 		progress = (float) progressPercent / 100;
 		progressCap = (float) progressPercentCap / 100;
 		progressFakeCooldown = PROGRESS_FAKE_INTERVAL;
 
-		synchronized (this)
-		{
-			if (!backing)
-			{
+		synchronized (this) {
+			if (!backing) {
 				final float fillRadius = progress * SpriteManager.loadingCircleFill.getWidth();
 				progressText.setText("" + progressPercent + "%");
 				loadingCircleFill.scaleTo(fillRadius, fillRadius);
@@ -302,44 +211,36 @@ public class MapLoadingScreen extends Screen implements Runnable
 		}
 	}
 
-	private void setProgress(int progressPercent)
-	{
+	private void setProgress(int progressPercent) {
 		setProgress(progressPercent, (int) (progressCap * 100));
 	}
 
 	@Override
-	public void pause()
-	{
+	public void pause() {
 		opacityRunning = false;
-		while (true)
-		{
-			try
-			{
+		while (true) {
+			try {
 				opacityThread.join();
 				break;
-			} catch (final InterruptedException e)
-			{
+			} catch (final InterruptedException e) {
 				// retry
 			}
 		}
 	}
 
 	@Override
-	public void resume()
-	{
+	public void resume() {
 		opacityRunning = true;
 		opacityThread = new Thread(this);
 		opacityThread.start();
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 	}
 
 	@Override
-	public void backButton()
-	{
+	public void backButton() {
 		if (isLoading)
 			backPressed = true;
 		else
@@ -347,21 +248,17 @@ public class MapLoadingScreen extends Screen implements Runnable
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		long startTime = System.nanoTime();
 		long deltaTime = 0;
 
-		while (opacityRunning)
-		{
+		while (opacityRunning) {
 			// Throttle loop speed to a maximum of roughly 60 updates per second
 			deltaTime = (System.nanoTime() - startTime) / 1000000;
-			try
-			{
+			try {
 				if (deltaTime < DESIRED_FRAME_TIME)
 					Thread.sleep(DESIRED_FRAME_TIME - deltaTime);
-			} catch (final InterruptedException ie)
-			{
+			} catch (final InterruptedException ie) {
 			}
 
 			deltaTime = (System.nanoTime() - startTime) / 1000000;        // Note: deltaTime is in ms
@@ -381,21 +278,15 @@ public class MapLoadingScreen extends Screen implements Runnable
 			// Update opacity
 			opacityFlux += (opacityPerMs * deltaTime);
 
-			if (opacityFlux >= 1)
-			{
+			if (opacityFlux >= 1) {
 				opacityFlux = 1;
 				opacityPerMs = -opacityPerMs;
-				//opacityPerMs *= -1;
-			}
-			else if (opacityFlux <= 0.75f)
-			{
+			} else if (opacityFlux <= 0.75f) {
 				opacityFlux = 0.75f;
 				opacityPerMs = -opacityPerMs;
-				//opacityPerMs *= -1;
 			}
 
-			synchronized (this)
-			{
+			synchronized (this) {
 				if (!backing)
 					loadingCircleFill.setAlpha(progress * opacityFlux);
 			}

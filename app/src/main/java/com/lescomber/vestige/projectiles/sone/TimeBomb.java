@@ -7,8 +7,7 @@ import com.lescomber.vestige.projectiles.Explosion;
 import com.lescomber.vestige.projectiles.Projectile;
 import com.lescomber.vestige.screens.OptionsScreen;
 
-public class TimeBomb extends Projectile
-{
+public class TimeBomb extends Projectile {
 	private static final float[] DAMAGE = new float[] { 5, 7.5f, 10 };
 	private static final float EXPLOSION_RADIUS = 50;
 
@@ -16,8 +15,7 @@ public class TimeBomb extends Projectile
 
 	// FIXME: Whyyyy does the glow from one of these things expand continuously very rarely?
 
-	public TimeBomb(float x, float y, float destX, float destY, int timer)
-	{
+	public TimeBomb(float x, float y, float destX, float destY, int timer) {
 		super(null, 0, 8);
 
 		setWallPassThrough(true);
@@ -42,21 +40,18 @@ public class TimeBomb extends Projectile
 		setExplosion(e);
 	}
 
-	public TimeBomb(int timer)
-	{
+	public TimeBomb(int timer) {
 		this(0, 0, 0, 0, timer);
 	}
 
-	public TimeBomb(TimeBomb copyMe)
-	{
+	public TimeBomb(TimeBomb copyMe) {
 		super(copyMe);
 
 		timer = copyMe.timer;
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
 		timer -= deltaTime;
@@ -65,16 +60,14 @@ public class TimeBomb extends Projectile
 	}
 
 	@Override
-	public AIProjectileBehavior getBehavior()
-	{
+	public AIProjectileBehavior getBehavior() {
 		final AIProjectileBehavior aip = new AIProjectileBehavior();
 		aip.isExtended = false;
 		return aip;
 	}
 
 	@Override
-	public TimeBomb copy()
-	{
+	public TimeBomb copy() {
 		return new TimeBomb(this);
 	}
 }

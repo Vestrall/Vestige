@@ -7,8 +7,7 @@ import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.graphics.Sprite;
 import com.lescomber.vestige.graphics.Swapper;
 
-public class BeamSprite extends Sprite
-{
+public class BeamSprite extends Sprite {
 	private static final float HEIGHT_RATIO = SpriteManager.enemyLaserBody.getHeight() / SpriteManager.enemyLaserHead.getHeight();
 	private static final float HEAD_WIDTH = 16;
 
@@ -21,8 +20,7 @@ public class BeamSprite extends Sprite
 
 	private Sprite headSprite;
 
-	public BeamSprite()
-	{
+	public BeamSprite() {
 		super((SpriteInfo) null);
 
 		bodySprite = new Sprite(SpriteManager.enemyLaserBody);
@@ -37,8 +35,7 @@ public class BeamSprite extends Sprite
 		y = 0;
 	}
 
-	public BeamSprite(BeamSprite copyMe)
-	{
+	public BeamSprite(BeamSprite copyMe) {
 		super(copyMe);
 
 		x = copyMe.x;
@@ -49,8 +46,7 @@ public class BeamSprite extends Sprite
 			headSprite = new Sprite(copyMe.headSprite);
 	}
 
-	public void loseHead()
-	{
+	public void loseHead() {
 		if (headSprite == null)
 			return;
 
@@ -69,8 +65,7 @@ public class BeamSprite extends Sprite
 		headSprite = null;
 	}
 
-	public void age(float width, float dx, float dy)
-	{
+	public void age(float width, float dx, float dy) {
 		// Is the beam growing or shrinking? We will only move headSprite if it is growing
 		final boolean isGrowing = width > getWidth();
 
@@ -99,8 +94,7 @@ public class BeamSprite extends Sprite
 	}
 
 	@Override
-	public void offset(float dx, float dy)
-	{
+	public void offset(float dx, float dy) {
 		x += dx;
 		y += dy;
 		bodySprite.offset(dx, dy);
@@ -109,20 +103,17 @@ public class BeamSprite extends Sprite
 	}
 
 	@Override
-	public void offsetTo(float x, float y)
-	{
+	public void offsetTo(float x, float y) {
 		offset(x - this.x, y - this.y);
 	}
 
 	@Override
-	public void offsetTo(Point p)
-	{
+	public void offsetTo(Point p) {
 		offsetTo(p.x, p.y);
 	}
 
 	@Override
-	public void rotate(float radians)
-	{
+	public void rotate(float radians) {
 		// Rotate body
 		bodySprite.rotateAbout(radians, x, y);
 
@@ -132,14 +123,12 @@ public class BeamSprite extends Sprite
 	}
 
 	@Override
-	public void rotateTo(float radians)
-	{
+	public void rotateTo(float radians) {
 		rotate(radians - getDirection());
 	}
 
 	@Override
-	public void rotateAbout(float radians, float rotateX, float rotateY)
-	{
+	public void rotateAbout(float radians, float rotateX, float rotateY) {
 		// Update coords
 		final Point xy = new Point(x, y);
 		Point.rotate(xy, radians, rotateX, rotateY);
@@ -153,8 +142,7 @@ public class BeamSprite extends Sprite
 	}
 
 	@Override
-	public void scale(double widthRatio, double heightRatio)
-	{
+	public void scale(double widthRatio, double heightRatio) {
 		if (heightRatio == 1)
 			scaleWidthTo((float) (widthRatio * getWidth()));
 		else if (widthRatio == 1)
@@ -164,20 +152,17 @@ public class BeamSprite extends Sprite
 	}
 
 	@Override
-	public void scaleTo(float width, float height)
-	{
+	public void scaleTo(float width, float height) {
 		scaleWidthTo(width);
 		scaleHeightTo(height);
 	}
 
 	@Override
-	public void scaleWidthTo(float width)
-	{
+	public void scaleWidthTo(float width) {
 		final float dWidth = width - getWidth();
 		bodySprite.scaleWidthTo(bodySprite.getWidth() + dWidth);
 
-		if (headSprite != null)
-		{
+		if (headSprite != null) {
 			Point headSpriteLocation = new Point(headSprite.getX(), headSprite.getY());
 			headSpriteLocation = headSpriteLocation.getPointFromDirection(getDirection(), dWidth / 2);
 			headSprite.offsetTo(headSpriteLocation);
@@ -185,82 +170,72 @@ public class BeamSprite extends Sprite
 	}
 
 	@Override
-	public void scaleHeightTo(float height)
-	{
+	public void scaleHeightTo(float height) {
 		bodySprite.scaleHeightTo(HEIGHT_RATIO * height);
 		if (headSprite != null)
 			headSprite.scaleHeightTo(height);
 	}
 
 	@Override
-	public void setAlpha(float alpha)
-	{
+	public void setAlpha(float alpha) {
 		bodySprite.setAlpha(alpha);
 		if (headSprite != null)
 			headSprite.setAlpha(alpha);
 	}
 
 	@Override    // Layer height stays at 0 for BeamSprites
-	public void setLayerHeight(int layerHeight)
-	{
+	public void setLayerHeight(int layerHeight) {
 	}
 
 	@Override
-	public int getLayerHeight()
-	{
+	public int getLayerHeight() {
 		return bodySprite.getLayerHeight();
 	}
 
+	/**
+	 * Note: doesn't work for BeamSprite
+	 */
 	@Override
-	public void setTexWidth(float percentage)
-	{
-	}        //Note: setTexWidth doesn't work for BeamSprite
+	public void setTexWidth(float percentage) {
+	}
 
 	@Override
-	public float getX()
-	{
+	public float getX() {
 		return x;
 	}
 
 	@Override
-	public float getY()
-	{
+	public float getY() {
 		return y;
 	}
 
 	@Override
-	public float getDirection()
-	{
+	public float getDirection() {
 		return bodySprite.getDirection();
 	}
 
 	@Override
-	public int getIndex()
-	{
+	public int getIndex() {
 		return bodySprite.getIndex();
 	}
 
 	@Override
-	public SpriteInfo getInfo()
-	{
+	public SpriteInfo getInfo() {
 		return bodySprite.getInfo();
 	}
 
 	@Override
-	public Sprite getSprite()
-	{
+	public Sprite getSprite() {
 		return bodySprite;
 	}
 
 	@Override
-	public SpriteTemplate getTemplate()
-	{
+	public SpriteTemplate getTemplate() {
 		return bodySprite.getTemplate();
 	}
 
 	@Override
-	public float getWidth()
-	{
+	public float getWidth() {
 		if (headSprite != null)
 			return bodySprite.getWidth() + HEAD_WIDTH;
 		else
@@ -268,8 +243,7 @@ public class BeamSprite extends Sprite
 	}
 
 	@Override
-	public float getHeight()
-	{
+	public float getHeight() {
 		if (headSprite != null)
 			return headSprite.getHeight();
 		else
@@ -277,32 +251,27 @@ public class BeamSprite extends Sprite
 	}
 
 	@Override
-	public float getWidthScale()
-	{
+	public float getWidthScale() {
 		return getWidth() / (SpriteManager.enemyLaserBody.getWidth() + SpriteManager.enemyLaserHead.getWidth());
 	}
 
 	@Override
-	public float getHeightScale()
-	{
+	public float getHeightScale() {
 		return getHeight() / (SpriteManager.enemyLaserHead.getHeight());
 	}
 
 	@Override
-	public float getSubTexWidth()
-	{
+	public float getSubTexWidth() {
 		return 0;
 	}        // Doesn't work
 
 	@Override
-	public float getSubTexHeight()
-	{
+	public float getSubTexHeight() {
 		return 0;
 	}        // Doesn't work
 
 	@Override
-	public void setVisible(boolean isVisible)
-	{
+	public void setVisible(boolean isVisible) {
 		if (bodySprite != null)
 			bodySprite.setVisible(isVisible);
 
@@ -311,38 +280,33 @@ public class BeamSprite extends Sprite
 	}
 
 	@Override
-	public boolean isVisible()
-	{
+	public boolean isVisible() {
 		return bodySprite.isVisible();
 	}
 
 	@Override
-	public void close()
-	{
+	public void close() {
 		bodySprite.close();
 		if (headSprite != null)
 			headSprite.close();
 	}
 
 	@Override
-	public void wasReplaced()
-	{
+	public void wasReplaced() {
 		bodySprite.wasReplaced();
 		if (headSprite != null)
 			headSprite.setVisible(false);
 	}
 
 	@Override
-	public void wasAdded(int newIndex)
-	{
+	public void wasAdded(int newIndex) {
 		bodySprite.wasAdded(newIndex);
 		if (headSprite != null)
 			headSprite.setVisible(true);
 	}
 
 	@Override
-	public BeamSprite copy()
-	{
+	public BeamSprite copy() {
 		return new BeamSprite(this);
 	}
 }

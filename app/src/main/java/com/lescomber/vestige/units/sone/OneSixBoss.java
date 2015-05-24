@@ -20,8 +20,7 @@ import com.lescomber.vestige.units.Boss;
 
 import java.util.ArrayList;
 
-public class OneSixBoss extends Boss
-{
+public class OneSixBoss extends Boss {
 	private static final double BOSS_PHASE_SECONDS = 12;
 	private static final double CASTER_PHASE_SECONDS = 16;
 
@@ -59,8 +58,7 @@ public class OneSixBoss extends Boss
 
 	private final DummyAbility trigger;
 
-	public OneSixBoss()
-	{
+	public OneSixBoss() {
 		super(850 + (350 * OptionsScreen.difficulty), 160 + (10 * OptionsScreen.difficulty));
 
 		isBossState = true;
@@ -191,8 +189,8 @@ public class OneSixBoss extends Boss
 		seekerShooter.scaleForDifficulty();
 		casterAbilities.add(seekerShooter);
 
-		final Projectile prototype = new Projectile(SpriteManager.enemyProjectile, 7,
-				Projectile.ENEMY_PROJECTILE_WIDTH, Projectile.ENEMY_PROJECTILE_HEIGHT);
+		final Projectile prototype = new Projectile(SpriteManager.enemyProjectile, 7, Projectile.ENEMY_PROJECTILE_WIDTH, Projectile
+				.ENEMY_PROJECTILE_HEIGHT);
 		prototype.setUnitHitSound(AudioManager.enemyProjectileHit);
 		prototype.setGlow(SpriteManager.redGlow);
 		prototype.setVelocityPerSecond(300);        // Slow prototype down just a little (default is 350)
@@ -201,8 +199,7 @@ public class OneSixBoss extends Boss
 		casterAbilities.add(multiShooter);
 	}
 
-	public OneSixBoss(OneSixBoss copyMe)
-	{
+	public OneSixBoss(OneSixBoss copyMe) {
 		super(copyMe);
 
 		isBossState = copyMe.isBossState;
@@ -229,8 +226,7 @@ public class OneSixBoss extends Boss
 
 		bossAbilities = new ArrayList<AIAbility>(5);
 		creepingFireHitGroup = new HitGroup();
-		for (final AIAbility aia : copyMe.bossAbilities)
-		{
+		for (final AIAbility aia : copyMe.bossAbilities) {
 			final AIAbility newAbility = aia.copy();
 			newAbility.setOwner(this);
 			if (newAbility instanceof Charge)
@@ -241,8 +237,7 @@ public class OneSixBoss extends Boss
 		}
 
 		casterAbilities = new ArrayList<AIAbility>(5);
-		for (final AIAbility aia : copyMe.casterAbilities)
-		{
+		for (final AIAbility aia : copyMe.casterAbilities) {
 			final AIAbility newAbility = aia.copy();
 			newAbility.setOwner(this);
 			casterAbilities.add(newAbility);
@@ -258,49 +253,37 @@ public class OneSixBoss extends Boss
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
 		creepingFireHitGroup.update(deltaTime);
 	}
 
 	@Override
-	public void startAbility(AIAbility ability)
-	{
-		if (ability instanceof Charge)
-		{
+	public void startAbility(AIAbility ability) {
+		if (ability instanceof Charge) {
 			charge = (Charge) ability;
 
-			if (charge.isTargetLeft())
-			{
+			if (charge.isTargetLeft()) {
 				setFiring(true);
 				restartAnimation(preChargeLeft);
-			}
-			else
-			{
+			} else {
 				setFiring(true);
 				restartAnimation(preChargeRight);
 			}
-		}
-		else
+		} else
 			super.startAbility(ability);
 	}
 
 	@Override
-	protected void fire(AIAbility ability)
-	{
+	protected void fire(AIAbility ability) {
 		super.fire(ability);
 
-		if (ability == trigger)
-		{
-			if (isBossState)
-			{
+		if (ability == trigger) {
+			if (isBossState) {
 				shiftToCaster();
 				trigger.setCooldown(CASTER_PHASE_SECONDS * (1.0 + (0.2 * Util.rand.nextDouble())));    // Reduce trigger cooldown for boss phase
-			}
-			else
-			{
+			} else {
 				shiftToBoss();
 				trigger.setCooldown(BOSS_PHASE_SECONDS * (1.0 + (0.2 * Util.rand.nextDouble())));    // Reduce trigger cooldown for boss phase
 			}
@@ -308,64 +291,47 @@ public class OneSixBoss extends Boss
 	}
 
 	@Override
-	protected void animationFinished(int animIndex)
-	{
-		if (animIndex == preChargeLeft)
-		{
-			if (charge.isTargetLeft())
-			{
+	protected void animationFinished(int animIndex) {
+		if (animIndex == preChargeLeft) {
+			if (charge.isTargetLeft()) {
 				setIdleLeftSprite(SpriteManager.bossAttackLeft[5]);
 				chargeLeft = true;
-			}
-			else
-			{
+			} else {
 				setIdleRightSprite(SpriteManager.bossAttackRight[5]);
 				chargeLeft = false;
 			}
 
 			charge.fire();
-		}
-		else if (animIndex == preChargeRight)
-		{
-			if (charge.isTargetLeft())
-			{
+		} else if (animIndex == preChargeRight) {
+			if (charge.isTargetLeft()) {
 				chargeLeft = true;
 				setIdleLeftSprite(SpriteManager.bossAttackLeft[5]);
-			}
-			else
-			{
+			} else {
 				chargeLeft = false;
 				setIdleRightSprite(SpriteManager.bossAttackRight[5]);
 			}
 
 			charge.fire();
-		}
-		else if (animIndex == successfulChargeLeft || animIndex == successfulChargeRight)
-		{
+		} else if (animIndex == successfulChargeLeft || animIndex == successfulChargeRight) {
 			charge.strike();
 			finishedFiring();
-		}
-		else if (animIndex == unsuccessfulChargeLeft || animIndex == unsuccessfulChargeRight)
+		} else if (animIndex == unsuccessfulChargeLeft || animIndex == unsuccessfulChargeRight)
 			finishedFiring();
 		else
 			super.animationFinished(animIndex);
 	}
 
 	@Override
-	public void dashComplete()
-	{
+	public void dashComplete() {
 		setIdleLeftSprite(SpriteManager.bossWalkLeft[0]);
 		setIdleRightSprite(SpriteManager.bossWalkRight[0]);
 
-		if (chargeLeft)
-		{
+		if (chargeLeft) {
 			if (charge.isInRange())
 				restartAnimation(successfulChargeLeft);
 			else
 				restartAnimation(unsuccessfulChargeLeft);
-		}
-		else
-		{
+		} else {
 			if (charge.isInRange())
 				restartAnimation(successfulChargeRight);
 			else
@@ -373,8 +339,7 @@ public class OneSixBoss extends Boss
 		}
 	}
 
-	private void shiftToCaster()
-	{
+	private void shiftToCaster() {
 		// Setup caster images
 		setIdleLeftSprite(casterIdleLeft);
 		setIdleRightSprite(casterIdleRight);
@@ -400,8 +365,7 @@ public class OneSixBoss extends Boss
 		isBossState = false;
 	}
 
-	private void shiftToBoss()
-	{
+	private void shiftToBoss() {
 		// Setup boss images
 		setIdleLeftSprite(bossIdleLeft);
 		setIdleRightSprite(bossIdleRight);
@@ -428,10 +392,8 @@ public class OneSixBoss extends Boss
 	}
 
 	@Override
-	public void deathAnim()
-	{
-		if (isBossState == false)
-		{
+	public void deathAnim() {
+		if (isBossState == false) {
 			setDeathAnimationLeft(casterDeathLeftAnim);
 			setDeathAnimationRight(casterDeathRightAnim);
 			setDeathAnimXOffset(4 * CASTER_SCALE);
@@ -441,8 +403,7 @@ public class OneSixBoss extends Boss
 	}
 
 	@Override
-	public OneSixBoss copy()
-	{
+	public OneSixBoss copy() {
 		return new OneSixBoss(this);
 	}
 }

@@ -4,15 +4,12 @@ import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
 import com.lescomber.vestige.geometry.Hitbox;
 import com.lescomber.vestige.graphics.Sprite;
 
-public abstract class Glow extends Sprite
-{
-	public Glow(SpriteTemplate template)
-	{
+public abstract class Glow extends Sprite {
+	public Glow(SpriteTemplate template) {
 		super(template);
 	}
 
-	public Glow(Glow copyMe)
-	{
+	public Glow(Glow copyMe) {
 		super(copyMe);
 	}
 

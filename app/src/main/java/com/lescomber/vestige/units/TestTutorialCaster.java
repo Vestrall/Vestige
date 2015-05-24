@@ -10,13 +10,11 @@ import com.lescomber.vestige.statuseffects.StatPack;
 
 import java.util.List;
 
-public class TestTutorialCaster extends AIUnit
-{
+public class TestTutorialCaster extends AIUnit {
 	private boolean isAngry;
 	private final List<AIAbility> abilities;
 
-	public TestTutorialCaster()
-	{
+	public TestTutorialCaster() {
 		super(60, 36, -21, 30);
 
 		setIdleLeftSprite(SpriteManager.casterAttackLeft[0]);
@@ -31,8 +29,8 @@ public class TestTutorialCaster extends AIUnit
 		setDifficultyScaledBaseStats(baseStats);
 
 		// Init abilities
-		final Projectile shot = new Projectile(SpriteManager.enemyProjectile, 0,
-				Projectile.ENEMY_PROJECTILE_WIDTH, Projectile.ENEMY_PROJECTILE_HEIGHT);
+		final Projectile shot = new Projectile(SpriteManager.enemyProjectile, 0, Projectile.ENEMY_PROJECTILE_WIDTH, Projectile
+				.ENEMY_PROJECTILE_HEIGHT);
 		shot.setGlow(SpriteManager.redGlow);
 		final AIShooter shooter = new AIShooter(this, shot, 3);
 		shooter.setCooldown(1000);
@@ -51,8 +49,7 @@ public class TestTutorialCaster extends AIUnit
 		setPostFiringRightAnimation(postFiringRightAnim);
 	}
 
-	public TestTutorialCaster(TestTutorialCaster copyMe)
-	{
+	public TestTutorialCaster(TestTutorialCaster copyMe) {
 		super(copyMe);
 
 		isAngry = copyMe.isAngry;
@@ -60,10 +57,8 @@ public class TestTutorialCaster extends AIUnit
 	}
 
 	@Override
-	public void hit(HitBundle bundle)
-	{
-		if (!isAngry)
-		{
+	public void hit(HitBundle bundle) {
+		if (!isAngry) {
 			for (final AIAbility aia : abilities)
 				aia.setCooldown(0.5);
 			isAngry = true;
@@ -73,8 +68,7 @@ public class TestTutorialCaster extends AIUnit
 	}
 
 	@Override
-	public TestTutorialCaster copy()
-	{
+	public TestTutorialCaster copy() {
 		return new TestTutorialCaster(this);
 	}
 }

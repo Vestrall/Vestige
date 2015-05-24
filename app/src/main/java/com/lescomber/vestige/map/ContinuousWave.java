@@ -4,8 +4,7 @@ import com.lescomber.vestige.units.AIUnit;
 
 import java.util.List;
 
-public class ContinuousWave extends Wave
-{
+public class ContinuousWave extends Wave {
 	private boolean spawning;                // true when still spawning continuous units
 
 	private final Wave continuousWaveProto;        // continuousWave prototype. Is copied to create each new continuousWave
@@ -18,8 +17,7 @@ public class ContinuousWave extends Wave
 	private double waveCDPercent;            // Current percentage multiplier for cooldowns of continuousWave spawning
 	private double waveCDMin;                // Remaining iterations to apply waveCDRecution (enforces lower limit)
 
-	public ContinuousWave(double waveCountdownSeconds, Wave continuousWave, double continuousWaveIntervalSeconds)
-	{
+	public ContinuousWave(double waveCountdownSeconds, Wave continuousWave, double continuousWaveIntervalSeconds) {
 		super(waveCountdownSeconds);
 
 		spawning = true;
@@ -38,41 +36,32 @@ public class ContinuousWave extends Wave
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
 		if (waveInterval > 0)
 			waveInterval -= deltaTime;
-		else if (spawning)
-		{
+		else if (spawning) {
 			continuousWave.update(deltaTime);
 			final List<AIUnit> continuousUnits = continuousWave.getEnemiesQueue();
 			for (final AIUnit aiu : continuousUnits)
 				queueEnemiesUnit(aiu);
 
-			if (continuousWave.isFinished())
-			{
-				if (waveCDPercent > waveCDMin)
-				{
+			if (continuousWave.isFinished()) {
+				if (waveCDPercent > waveCDMin) {
 					waveCDPercent -= waveCDReduction;
 
 					// If this is the last reduction, permanently change continuousWaveProto to have final values
-					if (waveCDPercent <= waveCDMin)
-					{
+					if (waveCDPercent <= waveCDMin) {
 						waveCDPercent = waveCDMin;
-						for (int i = 0; i < continuousWaveProto.unitCountdowns.size(); i++)
-						{
+						for (int i = 0; i < continuousWaveProto.unitCountdowns.size(); i++) {
 							final int newCooldown = (int) Math.round(continuousWaveProto.unitCountdowns.get(i) * waveCDPercent);
 							continuousWaveProto.unitCountdowns.set(i, newCooldown);
 						}
 						continuousWave = new Wave(continuousWaveProto);
-					}
-					else
-					{
+					} else {
 						continuousWave = new Wave(continuousWaveProto);
-						for (int i = 0; i < continuousWave.unitCountdowns.size(); i++)
-						{
+						for (int i = 0; i < continuousWave.unitCountdowns.size(); i++) {
 							final int newCooldown = (int) Math.round(continuousWaveProto.unitCountdowns.get(i) * waveCDPercent);
 							continuousWave.unitCountdowns.set(i, newCooldown);
 						}
@@ -80,9 +69,7 @@ public class ContinuousWave extends Wave
 
 					waveInterval = waveIntervalMax;
 					waveIntervalMax = (int) Math.round(waveIntervalMaxOriginal * waveCDPercent);
-				}
-				else
-				{
+				} else {
 					waveInterval = waveIntervalMax;
 					continuousWave = new Wave(continuousWaveProto);
 				}
@@ -91,14 +78,12 @@ public class ContinuousWave extends Wave
 	}
 
 	@Override
-	public void gameScreenEmpty()
-	{
+	public void gameScreenEmpty() {
 		if (isFinished())
 			spawning = false;
 	}
 
-	public void setWaveCooldownReduction(double reductionPercentPerWave, double minCooldownPercent)
-	{
+	public void setWaveCooldownReduction(double reductionPercentPerWave, double minCooldownPercent) {
 		waveCDReduction = reductionPercentPerWave;
 		waveCDMin = minCooldownPercent;
 	}

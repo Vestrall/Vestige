@@ -7,21 +7,18 @@ import android.opengl.GLUtils;
 
 import com.lescomber.vestige.Assets;
 
-public class CGLTexture
-{
+public class CGLTexture {
 	private int width;
 	private int height;
 	private int textureHandle;
 
-	public CGLTexture()
-	{
+	public CGLTexture() {
 		width = 0;
 		height = 0;
 		textureHandle = -1;
 	}
 
-	private int textureFromBitmap(Bitmap bitmap)
-	{
+	private int textureFromBitmap(Bitmap bitmap) {
 		// Generate texture handle and bind it
 		final int[] textureHandles = new int[1];
 		GLES20.glGenTextures(1, textureHandles, 0);
@@ -45,38 +42,32 @@ public class CGLTexture
 		return textureHandles[0];
 	}
 
-	public void createImageTexture(String filename, Config format)
-	{
+	public void createImageTexture(String filename, Config format) {
 		final Bitmap bitmap = Assets.newBitmap(filename, format);
 		width = bitmap.getWidth();
 		height = bitmap.getHeight();
 		textureHandle = textureFromBitmap(bitmap);
 	}
 
-	public void createImageTexture(String filename)
-	{
+	public void createImageTexture(String filename) {
 		createImageTexture(filename, Config.ARGB_8888);
 	}
 
-	public void createImageTexture(Bitmap bitmap)
-	{
+	public void createImageTexture(Bitmap bitmap) {
 		width = bitmap.getWidth();
 		height = bitmap.getHeight();
 		textureHandle = textureFromBitmap(bitmap);
 	}
 
-	public int getWidth()
-	{
+	public int getWidth() {
 		return width;
 	}
 
-	public int getHeight()
-	{
+	public int getHeight() {
 		return height;
 	}
 
-	public int getTextureHandle()
-	{
+	public int getTextureHandle() {
 		return textureHandle;
 	}
 }

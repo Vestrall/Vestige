@@ -6,12 +6,10 @@ import com.lescomber.vestige.statuseffects.StatPack;
 import com.lescomber.vestige.statuseffects.StatusEffect;
 import com.lescomber.vestige.units.Player;
 
-public class SOneMultiTap extends MultiTapAbility
-{
+public class SOneMultiTap extends MultiTapAbility {
 	private final StatusEffect shieldEffect;
 
-	public SOneMultiTap(Player player)
-	{
+	public SOneMultiTap(Player player) {
 		super(player);
 
 		setMaxCooldown(12);
@@ -27,22 +25,19 @@ public class SOneMultiTap extends MultiTapAbility
 		shieldEffect.setAnimation(anim);
 	}
 
-	public SOneMultiTap(SOneMultiTap copyMe)
-	{
+	public SOneMultiTap(SOneMultiTap copyMe) {
 		super(copyMe);
 
 		shieldEffect = copyMe.shieldEffect.copy();
 	}
 
 	@Override
-	public void activate()
-	{
+	public void activate() {
 		player.addStatusEffect(shieldEffect);
 	}
 
 	@Override
-	public SOneMultiTap copy()
-	{
+	public SOneMultiTap copy() {
 		return new SOneMultiTap(this);
 	}
 }

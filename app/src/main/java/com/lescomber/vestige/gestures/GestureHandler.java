@@ -1,13 +1,12 @@
 package com.lescomber.vestige.gestures;
 
-import com.lescomber.vestige.framework.Input.TouchEvent;
+import com.lescomber.vestige.framework.TouchHandler.TouchEvent;
 import com.lescomber.vestige.geometry.Line;
 import com.lescomber.vestige.geometry.Point;
 
 import java.util.ArrayList;
 
-public class GestureHandler
-{
+public class GestureHandler {
 	private static final int MIN_SWIPE_DISTANCE_SQUARED = 35 * 35;
 	private static final int MAX_DOUBLE_TAP_DISTANCE_SQUARED = 30 * 30;
 	private static final int MAX_DOUBLE_TAP_TIME = 400;
@@ -27,37 +26,30 @@ public class GestureHandler
 
 	// FIXME: Game crash caused by dragging a few fingers around the screen with a shirt in between fingers and screen
 
-	public GestureHandler()
-	{
+	public GestureHandler() {
 		listeners = new ArrayList<GestureHandlerListener>(3);
 
 		clear();
 	}
 
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		clock += deltaTime;
 	}
 
-	public void addListener(GestureHandlerListener listener)
-	{
+	public void addListener(GestureHandlerListener listener) {
 		if (!listeners.contains(listener))
 			listeners.add(listener);
 	}
 
-	public boolean removeListener(GestureHandlerListener listener)
-	{
+	public boolean removeListener(GestureHandlerListener listener) {
 		return listeners.remove(listener);
 	}
 
-	public void addTouch(TouchEvent event)
-	{
+	public void addTouch(TouchEvent event) {
 		final Point eventPoint = new Point(event.x, event.y);
 
-		if (event.type == TouchEvent.TOUCH_DOWN)
-		{
-			if (isDown)
-			{
+		if (event.type == TouchEvent.TOUCH_DOWN) {
+			if (isDown) {
 				previousDownTime = 0;
 				previousPreviousDownTime = 0;
 				isCharged = false;
@@ -67,9 +59,7 @@ public class GestureHandler
 				for (final GestureHandlerListener l : listeners)
 					l.handleMultiTap();
 				isDown = false;
-			}
-			else
-			{
+			} else {
 				previousDownPoint = downPoint;
 				downPoint = eventPoint;
 				previousPreviousDownTime = previousDownTime;
@@ -78,11 +68,8 @@ public class GestureHandler
 				for (final GestureHandlerListener l : listeners)
 					l.handleTap(downPoint);
 			}
-		}
-		else if (event.type == TouchEvent.TOUCH_DRAGGED)
-		{
-			if (downPoint != null && downPoint.distanceToPointSquared(eventPoint) >= MIN_SWIPE_DISTANCE_SQUARED)
-			{
+		} else if (event.type == TouchEvent.TOUCH_DRAGGED) {
+			if (downPoint != null && downPoint.distanceToPointSquared(eventPoint) >= MIN_SWIPE_DISTANCE_SQUARED) {
 				isSwiping = true;
 
 				if (!isCharged && (clock - previousDownTime) >= MIN_CHARGE_TIME)
@@ -96,19 +83,14 @@ public class GestureHandler
 				else
 					for (final GestureHandlerListener l : listeners)
 						l.swipeBuilding(inProgress);
-			}
-			else if (isSwiping)
-			{
+			} else if (isSwiping) {
 				isSwiping = false;
 
 				for (final GestureHandlerListener l : listeners)
 					l.swipeCancelled();
 			}
-		}
-		else if (event.type == TouchEvent.TOUCH_UP)
-		{
-			if (isSwiping)
-			{
+		} else if (event.type == TouchEvent.TOUCH_UP) {
+			if (isSwiping) {
 				final Line newSwipe = new Line(downPoint, eventPoint);
 
 				if (isCharged)
@@ -117,10 +99,8 @@ public class GestureHandler
 				else
 					for (final GestureHandlerListener l : listeners)
 						l.handleSwipe(newSwipe);
-			}
-			else if (clock - previousPreviousDownTime <= MAX_DOUBLE_TAP_TIME && previousDownPoint != null &&
-					previousDownPoint.distanceToPointSquared(eventPoint) <= MAX_DOUBLE_TAP_DISTANCE_SQUARED)
-			{
+			} else if (clock - previousPreviousDownTime <= MAX_DOUBLE_TAP_TIME && previousDownPoint != null &&
+					previousDownPoint.distanceToPointSquared(eventPoint) <= MAX_DOUBLE_TAP_DISTANCE_SQUARED) {
 				for (final GestureHandlerListener l : listeners)
 					l.handleDoubleTap(downPoint);
 				previousDownTime = 0;
@@ -132,15 +112,12 @@ public class GestureHandler
 			isSwiping = false;
 			isCharged = false;
 			isDown = false;
-		}
-		else if (event.type == TouchEvent.TOUCH_HOLD)
-		{
+		} else if (event.type == TouchEvent.TOUCH_HOLD) {
 
 		}
 	}
 
-	public void clear()
-	{
+	public void clear() {
 		clock = 0;
 		previousDownTime = -10000;
 		previousPreviousDownTime = -10000;
@@ -152,8 +129,7 @@ public class GestureHandler
 		isDown = false;
 	}
 
-	public boolean isSwiping()
-	{
+	public boolean isSwiping() {
 		return isSwiping;
 	}
 }

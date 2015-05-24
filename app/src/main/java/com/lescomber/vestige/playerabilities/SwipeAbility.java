@@ -4,15 +4,12 @@ import com.lescomber.vestige.geometry.Line;
 import com.lescomber.vestige.projectiles.Projectile;
 import com.lescomber.vestige.units.Player;
 
-public abstract class SwipeAbility extends PlayerAbility
-{
-	public SwipeAbility(Player player)
-	{
+public abstract class SwipeAbility extends PlayerAbility {
+	public SwipeAbility(Player player) {
 		super(player);
 	}
 
-	public SwipeAbility(SwipeAbility copyMe)
-	{
+	public SwipeAbility(SwipeAbility copyMe) {
 		super(copyMe);
 
 		player = copyMe.player;

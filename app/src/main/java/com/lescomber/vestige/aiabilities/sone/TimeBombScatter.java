@@ -9,8 +9,7 @@ import com.lescomber.vestige.screens.GameScreen;
 import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.AIUnit;
 
-public class TimeBombScatter extends AIChanneledAbility
-{
+public class TimeBombScatter extends AIChanneledAbility {
 	private static final double CHANNEL_DURATION = 3;
 	private static final int[] SPAWN_INTERVAL = new int[] { 150, 125, 100 };  // Interval (in ms) between each bomb summoned
 
@@ -18,21 +17,18 @@ public class TimeBombScatter extends AIChanneledAbility
 
 	private int spawnCooldown;
 
-	// Time bomb explosion sounds limited to EXPLOSION_SOUND_MAX quantity (since we don't want 20 explosion sounds going off at
-	//the same time)
+	// Time bomb explosion sounds limited to EXPLOSION_SOUND_MAX quantity (since we don't want 20 explosion sounds going off at the same time)
 	private static final int EXPLOSION_SOUND_MAX = 3;
 	private int explosionSoundCount;
 
-	public TimeBombScatter(AIUnit owner, double cooldownSeconds)
-	{
+	public TimeBombScatter(AIUnit owner, double cooldownSeconds) {
 		super(owner, CHANNEL_DURATION, cooldownSeconds);
 
 		spawnCooldown = SPAWN_INTERVAL[OptionsScreen.difficulty];
 		explosionSoundCount = 0;
 	}
 
-	public TimeBombScatter(TimeBombScatter copyMe)
-	{
+	public TimeBombScatter(TimeBombScatter copyMe) {
 		super(copyMe);
 
 		spawnCooldown = copyMe.spawnCooldown;
@@ -40,20 +36,17 @@ public class TimeBombScatter extends AIChanneledAbility
 	}
 
 	@Override
-	public void activate()
-	{
+	public void activate() {
 		super.activate();
 
 		explosionSoundCount = 0;
 	}
 
 	@Override
-	protected void channeling(int deltaTime)
-	{
+	protected void channeling(int deltaTime) {
 		spawnCooldown -= deltaTime;
 
-		while (spawnCooldown <= 0)
-		{
+		while (spawnCooldown <= 0) {
 			spawnCooldown += SPAWN_INTERVAL[OptionsScreen.difficulty];
 
 			// Spawn projectile
@@ -68,8 +61,7 @@ public class TimeBombScatter extends AIChanneledAbility
 
 			final int bombTimer = getChannelDuration() + BOMB_TIMER[OptionsScreen.difficulty];
 			final TimeBomb tb = new TimeBomb(firingLocation.x, firingLocation.y, dest.x, dest.y, bombTimer);
-			if (explosionSoundCount < EXPLOSION_SOUND_MAX)
-			{
+			if (explosionSoundCount < EXPLOSION_SOUND_MAX) {
 				tb.setExplosionSound(AudioManager.purpleExplosion);
 				explosionSoundCount++;
 			}
@@ -78,13 +70,11 @@ public class TimeBombScatter extends AIChanneledAbility
 	}
 
 	@Override
-	protected void channelFinished()
-	{
+	protected void channelFinished() {
 	}
 
 	@Override
-	public TimeBombScatter copy()
-	{
+	public TimeBombScatter copy() {
 		return new TimeBombScatter(this);
 	}
 }

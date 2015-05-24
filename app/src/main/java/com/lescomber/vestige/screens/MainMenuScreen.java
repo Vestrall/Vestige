@@ -8,9 +8,9 @@ import com.lescomber.vestige.R;
 import com.lescomber.vestige.audio.AudioManager;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.AndroidGame;
-import com.lescomber.vestige.framework.Input.TouchEvent;
 import com.lescomber.vestige.framework.Preferences;
 import com.lescomber.vestige.framework.Screen;
+import com.lescomber.vestige.framework.TouchHandler.TouchEvent;
 import com.lescomber.vestige.graphics.Sprite;
 import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.graphics.Swapper;
@@ -24,8 +24,7 @@ import com.lescomber.vestige.widgets.WidgetListener;
 
 import java.util.List;
 
-public class MainMenuScreen extends Screen implements WidgetListener
-{
+public class MainMenuScreen extends Screen implements WidgetListener {
 	private static final float BUTTON_WIDTH = 200;
 	private static final float BUTTON_HEIGHT = 54;
 
@@ -45,16 +44,13 @@ public class MainMenuScreen extends Screen implements WidgetListener
 	private static final int EYES_DELAY_MAX = 250;    // Delay (in ms) between beginning of each pair of eyes fading in
 	private int eyesDelay;
 
-	//private final TextStyle buttonStyle;
-	//private final TextStyle grayButtonStyle;
 	private final Button[] mainMenuButtons;
 	private final Button[] newGameButtons;
 	private final Button backButton;
 
 	private final Text versionText;
 
-	public MainMenuScreen(AndroidGame game, boolean introAnimation)
-	{
+	public MainMenuScreen(AndroidGame game, boolean introAnimation) {
 		super(game);
 
 		AudioManager.playMusic(AudioManager.MENU_MUSIC);
@@ -62,7 +58,7 @@ public class MainMenuScreen extends Screen implements WidgetListener
 		SpriteManager.getInstance().setBackground(Assets.mainMenuScreen);
 		SpriteManager.getInstance().setUITextureHandle(Assets.menuUITexture.getTextureHandle());
 
-		isTutorialComplete = Preferences.getInt("easyStageProgress", 0) > 0;
+		isTutorialComplete = Preferences.getStageProgress(OptionsScreen.EASY) > 0;
 
 		titleAnim = new SpriteAnimation(SpriteManager.title);
 		titleAnim.offsetTo(Screen.MIDX, 125);
@@ -90,15 +86,10 @@ public class MainMenuScreen extends Screen implements WidgetListener
 		popIn = !introAnimation;
 
 		final ButtonGroup buttonGroup = new ButtonGroup();
-		//final TextStyle buttonStyle = new TextStyle("BLANCH_CAPS.otf", 57, 87, 233, 255);
-		//buttonStyle.setSpacing(2.5f);
 		final TextStyle buttonStyle = TextStyle.bodyStyleCyan();
-		//final TextStyle grayButtonStyle = new TextStyle("BLANCH_CAPS.otf", 57, 128, 128, 128);
-		//grayButtonStyle.setSpacing(2.5f);
 		final TextStyle grayButtonStyle = TextStyle.bodyStyleWhite();
 		grayButtonStyle.setColor(128, 128, 128);
 
-		// TODO: Use string resources to populate button text
 		final Resources res = AndroidGame.res;
 
 		mainMenuButtons = new Button[4];
@@ -107,8 +98,7 @@ public class MainMenuScreen extends Screen implements WidgetListener
 		mainMenuButtons[2] = new Button(Screen.MIDX, 344, BUTTON_WIDTH, BUTTON_HEIGHT, buttonStyle, res.getString(R.string.credits));
 		mainMenuButtons[3] = new Button(Screen.MIDX, 400, BUTTON_WIDTH, BUTTON_HEIGHT, buttonStyle, res.getString(R.string.exitGame));
 
-		for (final Button b : mainMenuButtons)
-		{
+		for (final Button b : mainMenuButtons) {
 			b.addWidgetListener(this);
 			b.registerGroup(buttonGroup);
 		}
@@ -121,8 +111,7 @@ public class MainMenuScreen extends Screen implements WidgetListener
 		newGameButtons[2] = new Button(Screen.MIDX, 344, BUTTON_WIDTH, BUTTON_HEIGHT, difficultyStyle, res.getString(R.string.medium));
 		newGameButtons[3] = new Button(Screen.MIDX, 400, BUTTON_WIDTH, BUTTON_HEIGHT, difficultyStyle, res.getString(R.string.hard));
 
-		for (final Button b : newGameButtons)
-		{
+		for (final Button b : newGameButtons) {
 			b.addWidgetListener(this);
 			b.registerGroup(buttonGroup);
 		}
@@ -136,14 +125,11 @@ public class MainMenuScreen extends Screen implements WidgetListener
 
 		// Init version text
 		final String version = game.gameVersion();
-		//final TextStyle versionTextStyle = new TextStyle("BLANCH_CAPS.otf", 20);
-		//versionTextStyle.setSpacing(2.5f);
 		final TextStyle versionTextStyle = TextStyle.bodyStyleWhite(20);
 		versionText = new Text(versionTextStyle, version, 45, 465, false);
 	}
 
-	private void loadMainMenu()
-	{
+	private void loadMainMenu() {
 		state = MAIN_STATE;
 
 		for (final Button b : newGameButtons)
@@ -157,8 +143,7 @@ public class MainMenuScreen extends Screen implements WidgetListener
 		versionText.setVisible(true);
 	}
 
-	private void loadNewGameMenu()
-	{
+	private void loadNewGameMenu() {
 		state = NEW_STATE;
 
 		for (final Button b : mainMenuButtons)
@@ -171,15 +156,12 @@ public class MainMenuScreen extends Screen implements WidgetListener
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
-		if (titleAnim.update(deltaTime))
-		{
+	public void update(int deltaTime) {
+		if (titleAnim.update(deltaTime)) {
 			buttonAppearDelay = 90 + deltaTime;
 			Swapper.swapImages(titleAnim, titleSprite);
 		}
-		if (buttonAppearDelay > 0)
-		{
+		if (buttonAppearDelay > 0) {
 			buttonAppearDelay -= deltaTime;
 			if (buttonAppearDelay <= 0)
 				loadMainMenu();
@@ -196,18 +178,15 @@ public class MainMenuScreen extends Screen implements WidgetListener
 			updateNewGameMenu(deltaTime);
 	}
 
-	private void updateLoading(int deltaTime)
-	{
-		final List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
+	private void updateLoading(int deltaTime) {
+		final List<TouchEvent> touchEvents = game.getTouchEvents();
 		final int len = touchEvents.size();
-		for (int i = 0; i < len; i++)
-		{
+		for (int i = 0; i < len; i++) {
 			if (touchEvents.get(i).type == TouchEvent.TOUCH_UP)
 				popIn = true;
 		}
 
-		if (popIn)
-		{
+		if (popIn) {
 			buttonAppearDelay = 0;
 
 			// Pop in all eyes (even ones that had already begun fading in)
@@ -224,18 +203,14 @@ public class MainMenuScreen extends Screen implements WidgetListener
 			versionText.setVisible(true);
 
 			return;
-		}
-		else
-		{
+		} else {
 			eyesDelay -= deltaTime;
-			if (eyesDelay <= 0)
-			{
+			if (eyesDelay <= 0) {
 				eyesDelay = EYES_DELAY_MAX;
 
 				if (state < -1)
 					eyes[state + 11].fadeIn();
-				else
-				{
+				else {
 					titleAnim.play();
 					titleAnim.setVisible(true);
 				}
@@ -245,16 +220,14 @@ public class MainMenuScreen extends Screen implements WidgetListener
 		}
 	}
 
-	private void updateMainMenu(int deltaTime)
-	{
-		final List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
+	private void updateMainMenu(int deltaTime) {
+		final List<TouchEvent> touchEvents = game.getTouchEvents();
 
 		for (final Button b : mainMenuButtons)
 			b.update(deltaTime);
 
 		final int len = touchEvents.size();
-		for (int i = 0; i < len; i++)
-		{
+		for (int i = 0; i < len; i++) {
 			final TouchEvent event = touchEvents.get(i);
 
 			for (final Button b : mainMenuButtons)
@@ -262,9 +235,8 @@ public class MainMenuScreen extends Screen implements WidgetListener
 		}
 	}
 
-	private void updateNewGameMenu(int deltaTime)
-	{
-		final List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
+	private void updateNewGameMenu(int deltaTime) {
+		final List<TouchEvent> touchEvents = game.getTouchEvents();
 
 		for (final Button b : newGameButtons)
 			b.update(deltaTime);
@@ -272,14 +244,12 @@ public class MainMenuScreen extends Screen implements WidgetListener
 		backButton.update(deltaTime);
 
 		final int len = touchEvents.size();
-		for (int i = 0; i < len; i++)
-		{
+		for (int i = 0; i < len; i++) {
 			final TouchEvent event = touchEvents.get(i);
 
 			newGameButtons[0].handleEvent(event);
 
-			if (isTutorialComplete)
-			{
+			if (isTutorialComplete) {
 				for (int j = 1; j < 4; j++)
 					newGameButtons[j].handleEvent(event);
 			}
@@ -289,103 +259,76 @@ public class MainMenuScreen extends Screen implements WidgetListener
 	}
 
 	@Override
-	public void widgetEvent(WidgetEvent we)
-	{
+	public void widgetEvent(WidgetEvent we) {
 		final Object source = we.getSource();
 
 		// Main menu buttons
-		if (source == mainMenuButtons[0])
-		{
+		if (source == mainMenuButtons[0]) {
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
 				loadNewGameMenu();
-		}
-		else if (source == mainMenuButtons[1])
-		{
-			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
-			{
+		} else if (source == mainMenuButtons[1]) {
+			if (we.getCommand().equals(Button.ANIMATION_FINISHED)) {
 				prepScreenChange();
 				game.setScreen(new PewBallPrepScreen(game));
 				//game.setScreen(new OptionsScreen(game));	// TODO: Re-enable OptionsScreen
 			}
-		}
-		else if (source == mainMenuButtons[2])
-		{
-			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
-			{
+		} else if (source == mainMenuButtons[2]) {
+			if (we.getCommand().equals(Button.ANIMATION_FINISHED)) {
 				prepScreenChange();
 				game.setScreen(new CreditsScreen(game));
 			}
-		}
-		else if (source == mainMenuButtons[3])
-		{
+		} else if (source == mainMenuButtons[3]) {
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
 				android.os.Process.killProcess(android.os.Process.myPid());
 		}
 
 		// New game buttons
-		else if (source == newGameButtons[0])
-		{
-			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
-			{
+		else if (source == newGameButtons[0]) {
+			if (we.getCommand().equals(Button.ANIMATION_FINISHED)) {
 				prepScreenChange();
 				game.setScreen(new MapLoadingScreen(game, Levels.TUTORIAL_STAGE, 0));
 			}
-		}
-		else if (source == newGameButtons[1])
-		{
-			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
-			{
+		} else if (source == newGameButtons[1]) {
+			if (we.getCommand().equals(Button.ANIMATION_FINISHED)) {
 				OptionsScreen.difficulty = OptionsScreen.EASY;
 
 				prepScreenChange();
 				game.setScreen(new StageSelectionScreen(game));
 			}
-		}
-		else if (source == newGameButtons[2])
-		{
-			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
-			{
+		} else if (source == newGameButtons[2]) {
+			if (we.getCommand().equals(Button.ANIMATION_FINISHED)) {
 				OptionsScreen.difficulty = OptionsScreen.MEDIUM;
 
 				prepScreenChange();
 				game.setScreen(new StageSelectionScreen(game));
 			}
-		}
-		else if (source == newGameButtons[3])
-		{
-			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
-			{
+		} else if (source == newGameButtons[3]) {
+			if (we.getCommand().equals(Button.ANIMATION_FINISHED)) {
 				OptionsScreen.difficulty = OptionsScreen.HARD;
 
 				prepScreenChange();
 				game.setScreen(new StageSelectionScreen(game));
 			}
-		}
-		else if (source == backButton)
-		{
+		} else if (source == backButton) {
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
 				loadMainMenu();
 		}
 	}
 
 	@Override
-	public void pause()
-	{
+	public void pause() {
 	}
 
 	@Override
-	public void resume()
-	{
+	public void resume() {
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 	}
 
 	@Override
-	public void backButton()
-	{
+	public void backButton() {
 		if (state < 0)
 			popIn = true;
 		else if (state == NEW_STATE)

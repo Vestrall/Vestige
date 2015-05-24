@@ -6,8 +6,7 @@ import com.lescomber.vestige.graphics.Sprite;
 import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.graphics.Swapper;
 
-public class MainMenuEyes
-{
+public class MainMenuEyes {
 	private Sprite idleSprite;            // Open eyes
 	private SpriteAnimation anim;        // Blink animation
 	private float alpha;                // Current alpha (< 1.0 during fade in)
@@ -17,20 +16,14 @@ public class MainMenuEyes
 	private static final int BLINK_DELAY_MAX = 9000;        // Max delay between blinks (actual delay will be randomized)
 	private static final double DOUBLE_BLINK_CHANCE = 0.15;    // Chance of blinking twice in a row
 
-	public MainMenuEyes(float x, float y, int size)
-	{
-		if (size == 1)        // Case: small eyes
-		{
+	public MainMenuEyes(float x, float y, int size) {
+		if (size == 1) {       // Case: small eyes
 			idleSprite = new Sprite(SpriteManager.smallEyes[0], x, y);
 			anim = new SpriteAnimation(SpriteManager.smallEyes);
-		}
-		else if (size == 2)    // Case: medium eyes
-		{
+		} else if (size == 2) {    // Case: medium eyes
 			idleSprite = new Sprite(SpriteManager.mediumEyes[0], x, y);
 			anim = new SpriteAnimation(SpriteManager.mediumEyes);
-		}
-		else if (size == 3)    // Case: big eyes
-		{
+		} else if (size == 3) {    // Case: big eyes
 			idleSprite = new Sprite(SpriteManager.bigEyes[0], x, y);
 			anim = new SpriteAnimation(SpriteManager.bigEyes);
 		}
@@ -44,11 +37,9 @@ public class MainMenuEyes
 		alpha = 1;    // Alpha starts at 1 to avoid triggering "fade in" code in the update method until fadeIn() is called
 	}
 
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		// Handle fade in
-		if (alpha < 1)
-		{
+		if (alpha < 1) {
 			alpha += ALPHA_PER_MS * deltaTime;
 			if (alpha > 1)
 				alpha = 1;
@@ -56,16 +47,12 @@ public class MainMenuEyes
 			anim.setAlpha(alpha);
 		}
 
-		if (anim.isPlaying())    // Case: currently animating a blink
-		{
-			if (anim.update(deltaTime))        // Case: anim just finished
+		if (anim.isPlaying()) {    // Case: currently animating a blink
+			if (anim.update(deltaTime))		// Case: anim just finished
 				Swapper.swapImages(anim, idleSprite);
-		}
-		else        // Case: currently idle, awaiting next blink
-		{
+		} else {	// Case: currently idle, awaiting next blink
 			blinkDelay -= deltaTime;
-			if (blinkDelay < 0)
-			{
+			if (blinkDelay < 0) {
 				// Restart animation
 				anim.stop();
 				Swapper.swapImages(idleSprite, anim);
@@ -74,15 +61,13 @@ public class MainMenuEyes
 		}
 	}
 
-	public void fadeIn()
-	{
+	public void fadeIn() {
 		alpha = 0;
 		randomizeBlinkDelay();
 		idleSprite.setVisible(true);
 	}
 
-	public void popIn()
-	{
+	public void popIn() {
 		alpha = 1;
 		idleSprite.setAlpha(alpha);
 		anim.setAlpha(alpha);
@@ -90,8 +75,7 @@ public class MainMenuEyes
 		randomizeBlinkDelay();
 	}
 
-	private void randomizeBlinkDelay()
-	{
+	private void randomizeBlinkDelay() {
 		if (Util.rand.nextDouble() < DOUBLE_BLINK_CHANCE)
 			blinkDelay = 0;
 		else

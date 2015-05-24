@@ -8,12 +8,10 @@ import com.lescomber.vestige.projectiles.Projectile;
 import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.statuseffects.StatPack;
 
-public class TutorialCaster extends AIUnit
-{
+public class TutorialCaster extends AIUnit {
 	private boolean isAngry;
 
-	public TutorialCaster()
-	{
+	public TutorialCaster() {
 		super(60, 40, -23, 30);
 
 		setIdleLeftSprite(SpriteManager.casterAttackLeft[0]);
@@ -28,8 +26,8 @@ public class TutorialCaster extends AIUnit
 		setDifficultyScaledBaseStats(baseStats);
 
 		// Init abilities
-		final Projectile shot = new Projectile(SpriteManager.enemyProjectile, 2,
-				Projectile.ENEMY_PROJECTILE_WIDTH, Projectile.ENEMY_PROJECTILE_HEIGHT);
+		final Projectile shot = new Projectile(SpriteManager.enemyProjectile, 2, Projectile.ENEMY_PROJECTILE_WIDTH, Projectile
+				.ENEMY_PROJECTILE_HEIGHT);
 		shot.setGlow(SpriteManager.redGlow);
 		final AIShooter shooter = new AIShooter(this, shot, 3);
 		shooter.setCooldown(1000);
@@ -58,18 +56,15 @@ public class TutorialCaster extends AIUnit
 		setDeathAnimXOffset(4);
 	}
 
-	public TutorialCaster(TutorialCaster copyMe)
-	{
+	public TutorialCaster(TutorialCaster copyMe) {
 		super(copyMe);
 
 		isAngry = copyMe.isAngry;
 	}
 
 	@Override
-	public void hit(HitBundle bundle)
-	{
-		if (!isAngry)
-		{
+	public void hit(HitBundle bundle) {
+		if (!isAngry) {
 			for (final AIAbility aia : getAbilities())
 				aia.setCooldown(0.5);
 			isAngry = true;
@@ -79,8 +74,7 @@ public class TutorialCaster extends AIUnit
 	}
 
 	@Override
-	public TutorialCaster copy()
-	{
+	public TutorialCaster copy() {
 		return new TutorialCaster(this);
 	}
 }

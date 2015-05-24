@@ -6,8 +6,7 @@ import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.units.FloatingCreep;
 
-public class DancingCreep extends FloatingCreep
-{
+public class DancingCreep extends FloatingCreep {
 	private final int dancingLeftAnim;
 	private int dancingRightAnim;
 	private int danceSequenceDuration;
@@ -17,8 +16,7 @@ public class DancingCreep extends FloatingCreep
 	private final DanceCoordinator danceCoordinator;
 	private boolean isActuallyEntering;        // Replaces usual isEntering boolean because isEntering will be used during dancing
 
-	public DancingCreep(DanceCoordinator danceCoordinator)
-	{
+	public DancingCreep(DanceCoordinator danceCoordinator) {
 		super();
 
 		// Init dancing animations
@@ -64,8 +62,7 @@ public class DancingCreep extends FloatingCreep
 		this.danceCoordinator = danceCoordinator;
 	}
 
-	public DancingCreep(DancingCreep copyMe)
-	{
+	public DancingCreep(DancingCreep copyMe) {
 		super(copyMe);
 
 		dancingLeftAnim = copyMe.dancingLeftAnim;
@@ -75,40 +72,34 @@ public class DancingCreep extends FloatingCreep
 		isActuallyEntering = copyMe.isActuallyEntering;
 	}
 
-	public void danceLeft()
-	{
+	public void danceLeft() {
 		setEntering(true);
 		restartAnimation(dancingLeftAnim);
 	}
 
-	public void danceRight()
-	{
+	public void danceRight() {
 		setEntering(true);
 		restartAnimation(dancingRightAnim);
 	}
 
-	public void dancePosition(Point dest)
-	{
+	public void dancePosition(Point dest) {
 		setEntering(false);
 		setDestination(dest);
 		setEntering(true);
 	}
 
-	public void aggro()
-	{
+	public void aggro() {
 		isAngry = true;
 		setEntering(isActuallyEntering);
 		chooseDestination();
 	}
 
-	public int getDanceSequenceDuration()
-	{
+	public int getDanceSequenceDuration() {
 		return danceSequenceDuration;
 	}
 
 	@Override
-	public void hasEntered()
-	{
+	public void hasEntered() {
 		super.hasEntered();
 
 		setEntering(!isAngry);
@@ -116,8 +107,7 @@ public class DancingCreep extends FloatingCreep
 	}
 
 	@Override
-	public void hit(HitBundle bundle)
-	{
+	public void hit(HitBundle bundle) {
 		super.hit(bundle);
 
 		if (!isAngry)
@@ -125,8 +115,7 @@ public class DancingCreep extends FloatingCreep
 	}
 
 	@Override
-	public DancingCreep copy()
-	{
+	public DancingCreep copy() {
 		return new DancingCreep(this);
 	}
 }

@@ -4,8 +4,7 @@ import com.lescomber.vestige.crossover.ColorRectManager;
 import com.lescomber.vestige.geometry.Angle;
 import com.lescomber.vestige.geometry.Point;
 
-public class ColorRect
-{
+public class ColorRect {
 	private int listNum;
 	private int index;    // ColorRectManager reference int
 
@@ -18,8 +17,7 @@ public class ColorRect
 
 	private boolean isVisible;
 
-	public ColorRect(float x, float y, float width, float height, int r, int g, int b, float a, boolean isVisible)
-	{
+	public ColorRect(float x, float y, float width, float height, int r, int g, int b, float a, boolean isVisible) {
 		this.isVisible = false;
 
 		this.x = x;
@@ -34,18 +32,15 @@ public class ColorRect
 		setVisible(isVisible);
 	}
 
-	public ColorRect(float x, float y, float width, float height, int r, int g, int b, float a)
-	{
+	public ColorRect(float x, float y, float width, float height, int r, int g, int b, float a) {
 		this(x, y, width, height, r, g, b, a, false);
 	}
 
-	public ColorRect(float x, float y, float width, float height, int r, int g, int b)
-	{
+	public ColorRect(float x, float y, float width, float height, int r, int g, int b) {
 		this(x, y, width, height, r, g, b, 1, false);
 	}
 
-	public ColorRect(ColorRect copyMe)
-	{
+	public ColorRect(ColorRect copyMe) {
 		x = copyMe.x;
 		y = copyMe.y;
 		width = copyMe.width;
@@ -59,8 +54,7 @@ public class ColorRect
 		setVisible(copyMe.isVisible);
 	}
 
-	public void setColor(int r, int g, int b, float a)
-	{
+	public void setColor(int r, int g, int b, float a) {
 		color[0] = r / 255f;
 		color[1] = g / 255f;
 		color[2] = b / 255f;
@@ -69,99 +63,81 @@ public class ColorRect
 			ColorRectManager.setColorRectColor(listNum, index, color[0], color[1], color[2], color[3]);
 	}
 
-	public void setColor(int r, int g, int b)
-	{
+	public void setColor(int r, int g, int b) {
 		setColor(r, g, b, 1);
 	}
 
-	public void setAlpha(float alpha)
-	{
+	public void setAlpha(float alpha) {
 		color[3] = alpha;
 		if (isVisible)
 			ColorRectManager.setColorRectAlpha(listNum, index, alpha);
 	}
 
-	public void setSize(float width, float height)
-	{
+	public void setSize(float width, float height) {
 		final float widthRatio = width / this.width;
 		final float heightRatio = height / this.height;
 		scale(widthRatio, heightRatio);
 	}
 
-	public void offset(float dx, float dy)
-	{
+	public void offset(float dx, float dy) {
 		x += dx;
 		y += dy;
 		if (isVisible)
 			ColorRectManager.offsetColorRect(listNum, index, dx, dy);
 	}
 
-	public void offsetTo(float x, float y)
-	{
+	public void offsetTo(float x, float y) {
 		offset(x - this.x, y - this.y);
 	}
 
-	public void offsetTo(Point position)
-	{
+	public void offsetTo(Point position) {
 		offsetTo(position.x, position.y);
 	}
 
-	public void rotate(float radians)
-	{
+	public void rotate(float radians) {
 		direction = Angle.normalizeRadians(direction + radians);
 		if (isVisible)
 			ColorRectManager.rotateColorRect(listNum, index, (float) Math.toDegrees(radians));
 	}
 
-	public void rotateTo(float radians)
-	{
+	public void rotateTo(float radians) {
 		rotate(radians - direction);
 	}
 
-	public void rotateAbout(float radians, float rotateX, float rotateY)
-	{
+	public void rotateAbout(float radians, float rotateX, float rotateY) {
 		final Point center = new Point(x, y);
 		Point.rotate(center, radians, rotateX, rotateY);
 		offsetTo(center);
 		rotate(radians);
 	}
 
-	public void scale(double widthRatio, double heightRatio)
-	{
+	public void scale(double widthRatio, double heightRatio) {
 		width *= widthRatio;
 		height *= heightRatio;
 		if (isVisible)
 			ColorRectManager.scaleColorRect(listNum, index, (float) widthRatio, (float) heightRatio);
 	}
 
-	public void scaleTo(float width, float height)
-	{
-		if ((this.width == 0 || this.height == 0) && isVisible)
-		{
+	public void scaleTo(float width, float height) {
+		if ((this.width == 0 || this.height == 0) && isVisible) {
 			this.width = width;
 			this.height = height;
 			setVisible(false);
 			setVisible(true);
-		}
-		else
-		{
+		} else {
 			final double widthRatio = (double) width / this.width;
 			final double heightRatio = (double) height / this.height;
 			scale(widthRatio, heightRatio);
 		}
 	}
 
-	public void setVisible(boolean isVisible)
-	{
-		if (!this.isVisible && isVisible)
-		{
+	public void setVisible(boolean isVisible) {
+		if (!this.isVisible && isVisible) {
 			listNum = ColorRectManager.getBuildListNum();
 			index = ColorRectManager.newColorRect(x, y, width, height, color[0], color[1], color[2], color[3]);
 			if (direction != 0)
 				ColorRectManager.rotateColorRect(listNum, index, (float) Math.toDegrees(direction));
-		}
-		else if (this.isVisible && !isVisible)
-		{
+		} else if (this.isVisible && !isVisible) {
 			ColorRectManager.removeColorRect(listNum, index);
 			index = -1;
 		}
@@ -169,83 +145,65 @@ public class ColorRect
 		this.isVisible = isVisible;
 	}
 
-	public void close()
-	{
+	public void close() {
 		setVisible(false);
 	}
 
-	public void setWidth(float width)
-	{
-		if (this.width <= 0)
-		{
+	public void setWidth(float width) {
+		if (this.width <= 0) {
 			this.width = width;
 			if (isVisible)
 				ColorRectManager.replaceColorRect(listNum, index, x, y, width, height, color[0], color[1], color[2], color[3]);
-		}
-		else
-		{
+		} else {
 			final double scaleX = width / this.width;
 			scale(scaleX, 1.0);
 		}
 	}
 
-	public void setHeight(float height)
-	{
-		if (this.height <= 0)
-		{
+	public void setHeight(float height) {
+		if (this.height <= 0) {
 			this.height = height;
 			if (isVisible)
 				ColorRectManager.replaceColorRect(listNum, index, x, y, width, height, color[0], color[1], color[2], color[3]);
-		}
-		else
-		{
+		} else {
 			final double scaleY = height / this.height;
 			scale(1.0, scaleY);
 		}
 	}
 
-	public float getX()
-	{
+	public float getX() {
 		return x;
 	}
 
-	public float getY()
-	{
+	public float getY() {
 		return y;
 	}
 
-	public float getWidth()
-	{
+	public float getWidth() {
 		return width;
 	}
 
-	public float getHeight()
-	{
+	public float getHeight() {
 		return height;
 	}
 
-	public float getLeft()
-	{
+	public float getLeft() {
 		return x - (width / 2);
 	}
 
-	public float getTop()
-	{
+	public float getTop() {
 		return y - (height / 2);
 	}
 
-	public float getRight()
-	{
+	public float getRight() {
 		return x + (width / 2);
 	}
 
-	public float getBottom()
-	{
+	public float getBottom() {
 		return y + (height / 2);
 	}
 
-	public boolean isVisible()
-	{
+	public boolean isVisible() {
 		return isVisible;
 	}
 }

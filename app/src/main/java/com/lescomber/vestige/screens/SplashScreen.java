@@ -6,54 +6,44 @@ import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.AndroidGame;
 import com.lescomber.vestige.framework.Screen;
 
-public class SplashScreen extends Screen
-{
+public class SplashScreen extends Screen {
 	private boolean firstTimeCreate;
 
-	public SplashScreen(AndroidGame game)
-	{
+	public SplashScreen(AndroidGame game) {
 		super(game);
 
 		firstTimeCreate = true;
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
-		if (firstTimeCreate)
-		{
+	public void update(int deltaTime) {
+		if (firstTimeCreate) {
 			SpriteManager.getInstance().setBackground(Assets.mainMenuScreen);
 
 			// Init audio
 			AudioManager.initSoundEffects();
 
 			firstTimeCreate = false;
-		}
-		else
-		{
+		} else {
 			prepScreenChange();
 			game.setScreen(new MainMenuScreen(game, true));
 		}
 	}
 
 	@Override
-	public void pause()
-	{
+	public void pause() {
 	}
 
 	@Override
-	public void resume()
-	{
+	public void resume() {
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 	}
 
 	@Override
-	public void backButton()
-	{
+	public void backButton() {
 		android.os.Process.killProcess(android.os.Process.myPid());
 	}
 }

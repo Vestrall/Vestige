@@ -5,8 +5,7 @@ import com.lescomber.vestige.framework.Screen;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hitbox
-{
+public class Hitbox {
 	private float x;
 	private float y;
 	private float width;
@@ -15,8 +14,7 @@ public class Hitbox
 
 	public ArrayList<Shape> shapes;
 
-	public Hitbox()
-	{
+	public Hitbox() {
 		x = 0;
 		y = 0;
 		width = 0;
@@ -25,14 +23,12 @@ public class Hitbox
 		shapes = new ArrayList<Shape>(3);
 	}
 
-	public Hitbox(Shape shape)
-	{
+	public Hitbox(Shape shape) {
 		shapes = new ArrayList<Shape>(3);
 		addShape(shape);
 	}
 
-	public Hitbox(Hitbox copyMe)
-	{
+	public Hitbox(Hitbox copyMe) {
 		x = copyMe.x;
 		y = copyMe.y;
 		width = copyMe.width;
@@ -43,8 +39,7 @@ public class Hitbox
 			shapes.add(s.copy());
 	}
 
-	public void addShape(Shape shape)
-	{
+	public void addShape(Shape shape) {
 		if (shapes.isEmpty())    // If we have no shapes, init fields based on shape
 		{
 			x = shape.getCenterX();
@@ -54,8 +49,8 @@ public class Hitbox
 
 		shapes.add(shape);
 
-		// To get direction from shape, we rotate shape until it is axis aligned and then use its getRight(), getLeft() etc
-		//methods to calculate width/height
+		// To get direction from shape, we rotate shape until it is axis aligned and then use its getRight(), getLeft() etc methods to calculate
+		//width/height
 		final float curDirection = direction;
 		rotate(-curDirection);
 		width = getRight() - getLeft();
@@ -63,12 +58,9 @@ public class Hitbox
 		rotate(curDirection);
 	}
 
-	public boolean overlaps(Hitbox other)
-	{
-		for (final Shape sOne : shapes)
-		{
-			for (final Shape sTwo : other.shapes)
-			{
+	public boolean overlaps(Hitbox other) {
+		for (final Shape sOne : shapes) {
+			for (final Shape sTwo : other.shapes) {
 				if (sOne.overlaps(sTwo))
 					return true;
 			}
@@ -77,8 +69,7 @@ public class Hitbox
 		return false;
 	}
 
-	public boolean overlaps(Shape shape)
-	{
+	public boolean overlaps(Shape shape) {
 		for (final Shape s : shapes)
 			if (s.overlaps(shape))
 				return true;
@@ -86,8 +77,7 @@ public class Hitbox
 		return false;
 	}
 
-	public boolean contains(float x, float y)
-	{
+	public boolean contains(float x, float y) {
 		for (final Shape s : shapes)
 			if (s.contains(x, y))
 				return true;
@@ -95,45 +85,37 @@ public class Hitbox
 		return false;
 	}
 
-	public boolean contains(Point p)
-	{
+	public boolean contains(Point p) {
 		return contains(p.x, p.y);
 	}
 
-	public void offset(float dx, float dy)
-	{
+	public void offset(float dx, float dy) {
 		x += dx;
 		y += dy;
 		for (final Shape s : shapes)
 			s.offset(dx, dy);
 	}
 
-	public void offsetTo(float x, float y)
-	{
+	public void offsetTo(float x, float y) {
 		final float dx = x - this.x;
 		final float dy = y - this.y;
 
 		offset(dx, dy);
 	}
 
-	public void rotate(float radians)
-	{
-		if (shapes.size() == 1)
-		{
+	public void rotate(float radians) {
+		if (shapes.size() == 1) {
 			direction = Angle.normalizeRadians(direction + radians);
 			shapes.get(0).rotate(radians);
-		}
-		else
+		} else
 			rotateAbout(radians, getX(), getY());
 	}
 
-	public void rotateTo(float radians)
-	{
+	public void rotateTo(float radians) {
 		rotate(radians - direction);
 	}
 
-	public void rotateAbout(float radians, float rotateX, float rotateY)
-	{
+	public void rotateAbout(float radians, float rotateX, float rotateY) {
 		direction = Angle.normalizeRadians(direction + radians);
 
 		for (final Shape s : shapes)
@@ -145,30 +127,27 @@ public class Hitbox
 		y = temp.y;
 	}
 
-	// Scale hitbox based on ratio of width and height to current hitbox width and height
-	public void scaleTo(float width, float height)
-	{
+	/**
+	 * Scale hitbox based on ratio of width and height to current hitbox width and height
+	 */
+	public void scaleTo(float width, float height) {
 		final double widthRatio = (double) width / this.width;
 		final double heightRatio = (double) height / this.height;
 		scale(widthRatio, heightRatio);
 	}
 
-	public void scaleWidthTo(float width)
-	{
+	public void scaleWidthTo(float width) {
 		final double widthRatio = (double) width / this.width;
 		scale(widthRatio, 1);
 	}
 
-	public void scaleHeightTo(float height)
-	{
+	public void scaleHeightTo(float height) {
 		final double heightRatio = (double) height / this.height;
 		scale(1, heightRatio);
 	}
 
-	public void scale(double wRatio, double hRatio)
-	{
-		for (final Shape s : shapes)
-		{
+	public void scale(double wRatio, double hRatio) {
+		for (final Shape s : shapes) {
 			// Scale each shape in its current location
 			s.scale(wRatio, hRatio);
 
@@ -185,8 +164,7 @@ public class Hitbox
 		height *= hRatio;
 	}
 
-	public void clear()
-	{
+	public void clear() {
 		x = 0;
 		y = 0;
 		width = 0;
@@ -195,18 +173,15 @@ public class Hitbox
 		shapes = new ArrayList<Shape>(3);
 	}
 
-	public boolean isCompletelyOffScreen()
-	{
+	public boolean isCompletelyOffScreen() {
 		return (getLeft() > Screen.WIDTH || getTop() > Screen.HEIGHT || getRight() < 0 || getBottom() < 0);
 	}
 
-	public boolean isCompletelyOnScreen()
-	{
+	public boolean isCompletelyOnScreen() {
 		return (getLeft() >= 0 && getTop() >= 0 && getRight() <= Screen.WIDTH && getBottom() <= Screen.HEIGHT);
 	}
 
-	public float getLeft()
-	{
+	public float getLeft() {
 		if (shapes.isEmpty())
 			return x;
 
@@ -216,8 +191,7 @@ public class Hitbox
 		return left;
 	}
 
-	public float getTop()
-	{
+	public float getTop() {
 		if (shapes.isEmpty())
 			return y;
 
@@ -227,8 +201,7 @@ public class Hitbox
 		return top;
 	}
 
-	public float getRight()
-	{
+	public float getRight() {
 		if (shapes.isEmpty())
 			return x;
 
@@ -238,8 +211,7 @@ public class Hitbox
 		return right;
 	}
 
-	public float getBottom()
-	{
+	public float getBottom() {
 		if (shapes.isEmpty())
 			return y;
 
@@ -249,38 +221,31 @@ public class Hitbox
 		return bottom;
 	}
 
-	public float getWidth()
-	{
+	public float getWidth() {
 		return width;
 	}
 
-	public float getHeight()
-	{
+	public float getHeight() {
 		return height;
 	}
 
-	public List<Shape> getShapes()
-	{
+	public List<Shape> getShapes() {
 		return shapes;
 	}
 
-	public float getX()
-	{
+	public float getX() {
 		return x;
 	}
 
-	public float getY()
-	{
+	public float getY() {
 		return y;
 	}
 
-	public Point getCenter()
-	{
+	public Point getCenter() {
 		return new Point(x, y);
 	}
 
-	public float getDirection()
-	{
+	public float getDirection() {
 		return direction;
 	}
 }

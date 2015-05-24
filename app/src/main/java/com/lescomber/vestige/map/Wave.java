@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Wave
-{
+public class Wave {
 	private static final int DEFAULT_HEALTH_PICK_UP = 15;
 
 	LinkedList<AIUnit> units;
@@ -19,8 +18,7 @@ public class Wave
 	private final ArrayList<AIUnit> enemiesBuffer;
 	private final ArrayList<AIUnit> enemiesReady;
 
-	public Wave(double waveCountdownSeconds)
-	{
+	public Wave(double waveCountdownSeconds) {
 		waveCountdown = (int) (waveCountdownSeconds * 1000);
 		units = new LinkedList<AIUnit>();
 		unitCountdowns = new LinkedList<Integer>();
@@ -28,8 +26,7 @@ public class Wave
 		enemiesReady = new ArrayList<AIUnit>(5);
 	}
 
-	public Wave(Wave copyMe, double waveCountdownSeconds)
-	{
+	public Wave(Wave copyMe, double waveCountdownSeconds) {
 		waveCountdown = (int) (waveCountdownSeconds * 1000);
 
 		units = new LinkedList<AIUnit>();
@@ -44,19 +41,15 @@ public class Wave
 		enemiesReady = new ArrayList<AIUnit>(5);
 	}
 
-	public Wave(Wave copyMe)
-	{
+	public Wave(Wave copyMe) {
 		this(copyMe, copyMe.getWaveCountdown());
 	}
 
-	public void update(int deltaTime)
-	{
-		if (!units.isEmpty())
-		{
+	public void update(int deltaTime) {
+		if (!units.isEmpty()) {
 			unitCountdowns.set(0, unitCountdowns.get(0) - deltaTime);
 
-			while (unitCountdowns.get(0) <= 0)
-			{
+			while (unitCountdowns.get(0) <= 0) {
 				final int leftover = unitCountdowns.get(0);
 				queueEnemiesUnit(units.remove());
 				unitCountdowns.remove();
@@ -69,22 +62,19 @@ public class Wave
 		}
 	}
 
-	public boolean updateWaveCountdown(int deltaTime)
-	{
+	public boolean updateWaveCountdown(int deltaTime) {
 		waveCountdown -= deltaTime;
 
 		return waveCountdown <= 0;
 	}
 
-	public void addUnit(AIUnit unit, double cooldownSeconds)
-	{
+	public void addUnit(AIUnit unit, double cooldownSeconds) {
 		unit.setVisible(false);
 		units.add(unit);
 		unitCountdowns.add((int) (cooldownSeconds * 1000));
 	}
 
-	public void addHealthPickUp(float healAmount)
-	{
+	public void addHealthPickUp(float healAmount) {
 		if (units.isEmpty())
 			return;
 
@@ -92,42 +82,34 @@ public class Wave
 		units.get(index).setPickUp(new HealPickUp(healAmount));
 	}
 
-	public void addHealthPickUp()
-	{
+	public void addHealthPickUp() {
 		addHealthPickUp(DEFAULT_HEALTH_PICK_UP);
 	}
 
-	public void gameScreenEmpty()
-	{
+	public void gameScreenEmpty() {
 	}
 
-	public int getWaveCountdown()
-	{
+	public int getWaveCountdown() {
 		return waveCountdown;
 	}
 
-	public boolean isFinished()
-	{
+	public boolean isFinished() {
 		return (units.isEmpty() && enemiesBuffer.isEmpty());
 	}
 
-	public void addToWaveCountdown(int additionalCountdown)
-	{
+	public void addToWaveCountdown(int additionalCountdown) {
 		waveCountdown += additionalCountdown;
 	}
 
-	public void setWaveCountdown(int waveCountdown)
-	{
+	public void setWaveCountdown(int waveCountdown) {
 		this.waveCountdown = waveCountdown;
 	}
 
-	public void queueEnemiesUnit(AIUnit unit)
-	{
+	public void queueEnemiesUnit(AIUnit unit) {
 		enemiesBuffer.add(unit);
 	}
 
-	public List<AIUnit> getEnemiesQueue()
-	{
+	public List<AIUnit> getEnemiesQueue() {
 		enemiesReady.clear();
 		enemiesReady.addAll(enemiesBuffer);
 		enemiesBuffer.clear();

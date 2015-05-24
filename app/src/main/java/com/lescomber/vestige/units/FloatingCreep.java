@@ -7,10 +7,8 @@ import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.projectiles.HealPickUp;
 import com.lescomber.vestige.statuseffects.StatPack;
 
-public class FloatingCreep extends AIMeleeUnit
-{
-	public FloatingCreep()
-	{
+public class FloatingCreep extends AIMeleeUnit {
+	public FloatingCreep() {
 		super(32, 28, -16, 17);
 
 		final StatPack baseStats = new StatPack();
@@ -46,21 +44,18 @@ public class FloatingCreep extends AIMeleeUnit
 		addAbility(melee);
 	}
 
-	public FloatingCreep(float healAmount)
-	{
+	public FloatingCreep(float healAmount) {
 		this();
 
 		setPickUp(new HealPickUp(healAmount));
 	}
 
-	public FloatingCreep(FloatingCreep copyMe)
-	{
+	public FloatingCreep(FloatingCreep copyMe) {
 		super(copyMe);
 	}
 
 	@Override
-	public FloatingCreep copy()
-	{
+	public FloatingCreep copy() {
 		return new FloatingCreep(this);
 	}
 }

@@ -16,24 +16,19 @@ import com.lescomber.vestige.audio.AudioManager;
 import com.lescomber.vestige.cgl.CGLSurfaceView;
 
 @SuppressLint("NewApi")
-public class AndroidGameActivity extends Activity/* implements OnSystemUiVisibilityChangeListener*/
-{
+public class AndroidGameActivity extends Activity/* implements OnSystemUiVisibilityChangeListener*/ {
 	private AndroidGame gameLoop;
 
 	private GLSurfaceView glView;
 
 	// TODO: Create flags for android versions 16, 17 (Jellybean)
-	private static final int UI_FLAGS = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-			| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-			| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-			| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-			| View.SYSTEM_UI_FLAG_FULLSCREEN
-			| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+	private static final int UI_FLAGS = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View
+			.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View
+			.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 	private static View decorView;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		// Disabled for release versions
@@ -56,8 +51,7 @@ public class AndroidGameActivity extends Activity/* implements OnSystemUiVisibil
 
 		if (Build.VERSION.SDK_INT < 19)
 			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		else
-		{
+		else {
 			decorView = getWindow().getDecorView();
 			decorView.setSystemUiVisibility(UI_FLAGS);
 			decorView.setOnSystemUiVisibilityChangeListener(createUIListener());
@@ -70,28 +64,22 @@ public class AndroidGameActivity extends Activity/* implements OnSystemUiVisibil
 		gameLoop = new AndroidGame(this);
 	}
 
-	public View getView()
-	{
+	public View getView() {
 		return glView;
 	}
 
 	@Override
-	public void onResume()
-	{
+	public void onResume() {
 		super.onResume();
 		gameLoop.resume();
 		glView.onResume();
 	}
 
-	private OnSystemUiVisibilityChangeListener createUIListener()
-	{
-		return new OnSystemUiVisibilityChangeListener()
-		{
+	private OnSystemUiVisibilityChangeListener createUIListener() {
+		return new OnSystemUiVisibilityChangeListener() {
 			@Override
-			public void onSystemUiVisibilityChange(int visibility)
-			{
-				if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0)    // Case: Status bar visible
-				{
+			public void onSystemUiVisibilityChange(int visibility) {
+				if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {    // Case: Status bar visible
 					decorView = getWindow().getDecorView();
 					decorView.setSystemUiVisibility(UI_FLAGS);
 				}
@@ -102,35 +90,30 @@ public class AndroidGameActivity extends Activity/* implements OnSystemUiVisibil
 	}
 
 	@Override
-	public void onWindowFocusChanged(boolean hasFocus)
-	{
+	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
 
 		if (!hasFocus)
 			gameLoop.pauseScreen();
-		else if (Build.VERSION.SDK_INT >= 18)
-		{
+		else if (Build.VERSION.SDK_INT >= 18) {
 			decorView = getWindow().getDecorView();
 			decorView.setSystemUiVisibility(UI_FLAGS);
 		}
 	}
 
 	@Override
-	public void onPause()
-	{
+	public void onPause() {
 		super.onPause();
 		glView.onPause();
 		gameLoop.pause(isFinishing());
 	}
 
 	@Override
-	public void onBackPressed()
-	{
+	public void onBackPressed() {
 		gameLoop.backButton();
 	}
 
-	public View getDecorView()
-	{
+	public View getDecorView() {
 		return decorView;
 	}
 }

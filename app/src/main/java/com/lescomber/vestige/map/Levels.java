@@ -14,8 +14,7 @@ import com.lescomber.vestige.units.sone.OneFourBoss;
 import com.lescomber.vestige.units.sone.OneSixBoss;
 import com.lescomber.vestige.units.sone.OneTenBoss;
 
-public class Levels
-{
+public class Levels {
 	public static final int TUTORIAL_STAGE = 0;
 	public static final int PEW_BALL_STAGE = -1;
 
@@ -23,8 +22,7 @@ public class Levels
 	//public static final int[] LEVEL_COUNT = new int[] { 11, 0 };
 	public static final int[] LEVEL_COUNT = new int[] { 10, 0 };
 
-	public static Map loadLevel(int stageNum, int levelNum)
-	{
+	public static Map loadLevel(int stageNum, int levelNum) {
 		if (stageNum == TUTORIAL_STAGE)
 			return tutorialStage();
 		else if (stageNum == PEW_BALL_STAGE)
@@ -37,25 +35,21 @@ public class Levels
 			return null;
 	}
 
-	private static Map tutorialStage()
-	{
+	private static Map tutorialStage() {
 		// Init basic level requirements
 		final TutorialMap level = new TutorialMap();
 
 		return level;
 	}
 
-	private static Map pewBallStage(int levelNum)
-	{
+	private static Map pewBallStage(int levelNum) {
 		final PewBallMap level = new PewBallMap(levelNum);
 
 		return level;
 	}
 
-	private static Map stageOne(int levelNum)
-	{
-		if (levelNum == 1)
-		{
+	private static Map stageOne(int levelNum) {
+		if (levelNum == 1) {
 			// Init basic level requirements
 			final Map level = new Map(1, levelNum);
 			level.setPlayerSpawnPoint(50, 240);
@@ -89,9 +83,7 @@ public class Levels
 			level.addWave(wave);
 
 			return level;
-		}
-		else if (levelNum == 2)
-		{
+		} else if (levelNum == 2) {
 			// Init basic level requirements
 			final Map level = new Map(1, levelNum);
 			level.setPlayerSpawnPoint(100, 140);
@@ -139,9 +131,7 @@ public class Levels
 			level.addWave(wave);
 
 			return level;
-		}
-		else if (levelNum == 3)
-		{
+		} else if (levelNum == 3) {
 			// Init basic level requirements
 			final Map level = new Map(1, levelNum);
 			level.setPlayerSpawnPoint(100, 240);
@@ -210,9 +200,7 @@ public class Levels
 			level.addWave(wave);
 
 			return level;
-		}
-		else if (levelNum == 4)
-		{
+		} else if (levelNum == 4) {
 			final Map level = new Map(1, levelNum);
 			level.setPlayerSpawnPoint(100, 240);
 			level.addEnemySpawnPoint(900, 120);
@@ -227,9 +215,7 @@ public class Levels
 			level.addWave(wave);
 
 			return level;
-		}
-		else if (levelNum == 5)
-		{
+		} else if (levelNum == 5) {
 			final Map level = new Map(1, levelNum);
 			level.setPlayerSpawnPoint(75, 240);
 			level.addEnemySpawnPoint(900, 120);
@@ -312,9 +298,7 @@ public class Levels
 			level.addWave(cWave);
 
 			return level;
-		}
-		else if (levelNum == 6)
-		{
+		} else if (levelNum == 6) {
 			final Map level = new Map(1, levelNum);
 			level.setPlayerSpawnPoint(100, 240);
 			level.addEnemySpawnPoint(875, 240);
@@ -325,9 +309,7 @@ public class Levels
 			level.addWave(wave);
 
 			return level;
-		}
-		else if (levelNum == 7)
-		{
+		} else if (levelNum == 7) {
 			// Init basic level requirements
 			final Map level = new Map(1, levelNum);
 			level.setPlayerSpawnPoint(225, 240);
@@ -419,9 +401,7 @@ public class Levels
 			level.addWave(wave);
 
 			return level;
-		}
-		else if (levelNum == 8)
-		{
+		} else if (levelNum == 8) {
 			final Map level = new Map(1, levelNum);
 			level.setPlayerSpawnPoint(50, 240);
 			level.addEnemySpawnPoint(900, 120);
@@ -436,9 +416,7 @@ public class Levels
 			level.addWave(wave);
 
 			return level;
-		}
-		else if (levelNum == 9)
-		{
+		} else if (levelNum == 9) {
 			final Map level = new Map(1, levelNum);
 			level.setPlayerSpawnPoint(50, 240);
 			level.addEnemySpawnPoint(900, 60);
@@ -574,9 +552,7 @@ public class Levels
 			level.addWave(wave);
 
 			return level;
-		}
-		else if (levelNum == 10)
-		{
+		} else if (levelNum == 10) {
 			final Map level = new Map(1, levelNum);
 			level.setPlayerSpawnPoint(50, 240);
 			level.addEnemySpawnPoint(900, 120);
@@ -591,8 +567,7 @@ public class Levels
 			level.addWave(wave);
 
 			return level;
-		}
-		else if (levelNum == 11)    // Test level
+		} else if (levelNum == 11)    // Test level
 		{
 			final Map level = new Map(1, levelNum);
 			level.setPlayerSpawnPoint(50, 240);
@@ -611,13 +586,11 @@ public class Levels
 			level.addWave(wave);
 
 			return level;
-		}
-		else
+		} else
 			return null;
 	}
 
-	private static Map stageTwo(int levelNum)
-	{
+	private static Map stageTwo(int levelNum) {
 		/*if (levelNum == 1)
 		{
 			Map level = new Map(2, levelNum);

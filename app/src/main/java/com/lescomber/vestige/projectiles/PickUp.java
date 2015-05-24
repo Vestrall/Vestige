@@ -12,8 +12,7 @@ import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.units.Player;
 import com.lescomber.vestige.units.Unit;
 
-public class PickUp extends AreaEffect
-{
+public class PickUp extends AreaEffect {
 	private static AnimationEffect PICK_UP_EFFECT;
 
 	private static final float[] IMAGE_OFFSET_LIMITS = new float[] { -17, -27 };
@@ -32,22 +31,19 @@ public class PickUp extends AreaEffect
 	private static final int MAX_FLICKER_COUNTDOWN = 200;
 	private int flickerCountdown;        // Time (in ms) until next flicker (either on or off)
 
-	public PickUp(SpriteTemplate template, float width, float height, float damage)
-	{
+	public PickUp(SpriteTemplate template, float width, float height, float damage) {
 		super(40, 30, 0, DURATION[OptionsScreen.difficulty]);
 
 		init(template, damage);
 	}
 
-	public PickUp(SpriteTemplate template, float radius, float damage)
-	{
+	public PickUp(SpriteTemplate template, float radius, float damage) {
 		super(radius, 0, DURATION[OptionsScreen.difficulty]);
 
 		init(template, damage);
 	}
 
-	public PickUp(PickUp copyMe)
-	{
+	public PickUp(PickUp copyMe) {
 		super(copyMe);
 
 		imageOffsetY = copyMe.imageOffsetY;
@@ -58,8 +54,7 @@ public class PickUp extends AreaEffect
 		flickerCountdown = copyMe.flickerCountdown;
 	}
 
-	private void init(SpriteTemplate template, float damage)
-	{
+	private void init(SpriteTemplate template, float damage) {
 		// Set pick up animation
 		if (PICK_UP_EFFECT == null)
 			PICK_UP_EFFECT = new AnimationEffect(new SpriteAnimation(SpriteManager.healthPickUpAnimation));
@@ -85,8 +80,7 @@ public class PickUp extends AreaEffect
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
 		// Bounce up and down a little
@@ -106,22 +100,17 @@ public class PickUp extends AreaEffect
 
 		// Update flicker
 		flickerCountdown -= deltaTime;
-		if (flickerCountdown <= 0)
-		{
+		if (flickerCountdown <= 0) {
 			flickerCountdown += MAX_FLICKER_COUNTDOWN;
 			flicker();
 		}
 	}
 
-	private void flicker()
-	{
-		if (isAlphaVisible)
-		{
+	private void flicker() {
+		if (isAlphaVisible) {
 			getSprite().setAlpha(0);
 			glow.setAlpha(0);
-		}
-		else
-		{
+		} else {
 			getSprite().setAlpha(1);
 			glow.setAlpha(1);
 		}
@@ -130,18 +119,15 @@ public class PickUp extends AreaEffect
 	}
 
 	@Override
-	public void offset(float dx, float dy)
-	{
+	public void offset(float dx, float dy) {
 		super.offset(dx, dy);
 
 		glow.offset(dx, dy);
 	}
 
 	@Override
-	protected void unitHit(Unit unit, HitBundle bundle)
-	{
-		if (isValidTarget(unit))
-		{
+	protected void unitHit(Unit unit, HitBundle bundle) {
+		if (isValidTarget(unit)) {
 			super.unitHit(unit, bundle);
 			if (soundEffect != null)
 				soundEffect.play();
@@ -150,36 +136,30 @@ public class PickUp extends AreaEffect
 	}
 
 	@Override
-	protected void groupHit(Unit unit, HitBundle bundle, int suggestedCooldown)
-	{
-		if (isValidTarget(unit))
-		{
+	protected void groupHit(Unit unit, HitBundle bundle, int suggestedCooldown) {
+		if (isValidTarget(unit)) {
 			super.groupHit(unit, bundle, suggestedCooldown);
 			die();
 		}
 	}
 
-	private boolean isValidTarget(Unit unit)
-	{
+	private boolean isValidTarget(Unit unit) {
 		return (unit instanceof Player);
 	}
 
-	public void setSoundEffect(SoundEffect soundEffect)
-	{
+	public void setSoundEffect(SoundEffect soundEffect) {
 		this.soundEffect = soundEffect;
 	}
 
 	@Override
-	public void setVisible(boolean isVisible)
-	{
+	public void setVisible(boolean isVisible) {
 		super.setVisible(isVisible);
 
 		glow.setVisible(isVisible);
 	}
 
 	@Override
-	public PickUp copy()
-	{
+	public PickUp copy() {
 		return new PickUp(this);
 	}
 }

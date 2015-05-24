@@ -10,9 +10,9 @@ import com.lescomber.vestige.audio.AudioManager;
 import com.lescomber.vestige.cgl.CGLRenderer;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.AndroidGame;
-import com.lescomber.vestige.framework.Input.TouchEvent;
 import com.lescomber.vestige.framework.Preferences;
 import com.lescomber.vestige.framework.Screen;
+import com.lescomber.vestige.framework.TouchHandler.TouchEvent;
 import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.gestures.GestureHandler;
 import com.lescomber.vestige.graphics.ColorRect;
@@ -45,8 +45,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GameScreen extends Screen implements WidgetListener
-{
+public class GameScreen extends Screen implements WidgetListener {
 	// Screen change values
 	int screenChangeQueue;
 	static final int NO_SCREEN_CHANGE = 0;
@@ -75,8 +74,8 @@ public class GameScreen extends Screen implements WidgetListener
 	Slider pMusicVolumeSlider;
 	Text pSfxText;
 	Slider pSfxSlider;
-	Text pDisplayFPSText;
-	CheckBox pDisplayFPSBox;
+	Text pDisplayFpsText;
+	CheckBox pDisplayFpsBox;
 	Text pDisplayWaveText;
 	CheckBox pDisplayWaveBox;
 
@@ -122,8 +121,7 @@ public class GameScreen extends Screen implements WidgetListener
 	List<AIUnit> newUnits;
 
 	@SuppressWarnings("unchecked")
-	public GameScreen(AndroidGame game)
-	{
+	public GameScreen(AndroidGame game) {
 		super(game);
 
 		SpriteManager.getInstance().setBackgroundTextureHandle(Assets.backgroundTexture.getTextureHandle());
@@ -136,12 +134,8 @@ public class GameScreen extends Screen implements WidgetListener
 		// Paused game fields
 		final Resources res = AndroidGame.res;
 		final TextStyle pausedHeadingStyle = TextStyle.headingStyle();
-		//final TextStyle pausedOptionsStyle = new TextStyle("BLANCH_CAPS.otf", 57, 255, 255, 255);
-		//pausedOptionsStyle.setSpacing(2.5f);
 		final TextStyle pausedOptionsStyle = TextStyle.bodyStyleWhite();
 		final TextStyle pausedButtonStyle = TextStyle.bodyStyleCyan();
-		//final TextStyle pausedButtonStyle = new TextStyle("BLANCH_CAPS.otf", 57, 87, 233, 255);
-		//pausedButtonStyle.setSpacing(2.5f);
 
 		// Pause button
 		pButton = new Button(750, 35, null, null, SpriteManager.pauseButton);
@@ -183,10 +177,10 @@ public class GameScreen extends Screen implements WidgetListener
 		pSfxSlider.setValue((int) (OptionsScreen.sfxVolume * 100));
 		pSfxSlider.addWidgetListener(this);
 
-		pDisplayFPSText = new Text(pausedOptionsStyle, res.getString(R.string.displayFPSCounter), 276, 280, Alignment.LEFT, false);
-		pDisplayFPSBox = new CheckBox(LEFT_COLUMN_X, 280);
-		pDisplayFPSBox.setValue(OptionsScreen.displayFPS);
-		pDisplayFPSBox.addWidgetListener(this);
+		pDisplayFpsText = new Text(pausedOptionsStyle, res.getString(R.string.displayFpsCounter), 276, 280, Alignment.LEFT, false);
+		pDisplayFpsBox = new CheckBox(LEFT_COLUMN_X, 280);
+		pDisplayFpsBox.setValue(OptionsScreen.displayFps);
+		pDisplayFpsBox.addWidgetListener(this);
 
 		pDisplayWaveText = new Text(pausedOptionsStyle, res.getString(R.string.displayWaveCounter), 276, 335, Alignment.LEFT, false);
 		pDisplayWaveBox = new CheckBox(LEFT_COLUMN_X, 335);
@@ -215,28 +209,23 @@ public class GameScreen extends Screen implements WidgetListener
 		newUnits = new LinkedList<AIUnit>();
 		standaloneAnims = new LinkedList<SpriteAnimation>();
 
-		//final TextStyle uiStyle = new TextStyle("BLANCH_CAPS.otf", 25, 255, 255, 255, 0.65f);
 		final TextStyle uiStyle = TextStyle.bodyStyleWhite(25);
 		uiStyle.setSpacing(0);
-		//uiStyle.setFontSize(25);
 		uiStyle.setAlpha(0.65f);
 		waveText = new Text(uiStyle, " ", WAVE_LEFT_X, 35);
 		fpsText = new Text(uiStyle, " ", FPS_RIGHT_X, 35);
-		//waveTextBackground = new UISprite(SpriteManager.uiTextBackground, WAVE_LEFT_X, 35);
 		waveTextBackground = new UIThreePatchSprite(SpriteManager.uiTextBackgroundPieces, WAVE_LEFT_X, 35);
 		waveTextBackground.setLayerHeight(SpriteManager.UI_LAYER_OVER_THREE);
-		//fpsTextBackground = new UISprite(SpriteManager.uiTextBackground, FPS_RIGHT_X, 35);
 		fpsTextBackground = new UIThreePatchSprite(SpriteManager.uiTextBackgroundPieces, FPS_RIGHT_X, 35);
 		fpsTextBackground.setLayerHeight(SpriteManager.UI_LAYER_OVER_THREE);
-		fpsTextBackground.setVisible(OptionsScreen.displayFPS);
+		fpsTextBackground.setVisible(OptionsScreen.displayFps);
 
 		waveNum = 0;
 
 		fpsFormat = new DecimalFormat("#.#");
 	}
 
-	public void loadMap(Map map)
-	{
+	public void loadMap(Map map) {
 		GameScreen.map = map;
 
 		map.setBackground();
@@ -251,8 +240,7 @@ public class GameScreen extends Screen implements WidgetListener
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		if (state == GAME_STATE)
 			updateRunning(deltaTime);
 		else if (state == PAUSED_STATE)
@@ -260,16 +248,14 @@ public class GameScreen extends Screen implements WidgetListener
 		else if (state == GAME_OVER_TRANSITION)
 			updateGameOverTransition(deltaTime);
 
-		// Process the screen change queue. This is done here at the end of the update method so that this update method
-		//does not perform a screen change and then throw errors when control falls back to this update method
+		// Process the screen change queue. This is done here at the end of the update method so that this update method does not perform a screen
+		//change and then throw errors when control falls back to this update method
 		processScreenChangeQueue();
 	}
 
-	void updateGameOverTransition(int deltaTime)
-	{
+	void updateGameOverTransition(int deltaTime) {
 		coverAlpha += (deltaTime * ALPHA_PER_MS);
-		if (coverAlpha >= 1)
-		{
+		if (coverAlpha >= 1) {
 			coverAlpha = 1;
 			screenChangeQueue = GAME_OVER_SCREEN;
 		}
@@ -277,8 +263,7 @@ public class GameScreen extends Screen implements WidgetListener
 		gameOverCover.setAlpha(coverAlpha);
 	}
 
-	private void updatePaused(int deltaTime)
-	{
+	private void updatePaused(int deltaTime) {
 		pButtonDelay -= deltaTime;
 
 		// Note: no pButton update method because it doesn't have a traditional click animation
@@ -286,10 +271,9 @@ public class GameScreen extends Screen implements WidgetListener
 		pMainMenuButton.update(deltaTime);
 		pResumeButton.update(deltaTime);
 
-		final List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
+		final List<TouchEvent> touchEvents = game.getTouchEvents();
 		final int len = touchEvents.size();
-		for (int i = 0; i < len; i++)
-		{
+		for (int i = 0; i < len; i++) {
 			final TouchEvent event = touchEvents.get(i);
 
 			pButton.handleEvent(event);
@@ -301,21 +285,19 @@ public class GameScreen extends Screen implements WidgetListener
 			pResumeButton.handleEvent(event);
 			pMusicVolumeSlider.handleEvent(event);
 			pSfxSlider.handleEvent(event);
-			pDisplayFPSBox.handleEvent(event);
+			pDisplayFpsBox.handleEvent(event);
 			pDisplayWaveBox.handleEvent(event);
 		}
 	}
 
-	private void updateRunning(int deltaTime)
-	{
+	private void updateRunning(int deltaTime) {
 		// Retrieve touch events
-		final List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
+		final List<TouchEvent> touchEvents = game.getTouchEvents();
 		gestureHandler.update(deltaTime);
 		final int len = touchEvents.size();
 
 		// Pass touch events to pause button. If pause button has been clicked, discard this set of events and pauseGame()
-		for (int i = 0; i < len; i++)
-		{
+		for (int i = 0; i < len; i++) {
 			pButton.handleEvent(touchEvents.get(i));
 			if (state == PAUSED_STATE)
 				return;
@@ -336,7 +318,7 @@ public class GameScreen extends Screen implements WidgetListener
 			updateWaveText();
 
 		// Update FPS display
-		updateFPSText();
+		updateFpsText();
 
 		// Update and move units
 		updateUnits(deltaTime);
@@ -351,23 +333,18 @@ public class GameScreen extends Screen implements WidgetListener
 		updateExplosions(deltaTime);
 
 		// Inform any dead units that they have died so they may spawn any last units/areaEffects/projectiles on death
-		for (int i = 0; i < 2; i++)
-		{
-			for (final Unit u : units[i])
-			{
+		for (int i = 0; i < 2; i++) {
+			for (final Unit u : units[i]) {
 				if (u.getHp() <= 0)
 					u.die();
 			}
 		}
 
 		// Retrieve any new projectiles queue'd up by existing units
-		for (int i = 0; i < 2; i++)
-		{
-			for (final Unit u : units[i])
-			{
+		for (int i = 0; i < 2; i++) {
+			for (final Unit u : units[i]) {
 				newProjectiles = u.getProjectileQueue();
-				for (final Projectile p : newProjectiles)
-				{
+				for (final Projectile p : newProjectiles) {
 					p.setVisible(true);
 					projectiles.add(p);
 				}
@@ -375,13 +352,10 @@ public class GameScreen extends Screen implements WidgetListener
 		}
 
 		// Retrieve any areaEffects queue'd up by existing units
-		for (int i = 0; i < 2; i++)
-		{
-			for (final Unit u : units[i])
-			{
+		for (int i = 0; i < 2; i++) {
+			for (final Unit u : units[i]) {
 				newAreaEffects = u.getAreaEffectQueue();
-				for (final AreaEffect ae : newAreaEffects)
-				{
+				for (final AreaEffect ae : newAreaEffects) {
 					ae.setVisible(true);
 					areaEffects.add(ae);
 				}
@@ -389,13 +363,10 @@ public class GameScreen extends Screen implements WidgetListener
 		}
 
 		// Retrieve any new explosions queue'd up by existing units
-		for (int i = 0; i < 2; i++)
-		{
-			for (final Unit u : units[i])
-			{
+		for (int i = 0; i < 2; i++) {
+			for (final Unit u : units[i]) {
 				newExplosions = u.getExplosionQueue();
-				for (final Explosion e : newExplosions)
-				{
+				for (final Explosion e : newExplosions) {
 					e.setVisible(true);
 					explosions.add(e);
 				}
@@ -404,10 +375,8 @@ public class GameScreen extends Screen implements WidgetListener
 
 		// Retrieve any new AIUnits spawned by existing units
 		newUnits.clear();
-		for (int i = 0; i < 2; i++)
-		{
-			for (final Unit u : units[i])
-			{
+		for (int i = 0; i < 2; i++) {
+			for (final Unit u : units[i]) {
 				newUnits.addAll(u.getAIUnitQueue());
 				for (final AIUnit aiu : newUnits)
 					aiu.setVisible(true);
@@ -417,11 +386,9 @@ public class GameScreen extends Screen implements WidgetListener
 			units[aiu.getFaction()].add(aiu);
 
 		// Update standalone animations
-		if (!standaloneAnims.isEmpty())
-		{
+		if (!standaloneAnims.isEmpty()) {
 			final Iterator<SpriteAnimation> itr = standaloneAnims.iterator();
-			while (itr.hasNext())
-			{
+			while (itr.hasNext()) {
 				final SpriteAnimation gsa = itr.next();
 				if (gsa.update(deltaTime))
 					itr.remove();
@@ -432,8 +399,7 @@ public class GameScreen extends Screen implements WidgetListener
 		cleanupDeadUnits();
 
 		// Check for player death
-		if (player.getHp() <= 0)
-		{
+		if (player.getHp() <= 0) {
 			state = GAME_OVER_TRANSITION;
 			gameOverCover.setVisible(true);
 			return;
@@ -452,8 +418,7 @@ public class GameScreen extends Screen implements WidgetListener
 		units[gregs].addAll(newFriends);
 
 		// Check for level completion
-		if (map.isLevelComplete(player))
-		{
+		if (map.isLevelComplete(player)) {
 			saveProgress();
 			if (map.getLevelNum() == Levels.LEVEL_COUNT[0])        // TODO: Support multiple stages
 				screenChangeQueue = CREDITS_SCREEN;
@@ -462,57 +427,49 @@ public class GameScreen extends Screen implements WidgetListener
 		}
 	}
 
-	void updateWaveText()
-	{
+	void updateWaveText() {
 		if (!OptionsScreen.displayWave)
 			return;
 
-		if (map.getWaveCount() > 1)
-		{
+		if (map.getWaveCount() > 1) {
 			waveNum = map.getWaveNum();
 			waveText.setText(AndroidGame.res.getString(R.string.wave) + " " + waveNum + " / " + map.getWaveCount());
 		}
 	}
 
-	void updateFPSText()
-	{
-		if (!OptionsScreen.displayFPS)
+	void updateFpsText() {
+		if (!OptionsScreen.displayFps)
 			return;
 
-		final double curUPS = game.getFPS();
+		final double curUPS = game.getFps();
 		final double fps;
 		if (!Double.isInfinite(curUPS))
-			fps = Math.min(Double.valueOf(fpsFormat.format(CGLRenderer.getFPS())), Double.valueOf(fpsFormat.format(curUPS)));
+			fps = Math.min(Double.valueOf(fpsFormat.format(CGLRenderer.getFps())), Double.valueOf(fpsFormat.format(curUPS)));
 		else
-			fps = Double.valueOf(fpsFormat.format(CGLRenderer.getFPS()));
+			fps = Double.valueOf(fpsFormat.format(CGLRenderer.getFps()));
 
 		fpsText.setText(AndroidGame.res.getString(R.string.fps) + ": " + fps);
 	}
 
-	// Performs a screen change if screenChangeQueue is populated by anything other than NO_SCREEN_CHANGE
-	void processScreenChangeQueue()
-	{
-		if (screenChangeQueue != NO_SCREEN_CHANGE)
-		{
+	/**
+	 * Performs a screen change if screenChangeQueue is populated by anything other than NO_SCREEN_CHANGE
+	 */
+	void processScreenChangeQueue() {
+		if (screenChangeQueue != NO_SCREEN_CHANGE) {
 			// TODO: are nullify()'s needed here?
 			if (screenChangeQueue == PAUSE_SCREEN)
 				pauseGame();
-			else
-			{
+			else {
 				FireAnimation.fireCount = 0;    // FIXME: ugly hack. Maybe close() all entities before screen change?
 				prepScreenChange();
 
-				if (screenChangeQueue == RESTART_LEVEL)
-				{
+				if (screenChangeQueue == RESTART_LEVEL) {
 					game.setScreen(new MapLoadingScreen(game, map.getStageNum(), map.getLevelNum()));
-				}
-				else if (screenChangeQueue == NEXT_LEVEL_SCREEN)
-				{
+				} else if (screenChangeQueue == NEXT_LEVEL_SCREEN) {
 					final int stageNum = map.getStageNum();
 
 					// Case: User just completed last level in the current stage
-					if (map.getLevelNum() == Levels.LEVEL_COUNT[stageNum - 1])
-					{
+					if (map.getLevelNum() == Levels.LEVEL_COUNT[stageNum - 1]) {
 						// Case: There exists one or more stages to progress to
 						//if (stageNum < Levels.STAGE_COUNT)
 						//{
@@ -533,24 +490,17 @@ public class GameScreen extends Screen implements WidgetListener
 					}
 
 					// Case: User has at least one more level to progress to within the current stage
-					else
-					{
+					else {
 						final int newLevelNum = map.getLevelNum() + 1;
 						game.setScreen(new MapLoadingScreen(game, stageNum, newLevelNum));
 						nullify();
 					}
-				}
-				else if (screenChangeQueue == MAIN_MENU_SCREEN)
-				{
+				} else if (screenChangeQueue == MAIN_MENU_SCREEN) {
 					game.setScreen(new MainMenuScreen(game, false));
-				}
-				else if (screenChangeQueue == GAME_OVER_SCREEN)
-				{
+				} else if (screenChangeQueue == GAME_OVER_SCREEN) {
 					game.setScreen(new GameOverScreen(game, map.getStageNum(), map.getLevelNum()));
 					nullify();
-				}
-				else if (screenChangeQueue == CREDITS_SCREEN)
-				{
+				} else if (screenChangeQueue == CREDITS_SCREEN) {
 					game.setScreen(new CreditsScreen(game));
 					nullify();
 				}
@@ -560,50 +510,30 @@ public class GameScreen extends Screen implements WidgetListener
 		}
 	}
 
-	void saveProgress()
-	{
-		int stageProgress;
-		int levelProgress;
+	void saveProgress() {
 		final int curStage = map.getStageNum();
 		final int curLevel = map.getLevelNum();
 
-		switch (OptionsScreen.difficulty)
-		{
-			case OptionsScreen.HARD:
-				stageProgress = Preferences.getInt("hardStageProgress", 0);
-				levelProgress = Preferences.getInt("hardLevelProgress", 0);
-				if (stageProgress == curStage && levelProgress == curLevel)
-					Preferences.setInt("hardLevelProgress", levelProgress + 1);
-			case OptionsScreen.MEDIUM:
-				stageProgress = Preferences.getInt("mediumStageProgress", 0);
-				levelProgress = Preferences.getInt("mediumLevelProgress", 0);
-				if (stageProgress == curStage && levelProgress == curLevel)
-					Preferences.setInt("mediumLevelProgress", levelProgress + 1);
-			default:
-				stageProgress = Preferences.getInt("easyStageProgress", 0);
-				levelProgress = Preferences.getInt("easyLevelProgress", 0);
-				if (stageProgress == curStage && levelProgress == curLevel)
-					Preferences.setInt("easyLevelProgress", levelProgress + 1);
+		for (int i = OptionsScreen.difficulty; i >= OptionsScreen.EASY; i--) {
+			int stageProgress = Preferences.getStageProgress(i);
+			int levelProgress = Preferences.getLevelProgress(i);
+			if (stageProgress == curStage && levelProgress == curLevel)
+				Preferences.setLevelProgress(i, levelProgress + 1);
+			else
 				break;
 		}
 	}
 
-	private void updateUnits(int deltaTime)
-	{
-		for (int i = 0; i < 2; i++)
-		{
-			for (final Unit u : units[i])
-			{
+	private void updateUnits(int deltaTime) {
+		for (int i = 0; i < 2; i++) {
+			for (final Unit u : units[i]) {
 				// Update unit
 				u.update(deltaTime);
 
 				// Move unit
-				if (u.isDisplacing())
-				{
-					for (final Obstacle o : map.getObstacles())
-					{
-						if (o.overlaps(u))
-						{
+				if (u.isDisplacing()) {
+					for (final Obstacle o : map.getObstacles()) {
+						if (o.overlaps(u)) {
 							u.setDestination(null);
 							final Point landingSpot = map.adjustDestination(u.getCenter());
 							u.offsetTo(landingSpot);
@@ -615,12 +545,10 @@ public class GameScreen extends Screen implements WidgetListener
 		}
 	}
 
-	private void updateProjectiles(int deltaTime)
-	{
+	private void updateProjectiles(int deltaTime) {
 		newProjectiles.clear();
 		final Iterator<Projectile> itr = projectiles.iterator();
-		while (itr.hasNext())
-		{
+		while (itr.hasNext()) {
 			final Projectile p = itr.next();
 			p.update(deltaTime);
 
@@ -640,26 +568,22 @@ public class GameScreen extends Screen implements WidgetListener
 				ae.setVisible(true);
 			areaEffects.addAll(newAreaEffects);
 
-			if (p.isFinished())
-			{
+			if (p.isFinished()) {
 				p.close();
 				itr.remove();
 			}
 		}
 
-		for (final Projectile p : newProjectiles)
-		{
+		for (final Projectile p : newProjectiles) {
 			p.setVisible(true);
 			projectiles.add(p);
 		}
 	}
 
-	private void updateAreaEffects(int deltaTime)
-	{
+	private void updateAreaEffects(int deltaTime) {
 		newAreaEffects.clear();
 		final Iterator<AreaEffect> itr = areaEffects.iterator();
-		while (itr.hasNext())
-		{
+		while (itr.hasNext()) {
 			final AreaEffect ae = itr.next();
 			ae.update(deltaTime);
 
@@ -667,45 +591,36 @@ public class GameScreen extends Screen implements WidgetListener
 			newAreaEffects.addAll(ae.getAreaEffectQueue());
 			// Note: newAreaEffects added to areaEffects after while() to avoid concurrent mod exception
 
-			if (ae.isFinished())
-			{
+			if (ae.isFinished()) {
 				ae.close();
 				itr.remove();
 			}
 		}
 
-		for (final AreaEffect ae : newAreaEffects)
-		{
+		for (final AreaEffect ae : newAreaEffects) {
 			ae.setVisible(true);
 			areaEffects.add(ae);
 		}
 	}
 
-	private void updateExplosions(int deltaTime)
-	{
+	private void updateExplosions(int deltaTime) {
 		final Iterator<Explosion> itr = explosions.iterator();
-		while (itr.hasNext())
-		{
+		while (itr.hasNext()) {
 			final Explosion e = itr.next();
 			e.update(deltaTime);
-			if (e.isFinished())
-			{
+			if (e.isFinished()) {
 				e.close();
 				itr.remove();
 			}
 		}
 	}
 
-	private void cleanupDeadUnits()
-	{
-		for (int i = 0; i < 2; i++)
-		{
+	private void cleanupDeadUnits() {
+		for (int i = 0; i < 2; i++) {
 			final Iterator<Unit> itr = units[i].iterator();
-			while (itr.hasNext())
-			{
+			while (itr.hasNext()) {
 				final Unit u = itr.next();
-				if (u.getHp() <= 0)
-				{
+				if (u.getHp() <= 0) {
 					u.close();
 					itr.remove();
 
@@ -717,10 +632,8 @@ public class GameScreen extends Screen implements WidgetListener
 		}
 	}
 
-	private boolean wasLastMainUnit()
-	{
-		for (final Unit u : units[steves])
-		{
+	private boolean wasLastMainUnit() {
+		for (final Unit u : units[steves]) {
 			if (u.isMainUnit())
 				return false;
 		}
@@ -728,76 +641,57 @@ public class GameScreen extends Screen implements WidgetListener
 		return true;
 	}
 
-	public static void playAnimation(SpriteAnimation anim)
-	{
+	public static void playAnimation(SpriteAnimation anim) {
 		anim.setVisible(true);
 		anim.play();
 		standaloneAnims.add(anim);
 	}
 
-	public static void playAnimation(SpriteAnimation anim, Image previousImage)
-	{
+	public static void playAnimation(SpriteAnimation anim, Image previousImage) {
 		Swapper.swapImages(previousImage, anim);
 		standaloneAnims.add(anim);
 	}
 
 	@Override
-	public void widgetEvent(WidgetEvent we)
-	{
+	public void widgetEvent(WidgetEvent we) {
 		final Object source = we.getSource();
 
-		if (source == pButton)
-		{
+		if (source == pButton) {
 			if (state == GAME_STATE)
 				pauseGame();
 			else if (state == PAUSED_STATE && pButtonDelay <= 0)
 				unpauseGame();
-		}
-		else if (source == pRestartButton)
-		{
+		} else if (source == pRestartButton) {
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
 				screenChangeQueue = RESTART_LEVEL;
-		}
-		else if (source == pMainMenuButton)
-		{
+		} else if (source == pMainMenuButton) {
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
 				screenChangeQueue = MAIN_MENU_SCREEN;
-		}
-		else if (source == pResumeButton)
-		{
+		} else if (source == pResumeButton) {
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
 				unpauseGame();
-		}
-		else if (source == pMusicVolumeSlider)
-		{
+		} else if (source == pMusicVolumeSlider) {
 			OptionsScreen.musicVolume = (float) pMusicVolumeSlider.getValue() / 100;
-			Preferences.setFloat("musicVolume", OptionsScreen.musicVolume);
+			Preferences.setMusicVolume(OptionsScreen.musicVolume);
 
 			// Inform AudioManager that master volume has changed so it can update the volume of all music / sound effects
 			AudioManager.musicVolumeChanged();
-		}
-		else if (source == pSfxSlider)
-		{
+		} else if (source == pSfxSlider) {
 			OptionsScreen.sfxVolume = (float) pSfxSlider.getValue() / 100;
-			Preferences.setFloat("sfxVolume", OptionsScreen.sfxVolume);
+			Preferences.setSfxVolume(OptionsScreen.sfxVolume);
 
 			// Inform AudioManager that sfx volume has changed so it can update the volume of all sound effects
 			AudioManager.sfxVolumeChanged();
-		}
-		else if (source == pDisplayFPSBox)
-		{
-			OptionsScreen.displayFPS = pDisplayFPSBox.isChecked();
-			Preferences.setBoolean("displayFPS", OptionsScreen.displayFPS);
-		}
-		else if (source == pDisplayWaveBox)
-		{
+		} else if (source == pDisplayFpsBox) {
+			OptionsScreen.displayFps = pDisplayFpsBox.isChecked();
+			Preferences.setFpsDisplayed(OptionsScreen.displayFps);
+		} else if (source == pDisplayWaveBox) {
 			OptionsScreen.displayWave = pDisplayWaveBox.isChecked();
-			Preferences.setBoolean("displayWave", OptionsScreen.displayWave);
+			Preferences.setWaveDisplayed(OptionsScreen.displayWave);
 		}
 	}
 
-	void pauseGame()
-	{
+	void pauseGame() {
 		AudioManager.pauseMusicEffects();
 
 		state = PAUSED_STATE;
@@ -824,29 +718,26 @@ public class GameScreen extends Screen implements WidgetListener
 		pMusicVolumeSlider.setVisible(true);
 		pSfxText.setVisible(true);
 		pSfxSlider.setVisible(true);
-		pDisplayFPSText.setVisible(true);
-		pDisplayFPSBox.setVisible(true);
+		pDisplayFpsText.setVisible(true);
+		pDisplayFpsBox.setVisible(true);
 		pDisplayWaveText.setVisible(true);
 		pDisplayWaveBox.setVisible(true);
 	}
 
-	void unpauseGame()
-	{
+	void unpauseGame() {
 		AudioManager.resumeMusicEffects();
 
 		state = GAME_STATE;
 
 		positionUIText();
 
-		if (OptionsScreen.displayWave)
-		{
+		if (OptionsScreen.displayWave) {
 			updateWaveText();
 			waveTextBackground.setVisible(map.getWaveCount() > 1);
-		}
-		else
+		} else
 			waveText.setText(" ");
 
-		if (OptionsScreen.displayFPS)
+		if (OptionsScreen.displayFps)
 			fpsTextBackground.setVisible(true);
 		else
 			fpsText.setText(" ");
@@ -869,46 +760,37 @@ public class GameScreen extends Screen implements WidgetListener
 		pMusicVolumeSlider.setVisible(false);
 		pSfxText.setVisible(false);
 		pSfxSlider.setVisible(false);
-		pDisplayFPSText.setVisible(false);
-		pDisplayFPSBox.setVisible(false);
+		pDisplayFpsText.setVisible(false);
+		pDisplayFpsBox.setVisible(false);
 		pDisplayWaveText.setVisible(false);
 		pDisplayWaveBox.setVisible(false);
 	}
 
-	private void positionUIText()
-	{
-		if (OptionsScreen.displayWave && map.getWaveCount() > 1)
-		{
-			if (OptionsScreen.displayFPS)
-			{
+	private void positionUIText() {
+		if (OptionsScreen.displayWave && map.getWaveCount() > 1) {
+			if (OptionsScreen.displayFps) {
 				waveText.offsetTo(WAVE_LEFT_X, waveText.getY());
 				waveTextBackground.offsetTo(WAVE_LEFT_X, waveTextBackground.getY());
 				fpsText.offsetTo(FPS_RIGHT_X, fpsText.getY());
 				fpsTextBackground.offsetTo(FPS_RIGHT_X, fpsTextBackground.getY());
-			}
-			else
-			{
+			} else {
 				waveText.offsetTo(WAVE_FPS_CENTER_X, waveText.getY());
 				waveTextBackground.offsetTo(WAVE_FPS_CENTER_X, waveTextBackground.getY());
 			}
-		}
-		else
-		{
+		} else {
 			fpsText.offsetTo(WAVE_FPS_CENTER_X, fpsText.getY());
 			fpsTextBackground.offsetTo(WAVE_FPS_CENTER_X, fpsTextBackground.getY());
 		}
 	}
 
 	@Override
-	public void pause()
-	{
+	public void pause() {
 		if (!Screen.isScreenChanging())
 			pauseGame();
 	}
 
 	@Override
-	public void resume()
-	{
+	public void resume() {
 		firstRun();
 
 		if (map.isBossLevel())
@@ -917,13 +799,11 @@ public class GameScreen extends Screen implements WidgetListener
 			AudioManager.playMusic(AudioManager.GAME_MUSIC);
 	}
 
-	void firstRun()
-	{
-		// Should only be true when the level first launches. After that, any resume() will be preceeded by a pause() which will
-		//set the state to PAUSED_STATE. Here, we use this to set the waveTextBackground visible only when the level is first
-		//loaded (but only if we have > 1 wave this level)
-		if (state == GAME_STATE)
-		{
+	void firstRun() {
+		// Should only be true when the level first launches. After that, any resume() will be preceeded by a pause() which will set the state to
+		//PAUSED_STATE. Here, we use this to set the waveTextBackground visible only when the level is first loaded (but only if we have > 1 wave
+		//this level)
+		if (state == GAME_STATE) {
 			positionUIText();
 
 			if (OptionsScreen.displayWave)
@@ -932,13 +812,11 @@ public class GameScreen extends Screen implements WidgetListener
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 	}
 
 	@Override
-	public void backButton()
-	{
+	public void backButton() {
 		if (state == GAME_STATE && screenChangeQueue == NO_SCREEN_CHANGE)
 			screenChangeQueue = PAUSE_SCREEN;
 		else if (state == PAUSED_STATE && screenChangeQueue == NO_SCREEN_CHANGE)
@@ -946,9 +824,10 @@ public class GameScreen extends Screen implements WidgetListener
 	}
 
 	// TODO: when exactly does nullify needs to be called?
-	// Clear GameScreen variables to avoid memory leaks. They will be re-created when the game is restarted
-	void nullify()
-	{
+	/**
+	 * Clear GameScreen variables to avoid memory leaks. They will be re-created when the game is restarted
+	 */
+	void nullify() {
 		pButton = null;
 		pCover = null;
 		pHeadingText = null;
@@ -959,8 +838,8 @@ public class GameScreen extends Screen implements WidgetListener
 		pMusicVolumeSlider = null;
 		pSfxText = null;
 		pSfxSlider = null;
-		pDisplayFPSText = null;
-		pDisplayFPSBox = null;
+		pDisplayFpsText = null;
+		pDisplayFpsBox = null;
 		pDisplayWaveText = null;
 		pDisplayWaveBox = null;
 		gameOverCover = null;

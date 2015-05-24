@@ -1,14 +1,12 @@
 package com.lescomber.vestige.widgets;
 
 import com.lescomber.vestige.crossover.SpriteManager;
-import com.lescomber.vestige.framework.Input.TouchEvent;
+import com.lescomber.vestige.framework.TouchHandler.TouchEvent;
 import com.lescomber.vestige.geometry.Rectangle;
 import com.lescomber.vestige.graphics.UISprite;
 
-public class Slider extends Widget
-{
-	private static final float BAR_KNOB_HEIGHT_RATIO =
-			(float) SpriteManager.sliderEmpty.getHeight() / SpriteManager.sliderKnob.getHeight();
+public class Slider extends Widget {
+	private static final float BAR_KNOB_HEIGHT_RATIO = (float) SpriteManager.sliderEmpty.getHeight() / SpriteManager.sliderKnob.getHeight();
 	private static final float KNOB_INDENT_RATIO = 6f / 30;
 	private static final float RECT_SCALE = 1.4f;    // Enlarge hitboxes by this scaling factor to make it easier to hit
 
@@ -28,8 +26,7 @@ public class Slider extends Widget
 	private final int minValue;
 	private final int maxValue;
 
-	public Slider(float x, float y, float width, float height, int minValue, int maxValue)
-	{
+	public Slider(float x, float y, float width, float height, int minValue, int maxValue) {
 		super();
 
 		this.minValue = minValue;
@@ -62,38 +59,32 @@ public class Slider extends Widget
 	}
 
 	@Override
-	public void handleEvent(TouchEvent e)
-	{
+	public void handleEvent(TouchEvent e) {
 		// If not visible, Slider cannot be interacted with
 		if (!knob.isVisible())
 			return;
 
-		if (e.type == TouchEvent.TOUCH_DOWN)
-		{
+		if (e.type == TouchEvent.TOUCH_DOWN) {
 			if (knobRect.contains(e.x, e.y))
 				isDragging = true;
 
 				// e is not in the knob so if it's inside the boundingBox it must be on the line
 			else if (boundingBox.contains(e.x, e.y))
 				setKnobX(e.x);
-		}
-		else if (e.type == TouchEvent.TOUCH_UP)
+		} else if (e.type == TouchEvent.TOUCH_UP)
 			isDragging = false;
-		else if (e.type == TouchEvent.TOUCH_DRAGGED)
-		{
+		else if (e.type == TouchEvent.TOUCH_DRAGGED) {
 			if (isDragging)
 				setKnobX(e.x);
 		}
 	}
 
-	private void setKnobX(float x)
-	{
+	private void setKnobX(float x) {
 		final int newValue = Math.round(((x - knobMinX) / (knobMaxX - knobMinX)) * (maxValue - minValue));
 		setValue(newValue);
 	}
 
-	public void setValue(int value)
-	{
+	public void setValue(int value) {
 		if (value > maxValue)
 			value = maxValue;
 		else if (value < minValue)
@@ -111,14 +102,12 @@ public class Slider extends Widget
 		notifyListeners(new WidgetEvent(this, "valueChanged", value));
 	}
 
-	public int getValue()
-	{
+	public int getValue() {
 		return value;
 	}
 
 	@Override
-	public void setVisible(boolean isVisible)
-	{
+	public void setVisible(boolean isVisible) {
 		barEmpty.setVisible(isVisible);
 		barFull.setVisible(isVisible);
 		knob.setVisible(isVisible);

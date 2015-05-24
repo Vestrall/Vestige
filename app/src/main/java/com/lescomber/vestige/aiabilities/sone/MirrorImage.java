@@ -10,8 +10,7 @@ import com.lescomber.vestige.units.AIUnit;
 
 import java.util.ArrayList;
 
-public class MirrorImage extends AIAbility
-{
+public class MirrorImage extends AIAbility {
 	private static final float SPAWN_DISTANCE = 200;
 
 	private final float startingHealth;
@@ -19,8 +18,7 @@ public class MirrorImage extends AIAbility
 	private final ArrayList<AIAbility> imageAbilities;
 	private PickUp imagePowerUp;
 
-	public MirrorImage(AIUnit owner, float startingHealth, double cooldownSeconds)
-	{
+	public MirrorImage(AIUnit owner, float startingHealth, double cooldownSeconds) {
 		super(owner, cooldownSeconds);
 
 		this.startingHealth = startingHealth;
@@ -29,8 +27,7 @@ public class MirrorImage extends AIAbility
 		imagePowerUp = null;
 	}
 
-	public MirrorImage(MirrorImage copyMe)
-	{
+	public MirrorImage(MirrorImage copyMe) {
 		super(copyMe);
 
 		startingHealth = copyMe.startingHealth;
@@ -41,19 +38,16 @@ public class MirrorImage extends AIAbility
 			imagePowerUp = copyMe.imagePowerUp.copy();
 	}
 
-	public void addImageAbility(AIAbility ability)
-	{
+	public void addImageAbility(AIAbility ability) {
 		imageAbilities.add(ability.copy());
 	}
 
-	public void setImagePickUp(PickUp powerUp)
-	{
+	public void setImagePickUp(PickUp powerUp) {
 		this.imagePowerUp = powerUp;
 	}
 
 	@Override
-	public void activate()
-	{
+	public void activate() {
 		final AIUnit image = owner.copy();
 
 		// Set image stats
@@ -69,8 +63,7 @@ public class MirrorImage extends AIAbility
 
 		// Set image abilities based on imageAbilities
 		image.clearAbilities();
-		for (final AIAbility aia : imageAbilities)
-		{
+		for (final AIAbility aia : imageAbilities) {
 			final AIAbility ability = aia.copy();
 			ability.setOwner(image);
 			image.addAbility(ability);
@@ -93,8 +86,7 @@ public class MirrorImage extends AIAbility
 	}
 
 	@Override
-	public MirrorImage copy()
-	{
+	public MirrorImage copy() {
 		return new MirrorImage(this);
 	}
 }

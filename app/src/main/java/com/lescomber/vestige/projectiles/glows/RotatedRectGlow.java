@@ -4,21 +4,20 @@ import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
 import com.lescomber.vestige.framework.Util;
 import com.lescomber.vestige.geometry.Hitbox;
 
-public class RotatedRectGlow extends Glow
-{
-	public RotatedRectGlow(SpriteTemplate template)
-	{
+public class RotatedRectGlow extends Glow {
+	public RotatedRectGlow(SpriteTemplate template) {
 		super(template);
 	}
 
-	public RotatedRectGlow(RotatedRectGlow copyMe)
-	{
+	public RotatedRectGlow(RotatedRectGlow copyMe) {
 		super(copyMe);
 	}
 
-	@Override    // Note: disregards sizePercentage
-	public void updateShape(Hitbox hitbox, float sizePercentage)
-	{
+	/**
+	 * // Note: disregards sizePercentage
+	 */
+	@Override
+	public void updateShape(Hitbox hitbox, float sizePercentage) {
 		scaleTo(hitbox.getWidth(), hitbox.getHeight());
 		if (!Util.equals(getDirection(), hitbox.getDirection()))
 			rotateTo(hitbox.getDirection());
@@ -26,8 +25,7 @@ public class RotatedRectGlow extends Glow
 	}
 
 	@Override
-	public RotatedRectGlow copy()
-	{
+	public RotatedRectGlow copy() {
 		return new RotatedRectGlow(this);
 	}
 }

@@ -5,8 +5,8 @@ import android.content.res.Resources;
 import com.lescomber.vestige.R;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.AndroidGame;
-import com.lescomber.vestige.framework.Input;
 import com.lescomber.vestige.framework.Screen;
+import com.lescomber.vestige.framework.TouchHandler.TouchEvent;
 import com.lescomber.vestige.graphics.Text;
 import com.lescomber.vestige.graphics.TextArea;
 import com.lescomber.vestige.graphics.TextStyle;
@@ -20,11 +20,9 @@ import com.lescomber.vestige.widgets.ButtonGroup;
 import com.lescomber.vestige.widgets.WidgetEvent;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 
-public class PewBallScreen extends GameScreen
-{
+public class PewBallScreen extends GameScreen {
 	private static final int PEW_BALL_WARNING_STATE = 200;
 
 	private int homeScore;
@@ -60,8 +58,7 @@ public class PewBallScreen extends GameScreen
 	private final Button confirmMainMenuButton;
 	private final Button cancelButton;
 
-	public PewBallScreen(AndroidGame game)
-	{
+	public PewBallScreen(AndroidGame game) {
 		super(game);
 
 		homeScore = 0;
@@ -104,10 +101,10 @@ public class PewBallScreen extends GameScreen
 		final TextStyle warningHeadingStyle = TextStyle.headingStyle();
 
 		concedeHeading = new Text(warningHeadingStyle, res.getString(R.string.pewBallWarning), Screen.MIDX, 75, false);
-		concedeWarning = new TextArea(Screen.MIDX, WARNING_TOP_Y, CHARS_PER_LINE, LINE_SPACING, resultBodyStyle,
-				res.getString(R.string.pewBallConcedeBody), false);
-		mainMenuWarning = new TextArea(Screen.MIDX, WARNING_TOP_Y, CHARS_PER_LINE, LINE_SPACING, resultBodyStyle,
-				res.getString(R.string.pewBallMainMenuBody, false), false);
+		concedeWarning = new TextArea(Screen.MIDX, WARNING_TOP_Y, CHARS_PER_LINE, LINE_SPACING, resultBodyStyle, res
+				.getString(R.string.pewBallConcedeBody), false);
+		mainMenuWarning = new TextArea(Screen.MIDX, WARNING_TOP_Y, CHARS_PER_LINE, LINE_SPACING, resultBodyStyle, res
+				.getString(R.string.pewBallMainMenuBody, false), false);
 
 		final ButtonGroup buttonGroup = new ButtonGroup();
 		final TextStyle buttonStyle = TextStyle.bodyStyleCyan();
@@ -125,9 +122,8 @@ public class PewBallScreen extends GameScreen
 		cancelButton.registerGroup(buttonGroup);
 	}
 
-	private void updateScore()
-	{
-		int scoreLimit = ((PewBallMap)map).getScoreLimit();
+	private void updateScore() {
+		int scoreLimit = ((PewBallMap) map).getScoreLimit();
 		final int scoreMin = Math.min(awayScore, homeScore);
 		if (scoreLimit - scoreMin <= 1)
 			scoreLimit = scoreMin + 2;
@@ -135,61 +131,53 @@ public class PewBallScreen extends GameScreen
 		scoreText.setText(homeScore + " (" + scoreLimit + ") " + awayScore);
 	}
 
-	private void updateTimer()
-	{
-		if (map != null)
-		{
-			final String time = timerFormat.format(((PewBallMap)map).ballTimer() / 1000.0);
+	private void updateTimer() {
+		if (map != null) {
+			final String time = timerFormat.format(((PewBallMap) map).ballTimer() / 1000.0);
 			timerText.setText(time);
 		}
 	}
 
-	public void homeGoal()
-	{
+	public void homeGoal() {
 		homeScore++;
 		updateScore();
 
-		if (homeScore >= ((PewBallMap)map).getScoreLimit() && homeScore - awayScore > 1)
+		if (homeScore >= ((PewBallMap) map).getScoreLimit() && homeScore - awayScore > 1)
 			victory();
-		else
-		{
+		else {
 			if (!isConcedeTerritory())
-				PewBallPrepScreen.gameInProgress(false);
+				PewBallPrepScreen.setGameInProgress(false);
 
-			if (((PewBallMap)map).noActiveBalls())
-				((PewBallMap)map).startBallSpawn();
+			if (((PewBallMap) map).noActiveBalls())
+				((PewBallMap) map).startBallSpawn();
 		}
 	}
 
-	public void awayGoal()
-	{
+	public void awayGoal() {
 		awayScore++;
 		updateScore();
 
-		if (awayScore >= ((PewBallMap)map).getScoreLimit() && awayScore - homeScore > 1)
+		if (awayScore >= ((PewBallMap) map).getScoreLimit() && awayScore - homeScore > 1)
 			defeat();
-		else
-		{
+		else {
 			if (isConcedeTerritory())
-				PewBallPrepScreen.gameInProgress(true);
+				PewBallPrepScreen.setGameInProgress(true);
 
-			if (((PewBallMap)map).noActiveBalls())
-				((PewBallMap)map).startBallSpawn();
+			if (((PewBallMap) map).noActiveBalls())
+				((PewBallMap) map).startBallSpawn();
 		}
 	}
 
-	private void victory()
-	{
-		PewBallPrepScreen.gameInProgress(false);
+	private void victory() {
+		PewBallPrepScreen.setGameInProgress(false);
 		PewBallPrepScreen.victory();
 
 		gameOverCover.setVisible(true);
 		state = GAME_OVER_TRANSITION;
 	}
 
-	private void defeat()
-	{
-		PewBallPrepScreen.gameInProgress(false);
+	private void defeat() {
+		PewBallPrepScreen.setGameInProgress(false);
 		PewBallPrepScreen.defeat();
 
 		gameOverCover.setVisible(true);
@@ -197,62 +185,50 @@ public class PewBallScreen extends GameScreen
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
-		if (state == PEW_BALL_WARNING_STATE)
-		{
+	public void update(int deltaTime) {
+		if (state == PEW_BALL_WARNING_STATE) {
 			confirmConcedeButton.update(deltaTime);
 			confirmMainMenuButton.update(deltaTime);
 			cancelButton.update(deltaTime);
 
-			final List<Input.TouchEvent> touchEvents = game.getInput().getTouchEvents();
+			final List<TouchEvent> touchEvents = game.getTouchEvents();
 			final int len = touchEvents.size();
-			for (int i = 0; i < len; i++)
-			{
-				final Input.TouchEvent event = touchEvents.get(i);
+			for (int i = 0; i < len; i++) {
+				final TouchEvent event = touchEvents.get(i);
 
 				confirmConcedeButton.handleEvent(event);
 				confirmMainMenuButton.handleEvent(event);
 				cancelButton.handleEvent(event);
 			}
-		}
-		else
-		{
+		} else {
 			updateTimer();
 
 			super.update(deltaTime);
 		}
 	}
 
-	// Note: GameOverTransition is overridden to display victory/defeat message prior to next/previous level loading screen
+	/**
+	 * Note: GameOverTransition is overridden to display victory/defeat message prior to next/previous level loading screen
+	 */
 	@Override
-	void updateGameOverTransition(int deltaTime)
-	{
-		if (!victoryHeading.isVisible() && !defeatHeading.isVisible())
-		{
+	void updateGameOverTransition(int deltaTime) {
+		if (!victoryHeading.isVisible() && !defeatHeading.isVisible()) {
 			resultTextDelay -= deltaTime;
 			coverAlpha += RESULT_COVER_ALPHA_PER_MS * deltaTime;
 			gameOverCover.setAlpha(coverAlpha);
-			if (resultTextDelay <= 0)
-			{
+			if (resultTextDelay <= 0) {
 				resultTextDelay = RESULT_TEXT_TIME;
-				if (homeScore > awayScore)
-				{
+				if (homeScore > awayScore) {
 					victoryHeading.setVisible(true);
 					victoryBody.setVisible(true);
-				}
-				else
-				{
+				} else {
 					defeatHeading.setVisible(true);
 					defeatBody.setVisible(true);
 				}
 			}
-		}
-		else
-		{
+		} else {
 			resultTextDelay -= deltaTime;
-			if (resultTextDelay <= 0)
-			{
+			if (resultTextDelay <= 0) {
 				if (homeScore > awayScore)
 					screenChangeQueue = NEXT_LEVEL_SCREEN;
 				else
@@ -262,24 +238,20 @@ public class PewBallScreen extends GameScreen
 	}
 
 	@Override
-	void processScreenChangeQueue()
-	{
-		if (screenChangeQueue == NEXT_LEVEL_SCREEN || screenChangeQueue == GAME_OVER_SCREEN)
-		{
+	void processScreenChangeQueue() {
+		if (screenChangeQueue == NEXT_LEVEL_SCREEN || screenChangeQueue == GAME_OVER_SCREEN) {
 			prepScreenChange();
 			game.setScreen(new MapLoadingScreen(game, Levels.PEW_BALL_STAGE, PewBallPrepScreen.currentLevel));
-		}
-		else
+		} else
 			super.processScreenChangeQueue();
 	}
 
 	@Override
-	public void loadMap(Map map)
-	{
+	public void loadMap(Map map) {
 		GameScreen.map = map;
 
 		map.setBackground();
-		((PewBallMap)map).attachScreen(this);
+		((PewBallMap) map).attachScreen(this);
 		updateTimer();
 		updateScore();
 
@@ -293,13 +265,12 @@ public class PewBallScreen extends GameScreen
 	}
 
 	@Override
-	void pauseGame()
-	{
+	void pauseGame() {
 		super.pauseGame();
 
 		// No FPS/wave text for PewBallMap so we hide FPS/wave-related options
-		pDisplayFPSText.setVisible(false);
-		pDisplayFPSBox.setVisible(false);
+		pDisplayFpsText.setVisible(false);
+		pDisplayFpsBox.setVisible(false);
 		pDisplayWaveText.setVisible(false);
 		pDisplayWaveBox.setVisible(false);
 
@@ -313,8 +284,7 @@ public class PewBallScreen extends GameScreen
 	}
 
 	@Override
-	void unpauseGame()
-	{
+	void unpauseGame() {
 		super.unpauseGame();
 
 		// Keep fps background invisible (fps text is blank so it doesn't need to be invisible)
@@ -330,64 +300,51 @@ public class PewBallScreen extends GameScreen
 	}
 
 	@Override
-	public void widgetEvent(WidgetEvent we)
-	{
+	public void widgetEvent(WidgetEvent we) {
 		final Object source = we.getSource();
 
-		if (source == confirmConcedeButton)
-		{
-			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
-			{
+		if (source == confirmConcedeButton) {
+			if (we.getCommand().equals(Button.ANIMATION_FINISHED)) {
 				state = PAUSED_STATE;
 				defeat();
 				screenChangeQueue = GAME_OVER_SCREEN;
 			}
-		}
-		else if (source == confirmMainMenuButton)
-		{
-			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
-			{
+		} else if (source == confirmMainMenuButton) {
+			if (we.getCommand().equals(Button.ANIMATION_FINISHED)) {
 				state = PAUSED_STATE;
 				defeat();
 				screenChangeQueue = MAIN_MENU_SCREEN;
 			}
-		}
-		else if (source == cancelButton)
-		{
+		} else if (source == cancelButton) {
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
 				hideWarning();
-		}
-		else if (source == pMainMenuButton)
-		{
-			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
-			{
+		} else if (source == pMainMenuButton) {
+			if (we.getCommand().equals(Button.ANIMATION_FINISHED)) {
 				if (isConcedeTerritory())
 					displayMainMenuWarning();
 				else
 					screenChangeQueue = MAIN_MENU_SCREEN;
 			}
-		}
-		else if (source == pRestartButton)    // Concede button
+		} else if (source == pRestartButton)    // Concede button
 		{
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
 				displayConcedeWarning();
-		}
-		else
+		} else
 			super.widgetEvent(we);
 	}
 
-	// Returns true if leaving the game now will result in an auto-concede
-	private boolean isConcedeTerritory()
-	{
+	/**
+	 * Returns true if leaving the game now will result in an auto-concede
+	 */
+	private boolean isConcedeTerritory() {
 		// Can't go any lower than level 1
 		if (PewBallPrepScreen.currentLevel <= 1)
 			return false;
 
-		return (awayScore > homeScore) || (awayScore == homeScore && awayScore >= ((PewBallMap)map).getScoreLimit() - 1);
+		return (awayScore > homeScore) || (awayScore == homeScore && awayScore >= ((PewBallMap) map).getScoreLimit() - 1);
 	}
 
-	private void displayConcedeWarning()
-	{
+	private void displayConcedeWarning() {
 		state = PEW_BALL_WARNING_STATE;
 
 		pauseUIVisible(false);
@@ -398,8 +355,7 @@ public class PewBallScreen extends GameScreen
 		cancelButton.setVisible(true);
 	}
 
-	private void displayMainMenuWarning()
-	{
+	private void displayMainMenuWarning() {
 		state = PEW_BALL_WARNING_STATE;
 
 		pauseUIVisible(false);
@@ -410,8 +366,7 @@ public class PewBallScreen extends GameScreen
 		cancelButton.setVisible(true);
 	}
 
-	private void hideWarning()
-	{
+	private void hideWarning() {
 		state = PAUSED_STATE;
 
 		concedeHeading.setVisible(false);
@@ -424,9 +379,10 @@ public class PewBallScreen extends GameScreen
 		pauseUIVisible(true);
 	}
 
-	// Keeps pause cover up but hides/displays everything else
-	private void pauseUIVisible(boolean isVisible)
-	{
+	/**
+	 * Keeps pause cover up but hides/displays everything else
+	 */
+	private void pauseUIVisible(boolean isVisible) {
 		pHeadingText.setVisible(isVisible);
 		pMusicVolumeText.setVisible(isVisible);
 		pMusicVolumeSlider.setVisible(isVisible);
@@ -439,12 +395,13 @@ public class PewBallScreen extends GameScreen
 	}
 
 	@Override
-	void firstRun()
-	{
+	void firstRun() {
 		super.firstRun();
 
 		fpsTextBackground.setVisible(false);
 	}
 
-	@Override void updateFPSText() { }
+	@Override
+	void updateFpsText() {
+	}
 }

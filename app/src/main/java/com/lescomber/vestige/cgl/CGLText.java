@@ -18,50 +18,43 @@ import android.opengl.Matrix;
 
 import com.lescomber.vestige.Assets;
 
-public class CGLText
-{
-	private static final String VERTEX_SHADER_CODE =
-			"uniform mat4 u_MVPMatrix[24];"     // An array representing the combined model/view/projection
-					//matrices for each sprite
-					+ "attribute float a_MVPMatrixIndex;"    // The index of the MVPMatrix of the particular sprite
-					+ "attribute vec4 a_Position;"        // Per-vertex position information we will pass in
-					+ "attribute vec2 a_TexCoordinate;"    // Per-vertex texture coordinate information we will pass in
-					+ "varying vec2 v_TexCoordinate;"        // This will be passed into the fragment shader
+public class CGLText {
+	private static final String VERTEX_SHADER_CODE = "uniform mat4 u_MVPMatrix[24];"    // An array representing the combined model/view/projection
+																						//matrices for each sprite
+			+ "attribute float a_MVPMatrixIndex;"    // The index of the MVPMatrix of the particular sprite
+			+ "attribute vec4 a_Position;"        // Per-vertex position information we will pass in
+			+ "attribute vec2 a_TexCoordinate;"    // Per-vertex texture coordinate information we will pass in
+			+ "varying vec2 v_TexCoordinate;"        // This will be passed into the fragment shader
 
-					+ "void main()"                        // The entry point for our vertex shader.
-					+ "{"
-					+ "   int mvpMatrixIndex = int(a_MVPMatrixIndex);"
-					+ "   v_TexCoordinate = a_TexCoordinate;"
-					+ "   gl_Position = u_MVPMatrix[mvpMatrixIndex]"    // gl_Position is a special variable used to store the final position
-					+ "               * a_Position;"        // Multiply the vertex by the matrix to get the final point in
-					+ "}";                                //normalized screen coordinates
+			+ "void main()"                        // The entry point for our vertex shader.
+			+ "{" + "   int mvpMatrixIndex = int(a_MVPMatrixIndex);" + "   v_TexCoordinate = a_TexCoordinate;" + "   gl_Position = " +
+			"u_MVPMatrix[mvpMatrixIndex]"    // gl_Position is a special variable used to store the final position
+			+ "               * a_Position;"        // Multiply the vertex by the matrix to get the final point in
+			+ "}";                                //normalized screen coordinates
 
-	private static final String FRAGMENT_SHADER_CODE =
-			"uniform sampler2D u_Texture;"        // The input texture
-					+ "precision mediump float;"        // Set the default precision to medium. We don't need as high of a
-					+ "uniform vec4 u_Color;"            //precision in the fragment shader
-					+ "varying vec2 v_TexCoordinate;"    // Interpolated texture coordinate per fragment
+	private static final String FRAGMENT_SHADER_CODE = "uniform sampler2D u_Texture;"        // The input texture
+			+ "precision mediump float;"        // Set the default precision to medium. We don't need as high of a
+			+ "uniform vec4 u_Color;"            //precision in the fragment shader
+			+ "varying vec2 v_TexCoordinate;"    // Interpolated texture coordinate per fragment
 
-					+ "void main()"                    // The entry point for our fragment shader
-					+ "{"
-					+ "   gl_FragColor = texture2D(u_Texture, v_TexCoordinate).a * u_Color;"    // Texture is grayscale so
-					+ "}";    //take only grayscale value from it when computing color output (otherwise font is always black)
+			+ "void main()"                    // The entry point for our fragment shader
+			+ "{" + "   gl_FragColor = texture2D(u_Texture, v_TexCoordinate).a * u_Color;"    // Texture is grayscale so
+			+ "}";    //take only grayscale value from it when computing color output (otherwise font is always black)
 
 	private static final String fontsDir = "Fonts/";
 
 	public static final int CHAR_START = 32;    // First character (ASCII code)
 	public static final int CHAR_END = 126;        // Last character (ASCII code)
-	public static final int CHAR_CNT = (((CHAR_END - CHAR_START) + 1) + 1); // Character count (including character to
-	//use for unknown)
+	public static final int CHAR_CNT = (((CHAR_END - CHAR_START) + 1) + 1); // Character count (including character to use for unknown)
 
 	public static final int CHAR_NONE = 32;                    // Character to use for unknown (ASCII code)
 	public static final int CHAR_UNKNOWN = (CHAR_CNT - 1);    // Index of the unknown character
 
-	public static final int FONT_SIZE_MIN = 6;		// Minumum font size (pixels)
-	public static final int FONT_SIZE_MAX = 180;	// Maximum font size (pixels)
+	public static final int FONT_SIZE_MIN = 6;        // Minumum font size (pixels)
+	public static final int FONT_SIZE_MAX = 180;    // Maximum font size (pixels)
 
-	public static final int CHAR_BATCH_SIZE = 24;	// Number of characters to render per batch. Must be the same as
-													//the size of u_MVPMatrix in BatchTextProgram
+	public static final int CHAR_BATCH_SIZE = 24;   // Number of characters to render per batch. Must be the same as the size of u_MVPMatrix in
+													//BatchTextProgram
 
 	private static final int CELL_PADDING = 2;
 
@@ -100,8 +93,7 @@ public class CGLText
 
 	// --Constructor--//
 	// D: save program + asset manager, create arrays, and initialize the members
-	public CGLText()
-	{
+	public CGLText() {
 		batch = new CGLTextBatch(CHAR_BATCH_SIZE, mProgramHandle); // Create sprite batch (with defined size)
 
 		charWidths = new float[CHAR_CNT];        // Create the array of character widths
@@ -128,8 +120,7 @@ public class CGLText
 		spaceX = 0.0f;
 	}
 
-	public static void createProgram()
-	{
+	public static void createProgram() {
 		mProgramHandle = CGLUtil.createProgram(VERTEX_SHADER_CODE, FRAGMENT_SHADER_CODE);
 
 		// Get handle to fragment shader's u_Color member
@@ -144,16 +135,16 @@ public class CGLText
 		GLES20.glUseProgram(0);
 	}
 
-	// --Load Font--//
-	// description
-	// this will load the specified font file, create a texture for the defined
-	// character range, and setup all required values used to render with it.
-	// arguments:
-	// file - Filename of the font (.ttf, .otf) to use. In 'Assets' folder.
-	// size - Requested pixel size of font (height)
-	// padX, padY - Extra padding per character (X+Y Axis); to prevent overlapping characters.
-	public boolean load(String file, int size, int padX, int padY)
-	{
+	/**
+	 * This will load the specified font file, create a texture for the defined character range, and setup all required values used to render with it
+	 *
+	 * @param file Filename of the font (.ttf, .otf) to use. In 'Assets' folder
+	 * @param size Requested pixel size of font (height)
+	 * @param padX Extra padding per character to prevent overlapping characters
+	 * @param padY Extra padding per character to prevent overlapping characters
+	 * @return true on success
+	 */
+	public boolean load(String file, int size, int padX, int padY) {
 		fontPadX = padX;    // Set requested x axis padding
 		fontPadY = padY;    // Set requested y axis padding
 
@@ -197,7 +188,7 @@ public class CGLText
 		cnt++; // Advance array counter		// TESTME: was commented out?
 
 		// Set character height to font height
-		charHeight = fontHeight;	// Set character height
+		charHeight = fontHeight;    // Set character height
 
 		// Find the maximum size, validate, and setup cell sizes
 		//cellWidth = (int) charWidthMax + (2 * fontPadX); // Set cell width
@@ -262,8 +253,7 @@ public class CGLText
 			// TODO: Proper fix for overlapping characters. Currently putting in a -2 here for cellWidth/cellHeight to workaround
 			charRgn[c] = new CGLTextureRegion(textureSize, textureSize, x, y, cellWidth - CELL_PADDING, cellHeight - CELL_PADDING);
 			x += cellWidth + CELL_PADDING;        // Move to next char (cell)
-			if (x + cellWidth > textureSize)
-			{
+			if (x + cellWidth > textureSize) {
 				x = 0;                // Reset x position to start
 				y += cellHeight + CELL_PADDING;    // Move to next row (cell)
 			}
@@ -279,24 +269,20 @@ public class CGLText
 	// alpha - optional alpha value for font (default = 1.0)
 	// vpMatrix - View and projection matrix to use
 	// R: [none]
-	public void prepareToDraw()
-	{
+	public void prepareToDraw() {
 		prepareToDraw(1.0f, 1.0f, 1.0f, 1.0f);    // Default white opaque
 	}
 
-	public void prepareToDraw(float alpha)
-	{
+	public void prepareToDraw(float alpha) {
 		prepareToDraw(1.0f, 1.0f, 1.0f, alpha);    // Default white (explicit alpha)
 	}
 
-	public void prepareToDraw(float red, float green, float blue, float alpha)
-	{
+	public void prepareToDraw(float red, float green, float blue, float alpha) {
 		initDraw(red, green, blue, alpha);
 		batch.beginBatch();
 	}
 
-	private void initDraw(float red, float green, float blue, float alpha)
-	{
+	private void initDraw(float red, float green, float blue, float alpha) {
 		GLES20.glUseProgram(mProgramHandle);    // Specify the program to use
 
 		// TODO: Fix this awful hack. It seems that our current system would prefer we use 0 as the 4th (alpha) value in the
@@ -322,8 +308,7 @@ public class CGLText
 		//GLES20.glUniform1i(mTextureUniformHandle, 0);
 	}
 
-	public void finishedDrawing()
-	{
+	public void finishedDrawing() {
 		batch.endBatch();
 	}
 
@@ -333,8 +318,7 @@ public class CGLText
 	// x, y, z - the x, y, z position to draw text at (bottom left of text; including descent)
 	// angleDeg - angle to rotate the text
 	// R: [none]
-	public void draw(String text, float x, float y, float degrees, boolean isCenter)
-	{
+	public void draw(String text, float x, float y, float degrees, boolean isCenter) {
 		final float chrHeight = cellHeight * scaleY;    // Calculate scaled character height
 		final float chrWidth = cellWidth * scaleX;    // Calculate scaled character width
 		final int len = text.length();                // Get string length
@@ -353,8 +337,7 @@ public class CGLText
 		// Adjust starting positions for the first character
 		float letterX = (chrWidth / 2.0f) - (fontPadX * scaleX);
 		float letterY = (chrHeight / 2.0f) - (fontPadY * scaleY);
-		if (isCenter)
-		{
+		if (isCenter) {
 			letterX -= getLength(text) / 2;
 			letterY -= getHeight() / 2;
 		}
@@ -371,8 +354,7 @@ public class CGLText
 		}
 	}
 
-	public void draw(String text, float x, float y)
-	{
+	public void draw(String text, float x, float y) {
 		draw(text, x, y, 0, false);
 	}
 
@@ -382,31 +364,27 @@ public class CGLText
 	// x, y, z - the x, y, z position to draw text at (bottom left of text)
 	// angleDeg - angle to rotate the text
 	// R: the total width of the text that was drawn
-	public float drawC(String text, float x, float y, float degrees)
-	{
+	public float drawC(String text, float x, float y, float degrees) {
 		final float len = getLength(text);
 		draw(text, x, y, degrees, true);
 
 		return len;
 	}
 
-	public float drawC(String text, float x, float y)
-	{
+	public float drawC(String text, float x, float y) {
 		final float len = getLength(text);
 		return drawC(text, x - (len / 2.0f), y - (getCharHeight() / 2.0f), 0);
 	}
 
 	// Draw text centered (x-axis only)
-	public float drawCX(String text, float x, float y)
-	{
+	public float drawCX(String text, float x, float y) {
 		final float len = getLength(text);
 		draw(text, x - (len / 2.0f), y);
 		return len;
 	}
 
 	// Draw text centered (y-axis only)
-	public void drawCY(String text, float x, float y)
-	{
+	public void drawCY(String text, float x, float y) {
 		draw(text, x, y - (getCharHeight() / 2.0f));
 	}
 
@@ -415,14 +393,12 @@ public class CGLText
 	// A: scale - uniform scale for both x and y axis scaling
 	// sx, sy - separate x and y axis scaling factors
 	// R: [none]
-	public void setScale(float scale)
-	{
+	public void setScale(float scale) {
 		scaleX = scale;
 		scaleY = scale;
 	}
 
-	public void setScale(float sx, float sy)
-	{
+	public void setScale(float sx, float sy) {
 		scaleX = sx;
 		scaleY = sy;
 	}
@@ -431,13 +407,11 @@ public class CGLText
 	// D: get the current scaling used for the font
 	// A: [none]
 	// R: the x/y scale currently used for scale
-	public float getScaleX()
-	{
+	public float getScaleX() {
 		return scaleX;
 	}
 
-	public float getScaleY()
-	{
+	public float getScaleY() {
 		return scaleY;
 	}
 
@@ -445,8 +419,7 @@ public class CGLText
 	// D: set the spacing (unscaled; ie. pixel size) to use for the font
 	// A: space - space for x axis spacing
 	// R: [none]
-	public void setSpace(float space)
-	{
+	public void setSpace(float space) {
 		spaceX = space;
 	}
 
@@ -454,8 +427,7 @@ public class CGLText
 	// D: get the current spacing used for the font
 	// A: [none]
 	// R: the x/y space currently used for scale
-	public float getSpace()
-	{
+	public float getSpace() {
 		return spaceX;
 	}
 
@@ -463,8 +435,7 @@ public class CGLText
 	// D: return the length of the specified string if rendered using current settings
 	// A: text - the string to get length for
 	// R: the length of the specified string (pixels)
-	public float getLength(String text)
-	{
+	public float getLength(String text) {
 		float len = 0.0f; // Working length
 		final int strLen = text.length(); // Get string length (characters)
 		for (int i = 0; i < strLen; i++)    // For each character in string
@@ -482,19 +453,16 @@ public class CGLText
 	// NOTE: excludes spacing!!
 	// A: chr - the character to get width for
 	// R: the requested character size (scaled)
-	public float getCharWidth(char chr)
-	{
+	public float getCharWidth(char chr) {
 		final int c = chr - CHAR_START;            // Calculate character index (offset by first char in font)
 		return (charWidths[c] * scaleX);    // Return scaled character width
 	}
 
-	public float getCharWidthMax()
-	{
+	public float getCharWidthMax() {
 		return (charWidthMax * scaleX); // Return scaled max character width
 	}
 
-	public float getCharHeight()
-	{
+	public float getCharHeight() {
 		return (charHeight * scaleY); // Return scaled character height
 	}
 
@@ -502,18 +470,15 @@ public class CGLText
 	// D: return the specified (scaled) font metric
 	// A: [none]
 	// R: the requested font metric (scaled)
-	public float getAscent()
-	{
+	public float getAscent() {
 		return (fontAscent * scaleY); // Return font ascent
 	}
 
-	public float getDescent()
-	{
+	public float getDescent() {
 		return (fontDescent * scaleY); // Return font descent
 	}
 
-	public float getHeight()
-	{
+	public float getHeight() {
 		return (fontHeight * scaleY); // Return font height (actual)
 	}
 
@@ -521,8 +486,7 @@ public class CGLText
 	// D: draw the entire font texture (NOTE: for testing purposes only)
 	// A: x, y - the center point of the area to draw to. this is used
 	// to draw the texture to the top-left corner.
-	public void drawTexture(int x, int y)
-	{
+	public void drawTexture(int x, int y) {
 		initDraw(1.0f, 1.0f, 1.0f, 1.0f);
 
 		batch.beginBatch();    // Begin batch (bind texture)

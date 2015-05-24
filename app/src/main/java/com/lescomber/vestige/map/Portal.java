@@ -5,13 +5,10 @@ import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.graphics.Sprite;
 import com.lescomber.vestige.graphics.SpriteAnimation;
 
-public class Portal extends Entity
-{
-	private int delay;    // Short delay (in ms) before portal is active (to avoid confusion caused by standing on its spawn
-	//point when the level ends)
+public class Portal extends Entity {
+	private int delay;    // Delay (in ms) before portal is active (to avoid confusion caused by standing on its spawn point when the level ends)
 
-	public Portal(float x, float y)
-	{
+	public Portal(float x, float y) {
 		super();
 
 		offsetTo(x, y);
@@ -30,15 +27,13 @@ public class Portal extends Entity
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
 		delay -= deltaTime;
 	}
 
-	public boolean isReady()
-	{
+	public boolean isReady() {
 		return (isVisible() && delay <= 0);
 	}
 }

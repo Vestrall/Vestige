@@ -2,23 +2,20 @@ package com.lescomber.vestige;
 
 import com.lescomber.vestige.audio.AudioManager.SoundEffect;
 
-public abstract class Ability
-{
+public abstract class Ability {
 	private SoundEffect soundEffect;
 
 	private int maxCooldown;    // Maximum cooldown (in ms)
 	protected int cooldown;        // Current cooldown (in ms)
 
-	public Ability()
-	{
+	public Ability() {
 		soundEffect = null;
 
 		maxCooldown = 0;
 		cooldown = 0;
 	}
 
-	public Ability(Ability copyMe)
-	{
+	public Ability(Ability copyMe) {
 		soundEffect = null;
 		if (copyMe.soundEffect != null)
 			soundEffect = copyMe.soundEffect;
@@ -26,49 +23,40 @@ public abstract class Ability
 		cooldown = copyMe.cooldown;
 	}
 
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		cooldown -= deltaTime;
 	}
 
-	public boolean isReadyToFire()
-	{
+	public boolean isReadyToFire() {
 		return cooldown <= 0;
 	}
 
-	public void playSoundEffect()
-	{
+	public void playSoundEffect() {
 		if (soundEffect != null)
 			soundEffect.play();
 	}
 
-	public int getMaxCooldown()
-	{
+	public int getMaxCooldown() {
 		return maxCooldown;
 	}
 
-	public int getCooldown()
-	{
+	public int getCooldown() {
 		return cooldown;
 	}
 
-	public void setSoundEffect(SoundEffect soundEffect)
-	{
+	public void setSoundEffect(SoundEffect soundEffect) {
 		this.soundEffect = soundEffect;
 	}
 
-	public void setMaxCooldown(double cooldownSeconds)
-	{
+	public void setMaxCooldown(double cooldownSeconds) {
 		maxCooldown = (int) (cooldownSeconds * 1000);
 	}
 
-	public void setCooldown(double cooldownSeconds)
-	{
+	public void setCooldown(double cooldownSeconds) {
 		cooldown = (int) (cooldownSeconds * 1000);
 	}
 
-	public void triggerCooldown()
-	{
+	public void triggerCooldown() {
 		cooldown = maxCooldown;
 	}
 

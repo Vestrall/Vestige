@@ -5,12 +5,10 @@ import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.projectiles.Projectile;
 import com.lescomber.vestige.projectiles.WildFire;
 
-public class Meteor extends Projectile
-{
+public class Meteor extends Projectile {
 	private static final float X_DIST = 250;
 
-	public Meteor(float width, float height, float destX, float destY, float dps, double durationSeconds)
-	{
+	public Meteor(float width, float height, float destX, float destY, float dps, double durationSeconds) {
 		super(SpriteManager.purpleComet, 0, 17);
 
 		setImageDrop(0.05);
@@ -31,19 +29,16 @@ public class Meteor extends Projectile
 		setAreaEffect(fireEffect);
 	}
 
-	public Meteor(float width, float height, Point dest, float dps, double durationSeconds)
-	{
+	public Meteor(float width, float height, Point dest, float dps, double durationSeconds) {
 		this(width, height, dest.x, dest.y, dps, durationSeconds);
 	}
 
-	public Meteor(Meteor copyMe)
-	{
+	public Meteor(Meteor copyMe) {
 		super(copyMe);
 	}
 
 	@Override
-	public Meteor copy()
-	{
+	public Meteor copy() {
 		return new Meteor(this);
 	}
 }

@@ -10,21 +10,18 @@ import com.lescomber.vestige.screens.GameScreen;
 
 import java.util.List;
 
-public class FireAnimation extends SpriteAnimation
-{
+public class FireAnimation extends SpriteAnimation {
 	public static final float IMAGE_OFFSET_Y = -18;
 
 	private boolean isIgniting;
 
-	private int duration;    // Duration the repeating part of the animation will last. Should only be stored here if we are
-	//currently igniting
+	private int duration;    // Duration the repeating part of the animation will last. Should only be stored here if we are currently igniting
 
 	private boolean firstRun;
 
 	public static int fireCount = 0;    // For use with AudioManager's fireLoop. 0 = stop. > 0 = play
 
-	public FireAnimation()
-	{
+	public FireAnimation() {
 		super();
 
 		isIgniting = true;
@@ -38,14 +35,12 @@ public class FireAnimation extends SpriteAnimation
 		firstRun = true;
 	}
 
-	public FireAnimation(FireAnimation copyMe)
-	{
+	public FireAnimation(FireAnimation copyMe) {
 		super(copyMe);
 
 		isIgniting = copyMe.isIgniting;
 
-		// if we are in the repeating phase of the animation, (re)randomize the frame speed so we don't synchronize with copyMe (or
-		//any other copies of copyMe)
+		// If we are in the repeating phase of the animation, (re)randomize the frame speed so we don't synchronize with copyMe (or its other copies)
 		if (!isIgniting)
 			setFrameTime(Util.rand.nextInt(55) + 25);
 
@@ -54,20 +49,16 @@ public class FireAnimation extends SpriteAnimation
 	}
 
 	@Override
-	public boolean update(int deltaTime)
-	{
+	public boolean update(int deltaTime) {
 		final boolean superRet = super.update(deltaTime);
 
-		if (firstRun)
-		{
+		if (firstRun) {
 			start();
 			firstRun = false;
 		}
 
-		if (isIgniting)
-		{
-			if (superRet)    // Case: we have just finished the ignition animation
-			{
+		if (isIgniting) {
+			if (superRet) {    // Case: we have just finished the ignition animation
 				isIgniting = false;
 
 				// Remember the currently held last frame of ignition for the Swapper
@@ -94,28 +85,24 @@ public class FireAnimation extends SpriteAnimation
 			}
 
 			return false;
-		}
-		else
+		} else
 			return superRet;
 	}
 
-	private void start()
-	{
+	private void start() {
 		if (fireCount == 0)
 			AudioManager.fireLoop.play();
 		fireCount++;
 	}
 
-	public static void varyLocations(List<FireAnimation> anims, float xVariance, float yVariance)
-	{
+	public static void varyLocations(List<FireAnimation> anims, float xVariance, float yVariance) {
 		final float halfXVar = xVariance / 2;
 		final float halfYVar = yVariance / 2;
 		for (final FireAnimation fa : anims)
 			fa.offset(Util.rand.nextFloat() * xVariance - halfXVar, Util.rand.nextFloat() * yVariance - halfYVar);
 	}
 
-	public static void varyLocations(FireAnimation[] anims, float xVariance, float yVariance)
-	{
+	public static void varyLocations(FireAnimation[] anims, float xVariance, float yVariance) {
 		final float halfXVar = xVariance / 2;
 		final float halfYVar = yVariance / 2;
 		for (final FireAnimation fa : anims)
@@ -123,8 +110,7 @@ public class FireAnimation extends SpriteAnimation
 	}
 
 	@Override
-	public void setDuration(int duration)
-	{
+	public void setDuration(int duration) {
 		if (isIgniting)
 			this.duration = duration - getTimeRemaining();
 		else
@@ -132,8 +118,7 @@ public class FireAnimation extends SpriteAnimation
 	}
 
 	@Override
-	public void close()
-	{
+	public void close() {
 		super.close();
 
 		fireCount--;
@@ -149,8 +134,7 @@ public class FireAnimation extends SpriteAnimation
 	}
 
 	@Override
-	public FireAnimation copy()
-	{
+	public FireAnimation copy() {
 		return new FireAnimation(this);
 	}
 }

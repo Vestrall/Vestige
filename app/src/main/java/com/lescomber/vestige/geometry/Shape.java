@@ -1,9 +1,7 @@
 package com.lescomber.vestige.geometry;
 
-public abstract class Shape
-{
-	public enum Shapes
-	{
+public abstract class Shape {
+	public enum Shapes {
 		RECTANGLE, CIRCLE, CONE, ROTATED_RECT;
 	}
 
@@ -11,8 +9,7 @@ public abstract class Shape
 	Rectangle boundingBox;
 	float direction;
 
-	public boolean overlaps(Shape shape)
-	{
+	public boolean overlaps(Shape shape) {
 		if (shape instanceof Circle)
 			return overlaps((Circle) shape);
 		else if (shape instanceof Cone)
@@ -35,8 +32,7 @@ public abstract class Shape
 
 	public abstract boolean contains(float x, float y);
 
-	public boolean contains(Point p)
-	{
+	public boolean contains(Point p) {
 		return contains(p.x, p.y);
 	}
 
@@ -44,8 +40,7 @@ public abstract class Shape
 
 	public abstract void offsetTo(float x, float y);
 
-	public void offsetTo(Point p)
-	{
+	public void offsetTo(Point p) {
 		offsetTo(p.x, p.y);
 	}
 
@@ -55,8 +50,7 @@ public abstract class Shape
 
 	public abstract void rotateAbout(float radians, float rotateX, float rotateY);
 
-	public void rotateAbout(float radians, Point p)
-	{
+	public void rotateAbout(float radians, Point p) {
 		rotateAbout(radians, p.x, p.y);
 	}
 
@@ -64,48 +58,39 @@ public abstract class Shape
 
 	public abstract void scale(double wRatio, double hRatio);
 
-	public Point getCenter()
-	{
+	public Point getCenter() {
 		return center;
 	}
 
-	public float getCenterX()
-	{
+	public float getCenterX() {
 		return center.x;
 	}
 
-	public float getCenterY()
-	{
+	public float getCenterY() {
 		return center.y;
 	}
 
-	public float getLeft()
-	{
+	public float getLeft() {
 		return boundingBox.left;
 	}
 
-	public float getTop()
-	{
+	public float getTop() {
 		return boundingBox.top;
 	}
 
-	public float getRight()
-	{
+	public float getRight() {
 		return boundingBox.right;
 	}
 
-	public float getBottom()
-	{
+	public float getBottom() {
 		return boundingBox.bottom;
 	}
 
-	public float getDirection()
-	{
+	public float getDirection() {
 		return direction;
 	}
 
-	public Rectangle getBoundingBox()
-	{
+	public Rectangle getBoundingBox() {
 		return boundingBox;
 	}
 

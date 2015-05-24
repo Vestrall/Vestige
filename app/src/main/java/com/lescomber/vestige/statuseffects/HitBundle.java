@@ -6,8 +6,7 @@ import com.lescomber.vestige.graphics.SpriteAnimation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HitBundle
-{
+public class HitBundle {
 	private float damage;
 
 	private final ArrayList<StatusEffect> statusEffects;
@@ -15,12 +14,10 @@ public class HitBundle
 
 	private SpriteAnimation hitAnimation;    // animation that plays over the unit being "hit" by this HitBundle
 
-	private boolean absorbSound;    // if false, absorb sounds (e.g. caused by shields absorbing this HitBundle's damage) should
-	//not play
+	private boolean absorbSound;    // if false, absorb sounds (e.g. caused by shields absorbing this HitBundle's damage) should not play
 	private SoundEffect hitSound;    // SoundEffect that plays if this HitBundle damages its target
 
-	public HitBundle(float damage)
-	{
+	public HitBundle(float damage) {
 		statusEffects = new ArrayList<StatusEffect>(2);
 		this.damage = damage;
 		displacement = null;
@@ -29,8 +26,7 @@ public class HitBundle
 		hitSound = null;
 	}
 
-	public HitBundle(HitBundle copyMe)
-	{
+	public HitBundle(HitBundle copyMe) {
 		damage = copyMe.damage;
 		statusEffects = new ArrayList<StatusEffect>(2);
 		for (final StatusEffect se : copyMe.statusEffects)
@@ -45,63 +41,51 @@ public class HitBundle
 		hitSound = copyMe.hitSound;
 	}
 
-	public void addStatusEffect(StatusEffect effect)
-	{
+	public void addStatusEffect(StatusEffect effect) {
 		statusEffects.add(effect);
 	}
 
-	public void setDisplacementEffect(DisplacementEffect effect)
-	{
+	public void setDisplacementEffect(DisplacementEffect effect) {
 		displacement = effect;
 	}
 
-	public void setDamage(float damage)
-	{
+	public void setDamage(float damage) {
 		this.damage = damage;
 	}
 
-	public void setHitAnimation(SpriteAnimation anim)
-	{
+	public void setHitAnimation(SpriteAnimation anim) {
 		hitAnimation = anim;
 	}
 
-	public void setAbsorbSound(boolean absorbSound)
-	{
+	public void setAbsorbSound(boolean absorbSound) {
 		this.absorbSound = absorbSound;
 	}
 
-	public void setHitSound(SoundEffect hitSound)
-	{
+	public void setHitSound(SoundEffect hitSound) {
 		this.hitSound = hitSound;
 	}
 
-	public List<StatusEffect> getStatusEffects()
-	{
+	public List<StatusEffect> getStatusEffects() {
 		return statusEffects;
 	}
 
-	public DisplacementEffect getDisplacementEffect()
-	{
+	public DisplacementEffect getDisplacementEffect() {
 		return displacement;
 	}
 
-	public float getDamage()
-	{
+	public float getDamage() {
 		return damage;
 	}
 
-	public SpriteAnimation getHitAnimation()
-	{
+	public SpriteAnimation getHitAnimation() {
 		return hitAnimation;
 	}
 
-	public boolean getAbsorbSound()
-	{
+	public boolean getAbsorbSound() {
 		return absorbSound;
 	}
 
-	public SoundEffect getHitSound()
-	{
+	public SoundEffect getHitSound() {
 		return hitSound;
 	}
 }

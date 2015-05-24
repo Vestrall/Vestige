@@ -3,8 +3,7 @@ package com.lescomber.vestige.map;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.graphics.Sprite;
 
-public class Wall extends RectangleObstacle
-{
+public class Wall extends RectangleObstacle {
 	private static final int WALL_SECTION_WIDTH = 30;    // For all wall pieces (top, bottom, mid)
 	private static final int WALL_TOP_TRANSPARENCY = 4;
 	private static final int WALL_TOP_HEIGHT = 14;    // Bottom pieces will be considered to have 2x the height of tops
@@ -12,15 +11,13 @@ public class Wall extends RectangleObstacle
 
 	private Sprite[] sprites;
 
-	public Wall(float left, float top, float right, float bottom)
-	{
+	public Wall(float left, float top, float right, float bottom) {
 		super(left, top, right, bottom);
 
 		createSprites(left, top, right, bottom);
 	}
 
-	public Wall(Wall copyMe)
-	{
+	public Wall(Wall copyMe) {
 		super(copyMe);
 
 		sprites = new Sprite[copyMe.sprites.length];
@@ -28,8 +25,7 @@ public class Wall extends RectangleObstacle
 			sprites[i] = new Sprite(copyMe.sprites[i]);
 	}
 
-	private void createSprites(float left, float top, float right, float bottom)
-	{
+	private void createSprites(float left, float top, float right, float bottom) {
 		final float width = right - left;
 		final float height = bottom - top;
 
@@ -65,8 +61,7 @@ public class Wall extends RectangleObstacle
 		int arrayIndex = 0;
 
 		// Create top row (if applicable)
-		if (actualRows > 2)
-		{
+		if (actualRows > 2) {
 			curYOffset += scaledTopHeight;
 
 			if (actualCols <= 1)    // Mid only
@@ -74,9 +69,7 @@ public class Wall extends RectangleObstacle
 				final Sprite topMid = new Sprite(SpriteManager.wallTops[1], getX(), getY() + (float) curYOffset);
 				topMid.scale(scaleX, scaleY);
 				sprites[arrayIndex++] = topMid;
-			}
-			else
-			{
+			} else {
 				double curXOffset = startXOffset;
 
 				// Top left sprite
@@ -86,8 +79,7 @@ public class Wall extends RectangleObstacle
 				curXOffset += scaledWidth;
 
 				// Top mid sprites
-				for (int j = 1; j < actualCols - 1; j++)
-				{
+				for (int j = 1; j < actualCols - 1; j++) {
 					final Sprite topMid = new Sprite(SpriteManager.wallTops[1], getX() + (float) curXOffset, getY() + (float) curYOffset);
 					topMid.scale(scaleX, scaleY);
 					sprites[arrayIndex++] = topMid;
@@ -102,15 +94,12 @@ public class Wall extends RectangleObstacle
 		}
 
 		// Create middle rows (if applicable)
-		if (actualRows > 3)
-		{
-			for (int i = 1; i < actualRows - 2; i++)
-			{
+		if (actualRows > 3) {
+			for (int i = 1; i < actualRows - 2; i++) {
 				curYOffset += scaledTopHeight;
 				double curXOffset = startXOffset;
 
-				for (int j = 0; j < actualCols; j++)
-				{
+				for (int j = 0; j < actualCols; j++) {
 					final Sprite mid = new Sprite(SpriteManager.wallMid, getX() + (float) curXOffset, getY() + (float) curYOffset);
 					mid.scale(scaleX, scaleY);
 					sprites[arrayIndex++] = mid;
@@ -127,9 +116,7 @@ public class Wall extends RectangleObstacle
 			final Sprite bottomMid = new Sprite(SpriteManager.wallBottoms[1], getX(), getY() + (float) curYOffset);
 			bottomMid.scale(scaleX, scaleY);
 			sprites[arrayIndex++] = bottomMid;
-		}
-		else
-		{
+		} else {
 			double curXOffset = startXOffset;
 
 			// Bottom left sprite
@@ -139,8 +126,7 @@ public class Wall extends RectangleObstacle
 			curXOffset += scaledWidth;
 
 			// Bottom mid sprites
-			for (int j = 1; j < actualCols - 1; j++)
-			{
+			for (int j = 1; j < actualCols - 1; j++) {
 				final Sprite bottomMid = new Sprite(SpriteManager.wallBottoms[1], getX() + (float) curXOffset, getY() + (float) curYOffset);
 				bottomMid.scale(scaleX, scaleY);
 				sprites[arrayIndex++] = bottomMid;
@@ -155,22 +141,19 @@ public class Wall extends RectangleObstacle
 	}
 
 	@Override
-	public void becomeVisible()
-	{
+	public void becomeVisible() {
 		for (final Sprite s : sprites)
 			SpriteManager.getInstance().addBackgroundSprite(s.getTemplate(), s.getX(), s.getY());
 	}
 
 	@Override
-	public void setVisible(boolean isVisible)
-	{
+	public void setVisible(boolean isVisible) {
 		for (final Sprite gs : sprites)
 			gs.setVisible(isVisible);
 	}
 
 	@Override
-	public Wall copy()
-	{
+	public Wall copy() {
 		return new Wall(this);
 	}
 }

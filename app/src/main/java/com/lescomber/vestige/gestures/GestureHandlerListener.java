@@ -3,21 +3,20 @@ package com.lescomber.vestige.gestures;
 import com.lescomber.vestige.geometry.Line;
 import com.lescomber.vestige.geometry.Point;
 
-public interface GestureHandlerListener
-{
-	public void handleTap(Point tapPoint);
+public interface GestureHandlerListener {
+	void handleTap(Point tapPoint);
 
-	public void swipeBuilding(Line swipe);
+	void swipeBuilding(Line swipe);
 
-	public void chargeSwipeBuilding(Line swipe);
+	void chargeSwipeBuilding(Line swipe);
 
-	public void swipeCancelled();
+	void swipeCancelled();
 
-	public void handleSwipe(Line swipe);
+	void handleSwipe(Line swipe);
 
-	public void handleChargeSwipe(Line swipe);
+	void handleChargeSwipe(Line swipe);
 
-	public void handleDoubleTap(Point tapPoint);
+	void handleDoubleTap(Point tapPoint);
 
-	public void handleMultiTap();
+	void handleMultiTap();
 }

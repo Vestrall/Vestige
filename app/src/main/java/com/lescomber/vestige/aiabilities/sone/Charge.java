@@ -8,8 +8,7 @@ import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.units.AIUnit;
 import com.lescomber.vestige.units.Unit;
 
-public class Charge extends AIAbility
-{
+public class Charge extends AIAbility {
 	private static final float RANGE_SQUARED = 65 * 65;
 
 	private static final int[] VELOCITY_PER_SECOND = new int[] { 300, 450, 600 };
@@ -19,8 +18,7 @@ public class Charge extends AIAbility
 
 	private Unit target;
 
-	public Charge(AIUnit owner, double cooldownSeconds)
-	{
+	public Charge(AIUnit owner, double cooldownSeconds) {
 		super(owner, cooldownSeconds);
 
 		setUsesAnimation(false);
@@ -30,8 +28,7 @@ public class Charge extends AIAbility
 		target = null;
 	}
 
-	public Charge(Charge copyMe)
-	{
+	public Charge(Charge copyMe) {
 		super(copyMe);
 
 		hitBundle = new HitBundle(copyMe.hitBundle);
@@ -39,45 +36,37 @@ public class Charge extends AIAbility
 	}
 
 	@Override
-	public boolean decideToFire()
-	{
+	public boolean decideToFire() {
 		target = Unit.getNearestMember(owner.getCenter(), getTargetFaction());
 
-		if (target != null)
-		{
+		if (target != null) {
 			owner.faceTowards(target.getX());    // Face target
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
 
 	@Override
-	public void activate()
-	{
+	public void activate() {
 		final DisplacementEffect dashEffect = new DisplacementEffect(target.getCenter(), VELOCITY_PER_SECOND[OptionsScreen.difficulty]);
 		owner.addStatusEffect(dashEffect);
 	}
 
-	public boolean isInRange()
-	{
+	public boolean isInRange() {
 		if (target != null)
 			return (owner.getCenter().distanceToPointSquared(target.getCenter()) <= RANGE_SQUARED);
 		else
 			return false;
 	}
 
-	public void strike()
-	{
-		if (target != null)
-		{
+	public void strike() {
+		if (target != null) {
 			AudioManager.oneSixGroundSlam.play();
 			target.hit(hitBundle);
 		}
 	}
 
-	public boolean isTargetLeft()
-	{
+	public boolean isTargetLeft() {
 		if (target != null)
 			return (target.getX() <= owner.getX());
 		else
@@ -85,8 +74,7 @@ public class Charge extends AIAbility
 	}
 
 	@Override
-	public Charge copy()
-	{
+	public Charge copy() {
 		return new Charge(this);
 	}
 }

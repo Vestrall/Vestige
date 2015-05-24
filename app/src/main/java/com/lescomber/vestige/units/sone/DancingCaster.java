@@ -6,8 +6,7 @@ import com.lescomber.vestige.units.Caster;
 
 import java.util.ArrayList;
 
-public class DancingCaster extends Caster
-{
+public class DancingCaster extends Caster {
 	private static final float MOONWALK_HALF_WIDTH = 20;
 
 	private static final int MOONWALK_INTERVAL_MS = 3500;
@@ -20,8 +19,7 @@ public class DancingCaster extends Caster
 	private final DanceCoordinator danceCoordinator;
 	private boolean isActuallyEntering;        // Replaces usual isEntering boolean because isEntering will be used during dancing
 
-	public DancingCaster(DanceCoordinator danceCoordinator)
-	{
+	public DancingCaster(DanceCoordinator danceCoordinator) {
 		super();
 
 		createRailLocations(50);
@@ -37,8 +35,7 @@ public class DancingCaster extends Caster
 		this.danceCoordinator = danceCoordinator;
 	}
 
-	public DancingCaster(DancingCaster copyMe)
-	{
+	public DancingCaster(DancingCaster copyMe) {
 		super(copyMe);
 
 		moonwalkCountdown = copyMe.moonwalkCountdown;
@@ -50,28 +47,24 @@ public class DancingCaster extends Caster
 		isActuallyEntering = copyMe.isActuallyEntering;
 	}
 
-	public void dancePosition(Point dest)
-	{
+	public void dancePosition(Point dest) {
 		setEntering(false);
 		setDestination(dest);
 		setEntering(true);
 	}
 
-	public void dance()
-	{
+	public void dance() {
 		moonwalkCountdown = 500;
 		setWalkLeftAnimation(walkingRightIndex);
 		setWalkRightAnimation(walkingLeftIndex);
 		setBaseMoveSpeed(40);
 	}
 
-	public void moonwalk(int times)
-	{
+	public void moonwalk(int times) {
 		final Point left = new Point(getX() - MOONWALK_HALF_WIDTH, getY());
 		final Point right = new Point(getX() + MOONWALK_HALF_WIDTH, getY());
 		final ArrayList<Point> path = new ArrayList<Point>(20);
-		for (int i = 0; i < times; i += 2)
-		{
+		for (int i = 0; i < times; i += 2) {
 			path.add(right);
 			if (i + 1 < times)
 				path.add(left);
@@ -84,13 +77,11 @@ public class DancingCaster extends Caster
 		setEntering(true);
 	}
 
-	public boolean isMoonwalking()
-	{
+	public boolean isMoonwalking() {
 		return getWalkingLeftIndex() == walkingRightIndex;
 	}
 
-	public void aggro()
-	{
+	public void aggro() {
 		isAngry = true;
 		setEntering(isActuallyEntering);
 
@@ -103,8 +94,7 @@ public class DancingCaster extends Caster
 	}
 
 	@Override
-	public void idleSprite()
-	{
+	public void idleSprite() {
 		if (!isAngry)
 			faceLeft();
 
@@ -112,8 +102,7 @@ public class DancingCaster extends Caster
 	}
 
 	@Override
-	public void hasEntered()
-	{
+	public void hasEntered() {
 		super.hasEntered();
 
 		setEntering(!isAngry);
@@ -121,8 +110,7 @@ public class DancingCaster extends Caster
 	}
 
 	@Override
-	public void hit(HitBundle bundle)
-	{
+	public void hit(HitBundle bundle) {
 		super.hit(bundle);
 
 		if (!isAngry)
@@ -130,39 +118,31 @@ public class DancingCaster extends Caster
 	}
 
 	@Override
-	public void chooseDestination()
-	{
+	public void chooseDestination() {
 		if (isAngry)
 			super.chooseDestination();
 	}
 
 	@Override
-	public void setDestination(float destX, float destY)
-	{
-		if (!isAngry)
-		{
+	public void setDestination(float destX, float destY) {
+		if (!isAngry) {
 			setEntering(false);
 			super.setDestination(destX, destY);
 			setEntering(true);
-		}
-		else
+		} else
 			super.setDestination(destX, destY);
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
-		if (!isAngry)
-		{
+		if (!isAngry) {
 			danceCoordinator.update(deltaTime);
 
-			if (isMoonwalking())
-			{
+			if (isMoonwalking()) {
 				moonwalkCountdown -= deltaTime;
-				if (moonwalkCountdown <= 0)
-				{
+				if (moonwalkCountdown <= 0) {
 					moonwalkCountdown += MOONWALK_INTERVAL_MS;
 
 					moonwalk(2);
@@ -172,8 +152,7 @@ public class DancingCaster extends Caster
 	}
 
 	@Override
-	public DancingCaster copy()
-	{
+	public DancingCaster copy() {
 		return new DancingCaster(this);
 	}
 }

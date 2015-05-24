@@ -9,12 +9,10 @@ import com.lescomber.vestige.projectiles.PickUp;
 import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.statuseffects.StatPack;
 
-public class TestPickUpGenerator extends AIUnit
-{
+public class TestPickUpGenerator extends AIUnit {
 	private PickUp testHealthPickUp;
 
-	public TestPickUpGenerator()
-	{
+	public TestPickUpGenerator() {
 		super(32, 32, 0, 0);
 
 		final StatPack baseStats = new StatPack();
@@ -26,14 +24,12 @@ public class TestPickUpGenerator extends AIUnit
 		testHealthPickUp = new HealPickUp(15);
 	}
 
-	public TestPickUpGenerator(TestPickUpGenerator copyMe)
-	{
+	public TestPickUpGenerator(TestPickUpGenerator copyMe) {
 		super(copyMe);
 	}
 
 	@Override
-	public void hit(HitBundle bundle)
-	{
+	public void hit(HitBundle bundle) {
 		super.hit(bundle);
 
 		final PickUp newHealthPickUp = new PickUp(testHealthPickUp);
@@ -42,8 +38,7 @@ public class TestPickUpGenerator extends AIUnit
 	}
 
 	@Override
-	public AIUnit copy()
-	{
+	public AIUnit copy() {
 		return new TestPickUpGenerator(this);
 	}
 }

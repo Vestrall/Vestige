@@ -5,8 +5,7 @@ import com.lescomber.vestige.framework.Util;
 
 import java.util.ArrayList;
 
-public class WildFire extends AreaEffect
-{
+public class WildFire extends AreaEffect {
 	private static final float STANDARD_X_GAP = SpriteManager.groundFire[0].getWidth() * 0.7f;
 	private static final float STANDARD_Y_GAP = SpriteManager.groundFire[0].getHeight() * 0.8f;
 	private static final float X_VARIANCE = 25;
@@ -15,8 +14,7 @@ public class WildFire extends AreaEffect
 	private final ArrayList<FireAnimation>[] anims;
 
 	@SuppressWarnings("unchecked")
-	public WildFire(float x, float y, float width, float height, float dps, double durationSeconds)
-	{
+	public WildFire(float x, float y, float width, float height, float dps, double durationSeconds) {
 		super(width, height, dps, durationSeconds);
 
 		offsetTo(x, y);
@@ -34,16 +32,14 @@ public class WildFire extends AreaEffect
 
 		FireAnimation fa;
 		anims = new ArrayList[rows];
-		for (int i = 0; i < rows; i++)
-		{
+		for (int i = 0; i < rows; i++) {
 			anims[i] = new ArrayList<FireAnimation>();
 
-			for (int j = 0; j < cols; j++)
-			{
+			for (int j = 0; j < cols; j++) {
 				fa = new FireAnimation();
 				fa.setDuration((int) (durationSeconds * 1000));
-				fa.offsetTo(curX + (Util.rand.nextFloat() * X_VARIANCE),
-						curY + (Util.rand.nextFloat() * Y_VARIANCE) + (FireAnimation.IMAGE_OFFSET_Y / 2));
+				fa.offsetTo(curX + (Util.rand.nextFloat() * X_VARIANCE), curY + (Util.rand
+						.nextFloat() * Y_VARIANCE) + (FireAnimation.IMAGE_OFFSET_Y / 2));
 				fa.setLayerHeight(Math.round(fa.getY()));
 				anims[i].add(fa);
 
@@ -55,19 +51,16 @@ public class WildFire extends AreaEffect
 		}
 	}
 
-	public WildFire(float width, float height, float dps, double durationSeconds)
-	{
+	public WildFire(float width, float height, float dps, double durationSeconds) {
 		this(0, 0, width, height, dps, durationSeconds);
 	}
 
 	@SuppressWarnings("unchecked")
-	public WildFire(WildFire copyMe)
-	{
+	public WildFire(WildFire copyMe) {
 		super(copyMe);
 
 		anims = new ArrayList[copyMe.anims.length];
-		for (int i = 0; i < copyMe.anims.length; i++)
-		{
+		for (int i = 0; i < copyMe.anims.length; i++) {
 			anims[i] = new ArrayList<FireAnimation>();
 			for (final FireAnimation fa : copyMe.anims[i])
 				anims[i].add(new FireAnimation(fa));
@@ -75,26 +68,21 @@ public class WildFire extends AreaEffect
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
-		for (int i = 0; i < anims.length; i++)
-		{
+		for (int i = 0; i < anims.length; i++) {
 			for (final FireAnimation fa : anims[i])
 				fa.update(deltaTime);
 		}
 	}
 
 	@Override
-	public void offset(float dx, float dy)
-	{
+	public void offset(float dx, float dy) {
 		super.offset(dx, dy);
 
-		if (anims != null)
-		{
-			for (final ArrayList<FireAnimation> row : anims)
-			{
+		if (anims != null) {
+			for (final ArrayList<FireAnimation> row : anims) {
 				for (final FireAnimation fa : row)
 					fa.offset(dx, dy);
 			}
@@ -102,12 +90,9 @@ public class WildFire extends AreaEffect
 	}
 
 	@Override
-	public void setVisible(boolean isVisible)
-	{
-		for (int i = 0; i < anims.length; i++)
-		{
-			for (final FireAnimation fa : anims[i])
-			{
+	public void setVisible(boolean isVisible) {
+		for (int i = 0; i < anims.length; i++) {
+			for (final FireAnimation fa : anims[i]) {
 				fa.setVisible(isVisible);
 
 				if (isVisible)
@@ -119,10 +104,8 @@ public class WildFire extends AreaEffect
 	}
 
 	@Override
-	public void close()
-	{
-		for (int i = 0; i < anims.length; i++)
-		{
+	public void close() {
+		for (int i = 0; i < anims.length; i++) {
 			for (final FireAnimation fa : anims[i])
 				fa.close();
 		}
@@ -131,8 +114,7 @@ public class WildFire extends AreaEffect
 	}
 
 	@Override
-	public WildFire copy()
-	{
+	public WildFire copy() {
 		return new WildFire(this);
 	}
 }

@@ -10,8 +10,7 @@ import com.lescomber.vestige.units.sone.PerpetualSpawnPortal;
 
 import java.util.ArrayList;
 
-public class PerpetualPortalSpawner extends AIChanneledAbility
-{
+public class PerpetualPortalSpawner extends AIChanneledAbility {
 	private static final double CHANNEL_DURATION = 18;
 	private static final int[] INTERVAL = new int[] { 9000, 6000, 4500 };
 	private int countdown;
@@ -26,8 +25,7 @@ public class PerpetualPortalSpawner extends AIChanneledAbility
 
 	private final OneTenBoss owner;
 
-	public PerpetualPortalSpawner(OneTenBoss owner, double cooldownSeconds)
-	{
+	public PerpetualPortalSpawner(OneTenBoss owner, double cooldownSeconds) {
 		super(owner, CHANNEL_DURATION, cooldownSeconds);
 
 		this.owner = owner;
@@ -36,8 +34,7 @@ public class PerpetualPortalSpawner extends AIChanneledAbility
 		portalPersonalSpaces = new ArrayList<Rectangle>();
 	}
 
-	public PerpetualPortalSpawner(PerpetualPortalSpawner copyMe)
-	{
+	public PerpetualPortalSpawner(PerpetualPortalSpawner copyMe) {
 		super(copyMe);
 
 		this.owner = copyMe.owner;
@@ -49,37 +46,32 @@ public class PerpetualPortalSpawner extends AIChanneledAbility
 	}
 
 	@Override
-	public void activate()
-	{
+	public void activate() {
 		super.activate();
 
 		countdown = 0;
 		portalPersonalSpaces.clear();
 
-		final Rectangle newRect = new Rectangle(owner.getX() - BOSS_SPACE_HALF_WIDTH, owner.getY() - BOSS_SPACE_HALF_HEIGHT,
-				owner.getX() + BOSS_SPACE_HALF_WIDTH, owner.getY() + BOSS_SPACE_HALF_HEIGHT);
+		final Rectangle newRect = new Rectangle(owner.getX() - BOSS_SPACE_HALF_WIDTH, owner.getY() - BOSS_SPACE_HALF_HEIGHT, owner
+				.getX() + BOSS_SPACE_HALF_WIDTH, owner.getY() + BOSS_SPACE_HALF_HEIGHT);
 		portalPersonalSpaces.add(newRect);
 	}
 
 	@Override
-	protected void channeling(int deltaTime)
-	{
+	protected void channeling(int deltaTime) {
 		countdown -= deltaTime;
-		if (countdown <= 0)
-		{
+		if (countdown <= 0) {
 			countdown += INTERVAL[OptionsScreen.difficulty];
 
 			float x = 0;
 			float y = 0;
 			boolean occupado = true;
-			while (occupado)
-			{
+			while (occupado) {
 				x = 40 + (Util.rand.nextFloat() * 720);
 				y = 40 + (Util.rand.nextFloat() * 400);
 
 				occupado = false;
-				for (final Rectangle r : portalPersonalSpaces)
-				{
+				for (final Rectangle r : portalPersonalSpaces) {
 					if (r.contains(x, y))
 						occupado = true;
 				}
@@ -95,14 +87,12 @@ public class PerpetualPortalSpawner extends AIChanneledAbility
 	}
 
 	@Override
-	protected void channelFinished()
-	{
+	protected void channelFinished() {
 		owner.cooldownSync();
 	}
 
 	@Override
-	public PerpetualPortalSpawner copy()
-	{
+	public PerpetualPortalSpawner copy() {
 		return new PerpetualPortalSpawner(this);
 	}
 }

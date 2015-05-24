@@ -5,7 +5,7 @@ import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.Matrix;
 
 import com.lescomber.vestige.Assets;
-import com.lescomber.vestige.FPSCounter;
+import com.lescomber.vestige.FpsCounter;
 import com.lescomber.vestige.crossover.ColorRectManager;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.crossover.TextManager;
@@ -13,8 +13,7 @@ import com.lescomber.vestige.crossover.TextManager;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class CGLRenderer implements Renderer
-{
+public class CGLRenderer implements Renderer {
 	private static boolean isInitialized = false;
 
 	private static final int SCREEN_WIDTH = 800;
@@ -22,12 +21,11 @@ public class CGLRenderer implements Renderer
 
 	static final float[] mProjectionMatrix = new float[16];
 
-	private static FPSCounter fpsCounter;
+	private static FpsCounter fpsCounter;
 	private static long lastFrameTime;
 
 	@Override
-	public void onSurfaceCreated(GL10 unused, EGLConfig config)
-	{
+	public void onSurfaceCreated(GL10 unused, EGLConfig config) {
 		// Create shaders for whatever we plan to draw
 		CGLTexturedRect.createProgram();
 		CGLColorRect.createProgram();
@@ -57,10 +55,9 @@ public class CGLRenderer implements Renderer
 			SpriteManager.initTemplates();
 			TextManager.init();
 			ColorRectManager.init();
-			fpsCounter = new FPSCounter();
+			fpsCounter = new FpsCounter();
 			lastFrameTime = System.nanoTime();
-		}
-		else                // re-create textures/CGLTexts if OpenGL context may have been lost
+		} else                // re-create textures/CGLTexts if OpenGL context may have been lost
 		{
 			Assets.createTextures();
 			TextManager.recreateCGLTexts();
@@ -68,8 +65,7 @@ public class CGLRenderer implements Renderer
 	}
 
 	@Override
-	public void onSurfaceChanged(GL10 unused, int width, int height)
-	{
+	public void onSurfaceChanged(GL10 unused, int width, int height) {
 		// Sets the current view port to the new size.
 		GLES20.glViewport(0, 0, width, height);
 
@@ -80,8 +76,7 @@ public class CGLRenderer implements Renderer
 	}
 
 	@Override
-	public void onDrawFrame(GL10 unused)
-	{
+	public void onDrawFrame(GL10 unused) {
 		// Update fps counter
 		final long curTime = System.nanoTime();
 		final long dTime = (curTime - lastFrameTime) / 1000000;
@@ -107,13 +102,11 @@ public class CGLRenderer implements Renderer
 		TextManager.draw();
 	}
 
-	public static boolean isReady()
-	{
+	public static boolean isReady() {
 		return isInitialized;
 	}
 
-	public static double getFPS()
-	{
-		return fpsCounter.getFPS();
+	public static double getFps() {
+		return fpsCounter.getFps();
 	}
 }

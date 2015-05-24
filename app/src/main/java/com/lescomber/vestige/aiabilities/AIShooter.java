@@ -9,10 +9,11 @@ import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.AIUnit;
 import com.lescomber.vestige.units.Unit;
 
-// AIShooter is a basic projectile shooter that, once its cooldown is up, simply targets the nearest enemy and fires a copy
-//of the prototype projectile
-public class AIShooter extends AIAbility
-{
+/**
+ * AIShooter is a basic projectile shooter that, once its cooldown is up, simply targets the nearest enemy and fires a copy of the prototype
+ * projectile
+ */
+public class AIShooter extends AIAbility {
 	protected final Projectile prototype;    // Projectile to be fired whenever the cooldown is up
 	private final AIProjectileBehavior behavior;
 
@@ -23,8 +24,7 @@ public class AIShooter extends AIAbility
 	private static final float[] DAMAGE_SCALING = new float[] { 0.75f, 0.95f, 1.15f };
 	private static final float[] VELOCITY_SCALING = new float[] { 0.9f, 1.0f, 1.1f };
 
-	public AIShooter(AIUnit owner, Projectile prototype, double cooldownSeconds)
-	{
+	public AIShooter(AIUnit owner, Projectile prototype, double cooldownSeconds) {
 		super(owner, cooldownSeconds);
 
 		this.prototype = prototype.copy();
@@ -37,8 +37,7 @@ public class AIShooter extends AIAbility
 		target = null;
 	}
 
-	public AIShooter(AIShooter copyMe)
-	{
+	public AIShooter(AIShooter copyMe) {
 		super(copyMe);
 
 		prototype = copyMe.prototype.copy();
@@ -49,10 +48,8 @@ public class AIShooter extends AIAbility
 	}
 
 	@Override
-	public boolean scaleForDifficulty()
-	{
-		if (super.scaleForDifficulty())
-		{
+	public boolean scaleForDifficulty() {
+		if (super.scaleForDifficulty()) {
 			// Scale prototype damage
 			prototype.setDamage(DAMAGE_SCALING[OptionsScreen.difficulty] * prototype.getDamage());
 
@@ -61,36 +58,30 @@ public class AIShooter extends AIAbility
 			prototype.setVelocityPerSecond(newVelocity);
 
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
 
 	@Override
-	public boolean decideToFire()
-	{
+	public boolean decideToFire() {
 		target = Unit.getNearestMember(owner.getCenter(), getTargetFaction());
 
-		if (target != null)
-		{
+		if (target != null) {
 			owner.faceTowards(target.getX());
 			firingLocation = owner.getFiringLocation();
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
 
 	@Override
-	public void activate()
-	{
+	public void activate() {
 		// Determine destination based on target + a little randomness
 		final Point dest = selectTargetLocation(target);
 
 		// If prototype is a projectile that should shoot beyond its target and off the screen, extend its destination
 		Line path = new Line(new Line(firingLocation.x, firingLocation.y, dest.x, dest.y));
-		if (behavior.isExtended)
-		{
+		if (behavior.isExtended) {
 			final Point startPoint = path.getStart();
 			final Point endPoint = path.getExtEnd();
 			path = new Line(new Line(startPoint, endPoint));
@@ -100,8 +91,7 @@ public class AIShooter extends AIAbility
 		fire(path);
 	}
 
-	protected void fire(Line path)
-	{
+	protected void fire(Line path) {
 		// Init shot and set its targetFaction
 		final Projectile shot = prototype.copy();
 
@@ -114,9 +104,10 @@ public class AIShooter extends AIAbility
 		owner.queueProjectile(shot);
 	}
 
-	// Add some randomness to the target location (i.e. don't always shoot directly at the center of target)
-	Point selectTargetLocation(Unit target)
-	{
+	/**
+	 * Add some randomness to the target location (i.e. don't always shoot directly at the center of target)
+	 */
+	Point selectTargetLocation(Unit target) {
 		final int defaultRandomRange = 50;    // Radius from target center within which the target location will be chosen
 
 		float tx = target.getX();
@@ -131,14 +122,12 @@ public class AIShooter extends AIAbility
 		return new Point(tx, ty);
 	}
 
-	public void setIsExtended(boolean isExtended)
-	{
+	public void setIsExtended(boolean isExtended) {
 		behavior.isExtended = isExtended;
 	}
 
 	@Override
-	public AIShooter copy()
-	{
+	public AIShooter copy() {
 		return new AIShooter(this);
 	}
 }

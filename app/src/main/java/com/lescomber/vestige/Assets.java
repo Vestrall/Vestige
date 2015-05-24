@@ -20,7 +20,8 @@ public class Assets {
 	public static CGLTexture genericBackground, mainMenuScreen;
 
 	// Menu images
-	public static CGLTexture title[], smallEyes[], mediumEyes[], bigEyes[], loadingCircleBackground, loadingCircleFill, scoreEmpty, scoreHalf, scoreFull;
+	public static CGLTexture title[], smallEyes[], mediumEyes[], bigEyes[], loadingCircleBackground, loadingCircleFill, scoreEmpty, scoreHalf,
+			scoreFull;
 
 	// Stages
 	public static CGLTexture stageLocked, stageLockedSelected, stage01, stage01Selected;
@@ -79,7 +80,9 @@ public class Assets {
 		return bitmap;
 	}
 
-	// Create a new Typeface from font file
+	/**
+	 * Create a new Typeface from font file
+	 */
 	public static Typeface newTypeface(String filename) {
 		return Typeface.createFromAsset(assets, filename);
 	}
@@ -179,7 +182,7 @@ public class Assets {
 	}
 
 	private static CGLTexture[] initCGLTextureArray(int size) {
-		CGLTexture[] textureArray = new CGLTexture[size];
+		final CGLTexture[] textureArray = new CGLTexture[size];
 		for (int i = 0; i < size; i++) {
 			textureArray[i] = new CGLTexture();
 		}

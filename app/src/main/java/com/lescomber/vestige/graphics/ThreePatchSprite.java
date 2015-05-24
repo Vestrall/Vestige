@@ -3,13 +3,11 @@ package com.lescomber.vestige.graphics;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
 
-public class ThreePatchSprite extends Sprite
-{
+public class ThreePatchSprite extends Sprite {
 	private final SpriteTemplate leftTemplate;
 	private final SpriteTemplate rightTemplate;
 
-	public ThreePatchSprite(SpriteTemplate[] templates, float x, float y, boolean isVisible)
-	{
+	public ThreePatchSprite(SpriteTemplate[] templates, float x, float y, boolean isVisible) {
 		super(templates[0], x, y, false);
 
 		leftTemplate = templates[1];
@@ -18,18 +16,15 @@ public class ThreePatchSprite extends Sprite
 		setVisible(isVisible);
 	}
 
-	public ThreePatchSprite(SpriteTemplate[] templates, float x, float y)
-	{
+	public ThreePatchSprite(SpriteTemplate[] templates, float x, float y) {
 		this(templates, x, y, false);
 	}
 
-	public ThreePatchSprite(SpriteTemplate[] templates)
-	{
+	public ThreePatchSprite(SpriteTemplate[] templates) {
 		this(templates, 0, 0, false);
 	}
 
-	public ThreePatchSprite(ThreePatchSprite copyMe)
-	{
+	public ThreePatchSprite(ThreePatchSprite copyMe) {
 		super(copyMe);
 
 		leftTemplate = copyMe.leftTemplate;
@@ -40,8 +35,7 @@ public class ThreePatchSprite extends Sprite
 	}
 
 	@Override
-	public void scale(double widthRatio, double heightRatio)
-	{
+	public void scale(double widthRatio, double heightRatio) {
 		float width = getWidth();
 		width *= widthRatio;
 		if (leftTemplate != null)
@@ -58,10 +52,8 @@ public class ThreePatchSprite extends Sprite
 	}
 
 	@Override
-	public void scaleTo(float width, float height)
-	{
-		if (info.widthScale <= 0 || info.heightScale <= 0)
-		{
+	public void scaleTo(float width, float height) {
+		if (info.widthScale <= 0 || info.heightScale <= 0) {
 			float middleWidth = width;
 			if (leftTemplate != null)
 				middleWidth -= leftTemplate.getWidth();
@@ -73,16 +65,13 @@ public class ThreePatchSprite extends Sprite
 
 			if (isVisible)
 				Swapper.swapImages(this, this);
-		}
-		else
+		} else
 			super.scaleTo(width, height);
 	}
 
 	@Override
-	public void scaleWidthTo(float width)
-	{
-		if (info.widthScale <= 0)
-		{
+	public void scaleWidthTo(float width) {
+		if (info.widthScale <= 0) {
 			float middleWidth = width;
 			if (leftTemplate != null)
 				middleWidth -= leftTemplate.getWidth();
@@ -93,20 +82,17 @@ public class ThreePatchSprite extends Sprite
 
 			if (isVisible)
 				Swapper.swapImages(this, this);
-		}
-		else
+		} else
 			super.scaleWidthTo(width);
 	}
 
 	@Override
-	public void setTexWidth(float percentage)
-	{
+	public void setTexWidth(float percentage) {
 		// Does not work for ThreePatchSprites
 	}
 
 	@Override
-	public float getWidth()
-	{
+	public float getWidth() {
 		float width = super.getWidth();
 
 		if (leftTemplate != null)
@@ -118,8 +104,7 @@ public class ThreePatchSprite extends Sprite
 	}
 
 	@Override
-	public float getHeight()
-	{
+	public float getHeight() {
 		float height = super.getHeight();
 
 		if (leftTemplate != null && leftTemplate.getHeight() > height)
@@ -131,31 +116,24 @@ public class ThreePatchSprite extends Sprite
 	}
 
 	@Override
-	public Sprite getSprite()
-	{
+	public Sprite getSprite() {
 		return this;
 	}
 
-	public SpriteTemplate getLeftTemplate()
-	{
+	public SpriteTemplate getLeftTemplate() {
 		return leftTemplate;
 	}
 
-	public SpriteTemplate getRightTemplate()
-	{
+	public SpriteTemplate getRightTemplate() {
 		return rightTemplate;
 	}
 
 	@Override
-	public void setVisible(boolean isVisible)
-	{
-		if (this.isVisible && !isVisible)
-		{
+	public void setVisible(boolean isVisible) {
+		if (this.isVisible && !isVisible) {
 			SpriteManager.getInstance().removeSprite(index);
 			index = -1;
-		}
-		else if (!this.isVisible && isVisible)
-		{
+		} else if (!this.isVisible && isVisible) {
 			index = SpriteManager.getInstance().newThreePatchSprite(info, leftTemplate, rightTemplate);
 		}
 

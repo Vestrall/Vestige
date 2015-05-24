@@ -2,8 +2,7 @@ package com.lescomber.vestige.audio;
 
 import com.lescomber.vestige.screens.OptionsScreen;
 
-public class MusicEffect
-{
+public class MusicEffect {
 	private Music music;
 
 	private final String filename;
@@ -11,56 +10,46 @@ public class MusicEffect
 
 	private float volume;
 
-	public MusicEffect(String filename, float baseVolume)
-	{
+	public MusicEffect(String filename, float baseVolume) {
 		this.filename = filename;
 		this.baseVolume = baseVolume;
 		updateVolume();
 	}
 
-	public void play()
-	{
-		if (music == null)
-		{
+	public void play() {
+		if (music == null) {
 			music = AudioManager.createMusic(filename);
 			music.setVolume(volume);
-		}
-		else if (music.isPlaying())
+		} else if (music.isPlaying())
 			return;
 
 		music.play();
 	}
 
-	public void stop()
-	{
-		if (music != null)
-		{
+	public void stop() {
+		if (music != null) {
 			music.dispose();
 			music = null;
 		}
 	}
 
-	public void pause()
-	{
+	public void pause() {
 		if (music != null)
 			music.pause();
 	}
 
-	public void resume()
-	{
+	public void resume() {
 		if (music != null)
 			music.resume();
 	}
 
-	public void updateVolume()
-	{
+	public void updateVolume() {
 		volume = OptionsScreen.sfxVolume * baseVolume;
 		if (music != null)
 			music.setVolume(volume);
 	}
 
-	public void dispose()
-	{
+	public void dispose() {
 		if (music != null)
 			music.dispose();
 	}

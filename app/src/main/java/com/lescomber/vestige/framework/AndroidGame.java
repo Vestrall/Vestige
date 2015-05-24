@@ -10,17 +10,19 @@ import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.Display;
 
-import com.lescomber.vestige.FPSCounter;
+import com.lescomber.vestige.FpsCounter;
 import com.lescomber.vestige.audio.AudioManager;
 import com.lescomber.vestige.cgl.CGLRenderer;
 import com.lescomber.vestige.crossover.ColorRectManager;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.crossover.TextManager;
+import com.lescomber.vestige.framework.TouchHandler.TouchEvent;
 import com.lescomber.vestige.screens.SplashScreen;
 
+import java.util.List;
+
 @SuppressLint("NewApi")
-public class AndroidGame implements Runnable
-{
+public class AndroidGame implements Runnable {
 	private static final int DESIRED_FRAME_TIME = 1000 / 60;    // ~60 fps
 	private static final int MAX_FRAME_TIME = 60;
 
@@ -28,8 +30,7 @@ public class AndroidGame implements Runnable
 
 	private String gameVersion;
 
-	private final Input input;
-	private final AndroidFileIO fileIO;
+	private final TouchHandler touchHandler;
 	private Screen curScreen;
 
 	private Thread gameThread = null;
@@ -37,10 +38,9 @@ public class AndroidGame implements Runnable
 
 	private final AndroidGameActivity gameActivity;
 
-	private final FPSCounter upsCounter;
+	private final FpsCounter upsCounter;
 
-	public AndroidGame(AndroidGameActivity gameActivity)
-	{
+	public AndroidGame(AndroidGameActivity gameActivity) {
 		this.gameActivity = gameActivity;
 
 		res = gameActivity.getResources();
@@ -58,82 +58,65 @@ public class AndroidGame implements Runnable
 		scaleX = (float) deviceWidth / screenSize.x;
 		scaleY = (float) deviceHeight / screenSize.y;
 
-		try
-		{
+		try {
 			final PackageInfo pInfo = gameActivity.getPackageManager().getPackageInfo(gameActivity.getPackageName(), 0);
 			gameVersion = pInfo.versionName;
-		} catch (final NameNotFoundException nnfe)
-		{
+		} catch (final NameNotFoundException nnfe) {
 			gameVersion = "";
 		}
 
-		input = new AndroidInput(gameActivity.getView(), scaleX, scaleY);
-		fileIO = new AndroidFileIO(gameActivity);
-		upsCounter = new FPSCounter();
+		touchHandler = new TouchHandler(gameActivity.getView(), scaleX, scaleY);
+		upsCounter = new FpsCounter();
 		curScreen = new SplashScreen(this);
 	}
 
-	// Returns the size of the screen if status/nav bars are not visible. Will need to subtract status/nav bar sizes if desired
-	private Point getScreenSize()
-	{
+	/**
+	 * @return the size of the screen if status/nav bars are not visible. Will need to subtract status/nav bar sizes if desired
+	 */
+	private Point getScreenSize() {
 		final Point size = new Point();
 
 		final Display display = gameActivity.getWindowManager().getDefaultDisplay();
-		if (Build.VERSION.SDK_INT < 14)
-		{
+		if (Build.VERSION.SDK_INT < 14) {
 			final DisplayMetrics metrics = new DisplayMetrics();
 			display.getMetrics(metrics);
 			size.x = metrics.widthPixels;
 			size.y = metrics.heightPixels;
-		}
-		else if (Build.VERSION.SDK_INT < 17)
-		{
-			try
-			{
+		} else if (Build.VERSION.SDK_INT < 17) {
+			try {
 				size.x = (Integer) Display.class.getMethod("getRawWidth").invoke(display);
 				size.y = (Integer) Display.class.getMethod("getRawHeight").invoke(display);
-			} catch (final Exception e)
-			{
+			} catch (final Exception e) {
 			}
-		}
-		else
-		{
+		} else {
 			display.getRealSize(size);
 		}
 
 		return size;
 	}
 
-	public String gameVersion()
-	{
+	public String gameVersion() {
 		return gameVersion;
 	}
 
 	@Override
-	public void run()
-	{
-		while (!CGLRenderer.isReady())
-		{
-			try
-			{
+	public void run() {
+		while (!CGLRenderer.isReady()) {
+			try {
 				Thread.sleep(50);
-			} catch (final InterruptedException ie)
-			{
+			} catch (final InterruptedException ie) {
 			}
 		}
 
 		long startTime = System.nanoTime();
 		long deltaTime = 0;
-		while (running)
-		{
+		while (running) {
 			// Throttle loop speed to a maximum of roughly 60 updates per second
 			deltaTime = (System.nanoTime() - startTime) / 1000000;
-			try
-			{
+			try {
 				if (deltaTime < DESIRED_FRAME_TIME)
 					Thread.sleep(DESIRED_FRAME_TIME - deltaTime);
-			} catch (final InterruptedException ie)
-			{
+			} catch (final InterruptedException ie) {
 			}
 
 			deltaTime = (System.nanoTime() - startTime) / 1000000;        // Note: deltaTime is in ms
@@ -148,8 +131,7 @@ public class AndroidGame implements Runnable
 		}
 	}
 
-	public void setScreen(Screen screen)
-	{
+	public void setScreen(Screen screen) {
 		if (screen == null)
 			throw new IllegalArgumentException("Screen must not be null");
 
@@ -169,33 +151,23 @@ public class AndroidGame implements Runnable
 		Screen.notifyScreenChanged();
 	}
 
-	public Input getInput()
-	{
-		return input;
+	public List<TouchEvent> getTouchEvents() {
+		return touchHandler.getTouchEvents();
 	}
 
-	public AndroidFileIO getFileIO()
-	{
-		return fileIO;
-	}
-
-	public Screen getCurrentScreen()
-	{
+	public Screen getCurrentScreen() {
 		return curScreen;
 	}
 
-	public double getFPS()
-	{
-		return upsCounter.getFPS();
+	public double getFps() {
+		return upsCounter.getFps();
 	}
 
-	public void pauseScreen()
-	{
+	public void pauseScreen() {
 		curScreen.pause();
 	}
 
-	public void resume()
-	{
+	public void resume() {
 		AudioManager.resume();
 		curScreen.resume();
 		running = true;
@@ -203,17 +175,13 @@ public class AndroidGame implements Runnable
 		gameThread.start();
 	}
 
-	public void pause(boolean isFinishing)
-	{
+	public void pause(boolean isFinishing) {
 		running = false;
-		while (true)
-		{
-			try
-			{
+		while (true) {
+			try {
 				gameThread.join();
 				break;
-			} catch (final InterruptedException e)
-			{
+			} catch (final InterruptedException e) {
 				// retry
 			}
 		}
@@ -225,8 +193,7 @@ public class AndroidGame implements Runnable
 			curScreen.dispose();
 	}
 
-	public void backButton()
-	{
+	public void backButton() {
 		if (curScreen != null)
 			curScreen.backButton();
 	}

@@ -3,15 +3,13 @@ package com.lescomber.vestige.graphics;
 import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
 import com.lescomber.vestige.geometry.Point;
 
-public class ThreePatchSwingSprite extends ThreePatchSprite
-{
+public class ThreePatchSwingSprite extends ThreePatchSprite {
 	private float swingX;
 	private float swingY;
 	private final float offsetX;
 	private final float offsetY;
 
-	public ThreePatchSwingSprite(SpriteTemplate[] templates, float x, float y, float offsetX, float offsetY, boolean isVisible)
-	{
+	public ThreePatchSwingSprite(SpriteTemplate[] templates, float x, float y, float offsetX, float offsetY, boolean isVisible) {
 		super(templates, x - offsetX, y - offsetY, isVisible);
 
 		swingX = x;
@@ -20,18 +18,15 @@ public class ThreePatchSwingSprite extends ThreePatchSprite
 		this.offsetY = offsetY;
 	}
 
-	public ThreePatchSwingSprite(SpriteTemplate[] templates, float x, float y, float offsetX, float offsetY)
-	{
+	public ThreePatchSwingSprite(SpriteTemplate[] templates, float x, float y, float offsetX, float offsetY) {
 		this(templates, x, y, offsetX, offsetY, false);
 	}
 
-	public ThreePatchSwingSprite(SpriteTemplate[] templates, float offsetX, float offsetY)
-	{
+	public ThreePatchSwingSprite(SpriteTemplate[] templates, float offsetX, float offsetY) {
 		this(templates, 0, 0, offsetX, offsetY, false);
 	}
 
-	public ThreePatchSwingSprite(ThreePatchSwingSprite copyMe)
-	{
+	public ThreePatchSwingSprite(ThreePatchSwingSprite copyMe) {
 		super(copyMe);
 
 		swingX = copyMe.swingX;
@@ -41,22 +36,19 @@ public class ThreePatchSwingSprite extends ThreePatchSprite
 	}
 
 	@Override
-	public void offset(float dx, float dy)
-	{
+	public void offset(float dx, float dy) {
 		swingX += dx;
 		swingY += dy;
 		super.offset(dx, dy);
 	}
 
 	@Override
-	public void offsetTo(float x, float y)
-	{
+	public void offsetTo(float x, float y) {
 		offset(x - swingX, y - swingY);
 	}
 
 	@Override
-	public void rotate(float radians)
-	{
+	public void rotate(float radians) {
 		// Rotate the Sprite's center point about our swing point
 		final Point center = new Point(getX(), getY());
 		Point.rotate(center, radians, swingX, swingY);
@@ -69,8 +61,7 @@ public class ThreePatchSwingSprite extends ThreePatchSprite
 	}
 
 	@Override
-	public void rotateAbout(float radians, float rotateX, float rotateY)
-	{
+	public void rotateAbout(float radians, float rotateX, float rotateY) {
 		final Point swingPoint = new Point(swingX, swingY);
 		Point.rotate(swingPoint, radians, rotateX, rotateY);
 		offsetTo(swingPoint);
@@ -78,8 +69,7 @@ public class ThreePatchSwingSprite extends ThreePatchSprite
 	}
 
 	@Override
-	public void scale(double widthRatio, double heightRatio)
-	{
+	public void scale(double widthRatio, double heightRatio) {
 		final float halfWidthDif = (float) ((widthRatio - 1.0) * getWidth()) / 2;
 		final float halfHeightDif = (float) ((heightRatio - 1.0) * getHeight()) / 2;
 
@@ -96,13 +86,11 @@ public class ThreePatchSwingSprite extends ThreePatchSprite
 		super.offset(xOff, yOff);
 	}
 
-	public float getSwingX()
-	{
+	public float getSwingX() {
 		return swingX;
 	}
 
-	public float getSwingY()
-	{
+	public float getSwingY() {
 		return swingY;
 	}
 }

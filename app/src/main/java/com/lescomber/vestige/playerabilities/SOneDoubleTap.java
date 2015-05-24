@@ -12,8 +12,7 @@ import com.lescomber.vestige.units.Unit;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class SOneDoubleTap extends DoubleTapAbility
-{
+public class SOneDoubleTap extends DoubleTapAbility {
 	private static final float DAMAGE = 12;
 	static final int RANGE_SQUARED = 400 * 400;
 
@@ -21,8 +20,7 @@ public class SOneDoubleTap extends DoubleTapAbility
 
 	final ArrayList<SOneDoubleTapLaser> activeLasers;
 
-	public SOneDoubleTap(Player player)
-	{
+	public SOneDoubleTap(Player player) {
 		super(player);
 
 		setMaxCooldown(8);
@@ -34,8 +32,7 @@ public class SOneDoubleTap extends DoubleTapAbility
 		activeLasers = new ArrayList<SOneDoubleTapLaser>(2);
 	}
 
-	public SOneDoubleTap(SOneDoubleTap copyMe)
-	{
+	public SOneDoubleTap(SOneDoubleTap copyMe) {
 		super(copyMe);
 
 		hitBundle = new HitBundle(copyMe.hitBundle);
@@ -44,14 +41,12 @@ public class SOneDoubleTap extends DoubleTapAbility
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
 		// Update any active lasers
 		final Iterator<SOneDoubleTapLaser> itr = activeLasers.iterator();
-		while (itr.hasNext())
-		{
+		while (itr.hasNext()) {
 			final SOneDoubleTapLaser laser = itr.next();
 			laser.update(deltaTime);
 			if (laser.isFinished())
@@ -60,8 +55,7 @@ public class SOneDoubleTap extends DoubleTapAbility
 	}
 
 	@Override
-	public void fire(Point p)
-	{
+	public void fire(Point p) {
 		// Teleport player
 		p = GameScreen.map.adjustDestination(p, player.getTopGap());
 		player.offsetTo(p);
@@ -71,8 +65,7 @@ public class SOneDoubleTap extends DoubleTapAbility
 		final Unit target = Unit.getNearestMember(player.getCenter(), GameScreen.steves, RANGE_SQUARED);
 
 		// Fire projectile
-		if (target != null)
-		{
+		if (target != null) {
 			final Line path = new Line(player.getImageCenter(), target.getImageCenter());
 			activeLasers.add(new SOneDoubleTapLaser(path));
 
@@ -82,8 +75,7 @@ public class SOneDoubleTap extends DoubleTapAbility
 	}
 
 	@Override
-	public SOneDoubleTap copy()
-	{
+	public SOneDoubleTap copy() {
 		return new SOneDoubleTap(this);
 	}
 }

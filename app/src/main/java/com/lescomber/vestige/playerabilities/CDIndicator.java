@@ -6,8 +6,7 @@ import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.graphics.UISprite;
 import com.lescomber.vestige.graphics.UISwingSprite;
 
-public class CDIndicator
-{
+public class CDIndicator {
 	private final UISwingSprite[] arcs;
 	private final UISwingSprite grayCover;
 	private final UISprite iconReady;
@@ -20,8 +19,7 @@ public class CDIndicator
 	private int state;    // 0 = Ready, 1 = First half of cooldown, 2 = 2nd half of cooldown
 	private boolean isVisible;
 
-	public CDIndicator(SpriteTemplate iconReady, SpriteTemplate iconCooldown, float x, float y, int maxCooldownMs)
-	{
+	public CDIndicator(SpriteTemplate iconReady, SpriteTemplate iconCooldown, float x, float y, int maxCooldownMs) {
 		this.iconReady = new UISprite(iconReady, x, y);
 		this.iconCooldown = new UISprite(iconCooldown, x, y);
 		grayCover = new UISwingSprite(SpriteManager.cdInnerGrayArc, x, y, 6.5f, 0);
@@ -31,8 +29,7 @@ public class CDIndicator
 		grayCover.setLayerHeight(SpriteManager.UI_LAYER_OVER_THREE);
 
 		arcs = new UISwingSprite[2];
-		for (int i = 0; i < 2; i++)
-		{
+		for (int i = 0; i < 2; i++) {
 			arcs[i] = new UISwingSprite(SpriteManager.cdInnerBlueArc, x, y, 6.5f, 0);
 			arcs[i].rotateTo((float) (Math.PI) * i);
 			arcs[i].setLayerHeight(SpriteManager.UI_LAYER_OVER_TWO);
@@ -45,13 +42,11 @@ public class CDIndicator
 		isVisible = false;
 	}
 
-	public CDIndicator(SpriteTemplate iconReady, SpriteTemplate iconCooldown, int maxCooldown)
-	{
+	public CDIndicator(SpriteTemplate iconReady, SpriteTemplate iconCooldown, int maxCooldown) {
 		this(iconReady, iconCooldown, 0, 0, maxCooldown);
 	}
 
-	public CDIndicator(CDIndicator copyMe)
-	{
+	public CDIndicator(CDIndicator copyMe) {
 		arcs = new UISwingSprite[2];
 		for (int i = 0; i < 2; i++)
 			arcs[i] = new UISwingSprite(copyMe.arcs[i]);
@@ -65,27 +60,20 @@ public class CDIndicator
 		isVisible = copyMe.isVisible;
 	}
 
-	public void update(int deltaTime)
-	{
-		if (state == 1)
-		{
+	public void update(int deltaTime) {
+		if (state == 1) {
 			cooldown -= deltaTime;
-			if (cooldown < halfMaxCooldown)
-			{
+			if (cooldown < halfMaxCooldown) {
 				arcs[0].rotateTo((float) Math.PI);
 				state = 2;
 				arcs[1].setVisible(isVisible);
 				grayCover.setVisible(false);
 				arcs[1].rotate(((halfMaxCooldown - cooldown) / halfMaxCooldown) * (float) Math.PI);
-			}
-			else
+			} else
 				arcs[0].rotate((deltaTime / halfMaxCooldown) * (float) Math.PI);
-		}
-		else if (state == 2)
-		{
+		} else if (state == 2) {
 			cooldown -= deltaTime;
-			if (cooldown <= 0)
-			{
+			if (cooldown <= 0) {
 				state = 0;
 				iconReady.setVisible(isVisible);
 				iconCooldown.setVisible(false);
@@ -95,20 +83,17 @@ public class CDIndicator
 				arcs[1].setVisible(false);
 				arcs[0].rotateTo(0);
 				arcs[1].rotateTo((float) Math.PI);
-			}
-			else
+			} else
 				arcs[1].rotate((deltaTime / halfMaxCooldown) * (float) Math.PI);
 		}
 	}
 
-	public void setMaxCooldown(int cooldownMs)
-	{
+	public void setMaxCooldown(int cooldownMs) {
 		maxCooldown = cooldownMs;
 		halfMaxCooldown = (float) cooldownMs / 2;
 	}
 
-	public void triggerCooldown()
-	{
+	public void triggerCooldown() {
 		// Change icon
 		iconCooldown.setVisible(isVisible);
 		iconReady.setVisible(false);
@@ -122,12 +107,10 @@ public class CDIndicator
 		arcs[0].setVisible(isVisible);
 	}
 
-	public void setCooldown(double cooldownSeconds)
-	{
+	public void setCooldown(double cooldownSeconds) {
 		cooldown = (int) (cooldownSeconds * 1000);
 
-		if (cooldown <= 0)
-		{
+		if (cooldown <= 0) {
 			state = 0;
 			iconReady.setVisible(isVisible);
 			iconCooldown.setVisible(false);
@@ -137,9 +120,7 @@ public class CDIndicator
 			arcs[1].setVisible(false);
 			arcs[0].rotateTo(0);
 			arcs[1].rotateTo((float) Math.PI);
-		}
-		else if (cooldown < halfMaxCooldown)
-		{
+		} else if (cooldown < halfMaxCooldown) {
 			// Change icon
 			iconCooldown.setVisible(isVisible);
 			iconReady.setVisible(false);
@@ -149,9 +130,7 @@ public class CDIndicator
 			// Set state 1 arc visibility
 			grayCover.setVisible(isVisible);
 			arcs[0].setVisible(isVisible);
-		}
-		else
-		{
+		} else {
 			arcs[0].rotateTo((float) Math.PI);
 			state = 2;
 			arcs[1].setVisible(isVisible);
@@ -160,8 +139,7 @@ public class CDIndicator
 		}
 	}
 
-	public void offsetTo(float x, float y)
-	{
+	public void offsetTo(float x, float y) {
 		for (int i = 0; i < 2; i++)
 			arcs[i].offsetTo(x, y);
 		grayCover.offsetTo(x, y);
@@ -169,18 +147,14 @@ public class CDIndicator
 		iconCooldown.offsetTo(x, y);
 	}
 
-	public void setVisible(boolean isVisible)
-	{
+	public void setVisible(boolean isVisible) {
 		if (state == 0)
 			iconReady.setVisible(isVisible);
-		else if (state == 1)
-		{
+		else if (state == 1) {
 			iconCooldown.setVisible(isVisible);
 			grayCover.setVisible(isVisible);
 			arcs[0].setVisible(isVisible);
-		}
-		else if (state == 2)
-		{
+		} else if (state == 2) {
 			iconCooldown.setVisible(isVisible);
 			arcs[0].setVisible(isVisible);
 			arcs[1].setVisible(isVisible);
@@ -189,8 +163,7 @@ public class CDIndicator
 		this.isVisible = isVisible;
 	}
 
-	public Point getCenter()
-	{
+	public Point getCenter() {
 		return new Point(iconReady.getX(), iconReady.getY());
 	}
 }

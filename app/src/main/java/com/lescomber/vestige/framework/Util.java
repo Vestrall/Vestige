@@ -3,27 +3,22 @@ package com.lescomber.vestige.framework;
 import java.util.Comparator;
 import java.util.Random;
 
-public class Util
-{
+public class Util {
 	private static final float epsilon = 0.001f;
 
-	public static final Random rand = new Random();        // Random number generator
+	public static final Random rand = new Random();
 
-	public static boolean equals(float f1, float f2)
-	{
+	public static boolean equals(float f1, float f2) {
 		return Math.abs(f1 - f2) < epsilon;
 	}
 
-	public static boolean equals(double d1, double d2)
-	{
+	public static boolean equals(double d1, double d2) {
 		return Math.abs(d1 - d2) < epsilon;
 	}
 
-	public static Comparator<Float> floatComparator = new Comparator<Float>()
-	{
+	public static Comparator<Float> floatComparator = new Comparator<Float>() {
 		@Override
-		public int compare(Float float1, Float float2)
-		{
+		public int compare(Float float1, Float float2) {
 			final int ret;
 			final float dif = float1 - float2;
 			if (dif < 0)

@@ -8,8 +8,7 @@ import com.lescomber.vestige.units.AIUnit;
 import com.lescomber.vestige.units.Caster;
 import com.lescomber.vestige.units.FloatingCreep;
 
-public class PerpetualSpawnPortal extends AIUnit
-{
+public class PerpetualSpawnPortal extends AIUnit {
 	private static final float SPAWN_DISTANCE = 70;
 
 	private final int portalInitAnim;
@@ -23,8 +22,7 @@ public class PerpetualSpawnPortal extends AIUnit
 
 	private static Caster PROTOTYPE_CASTER;
 
-	public PerpetualSpawnPortal(float x, float y)
-	{
+	public PerpetualSpawnPortal(float x, float y) {
 		super(48, 26, -22, 25);
 
 		offsetTo(x, y);
@@ -51,15 +49,13 @@ public class PerpetualSpawnPortal extends AIUnit
 
 		spawnCount = 0;
 
-		if (PROTOTYPE_CASTER == null)
-		{
+		if (PROTOTYPE_CASTER == null) {
 			PROTOTYPE_CASTER = new Caster();
 			PROTOTYPE_CASTER.createRailLocations(40);
 		}
 	}
 
-	public PerpetualSpawnPortal(PerpetualSpawnPortal copyMe)
-	{
+	public PerpetualSpawnPortal(PerpetualSpawnPortal copyMe) {
 		super(copyMe);
 
 		portalInitAnim = copyMe.portalInitAnim;
@@ -68,15 +64,12 @@ public class PerpetualSpawnPortal extends AIUnit
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
-		if (getCurrentAnimID() != portalInitAnim)
-		{
+		if (getCurrentAnimID() != portalInitAnim) {
 			countdown -= deltaTime;
-			if (countdown <= 0)
-			{
+			if (countdown <= 0) {
 				countdown += SPAWN_INTERVAL;
 				spawnUnit();
 			}
@@ -84,32 +77,24 @@ public class PerpetualSpawnPortal extends AIUnit
 	}
 
 	@Override
-	protected void animationFinished(int animID)
-	{
-		if (animID == portalInitAnim)
-		{
+	protected void animationFinished(int animID) {
+		if (animID == portalInitAnim) {
 			countdown = INITIAL_COUNTDOWN;
 			playAnimation(portalUnitSpawnAnim);
-		}
-		else if (animID == portalUnitSpawnAnim)
-		{
+		} else if (animID == portalUnitSpawnAnim) {
 			die();
 		}
 	}
 
-	private void spawnUnit()
-	{
-		if (spawnCount <= 0)
-		{
+	private void spawnUnit() {
+		if (spawnCount <= 0) {
 			final FloatingCreep creep = new FloatingCreep();
 			creep.offsetTo(getImageCenter());
 			creep.setDestination(getImageCenter().x, getImageCenter().y + SPAWN_DISTANCE);
 			creep.setEntering(true);
 			queueAIUnit(creep);
 			spawnCount++;
-		}
-		else
-		{
+		} else {
 			final Caster caster = PROTOTYPE_CASTER.copy();
 			caster.offsetTo(getImageCenter());
 			caster.setDestination(getImageCenter().x, getImageCenter().y + SPAWN_DISTANCE);
@@ -123,14 +108,12 @@ public class PerpetualSpawnPortal extends AIUnit
 	}
 
 	@Override
-	protected void pathDestinationReached()
-	{
+	protected void pathDestinationReached() {
 		playAnimation(portalInitAnim);
 	}
 
 	@Override
-	public void die()
-	{
+	public void die() {
 		super.die();
 
 		final SpriteAnimation anim = new SpriteAnimation(SpriteManager.spawnPortalEnd);
@@ -139,8 +122,7 @@ public class PerpetualSpawnPortal extends AIUnit
 	}
 
 	@Override
-	public PerpetualSpawnPortal copy()
-	{
+	public PerpetualSpawnPortal copy() {
 		return new PerpetualSpawnPortal(this);
 	}
 }

@@ -5,12 +5,10 @@ import com.lescomber.vestige.projectiles.Projectile;
 import com.lescomber.vestige.screens.GameScreen;
 import com.lescomber.vestige.units.Player;
 
-public class ProjectileShooter extends SwipeAbility
-{
-	Projectile prototype;
+public class ProjectileShooter extends SwipeAbility {
+	private Projectile prototype;
 
-	public ProjectileShooter(Player player, Projectile prototype, double cooldownSeconds)
-	{
+	public ProjectileShooter(Player player, Projectile prototype, double cooldownSeconds) {
 		super(player);
 
 		setMaxCooldown(cooldownSeconds);
@@ -19,30 +17,26 @@ public class ProjectileShooter extends SwipeAbility
 		this.prototype.setImageOffsetY(player.getFiringOffsetY());
 	}
 
-	public ProjectileShooter(Player player)
-	{
+	public ProjectileShooter(Player player) {
 		super(player);
 
 		prototype = null;
 		setMaxCooldown(0);
 	}
 
-	public ProjectileShooter(ProjectileShooter copyMe)
-	{
+	public ProjectileShooter(ProjectileShooter copyMe) {
 		super(copyMe);
 
 		prototype = copyMe.prototype.copy();
 	}
 
-	public void setPrototype(Projectile prototype)
-	{
+	public void setPrototype(Projectile prototype) {
 		this.prototype = prototype.copy();
 		this.prototype.setImageOffsetY(player.getFiringOffsetY());
 	}
 
 	@Override
-	public Projectile prepare(Line swipe, float firingOffsetY)
-	{
+	public Projectile prepare(Line swipe, float firingOffsetY) {
 		final Projectile shot = prototype.copy();
 		shot.setDestination(swipe.getExtEnd());
 		shot.rotateTo(swipe.getDirection());
@@ -52,8 +46,7 @@ public class ProjectileShooter extends SwipeAbility
 	}
 
 	@Override
-	public ProjectileShooter copy()
-	{
+	public ProjectileShooter copy() {
 		return new ProjectileShooter(this);
 	}
 }

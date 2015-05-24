@@ -10,8 +10,7 @@ import com.lescomber.vestige.units.Unit;
 
 import java.util.ArrayList;
 
-public class Explosion extends Entity
-{
+public class Explosion extends Entity {
 	// Note: Update these numbers if the images or image sizes change!
 	private static final float DEFAULT_IMAGE_RADIUS = 48;
 	private static final float RADIUS_TO_INIT_HITBOX_FACTOR = 9 / DEFAULT_IMAGE_RADIUS;
@@ -26,8 +25,7 @@ public class Explosion extends Entity
 	private int duration;
 	private boolean isFinished;
 
-	public Explosion(float x, float y, float radius, float damage)
-	{
+	public Explosion(float x, float y, float radius, float damage) {
 		super();
 
 		offsetTo(x, y);
@@ -54,18 +52,15 @@ public class Explosion extends Entity
 		isFinished = false;
 	}
 
-	public Explosion(Point position, float radius, float damage)
-	{
+	public Explosion(Point position, float radius, float damage) {
 		this(position.x, position.y, radius, damage);
 	}
 
-	public Explosion(float radius, float damage)
-	{
+	public Explosion(float radius, float damage) {
 		this(0, 0, radius, damage);
 	}
 
-	public Explosion(Explosion copyMe)
-	{
+	public Explosion(Explosion copyMe) {
 		super(copyMe);
 
 		FINAL_DIAMETER = copyMe.FINAL_DIAMETER;
@@ -80,14 +75,12 @@ public class Explosion extends Entity
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
 		// Expand hitbox if image is still expanding
 		float width = hitbox.getWidth();
-		if (width < FINAL_DIAMETER)
-		{
+		if (width < FINAL_DIAMETER) {
 			width += DIAMETER_PER_MS * deltaTime;
 			width = Math.min(width, FINAL_DIAMETER);
 			hitbox.scaleTo(width, width);
@@ -95,16 +88,11 @@ public class Explosion extends Entity
 
 		// Check hitboxes and hit things (only during first 10 frames)
 		duration -= deltaTime;
-		if (duration > 0)
-		{
-			for (final Integer i : targets)
-			{
-				for (final Unit u : GameScreen.units[i])
-				{
-					if (overlaps(u))
-					{
-						if (!unitsHit.contains(u))
-						{
+		if (duration > 0) {
+			for (final Integer i : targets) {
+				for (final Unit u : GameScreen.units[i]) {
+					if (overlaps(u)) {
+						if (!unitsHit.contains(u)) {
 							u.hit(hitBundle);
 							unitsHit.add(u);
 						}
@@ -115,18 +103,15 @@ public class Explosion extends Entity
 	}
 
 	@Override
-	protected void animationFinished(int animID)
-	{
+	protected void animationFinished(int animID) {
 		isFinished = true;
 	}
 
-	public boolean isFinished()
-	{
+	public boolean isFinished() {
 		return isFinished;
 	}
 
-	public Explosion copy()
-	{
+	public Explosion copy() {
 		return new Explosion(this);
 	}
 }

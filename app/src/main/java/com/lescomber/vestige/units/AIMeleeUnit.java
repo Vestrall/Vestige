@@ -2,8 +2,7 @@ package com.lescomber.vestige.units;
 
 import com.lescomber.vestige.screens.GameScreen;
 
-public abstract class AIMeleeUnit extends AIUnit
-{
+public abstract class AIMeleeUnit extends AIUnit {
 	// Destination decision making constants
 	private static final int CLOSE_RANGE_SQUARED = 250 * 250;
 	private static final int TOO_CLOSE_SQUARED = 48 * 48;
@@ -12,15 +11,13 @@ public abstract class AIMeleeUnit extends AIUnit
 
 	private int destinationCooldown;    // Cooldown before re-deciding on a new destination
 
-	public AIMeleeUnit(float hitboxWidth, float hitboxHeight, float imageOffsetY, float topGap)
-	{
+	public AIMeleeUnit(float hitboxWidth, float hitboxHeight, float imageOffsetY, float topGap) {
 		super(hitboxWidth, hitboxHeight, imageOffsetY, topGap);
 
 		destinationCooldown = 0;
 	}
 
-	public AIMeleeUnit(AIMeleeUnit copyMe)
-	{
+	public AIMeleeUnit(AIMeleeUnit copyMe) {
 		super(copyMe);
 
 		// Not copied
@@ -28,11 +25,9 @@ public abstract class AIMeleeUnit extends AIUnit
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		// Destination decision making
-		if (!isEntering())
-		{
+		if (!isEntering()) {
 			destinationCooldown -= deltaTime;
 			if (destinationCooldown <= 0)
 				chooseDestination();
@@ -43,27 +38,23 @@ public abstract class AIMeleeUnit extends AIUnit
 	}
 
 	@Override
-	protected void pathDestinationReached()
-	{
+	protected void pathDestinationReached() {
 		super.pathDestinationReached();
 
 		chooseDestination();
 	}
 
 	@Override
-	protected void finishedFiring()
-	{
+	protected void finishedFiring() {
 		chooseDestination();
 
 		super.finishedFiring();
 	}
 
-	public void chooseDestination()
-	{
+	public void chooseDestination() {
 		// Select target based on proximity
 		final Unit target = Unit.getNearestMember(getCenter(), opponents);
-		if (target == null)
-		{
+		if (target == null) {
 			triggerDestinationCD(0);
 			return;
 		}
@@ -78,8 +69,7 @@ public abstract class AIMeleeUnit extends AIUnit
 		triggerDestinationCD(distanceSquared);
 	}
 
-	void triggerDestinationCD(double distanceSquared)
-	{
+	void triggerDestinationCD(double distanceSquared) {
 		if (distanceSquared <= CLOSE_RANGE_SQUARED)
 			destinationCooldown += SHORT_RANGE_CD;
 		else

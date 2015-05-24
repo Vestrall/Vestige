@@ -9,8 +9,7 @@ import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.AIUnit;
 import com.lescomber.vestige.units.Unit;
 
-public class CreepingFireShooter extends AIAbility
-{
+public class CreepingFireShooter extends AIAbility {
 	private static final int COUNTDOWN_INIT = 800;
 	private static final float ANGLE_RANGE = (float) (Math.PI / 1.5);
 	private static final float DPS[] = new float[] { 12, 17, 22 };
@@ -18,8 +17,7 @@ public class CreepingFireShooter extends AIAbility
 
 	private HitGroup fireGroup;
 
-	public CreepingFireShooter(AIUnit owner, double cooldownSeconds, HitGroup hitGroup)
-	{
+	public CreepingFireShooter(AIUnit owner, double cooldownSeconds, HitGroup hitGroup) {
 		super(owner, cooldownSeconds);
 
 		setUsesAnimation(false);
@@ -27,34 +25,29 @@ public class CreepingFireShooter extends AIAbility
 		fireGroup = hitGroup;
 	}
 
-	public CreepingFireShooter(CreepingFireShooter copyMe)
-	{
+	public CreepingFireShooter(CreepingFireShooter copyMe) {
 		super(copyMe);
 
 		fireGroup = copyMe.fireGroup;
 	}
 
 	@Override
-	public void activate()
-	{
+	public void activate() {
 		final Unit target = Unit.getNearestMember(owner.getCenter(), owner.getOpponents());
 		final Line line = new Line(owner.getCenter(), target.getCenter());
 		final float firstFlameAngle = line.getDirection() - (ANGLE_RANGE / 2) + (Util.rand.nextFloat() * ANGLE_RANGE);
 
-		final CreepingFire firstFire = new CreepingFire(DPS[OptionsScreen.difficulty], FLAME_DURATION, COUNTDOWN_INIT,
-				firstFlameAngle, fireGroup);
+		final CreepingFire firstFire = new CreepingFire(DPS[OptionsScreen.difficulty], FLAME_DURATION, COUNTDOWN_INIT, firstFlameAngle, fireGroup);
 		firstFire.offsetTo(owner.getCenter());
 		owner.queueAreaEffect(firstFire);
 	}
 
 	@Override
-	public CreepingFireShooter copy()
-	{
+	public CreepingFireShooter copy() {
 		return new CreepingFireShooter(this);
 	}
 
-	public void setFireGroup(HitGroup fireGroup)
-	{
+	public void setFireGroup(HitGroup fireGroup) {
 		this.fireGroup = fireGroup;
 	}
 }

@@ -8,8 +8,7 @@ import com.lescomber.vestige.graphics.ThreePatchSwingSprite;
 import com.lescomber.vestige.map.Obstacle;
 import com.lescomber.vestige.projectiles.glows.BeamGlow;
 
-public class Beam extends Projectile
-{
+public class Beam extends Projectile {
 	private static final float HEIGHT = 8;
 	private static final float GROWTH_PER_MS = 0.7f;
 
@@ -20,11 +19,9 @@ public class Beam extends Projectile
 	private boolean wallHit;
 	private float width;
 
-	//private final BeamSprite beamSprite;
 	private ThreePatchSwingSprite beamSprite;
 
-	public Beam(float x, float y, float direction, float damage)
-	{
+	public Beam(float x, float y, float direction, float damage) {
 		super(null, damage);
 
 		final SpriteTemplate[] templates = new SpriteTemplate[3];
@@ -32,7 +29,6 @@ public class Beam extends Projectile
 		templates[1] = null;
 		templates[2] = SpriteManager.enemyLaserHead;
 		beamSprite = new ThreePatchSwingSprite(templates, 0, 0);
-		//beamSprite = new BeamSprite();
 
 		setImage(beamSprite);
 		setUnitHitSound(AudioManager.enemyLaserHit);
@@ -58,8 +54,7 @@ public class Beam extends Projectile
 		wallHit = false;
 	}
 
-	public Beam(Beam copyMe)
-	{
+	public Beam(Beam copyMe) {
 		super(copyMe);
 
 		//beamSprite = new BeamSprite(copyMe.beamSprite);
@@ -72,14 +67,11 @@ public class Beam extends Projectile
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
-		if (growing)
-		{
-			if (!wallHit)
-			{
+		if (growing) {
+			if (!wallHit) {
 				width += GROWTH_PER_MS * deltaTime;
 				final float dx = offsetXPerMs * deltaTime;
 				final float dy = offsetYPerMs * deltaTime;
@@ -92,14 +84,11 @@ public class Beam extends Projectile
 				//beamSprite.offset(dx, dy);
 				updateGlow(hitbox);
 			}
-		}
-		else
-		{
+		} else {
 			width -= GROWTH_PER_MS * deltaTime;
 			if (width <= 0)
 				explode();
-			else
-			{
+			else {
 				final float dx = offsetXPerMs * deltaTime;
 				final float dy = offsetYPerMs * deltaTime;
 
@@ -114,14 +103,12 @@ public class Beam extends Projectile
 		}
 	}
 
-	public void stopGrowth()
-	{
+	public void stopGrowth() {
 		growing = false;
 	}
 
 	@Override
-	protected void obstacleHit(Obstacle o)
-	{
+	protected void obstacleHit(Obstacle o) {
 		if (wallHit == true)
 			return;
 
@@ -141,8 +128,7 @@ public class Beam extends Projectile
 	}
 
 	@Override
-	public void rotate(float radians)
-	{
+	public void rotate(float radians) {
 		super.rotate(radians);
 
 		final double direction = getDirection();
@@ -152,8 +138,7 @@ public class Beam extends Projectile
 	}
 
 	@Override
-	public void rotateAbout(float radians, float rotateX, float rotateY)
-	{
+	public void rotateAbout(float radians, float rotateX, float rotateY) {
 		super.rotateAbout(radians, rotateX, rotateY);
 
 		offsetXPerMs = ((float) Math.cos(getDirection()) * GROWTH_PER_MS) / 2;
@@ -161,8 +146,7 @@ public class Beam extends Projectile
 	}
 
 	@Override
-	public Beam copy()
-	{
+	public Beam copy() {
 		return new Beam(this);
 	}
 }

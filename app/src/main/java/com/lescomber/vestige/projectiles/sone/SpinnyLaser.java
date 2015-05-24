@@ -11,8 +11,7 @@ import com.lescomber.vestige.projectiles.glows.BeamGlow;
 import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.AIUnit;
 
-public class SpinnyLaser extends Projectile
-{
+public class SpinnyLaser extends Projectile {
 	private static final float HITBOX_WIDTH = 35;
 	private static final float HITBOX_HEIGHT = 8;
 	private static final float ROTATION_PER_MS = (float) Math.PI / 250;    // Two rotations per second
@@ -38,8 +37,7 @@ public class SpinnyLaser extends Projectile
 
 	private final HitGroup hitGroup;
 
-	public SpinnyLaser(float x, float y, float destX, float destY, AIUnit owner, int delayMS)
-	{
+	public SpinnyLaser(float x, float y, float destX, float destY, AIUnit owner, int delayMS) {
 		super(SpriteManager.doubleEnemyLaser, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
 
 		width = HITBOX_WIDTH;
@@ -67,8 +65,7 @@ public class SpinnyLaser extends Projectile
 		hitGroup = new HitGroup();
 	}
 
-	public SpinnyLaser(SpinnyLaser copyMe)
-	{
+	public SpinnyLaser(SpinnyLaser copyMe) {
 		super(copyMe);
 
 		owner = copyMe.owner;    // Not a copy. References the same owner
@@ -86,8 +83,7 @@ public class SpinnyLaser extends Projectile
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
 		// Note: hitGroup is not updated because we never want it to remove any units that have been added to it anyway
@@ -96,12 +92,10 @@ public class SpinnyLaser extends Projectile
 		if (!hasArrived)
 			rotate(ROTATION_PER_MS * deltaTime);
 
-		if (delayRemaining > 0)
-		{
+		if (delayRemaining > 0) {
 			delayRemaining -= deltaTime;
 
-			if (delayRemaining <= 0)
-			{
+			if (delayRemaining <= 0) {
 				// Turn on the damage
 				setDamage(BEAM_DAMAGE[OptionsScreen.difficulty]);
 				setHitGroup(hitGroup);
@@ -113,9 +107,7 @@ public class SpinnyLaser extends Projectile
 				headTwo.setVisible(isVisible());
 				setImage(new Sprite(SpriteManager.enemyLaserBody));
 			}
-		}
-		else
-		{
+		} else {
 			width += GROWTH_PER_MS * deltaTime;
 			getHitbox().scaleWidthTo(width);
 			getSprite().scaleWidthTo(width - (HEAD_VISIBLE_WIDTH * 2) + 1);
@@ -124,8 +116,7 @@ public class SpinnyLaser extends Projectile
 			headTwo.offset(headOffsetXPerMS * deltaTime, headOffsetYPerMS * deltaTime);
 
 			channelRemaining -= deltaTime;
-			if (channelRemaining <= 0)
-			{
+			if (channelRemaining <= 0) {
 				// Create two beams and set them on their way with the same HitGroup as this SpinnyLaser
 				final Beam beamOne = new Beam(getX(), getY(), getDirection(), getHitBundle().getDamage());
 				final Beam beamTwo = new Beam(getX(), getY(), getDirection() + (float) Math.PI, getHitBundle().getDamage());
@@ -151,8 +142,7 @@ public class SpinnyLaser extends Projectile
 	}
 
 	@Override
-	protected void destinationReached()
-	{
+	protected void destinationReached() {
 		super.destinationReached();
 
 		final float direction = getDirection();
@@ -174,8 +164,7 @@ public class SpinnyLaser extends Projectile
 	}
 
 	@Override
-	public void setVisible(boolean isVisible)
-	{
+	public void setVisible(boolean isVisible) {
 		super.setVisible(isVisible);
 
 		if (headOne != null)
@@ -185,8 +174,7 @@ public class SpinnyLaser extends Projectile
 	}
 
 	@Override
-	public void close()
-	{
+	public void close() {
 		super.close();
 
 		if (headOne != null)
@@ -196,8 +184,7 @@ public class SpinnyLaser extends Projectile
 	}
 
 	@Override
-	public SpinnyLaser copy()
-	{
+	public SpinnyLaser copy() {
 		return new SpinnyLaser(this);
 	}
 }

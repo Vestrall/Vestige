@@ -14,12 +14,10 @@ import com.lescomber.vestige.statuseffects.StatPack;
 
 import java.util.ArrayList;
 
-public class Caster extends AIRailUnit
-{
+public class Caster extends AIRailUnit {
 	private static final ArrayList<AIAbility> ABILITY_POOL = new ArrayList<AIAbility>(5);
 
-	public Caster()
-	{
+	public Caster() {
 		super(60, 40, -23, 30);
 
 		// Init stats
@@ -70,12 +68,12 @@ public class Caster extends AIRailUnit
 		// Set firing offsets
 		setFiringOffsets(41, 1.5f);
 
-		// Note: ABILITY_POOL is rebuilt every time a new Caster is created in order to make sure the abilities are appropriately
-		//scaled for the current difficulty. ABILITY_POOL is not rebuilt when copy() is used to create a new Caster
+		// Note: ABILITY_POOL is rebuilt every time a new Caster is created in order to make sure the abilities are appropriately scaled for the
+		//current difficulty. ABILITY_POOL is not rebuilt when copy() is used to create a new Caster
 		ABILITY_POOL.clear();
 
-		final Projectile enemyShot = new Projectile(SpriteManager.enemyProjectile, 8,
-				Projectile.ENEMY_PROJECTILE_WIDTH, Projectile.ENEMY_PROJECTILE_HEIGHT);
+		final Projectile enemyShot = new Projectile(SpriteManager.enemyProjectile, 8, Projectile.ENEMY_PROJECTILE_WIDTH, Projectile
+				.ENEMY_PROJECTILE_HEIGHT);
 		enemyShot.setUnitHitSound(AudioManager.enemyProjectileHit);
 		enemyShot.setGlow(SpriteManager.redGlow);
 		final AIShooter enemyShotShooter = new AIShooter(this, enemyShot, 3);
@@ -102,23 +100,22 @@ public class Caster extends AIRailUnit
 		selectRandomAbilities(2);
 	}
 
-	public Caster(float healAmount)
-	{
+	public Caster(float healAmount) {
 		this();
 
 		setPickUp(new HealPickUp(healAmount));
 	}
 
-	public Caster(Caster copyMe)
-	{
+	public Caster(Caster copyMe) {
 		super(copyMe);
 
 		selectRandomAbilities(2);
 	}
 
-	// Randomly selects abilityCount abilities to keep from its current list of abilities and discards any other abilities
-	public void selectRandomAbilities(int abilityCount)
-	{
+	/**
+	 * Randomly selects abilityCount abilities to keep from its current list of abilities and discards any other abilities
+	 */
+	public void selectRandomAbilities(int abilityCount) {
 		if (abilityCount <= 0 || abilityCount > ABILITY_POOL.size())
 			return;
 
@@ -127,16 +124,14 @@ public class Caster extends AIRailUnit
 
 		// Randomly choose abilityCount indices
 		final ArrayList<Integer> indices = new ArrayList<Integer>(abilityCount);
-		while (indices.size() < abilityCount)
-		{
+		while (indices.size() < abilityCount) {
 			final int newIndex = Util.rand.nextInt(ABILITY_POOL.size());
 			if (!indices.contains(newIndex))
 				indices.add(newIndex);
 		}
 
 		// Retrieve ABILITY_POOL abilities based on the randomly chosen indices
-		for (final int i : indices)
-		{
+		for (final int i : indices) {
 			final AIAbility aia = ABILITY_POOL.get(i).copy();
 			aia.setOwner(this);
 			aia.triggerCooldown();    // Used to trigger cooldown randomness so Casters don't sync up on their first attacks
@@ -145,8 +140,7 @@ public class Caster extends AIRailUnit
 	}
 
 	@Override
-	public Caster copy()
-	{
+	public Caster copy() {
 		return new Caster(this);
 	}
 }

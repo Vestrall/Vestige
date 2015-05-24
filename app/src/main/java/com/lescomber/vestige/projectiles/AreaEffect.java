@@ -16,8 +16,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AreaEffect extends Entity
-{
+public class AreaEffect extends Entity {
 	private static final int DEFAULT_TICK_FREQUENCY = 500;
 
 	private HitGroup group;
@@ -36,8 +35,7 @@ public class AreaEffect extends Entity
 
 	private boolean isFinished;
 
-	public AreaEffect(float dps, double durationSeconds)
-	{
+	public AreaEffect(float dps, double durationSeconds) {
 		super();
 
 		group = null;
@@ -58,24 +56,25 @@ public class AreaEffect extends Entity
 		areaEffectsBuffer = new LinkedList<AreaEffect>();
 	}
 
-	// Creates a rectangular AreaEffect. Must specify animation separately
-	public AreaEffect(float width, float height, float dps, double durationSeconds)
-	{
+	/**
+	 * Creates a rectangular AreaEffect. Must specify animation separately
+	 */
+	public AreaEffect(float width, float height, float dps, double durationSeconds) {
 		this(dps, durationSeconds);
 
 		createRectangleHitbox(width, height);
 	}
 
-	// Creates a circular AreaEffect. Must specify animation separately
-	public AreaEffect(float radius, float dps, double durationSeconds)
-	{
+	/**
+	 * Creates a circular AreaEffect. Must specify animation separately
+	 */
+	public AreaEffect(float radius, float dps, double durationSeconds) {
 		this(dps, durationSeconds);
 
 		createCircleHitbox(radius);
 	}
 
-	public AreaEffect(AreaEffect copyMe)
-	{
+	public AreaEffect(AreaEffect copyMe) {
 		super(copyMe);
 
 		group = copyMe.group;
@@ -96,33 +95,26 @@ public class AreaEffect extends Entity
 		areaEffectsBuffer = new LinkedList<AreaEffect>();
 	}
 
-	public void createRotatedRectHitbox(float width, float height, float direction)
-	{
+	public void createRotatedRectHitbox(float width, float height, float direction) {
 		hitbox = new Hitbox(new RotatedRect(getX(), getY(), width, height, direction));
 	}
 
-	public void createConeHitbox(float radius, float direction, float width)
-	{
+	public void createConeHitbox(float radius, float direction, float width) {
 		hitbox = new Hitbox(new Cone(getX(), getY(), radius, direction, width));
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
 		tickCountdown -= deltaTime;
-		while (tickCountdown <= 0 && ticksRemaining > 0)
-		{
+		while (tickCountdown <= 0 && ticksRemaining > 0) {
 			tickCountdown += tickFrequency;
 
 			// Check hitboxes and hit things
-			for (final Integer i : targets)
-			{
-				for (final Unit u : GameScreen.units[i])
-				{
-					if (overlaps(u))
-					{
+			for (final Integer i : targets) {
+				for (final Unit u : GameScreen.units[i]) {
+					if (overlaps(u)) {
 						if (group != null)
 							groupHit(u, hitBundle, tickFrequency - deltaTime);
 						else
@@ -138,19 +130,16 @@ public class AreaEffect extends Entity
 		}
 	}
 
-	protected void groupHit(Unit unit, HitBundle bundle, int suggestedCooldown)
-	{
+	protected void groupHit(Unit unit, HitBundle bundle, int suggestedCooldown) {
 		group.hit(unit, bundle, suggestedCooldown);
 	}
 
-	protected void unitHit(Unit unit, HitBundle bundle)
-	{
+	protected void unitHit(Unit unit, HitBundle bundle) {
 		unit.hit(bundle);
 	}
 
 	@Override
-	protected void animationFinished(int animID)
-	{
+	protected void animationFinished(int animID) {
 		if (animID == ignitionAnimID)
 			playAnimation(this.animID);
 
@@ -159,16 +148,18 @@ public class AreaEffect extends Entity
 			isFinished = true;
 	}
 
-	// Adds anim, stores its ID in ignitionAnimID, and sets it as the current image
-	public void setIgnitionAnim(SpriteAnimation anim)
-	{
+	/**
+	 * Adds anim, stores its ID in ignitionAnimID, and sets it as the current image
+	 */
+	public void setIgnitionAnim(SpriteAnimation anim) {
 		ignitionAnimID = setImage(anim);
 	}
 
-	// Adds anim, stores its ID in animID and, if ignitionAnimID does not exist, sets anim as the current animation (OTOH, if
-	//there is an ignition animation already set, we let animID play once ignitionAnimID completes)
-	public void setAreaAnimation(SpriteAnimation anim)
-	{
+	/**
+	 * Adds anim, stores its ID in animID and, if ignitionAnimID does not exist, sets anim as the current animation (OTOH, if there is an ignition
+	 * animation already set, we let animID play once ignitionAnimID completes)
+	 */
+	public void setAreaAnimation(SpriteAnimation anim) {
 		anim.setSequenceLimit(-1);
 
 		if (ignitionAnimID >= 0)
@@ -178,16 +169,14 @@ public class AreaEffect extends Entity
 	}
 
 	@Override
-	public int setImage(Image image)
-	{
+	public int setImage(Image image) {
 		animID = super.setImage(image);
 
 		return animID;
 	}
 
 	@Override
-	public boolean playAnimation(int index)
-	{
+	public boolean playAnimation(int index) {
 		final boolean ret = super.playAnimation(index);
 
 		if (ret)
@@ -196,28 +185,23 @@ public class AreaEffect extends Entity
 		return ret;
 	}
 
-	public void setHitGroup(HitGroup group)
-	{
+	public void setHitGroup(HitGroup group) {
 		this.group = group;
 	}
 
-	public HitGroup getHitGroup()
-	{
+	public HitGroup getHitGroup() {
 		return group;
 	}
 
-	public void setDamagePerSecond(float dps)
-	{
+	public void setDamagePerSecond(float dps) {
 		hitBundle.setDamage(dps / (1000f / tickFrequency));
 	}
 
-	public void setDamagePerTick(float damage)
-	{
+	public void setDamagePerTick(float damage) {
 		hitBundle.setDamage(damage);
 	}
 
-	public void setTickFrequency(int tickFrequency)
-	{
+	public void setTickFrequency(int tickFrequency) {
 		final float dps = hitBundle.getDamage() * (1000f / this.tickFrequency);
 		final int timeRemaining = tickCountdown + ((ticksRemaining - 1) * this.tickFrequency);
 		this.tickFrequency = tickFrequency;
@@ -225,73 +209,61 @@ public class AreaEffect extends Entity
 		setDamagePerSecond(dps);
 	}
 
-	public void queueAreaEffect(AreaEffect ae)
-	{
+	public void queueAreaEffect(AreaEffect ae) {
 		areaEffectsBuffer.add(ae);
 	}
 
-	public List<AreaEffect> getAreaEffectQueue()
-	{
+	public List<AreaEffect> getAreaEffectQueue() {
 		areaEffectsReady.clear();
 		areaEffectsReady.addAll(areaEffectsBuffer);
 		areaEffectsBuffer.clear();
 		return areaEffectsReady;
 	}
 
-	protected void die()
-	{
+	protected void die() {
 		ticksRemaining = 0;
 		close();
 	}
 
-	public void addStatusEffect(StatusEffect effect)
-	{
+	public void addStatusEffect(StatusEffect effect) {
 		hitBundle.addStatusEffect(effect);
 	}
 
-	public void setDisplacementEffect(DisplacementEffect de)
-	{
+	public void setDisplacementEffect(DisplacementEffect de) {
 		hitBundle.setDisplacementEffect(de);
 	}
 
-	public void setHitAnimation(SpriteAnimation anim)
-	{
+	public void setHitAnimation(SpriteAnimation anim) {
 		hitBundle.setHitAnimation(anim);
 	}
 
-	public void setTargets(int targetFaction)
-	{
+	public void setTargets(int targetFaction) {
 		targets.clear();
 		targets.add(targetFaction);
 	}
 
-	public void addTargets(int targetFaction)
-	{
-		if (!targets.contains(targetFaction)) targets.add(targetFaction);
+	public void addTargets(int targetFaction) {
+		if (!targets.contains(targetFaction))
+			targets.add(targetFaction);
 	}
 
-	public void setAbsorbSound(boolean absorbSound)
-	{
+	public void setAbsorbSound(boolean absorbSound) {
 		hitBundle.setAbsorbSound(absorbSound);
 	}
 
-	public boolean isFinished()
-	{
+	public boolean isFinished() {
 		return isFinished;
 	}
 
-	public float getDPS()
-	{
+	public float getDPS() {
 		return (1000f / tickFrequency) * hitBundle.getDamage();
 	}
 
-	public List<Integer> getTargets()
-	{
+	public List<Integer> getTargets() {
 		return targets;
 	}
 
-	public AreaEffect copy()
-	{
+	public AreaEffect copy() {
 		return new AreaEffect(this);
 	}
 }

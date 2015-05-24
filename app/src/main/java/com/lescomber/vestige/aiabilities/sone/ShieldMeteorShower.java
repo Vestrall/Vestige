@@ -15,8 +15,7 @@ import com.lescomber.vestige.units.AIUnit;
 
 import java.util.LinkedList;
 
-public class ShieldMeteorShower extends AIChanneledAbility
-{
+public class ShieldMeteorShower extends AIChanneledAbility {
 	private static final int[] SPAWN_INTERVAL = new int[] { 1500, 1150, 800 };
 	public static final float[] SHIELD_STRENGTH = new float[] { 75, 85, 95 };
 	private static final int SPAWN_ROWS = 4;
@@ -30,8 +29,7 @@ public class ShieldMeteorShower extends AIChanneledAbility
 
 	private int countdown;
 
-	public ShieldMeteorShower(AIUnit owner, double cooldownSeconds)
-	{
+	public ShieldMeteorShower(AIUnit owner, double cooldownSeconds) {
 		super(owner, 3600, cooldownSeconds);
 
 		final StatPack sp = new StatPack();
@@ -45,8 +43,7 @@ public class ShieldMeteorShower extends AIChanneledAbility
 		spawnPoints = new LinkedList<Point>();
 	}
 
-	public ShieldMeteorShower(ShieldMeteorShower copyMe)
-	{
+	public ShieldMeteorShower(ShieldMeteorShower copyMe) {
 		super(copyMe);
 
 		shieldEffect = copyMe.shieldEffect.copy();
@@ -57,8 +54,7 @@ public class ShieldMeteorShower extends AIChanneledAbility
 	}
 
 	@Override
-	public void activate()
-	{
+	public void activate() {
 		super.activate();
 
 		final float halfXGap = (Screen.WIDTH / SPAWN_COLS) / 2;
@@ -67,15 +63,13 @@ public class ShieldMeteorShower extends AIChanneledAbility
 
 		// Build tempArray with the list of possible spawnPoints (in order from top left to bottom right)
 		final LinkedList<Point> tempArray = new LinkedList<Point>();
-		for (int i = 0; i < SPAWN_ROWS; i++)
-		{
+		for (int i = 0; i < SPAWN_ROWS; i++) {
 			for (int j = 0; j < SPAWN_COLS; j++)
 				tempArray.add(new Point((j * 2 + 1) * halfXGap, (i * 2 + 1) * halfYGap));
 		}
 
 		// Take elements from tempArray (in random order) and add them to spawnPoints
-		while (!tempArray.isEmpty())
-		{
+		while (!tempArray.isEmpty()) {
 			spawnPoints.add(tempArray.remove(Util.rand.nextInt(tempArray.size())));
 		}
 
@@ -85,20 +79,18 @@ public class ShieldMeteorShower extends AIChanneledAbility
 	}
 
 	@Override
-	protected void channeling(int deltaTime)
-	{
+	protected void channeling(int deltaTime) {
 		countdown -= deltaTime;
 
-		while (countdown <= 0)
-		{
+		while (countdown <= 0) {
 			countdown += SPAWN_INTERVAL[OptionsScreen.difficulty];
 
 			// Remove next spawnPoint from the start of the list and return it to the back of the list
 			final Point spawnPoint = spawnPoints.removeFirst();
 			spawnPoints.add(spawnPoint);
 
-			owner.queueProjectile(new Meteor(Screen.WIDTH / SPAWN_COLS, Screen.HEIGHT / SPAWN_ROWS, spawnPoint,
-					DPS[OptionsScreen.difficulty], FIRE_DURATION[OptionsScreen.difficulty]));
+			owner.queueProjectile(new Meteor(Screen.WIDTH / SPAWN_COLS, Screen.HEIGHT / SPAWN_ROWS, spawnPoint, DPS[OptionsScreen.difficulty],
+					FIRE_DURATION[OptionsScreen.difficulty]));
 		}
 
 		if (owner.getShields() <= 0)
@@ -106,15 +98,13 @@ public class ShieldMeteorShower extends AIChanneledAbility
 	}
 
 	@Override
-	protected void channelFinished()
-	{
+	protected void channelFinished() {
 		if (owner.getShields() > 0)
 			owner.hit(new HitBundle(owner.getShields()));
 	}
 
 	@Override
-	public ShieldMeteorShower copy()
-	{
+	public ShieldMeteorShower copy() {
 		return new ShieldMeteorShower(this);
 	}
 }

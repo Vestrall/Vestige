@@ -9,10 +9,8 @@ import com.lescomber.vestige.geometry.Rectangle;
 import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.Boss;
 
-public class OneEightBoss extends Boss
-{
-	public OneEightBoss()
-	{
+public class OneEightBoss extends Boss {
+	public OneEightBoss() {
 		super(450 + (200 * OptionsScreen.difficulty), 100 + (15 * OptionsScreen.difficulty));
 
 		final TimeBombScatter tbs = new TimeBombScatter(this, 6);

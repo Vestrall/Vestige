@@ -10,8 +10,7 @@ import com.lescomber.vestige.screens.OptionsScreen;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class AudioManager
-{
+public class AudioManager {
 	private static final String audioDir = "Audio/";
 
 	private static AssetManager assets;
@@ -45,8 +44,7 @@ public class AudioManager
 	// Music effects (looping sound effects)
 	public static MusicEffect fireLoop, movingBeamLoop;
 
-	public static void init(AndroidGameActivity activity)
-	{
+	public static void init(AndroidGameActivity activity) {
 		activity.setVolumeControlStream(android.media.AudioManager.STREAM_MUSIC);
 		assets = activity.getAssets();
 		soundPool = new SoundPool(20, android.media.AudioManager.STREAM_MUSIC, 0);
@@ -59,8 +57,7 @@ public class AudioManager
 		movingBeamLoop = null;
 	}
 
-	public static void initSoundEffects()
-	{
+	public static void initSoundEffects() {
 		//===================
 		// Menu sound effects
 		//===================
@@ -119,30 +116,24 @@ public class AudioManager
 		allMusicEffects.add(movingBeamLoop);
 	}
 
-	public static void pause(boolean isFinishing)
-	{
-		if (music != null)
-		{
+	public static void pause(boolean isFinishing) {
+		if (music != null) {
 			if (isFinishing)
 				music.dispose();
 			else
 				music.pause();
 		}
 
-		if (isFinishing)
-		{
+		if (isFinishing) {
 			for (final MusicEffect me : allMusicEffects)
 				me.dispose();
-		}
-		else
-		{
+		} else {
 			for (final MusicEffect me : allMusicEffects)
 				me.pause();
 		}
 	}
 
-	public static void resume()
-	{
+	public static void resume() {
 		if (music != null)
 			music.resume();
 
@@ -150,14 +141,12 @@ public class AudioManager
 			me.resume();
 	}
 
-	public static void musicVolumeChanged()
-	{
+	public static void musicVolumeChanged() {
 		if (music != null)
 			music.setVolume(OptionsScreen.musicVolume);
 	}
 
-	public static void sfxVolumeChanged()
-	{
+	public static void sfxVolumeChanged() {
 		for (final SoundEffect se : allSoundEffects)
 			se.updateVolume();
 
@@ -165,10 +154,8 @@ public class AudioManager
 			me.updateVolume();
 	}
 
-	public static void playMusic(String filename)
-	{
-		if (!queueing)
-		{
+	public static void playMusic(String filename) {
+		if (!queueing) {
 			// Case: song is already playing
 			if (music != null && music.isPlaying(filename))
 				return;
@@ -176,8 +163,7 @@ public class AudioManager
 			if (music != null)
 				music.dispose();
 
-			if (filename == null)
-			{
+			if (filename == null) {
 				music = null;
 				return;
 			}
@@ -187,15 +173,12 @@ public class AudioManager
 				music.setVolume(OptionsScreen.musicVolume);
 
 			music.play();
-		}
-		else
-		{
+		} else {
 			if (queuedMusic != null)
 				queuedMusic.dispose();
 
 			// Case: filename is null or this song is already playing
-			if (filename == null || (music != null && music.isPlaying(filename)))
-			{
+			if (filename == null || (music != null && music.isPlaying(filename))) {
 				queuedMusic = null;
 				return;
 			}
@@ -204,15 +187,12 @@ public class AudioManager
 		}
 	}
 
-	public static void queueMode()
-	{
+	public static void queueMode() {
 		queueing = true;
 	}
 
-	public static void activateQueue()
-	{
-		if (queuedMusic != null)
-		{
+	public static void activateQueue() {
+		if (queuedMusic != null) {
 			if (music != null)
 				music.dispose();
 
@@ -229,74 +209,60 @@ public class AudioManager
 			me.stop();
 	}
 
-	public static void clearQueue()
-	{
+	public static void clearQueue() {
 		queueing = false;
 
-		if (queuedMusic != null)
-		{
+		if (queuedMusic != null) {
 			queuedMusic.dispose();
 			queuedMusic = null;
 		}
 	}
 
-	public static void pauseMusicEffects()
-	{
+	public static void pauseMusicEffects() {
 		for (final MusicEffect me : allMusicEffects)
 			me.pause();
 	}
 
-	public static void resumeMusicEffects()
-	{
+	public static void resumeMusicEffects() {
 		for (final MusicEffect me : allMusicEffects)
 			me.resume();
 	}
 
-	protected static Music createMusic(String filename)
-	{
-		try
-		{
+	protected static Music createMusic(String filename) {
+		try {
 			final AssetFileDescriptor assetDescriptor = assets.openFd(audioDir + filename + AUDIO_EXTENSION);
 			return new Music(assetDescriptor, filename);
-		} catch (final IOException e)
-		{
+		} catch (final IOException e) {
 			throw new RuntimeException("Couldn't load music '" + filename + "'");
 		}
 	}
 
-	private static SoundEffect createSound(String filename, double volume)
-	{
-		try
-		{
+	private static SoundEffect createSound(String filename, double volume) {
+		try {
 			final AssetFileDescriptor assetDescriptor = assets.openFd(audioDir + filename + AUDIO_EXTENSION);
 			final int id = soundPool.load(assetDescriptor, 0);
 			return new SoundEffect(id, volume);
-		} catch (final IOException e)
-		{
+		} catch (final IOException e) {
 			throw new RuntimeException("Couldn't load sound '" + filename + "'");
 		}
 	}
 
-	public static class SoundEffect
-	{
+	public static class SoundEffect {
 		private final int id;
 		private final float baseVolume;
 		private float volume;
 
-		private SoundEffect(int id, double baseVolume)
-		{
+		private SoundEffect(int id, double baseVolume) {
 			this.id = id;
 			this.baseVolume = (float) baseVolume;
 			updateVolume();
 		}
 
-		private void updateVolume()
-		{
+		private void updateVolume() {
 			volume = OptionsScreen.sfxVolume * baseVolume;
 		}
 
-		public void play()
-		{
+		public void play() {
 			soundPool.play(id, volume, volume, 0, 0, 1);
 		}
 	}

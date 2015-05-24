@@ -7,12 +7,10 @@ import com.lescomber.vestige.statuseffects.StatPack;
 import com.lescomber.vestige.statuseffects.StatusEffect;
 import com.lescomber.vestige.units.Player;
 
-public class SOneSwipe extends ProjectileShooter
-{
+public class SOneSwipe extends ProjectileShooter {
 	private static final float DAMAGE = 12;
 
-	public SOneSwipe(Player player)
-	{
+	public SOneSwipe(Player player) {
 		super(player);
 
 		final Projectile shot = new Projectile(SpriteManager.sOneSwipe, DAMAGE);

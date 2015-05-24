@@ -7,8 +7,8 @@ import com.lescomber.vestige.R;
 import com.lescomber.vestige.audio.AudioManager;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.AndroidGame;
-import com.lescomber.vestige.framework.Input.TouchEvent;
 import com.lescomber.vestige.framework.Screen;
+import com.lescomber.vestige.framework.TouchHandler.TouchEvent;
 import com.lescomber.vestige.graphics.Text;
 import com.lescomber.vestige.graphics.TextStyle;
 import com.lescomber.vestige.widgets.Button;
@@ -18,8 +18,7 @@ import com.lescomber.vestige.widgets.WidgetListener;
 
 import java.util.List;
 
-public class GameOverScreen extends Screen implements WidgetListener
-{
+public class GameOverScreen extends Screen implements WidgetListener {
 	private static final int FADE_IN_STATE = 0;
 	private static final int RISING_STATE = 1;
 	private static final int FINAL_STATE = 2;
@@ -39,8 +38,7 @@ public class GameOverScreen extends Screen implements WidgetListener
 	private final int stageNum;
 	private final int levelNum;
 
-	public GameOverScreen(AndroidGame game, int stageNum, int levelNum)
-	{
+	public GameOverScreen(AndroidGame game, int stageNum, int levelNum) {
 		super(game);
 
 		// Note: no background is set here since the background is black anyway
@@ -52,12 +50,8 @@ public class GameOverScreen extends Screen implements WidgetListener
 		titleAlpha = 0;
 
 		final Resources res = AndroidGame.res;
-		//final TextStyle headingStyle = new TextStyle("Tommaso.otf", 83, 87, 233, 255, titleAlpha);
-		//headingStyle.setSpacing(2.5f);
 		final TextStyle headingStyle = TextStyle.headingStyle();
 		final TextStyle buttonStyle = TextStyle.bodyStyleCyan();
-		//final TextStyle buttonStyle = new TextStyle("BLANCH_CAPS.otf", 57, 87, 233, 255);
-		//buttonStyle.setSpacing(2.5f);
 
 		final ButtonGroup buttonGroup = new ButtonGroup();
 		titleText = new Text(headingStyle, res.getString(R.string.gameOver), Screen.MIDX, Screen.MIDY);
@@ -74,34 +68,25 @@ public class GameOverScreen extends Screen implements WidgetListener
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
-		// Retrieve touchEvents first so that they will be discarded if we have not yet reached FINAL_STATE
-		//List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
-
+	public void update(int deltaTime) {
 		if (state == FADE_IN_STATE)
 			updateFadeIn(deltaTime);
 		else if (state == RISING_STATE)
 			updateRising(deltaTime);
 		else if (state == FINAL_STATE)
 			updateFinal(deltaTime);
-		else if (state == RETRY_STATE)
-		{
+		else if (state == RETRY_STATE) {
 			prepScreenChange();
 			game.setScreen(new MapLoadingScreen(game, stageNum, levelNum));
-		}
-		else if (state == MAIN_MENU_STATE)
-		{
+		} else if (state == MAIN_MENU_STATE) {
 			prepScreenChange();
 			game.setScreen(new MainMenuScreen(game, false));
 		}
 	}
 
-	private void updateFadeIn(int deltaTime)
-	{
+	private void updateFadeIn(int deltaTime) {
 		titleAlpha += deltaTime * ALPHA_PER_MS;
-		if (titleAlpha >= 1)
-		{
+		if (titleAlpha >= 1) {
 			titleAlpha = 1;
 			state = RISING_STATE;
 		}
@@ -109,11 +94,9 @@ public class GameOverScreen extends Screen implements WidgetListener
 		titleText.setAlpha(titleAlpha);
 	}
 
-	private void updateRising(int deltaTime)
-	{
+	private void updateRising(int deltaTime) {
 		float newY = titleText.getY() + (deltaTime * Y_PER_MS);
-		if (newY <= FINAL_TITLE_Y)
-		{
+		if (newY <= FINAL_TITLE_Y) {
 			newY = FINAL_TITLE_Y;
 			state = FINAL_STATE;
 
@@ -121,18 +104,16 @@ public class GameOverScreen extends Screen implements WidgetListener
 			mainMenuButton.setVisible(true);
 
 			// Retrieve and discard touchEvents that have accumulated during fade-in/rising animations
-			game.getInput().getTouchEvents();
+			game.getTouchEvents();
 		}
 
 		titleText.offsetTo(Screen.MIDX, newY);
 	}
 
-	private void updateFinal(int deltaTime)
-	{
-		final List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
+	private void updateFinal(int deltaTime) {
+		final List<TouchEvent> touchEvents = game.getTouchEvents();
 
-		for (final TouchEvent event : touchEvents)
-		{
+		for (final TouchEvent event : touchEvents) {
 			retryButton.handleEvent(event);
 			mainMenuButton.handleEvent(event);
 		}
@@ -142,40 +123,32 @@ public class GameOverScreen extends Screen implements WidgetListener
 	}
 
 	@Override
-	public void widgetEvent(WidgetEvent we)
-	{
+	public void widgetEvent(WidgetEvent we) {
 		final Object source = we.getSource();
 
-		if (source == retryButton)
-		{
+		if (source == retryButton) {
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
 				state = RETRY_STATE;
-		}
-		else if (source == mainMenuButton)
-		{
+		} else if (source == mainMenuButton) {
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
 				state = MAIN_MENU_STATE;
 		}
 	}
 
 	@Override
-	public void pause()
-	{
+	public void pause() {
 	}
 
 	@Override
-	public void resume()
-	{
+	public void resume() {
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 	}
 
 	@Override
-	public void backButton()
-	{
+	public void backButton() {
 		if (!Screen.isScreenChanging())
 			mainMenuButton.click();
 	}

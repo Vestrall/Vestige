@@ -6,12 +6,10 @@ import com.lescomber.vestige.aiabilities.sone.RoamingExploderShooter;
 import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.Boss;
 
-public class OneTenBoss extends Boss
-{
+public class OneTenBoss extends Boss {
 	private final MultiCreepingFireShooter fireShooter;
 
-	public OneTenBoss()
-	{
+	public OneTenBoss() {
 		super(700 + (200 * OptionsScreen.difficulty), 100 + (20 * OptionsScreen.difficulty));
 
 		fireShooter = new MultiCreepingFireShooter(this, 9.5);
@@ -30,8 +28,7 @@ public class OneTenBoss extends Boss
 		addAbility(portalSpawner);
 	}
 
-	public void cooldownSync()
-	{
+	public void cooldownSync() {
 		fireShooter.setCooldown(5);
 	}
 }

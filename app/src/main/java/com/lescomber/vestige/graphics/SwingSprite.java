@@ -4,15 +4,13 @@ import com.lescomber.vestige.crossover.SpriteManager.SpriteInfo;
 import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
 import com.lescomber.vestige.geometry.Point;
 
-public class SwingSprite extends Sprite
-{
+public class SwingSprite extends Sprite {
 	private float swingX;
 	private float swingY;
 	private final float offsetX;
 	private final float offsetY;
 
-	public SwingSprite(SpriteTemplate template, float x, float y, float offsetX, float offsetY, boolean isVisible)
-	{
+	public SwingSprite(SpriteTemplate template, float x, float y, float offsetX, float offsetY, boolean isVisible) {
 		super(template, x - offsetX, y - offsetY, isVisible);
 
 		swingX = x;
@@ -21,13 +19,11 @@ public class SwingSprite extends Sprite
 		this.offsetY = offsetY;
 	}
 
-	public SwingSprite(SpriteTemplate template, float x, float y, float offsetX, float offsetY)
-	{
+	public SwingSprite(SpriteTemplate template, float x, float y, float offsetX, float offsetY) {
 		this(template, x, y, offsetX, offsetY, false);
 	}
 
-	public SwingSprite(SpriteInfo info, float offsetX, float offsetY)
-	{
+	public SwingSprite(SpriteInfo info, float offsetX, float offsetY) {
 		super(info);
 
 		this.offsetX = offsetX;
@@ -38,8 +34,7 @@ public class SwingSprite extends Sprite
 		swingY = p.y;
 	}
 
-	public SwingSprite(SwingSprite copyMe)
-	{
+	public SwingSprite(SwingSprite copyMe) {
 		super(copyMe);
 
 		swingX = copyMe.swingX;
@@ -49,22 +44,19 @@ public class SwingSprite extends Sprite
 	}
 
 	@Override
-	public void offset(float dx, float dy)
-	{
+	public void offset(float dx, float dy) {
 		swingX += dx;
 		swingY += dy;
 		super.offset(dx, dy);
 	}
 
 	@Override
-	public void offsetTo(float x, float y)
-	{
+	public void offsetTo(float x, float y) {
 		offset(x - swingX, y - swingY);
 	}
 
 	@Override
-	public void rotate(float radians)
-	{
+	public void rotate(float radians) {
 		// Rotate the Sprite's center point about our swing point
 		final Point center = new Point(getX(), getY());
 		Point.rotate(center, radians, swingX, swingY);
@@ -77,8 +69,7 @@ public class SwingSprite extends Sprite
 	}
 
 	@Override
-	public void rotateAbout(float radians, float rotateX, float rotateY)
-	{
+	public void rotateAbout(float radians, float rotateX, float rotateY) {
 		final Point swingPoint = new Point(swingX, swingY);
 		Point.rotate(swingPoint, radians, rotateX, rotateY);
 		offsetTo(swingPoint);
@@ -86,8 +77,7 @@ public class SwingSprite extends Sprite
 	}
 
 	@Override
-	public void scale(double widthRatio, double heightRatio)
-	{
+	public void scale(double widthRatio, double heightRatio) {
 		final float halfWidthDif = (float) ((widthRatio - 1.0) * getWidth()) / 2;
 		final float halfHeightDif = (float) ((heightRatio - 1.0) * getHeight()) / 2;
 
@@ -104,13 +94,11 @@ public class SwingSprite extends Sprite
 		super.offset(xOff, yOff);
 	}
 
-	public float getSwingX()
-	{
+	public float getSwingX() {
 		return swingX;
 	}
 
-	public float getSwingY()
-	{
+	public float getSwingY() {
 		return swingY;
 	}
 }

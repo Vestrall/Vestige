@@ -15,19 +15,17 @@ import com.lescomber.vestige.graphics.Swapper;
 
 import java.util.ArrayList;
 
-public class Entity
-{
-	private float imageOffsetX;        // X offset from center of hitbox to center of images/animations
+public class Entity {
+	private float imageOffsetX;     // X offset from center of hitbox to center of images/animations
 	private float imageOffsetY;        // Y offset from center of hitbox to center of images/animations
 	private ArrayList<SpriteAnimation> animations;    // Store of all animations associated with this Entity
 	private int activeAnimIndex;    // Current animation representing this Entity's main image (e.g. character sprite)
 	private Image image;            // Current main image (e.g. character sprite)
-	private boolean isVisible;        // Entity visibility (whether or not it is present in SpriteManager list)
+	private boolean isVisible;      // Entity visibility (whether or not it is present in SpriteManager list)
 
 	protected Hitbox hitbox;        // Entity's hitbox
 
-	public Entity()
-	{
+	public Entity() {
 		imageOffsetX = 0;
 		imageOffsetY = 0;
 		animations = null;
@@ -38,13 +36,11 @@ public class Entity
 		hitbox = new Hitbox();
 	}
 
-	public Entity(Entity copyMe)
-	{
+	public Entity(Entity copyMe) {
 		imageOffsetX = copyMe.imageOffsetX;
 		imageOffsetY = copyMe.imageOffsetY;
 		animations = null;
-		if (copyMe.animations != null)
-		{
+		if (copyMe.animations != null) {
 			animations = new ArrayList<SpriteAnimation>(copyMe.animations.size());
 			for (final SpriteAnimation gsa : copyMe.animations)
 				animations.add(gsa.copy());
@@ -59,30 +55,25 @@ public class Entity
 		isVisible = copyMe.isVisible;
 	}
 
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		// Update active Animation (if any)
 		if (activeAnimIndex >= 0 && animations.get(activeAnimIndex).update(deltaTime))
 			animationFinished(activeAnimIndex);
 	}
 
-	public boolean overlaps(Entity other)
-	{
+	public boolean overlaps(Entity other) {
 		return hitbox.overlaps(other.hitbox);
 	}
 
-	public boolean overlaps(Hitbox hitbox)
-	{
+	public boolean overlaps(Hitbox hitbox) {
 		return this.hitbox.overlaps(hitbox);
 	}
 
-	public boolean overlaps(Shape shape)
-	{
+	public boolean overlaps(Shape shape) {
 		return hitbox.overlaps(shape);
 	}
 
-	public void offset(float dx, float dy)
-	{
+	public void offset(float dx, float dy) {
 		// Offset current image. Note: non-current animations are not offset and must be updated when they are played
 		if (image != null)
 			image.offset(dx, dy);
@@ -94,20 +85,17 @@ public class Entity
 		setLayerHeight(Math.round(getY()));
 	}
 
-	public void offsetTo(float x, float y)
-	{
+	public void offsetTo(float x, float y) {
 		final float dx = x - getX();
 		final float dy = y - getY();
 		offset(dx, dy);
 	}
 
-	public void offsetTo(Point p)
-	{
+	public void offsetTo(Point p) {
 		offsetTo(p.x, p.y);
 	}
 
-	public void rotate(float radians)
-	{
+	public void rotate(float radians) {
 		// Rotate hitbox
 		hitbox.rotate(radians);
 
@@ -116,40 +104,36 @@ public class Entity
 			image.rotate(radians);
 	}
 
-	public void rotateTo(float radians)
-	{
+	public void rotateTo(float radians) {
 		rotate(Angle.normalizeRadians(radians - getDirection()));
 	}
 
-	public void rotateAbout(float radians, float rotateX, float rotateY)
-	{
+	public void rotateAbout(float radians, float rotateX, float rotateY) {
 		hitbox.rotateAbout(radians, rotateX, rotateY);
 
 		if (image != null)
 			image.rotateAbout(radians, rotateX, rotateY);
 	}
 
-	public void rotateAbout(float radians, Point rotationPoint)
-	{
+	public void rotateAbout(float radians, Point rotationPoint) {
 		rotateAbout(radians, rotationPoint.x, rotationPoint.y);
 	}
 
-	// Ratios are relative to current hitbox/image/animation sizes (not absolute or original size)
-	public void scale(double widthRatio, double heightRatio)
-	{
+	/**
+	 * Ratios are relative to current hitbox/image/animation sizes (not absolute or original size)
+	 */
+	public void scale(double widthRatio, double heightRatio) {
 		// Scale hitbox
 		hitbox.scale(widthRatio, heightRatio);
 
 		// Scale animations
-		if (animations != null)
-		{
+		if (animations != null) {
 			for (final SpriteAnimation gsa : animations)
 				gsa.scale(widthRatio, heightRatio);
 		}
 
 		// image has already been scaled above if it is an animation. Otherwise, scale it here
-		if (activeAnimIndex < 0)
-		{
+		if (activeAnimIndex < 0) {
 			if (image != null)
 				image.scale(widthRatio, heightRatio);
 		}
@@ -159,49 +143,46 @@ public class Entity
 			setImageOffsets((float) (imageOffsetX * widthRatio), (float) (imageOffsetY * heightRatio));
 	}
 
-	// Scale hitbox and image/animations based on ratio of width and height to current hitbox width and height
-	public void scaleTo(float width, float height)
-	{
+	/**
+	 * Scale hitbox and image/animations based on ratio of width and height to current hitbox width and height
+	 */
+	public void scaleTo(float width, float height) {
 		final double widthRatio = width / hitbox.getWidth();
 		final double heightRatio = height / hitbox.getHeight();
 
 		scale(widthRatio, heightRatio);
 	}
 
-	public void scaleWidthTo(float width)
-	{
+	public void scaleWidthTo(float width) {
 		final double widthRatio = width / hitbox.getWidth();
 
 		scale(widthRatio, 1);
 	}
 
-	public void scaleHeightTo(float height)
-	{
+	public void scaleHeightTo(float height) {
 		final double heightRatio = height / hitbox.getHeight();
 
 		scale(1, heightRatio);
 	}
 
-	public void createRectangleHitbox(float width, float height)
-	{
+	public void createRectangleHitbox(float width, float height) {
 		final float left = getX() - width / 2;
 		final float top = getY() - height / 2;
 		hitbox = new Hitbox(new Rectangle(left, top, left + width, top + height));
 	}
 
-	public void createRotatedRectHitbox(float width, float height)
-	{
+	public void createRotatedRectHitbox(float width, float height) {
 		hitbox = new Hitbox(new RotatedRect(getX(), getY(), width, height));
 	}
 
-	public void createCircleHitbox(float radius)
-	{
+	public void createCircleHitbox(float radius) {
 		hitbox = new Hitbox(new Circle(getX(), getY(), radius));
 	}
 
-	// Clear main Entity image
-	public void clearImage()
-	{
+	/**
+	 * Clear main Entity image
+	 */
+	public void clearImage() {
 		if (image != null)
 			image.close();
 
@@ -209,17 +190,15 @@ public class Entity
 		activeAnimIndex = -1;
 	}
 
-	// Set main Entity image. If image is an animation, play it and return its ID
-	public int setImage(Image image)
-	{
-		if (image instanceof SpriteAnimation)
-		{
+	/**
+	 * Set main Entity image. If image is an animation, play it and return its ID
+	 */
+	public int setImage(Image image) {
+		if (image instanceof SpriteAnimation) {
 			final int id = addAnimation((SpriteAnimation) image);
 			playAnimation(id);
 			return id;
-		}
-		else
-		{
+		} else {
 			activeAnimIndex = -1;
 
 			updateImage(image);
@@ -232,17 +211,18 @@ public class Entity
 		}
 	}
 
-	// Simply updates the image reference for this entity without removing the current image or updating the incoming image's
-	//position/orientation/etc. Those things must be handled manually when calling imageRef() instead of setImage()
-	public void imageRef(Image image)
-	{
+	/**
+	 * Simply updates the image reference for this entity without removing the current image or updating the incoming image's
+	 * position/orientation/etc. Those things must be handled manually when calling imageRef() instead of setImage()
+	 */
+	public void imageRef(Image image) {
 		this.image = image;
 	}
 
-	// Add anim to animations list. Can be subsequently accessed using play/stop/restart Animation methods using the
-	//returned animation index
-	public int addAnimation(SpriteAnimation anim)
-	{
+	/**
+	 * Add anim to animations list. Can be subsequently accessed using play/stop/restart Animation methods using the returned animation index
+	 */
+	public int addAnimation(SpriteAnimation anim) {
 		anim.pause();
 
 		if (animations == null)
@@ -252,13 +232,13 @@ public class Entity
 		return animations.size() - 1;
 	}
 
-	// Play a currently stored animation and set it as the current image. Returns true if the animationIndex exists
-	public boolean playAnimation(int index)
-	{
+	/**
+	 * Play a currently stored animation and set it as the current image. Returns true if the animationIndex exists
+	 */
+	public boolean playAnimation(int index) {
 		if (index == activeAnimIndex)
 			return true;
-		else if (index >= 0 && index < animations.size())
-		{
+		else if (index >= 0 && index < animations.size()) {
 			updateImage(animations.get(index));
 			if (isVisible)
 				Swapper.swapImages(image, animations.get(index));
@@ -273,11 +253,11 @@ public class Entity
 		return false;
 	}
 
-	// Stop a currently stored animation (not necessarily the currently visible animation)
-	public boolean stopAnimation(int index)
-	{
-		if (index >= 0 && index < animations.size())
-		{
+	/**
+	 * Stop a currently stored animation (not necessarily the currently visible animation)
+	 */
+	public boolean stopAnimation(int index) {
+		if (index >= 0 && index < animations.size()) {
 			animations.get(index).stop();
 			if (activeAnimIndex == index)
 				activeAnimIndex = -1;
@@ -288,11 +268,11 @@ public class Entity
 		return false;
 	}
 
-	// Restart a currently stored animation from its beginning (stop() then play() animation)
-	public boolean restartAnimation(int index)
-	{
-		if (index >= 0 && index < animations.size())
-		{
+	/**
+	 * Restart a currently stored animation from its beginning (stop() then play() animation)
+	 */
+	public boolean restartAnimation(int index) {
+		if (index >= 0 && index < animations.size()) {
 			activeAnimIndex = -1;
 			animations.get(index).stop();
 			return playAnimation(index);
@@ -301,38 +281,34 @@ public class Entity
 		return false;
 	}
 
-	// Override if there is any code to run when an animation has run its course
-	protected void animationFinished(int animID)
-	{
+	/**
+	 * Override if there is any code to run when an animation has run its course
+	 */
+	protected void animationFinished(int animID) {
 	}
 
-	public void setImageOffsets(float imageOffsetX, float imageOffsetY)
-	{
+	public void setImageOffsets(float imageOffsetX, float imageOffsetY) {
 		this.imageOffsetX = imageOffsetX;
 		this.imageOffsetY = imageOffsetY;
 		updateImage(image);
 	}
 
-	public void setImageOffsetX(float imageOffsetX)
-	{
+	public void setImageOffsetX(float imageOffsetX) {
 		setImageOffsets(imageOffsetX, imageOffsetY);
 	}
 
-	public void setImageOffsetY(float imageOffsetY)
-	{
+	public void setImageOffsetY(float imageOffsetY) {
 		setImageOffsets(imageOffsetX, imageOffsetY);
 	}
 
-	private void updateImage(Image image)
-	{
+	private void updateImage(Image image) {
 		if (image == null)
 			return;
 
 		// Update image position
 		if (Util.equals(getDirection(), 0))
 			image.offsetTo(hitbox.getX() + imageOffsetX, hitbox.getY() + imageOffsetY);
-		else
-		{
+		else {
 			final float iox = (float) (Math.cos(getDirection()) * imageOffsetX);
 			image.offsetTo(hitbox.getX() + iox, hitbox.getY() + imageOffsetY);
 		}
@@ -345,114 +321,98 @@ public class Entity
 		image.setLayerHeight(Math.round(getY()));
 	}
 
-	protected void setLayerHeight(int layerHeight)
-	{
+	protected void setLayerHeight(int layerHeight) {
 		if (image != null)
 			image.setLayerHeight(layerHeight);
 	}
 
-	public int getLayerHeight()
-	{
+	public int getLayerHeight() {
 		if (image != null)
 			return image.getSprite().getLayerHeight();
 		else
 			return Math.round(getY());
 	}
 
-	// Set this Entity's visibility (presence or absence in SpriteManager list)
-	public void setVisible(boolean isVisible)
-	{
+	/**
+	 * Set this Entity's visibility (presence or absence in SpriteManager list)
+	 */
+	public void setVisible(boolean isVisible) {
 		this.isVisible = isVisible;
 
 		if (image != null)
 			image.setVisible(isVisible);
 	}
 
-	public boolean isVisible()
-	{
+	public boolean isVisible() {
 		return isVisible;
 	}
 
-	public float getX()
-	{
+	public float getX() {
 		return hitbox.getX();
 	}
 
-	public float getY()
-	{
+	public float getY() {
 		return hitbox.getY();
 	}
 
-	public Hitbox getHitbox()
-	{
+	public Hitbox getHitbox() {
 		return hitbox;
 	}
 
-	public Point getCenter()
-	{
+	public Point getCenter() {
 		return hitbox.getCenter();
 	}
 
-	public float getImageX()
-	{
+	public float getImageX() {
 		return getX() + imageOffsetX;
 	}
 
-	public float getImageY()
-	{
+	public float getImageY() {
 		return getY() + imageOffsetY;
 	}
 
-	public float getImageOffsetX()
-	{
+	public float getImageOffsetX() {
 		return imageOffsetX;
 	}
 
-	public float getImageOffsetY()
-	{
+	public float getImageOffsetY() {
 		return imageOffsetY;
 	}
 
-	public Point getImageCenter()
-	{
+	public Point getImageCenter() {
 		return new Point(getX() + imageOffsetX, getY() + imageOffsetY);
 	}
 
-	public float getDirection()
-	{
+	public float getDirection() {
 		return hitbox.getDirection();
 	}
 
-	public Image getImage()
-	{
+	public Image getImage() {
 		return image;
 	}
 
-	public Sprite getSprite()
-	{
+	public Sprite getSprite() {
 		if (image != null)
 			return image.getSprite();
 		else
 			return null;
 	}
 
-	public SpriteAnimation getAnimation(int index)
-	{
+	public SpriteAnimation getAnimation(int index) {
 		if (index >= 0 && index < animations.size())
 			return animations.get(index);
 		else
 			return null;
 	}
 
-	public int getCurrentAnimID()
-	{
+	public int getCurrentAnimID() {
 		return activeAnimIndex;
 	}
 
-	// To be called when this Entity is removed from the game. Removes image from SpriteManager. Override to add any additional
-	//cleanup code
-	public void close()
-	{
+	/**
+	 * To be called when this Entity is removed from the game. Removes image from SpriteManager. Override to add any additional cleanup code
+	 */
+	public void close() {
 		if (image != null)
 			image.close();
 

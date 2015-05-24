@@ -5,13 +5,11 @@ import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.screens.TutorialScreen;
 import com.lescomber.vestige.statuseffects.HitBundle;
 
-public class TutorialPlayer extends Player
-{
+public class TutorialPlayer extends Player {
 	private final TutorialScreen tScreen;
 	private final boolean[] abilityAvailable;
 
-	public TutorialPlayer(TutorialScreen tScreen)
-	{
+	public TutorialPlayer(TutorialScreen tScreen) {
 		super();
 
 		this.tScreen = tScreen;
@@ -20,10 +18,8 @@ public class TutorialPlayer extends Player
 			abilityAvailable[i] = false;
 	}
 
-	public void unlockAbility(int abilityNum)
-	{
-		if (!abilityAvailable[abilityNum])
-		{
+	public void unlockAbility(int abilityNum) {
+		if (!abilityAvailable[abilityNum]) {
 			abilityAvailable[abilityNum] = true;
 			if (abilityNum == 1)
 				chargeSwipeAbility.setCDIndicatorVisible(true);
@@ -34,45 +30,39 @@ public class TutorialPlayer extends Player
 		}
 	}
 
-	public boolean isAbilityUnlocked(int abilityNum)
-	{
+	public boolean isAbilityUnlocked(int abilityNum) {
 		return abilityAvailable[abilityNum];
 	}
 
 	@Override
-	protected void destinationReached()
-	{
+	protected void destinationReached() {
 		super.destinationReached();
 
 		tScreen.tapLessonCompleted();
 	}
 
 	@Override
-	void fireSwipe()
-	{
+	void fireSwipe() {
 		super.fireSwipe();
 
 		tScreen.swipeLessonCompleted();
 	}
 
 	@Override
-	void fireChargeSwipe()
-	{
+	void fireChargeSwipe() {
 		super.fireChargeSwipe();
 
 		tScreen.chargeSwipeLessonCompleted();
 	}
 
 	@Override
-	public void handleSwipe(Line swipe)
-	{
+	public void handleSwipe(Line swipe) {
 		if (abilityAvailable[0])
 			super.handleSwipe(swipe);
 	}
 
 	@Override
-	public void handleChargeSwipe(Line swipe)
-	{
+	public void handleChargeSwipe(Line swipe) {
 		if (abilityAvailable[1])
 			super.handleChargeSwipe(swipe);
 		else
@@ -80,30 +70,27 @@ public class TutorialPlayer extends Player
 	}
 
 	@Override
-	public void handleDoubleTap(Point tapPoint)
-	{
+	public void handleDoubleTap(Point tapPoint) {
 		if (abilityAvailable[2])
 			super.handleDoubleTap(tapPoint);
 	}
 
 	@Override
-	public void handleMultiTap()
-	{
+	public void handleMultiTap() {
 		if (abilityAvailable[3])
 			super.handleMultiTap();
 	}
 
-	@Override    // Invincible!
-	public void hit(HitBundle bundle)
-	{
+	@Override
+	public void hit(HitBundle bundle) {
 		super.hit(bundle);
 
+		// Invincible!
 		if (getHp() <= 0)
 			hit(new HitBundle(getHp() - 1));
 	}
 
-	public void clearActions()
-	{
+	public void clearActions() {
 		swipeQueue = null;
 		chargeSwipeQueue = null;
 		lastSwipeQueue = null;
@@ -113,8 +100,7 @@ public class TutorialPlayer extends Player
 	}
 
 	@Override
-	public void setCDIndicatorsVisible(boolean isVisible)
-	{
+	public void setCDIndicatorsVisible(boolean isVisible) {
 		if (abilityAvailable[1])
 			chargeSwipeAbility.setCDIndicatorVisible(isVisible);
 		if (abilityAvailable[2])

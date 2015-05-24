@@ -14,16 +14,14 @@ import com.lescomber.vestige.screens.GameScreen;
 import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.Unit;
 
-public class Seeker extends Projectile
-{
+public class Seeker extends Projectile {
 	private static final float RADIANS_PER_MS[] = new float[] { 0.00070f, 0.00085f, 0.00110f };
 	private static final float EXPLOSION_RADIUS = 60;
 	private static final float DAMAGE[] = new float[] { 7, 9, 11 };
 
 	private final Hitbox glowHitbox;    // Pass this hitbox to glow instead of our enlarged hitbox
 
-	public Seeker()
-	{
+	public Seeker() {
 		super(null, 0, EXPLOSION_RADIUS * 0.4f);    // Increased hitbox size allows Seeker to explode when it gets near enough to the target
 
 		setVelocityPerSecond(275);        // Reduce velocity a little (default is 300)
@@ -41,38 +39,33 @@ public class Seeker extends Projectile
 		setExplosionSound(AudioManager.purpleExplosion);
 	}
 
-	public Seeker(Seeker copyMe)
-	{
+	public Seeker(Seeker copyMe) {
 		super(copyMe);
 
 		glowHitbox = new Hitbox(copyMe.glowHitbox);
 	}
 
 	@Override
-	public void offset(float dx, float dy)
-	{
+	public void offset(float dx, float dy) {
 		super.offset(dx, dy);
 
 		glowHitbox.offset(dx, dy);
 	}
 
 	@Override
-	public void move(float dx, float dy)
-	{
+	public void move(float dx, float dy) {
 		super.move(dx, dy);
 
 		glowHitbox.offset(dx, dy);
 	}
 
 	@Override
-	protected void updateGlow(Hitbox hitbox)
-	{
+	protected void updateGlow(Hitbox hitbox) {
 		super.updateGlow(glowHitbox);
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
 		// Seek
@@ -99,17 +92,13 @@ public class Seeker extends Projectile
 		setDestination(dest);
 	}
 
-	private Unit getNearestTarget()
-	{
+	private Unit getNearestTarget() {
 		double minDistanceSquared = Double.MAX_VALUE;
 		Unit target = null;
-		for (final int i : getTargets())
-		{
-			for (final Unit u : GameScreen.units[i])
-			{
+		for (final int i : getTargets()) {
+			for (final Unit u : GameScreen.units[i]) {
 				final double d2 = getCenter().distanceToPointSquared(u.getCenter());
-				if (d2 < minDistanceSquared)
-				{
+				if (d2 < minDistanceSquared) {
 					minDistanceSquared = d2;
 					target = u;
 				}
@@ -120,8 +109,7 @@ public class Seeker extends Projectile
 	}
 
 	@Override
-	public Seeker copy()
-	{
+	public Seeker copy() {
 		return new Seeker(this);
 	}
 }

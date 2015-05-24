@@ -28,8 +28,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class Unit extends MobileEntity implements Dash
-{
+public abstract class Unit extends MobileEntity implements Dash {
 	private float hp;
 	private StatPack baseStats;
 	private StatPack stats;
@@ -53,8 +52,8 @@ public abstract class Unit extends MobileEntity implements Dash
 	private float firingOffsetX;    // X offset from center of Unit's image to firing location
 	private float firingOffsetY;    // Y offset from center of Unit's image to firing location
 
-	private float topGap;    // No fly zone at the top of the screen for this particular unit. Used to stop units from walking
-	//largely off the top of the screen
+	private float topGap;   // No fly zone at the top of the screen for this particular unit. Used to stop units from walking largely off the top of
+	//the screen
 
 	private final LinkedList<Projectile> projectilesBuffer;
 	private final LinkedList<Projectile> projectilesReady;
@@ -94,12 +93,11 @@ public abstract class Unit extends MobileEntity implements Dash
 	private static final float HEALTH_BAR_MIN_Y = 6;
 
 	private boolean constrainHealthBar;
-	private float healthBarVirtualXGap;        // Min x distance between sides of the screen and center of health bar
+	private float healthBarVirtualXGap;    // Min x distance between sides of the screen and center of health bar
 	private float healthBarVirtualX;    // Tracks healthBar's virtual x position for use when it would be off the screen
 	private float healthBarVirtualY;    // Tracks healthBar's virtual y position for use when it would be off the screen
 
-	public Unit(float hitboxWidth, float hitboxHeight, float imageOffsetY)
-	{
+	public Unit(float hitboxWidth, float hitboxHeight, float imageOffsetY) {
 		super();
 
 		createRectangleHitbox(hitboxWidth, hitboxHeight);
@@ -165,8 +163,7 @@ public abstract class Unit extends MobileEntity implements Dash
 		healthBarVirtualY = 0;
 	}
 
-	public Unit(Unit copyMe)
-	{
+	public Unit(Unit copyMe) {
 		super(copyMe);
 
 		hp = copyMe.hp;
@@ -228,22 +225,19 @@ public abstract class Unit extends MobileEntity implements Dash
 		unitsReady = new LinkedList<AIUnit>();
 	}
 
-	public void setBaseStats(StatPack baseStats)
-	{
+	public void setBaseStats(StatPack baseStats) {
 		this.baseStats = baseStats;
 		updateStats();
 		hp = baseStats.maxHp;
 	}
 
-	protected void createHealthBar(SpriteTemplate healthBackground, SpriteTemplate health)
-	{
+	protected void createHealthBar(SpriteTemplate healthBackground, SpriteTemplate health) {
 		if (healthBarBackground != null)
 			healthBarBackground.close();
 		if (healthBar != null)
 			healthBar.close();
 
-		if (healthBackground == null || health == null)
-		{
+		if (healthBackground == null || health == null) {
 			healthBarBackground = null;
 			healthBar = null;
 			return;
@@ -253,8 +247,7 @@ public abstract class Unit extends MobileEntity implements Dash
 		healthBarVirtualXGap = healthBackground.getWidth() / 2;
 		float x = healthBarVirtualX;
 
-		if (constrainHealthBar)
-		{
+		if (constrainHealthBar) {
 			if (x < healthBarVirtualXGap)
 				x = healthBarVirtualXGap;
 			else if (x > Screen.WIDTH - healthBarVirtualXGap)
@@ -276,8 +269,7 @@ public abstract class Unit extends MobileEntity implements Dash
 		healthBar.setVisible(isVisible());
 	}
 
-	protected void updateHealthBar()
-	{
+	protected void updateHealthBar() {
 		if (healthBar == null)
 			return;
 
@@ -285,26 +277,22 @@ public abstract class Unit extends MobileEntity implements Dash
 		healthBar.setTexWidth(healthFraction);
 	}
 
-	public void faceLeft()
-	{
+	public void faceLeft() {
 		facingLeft = true;
 	}
 
-	public void faceRight()
-	{
+	public void faceRight() {
 		facingLeft = false;
 	}
 
-	public void faceTowards(float x)
-	{
+	public void faceTowards(float x) {
 		if (x < getX())
 			faceLeft();
 		else
 			faceRight();
 	}
 
-	public void setIdleLeftSprite(Sprite sprite)
-	{
+	public void setIdleLeftSprite(Sprite sprite) {
 		final boolean wasNull = (idleLeftSprite == null);
 
 		idleLeftSprite = sprite;
@@ -313,16 +301,14 @@ public abstract class Unit extends MobileEntity implements Dash
 			idleSprite();
 	}
 
-	public void setIdleLeftSprite(SpriteTemplate template)
-	{
+	public void setIdleLeftSprite(SpriteTemplate template) {
 		if (template != null)
 			setIdleLeftSprite(new Sprite(template));
 		else
 			idleLeftSprite = null;
 	}
 
-	public void setIdleRightSprite(Sprite sprite)
-	{
+	public void setIdleRightSprite(Sprite sprite) {
 		final boolean wasNull = (idleRightSprite == null);
 
 		idleRightSprite = sprite;
@@ -331,28 +317,23 @@ public abstract class Unit extends MobileEntity implements Dash
 			idleSprite();
 	}
 
-	public void setIdleRightSprite(SpriteTemplate template)
-	{
+	public void setIdleRightSprite(SpriteTemplate template) {
 		if (template != null)
 			setIdleRightSprite(new Sprite(template));
 		else
 			idleRightSprite = null;
 	}
 
-	public void idleSprite()
-	{
+	public void idleSprite() {
 		if (isFiring && !isDisplacing())
 			return;
 
-		if (facingLeft)
-		{
+		if (facingLeft) {
 			if (idleLeftSprite != null)
 				setImage(idleLeftSprite);
 			else if (idleRightSprite != null)
 				setImage(idleRightSprite);
-		}
-		else
-		{
+		} else {
 			if (idleRightSprite != null)
 				setImage(idleRightSprite);
 			else if (idleLeftSprite != null)
@@ -363,125 +344,98 @@ public abstract class Unit extends MobileEntity implements Dash
 		stopAnimation(walkingRight);
 	}
 
-	public void setWalkLeftAnimation(SpriteAnimation anim)
-	{
+	public void setWalkLeftAnimation(SpriteAnimation anim) {
 		if (anim == null)
 			walkingLeft = -1;
-		else
-		{
+		else {
 			anim.setSequenceLimit(-1);
 			walkingLeft = addAnimation(anim);
 		}
 	}
 
-	public void setWalkLeftAnimation(int animID)
-	{
+	public void setWalkLeftAnimation(int animID) {
 		walkingLeft = animID;
 	}
 
-	public void setWalkRightAnimation(SpriteAnimation anim)
-	{
+	public void setWalkRightAnimation(SpriteAnimation anim) {
 		if (anim == null)
 			walkingRight = -1;
-		else
-		{
+		else {
 			anim.setSequenceLimit(-1);
 			walkingRight = addAnimation(anim);
 		}
 	}
 
-	public void setWalkRightAnimation(int animID)
-	{
+	public void setWalkRightAnimation(int animID) {
 		walkingRight = animID;
 	}
 
-	public void walkingAnim()
-	{
-		// If there is a firing animation going on, default behavior is to not interrupt it for a walking animation
-		//Note: If firing animations are interruptible for a subclass of unit, then isFiring should not be set to true
-		//during the firing animation. In which case, the subclass is responsible for starting the walking animation at
-		//the appropriate time
+	public void walkingAnim() {
+		// If there is a firing animation going on, default behavior is to not interrupt it for a walking animation Note: If firing animations are
+		//interruptible for a subclass of unit, then isFiring should not be set to true during the firing animation. In which case, the subclass is
+		//responsible for starting the walking animation at the appropriate time
 		if (isFiring)
 			return;
 
-		if (facingLeft)
-		{
-			if (walkingLeft >= 0)
-			{
+		if (facingLeft) {
+			if (walkingLeft >= 0) {
 				playAnimation(walkingLeft);
 				stopAnimation(walkingRight);
-			}
-			else if (walkingRight >= 0)
-			{
+			} else if (walkingRight >= 0) {
 				playAnimation(walkingRight);
 				stopAnimation(walkingLeft);
-			}
-			else
+			} else
 				idleSprite();
-		}
-		else
-		{
-			if (walkingRight >= 0)
-			{
+		} else {
+			if (walkingRight >= 0) {
 				playAnimation(walkingRight);
 				stopAnimation(walkingLeft);
-			}
-			else if (walkingLeft >= 0)
-			{
+			} else if (walkingLeft >= 0) {
 				playAnimation(walkingLeft);
 				stopAnimation(walkingRight);
-			}
-			else
+			} else
 				idleSprite();
 		}
 	}
 
-	public void setPreFiringLeftAnimation(SpriteAnimation anim)
-	{
+	public void setPreFiringLeftAnimation(SpriteAnimation anim) {
 		if (anim == null)
 			preFiringLeft = -1;
-		else
-		{
+		else {
 			anim.setHoldLastFrame(true);
 			preFiringLeft = addAnimation(anim);
 		}
 	}
 
-	public void setPreFiringLeftAnimation(int animID)
-	{
+	public void setPreFiringLeftAnimation(int animID) {
 		preFiringLeft = animID;
 	}
 
-	public void setPreFiringRightAnimation(SpriteAnimation anim)
-	{
+	public void setPreFiringRightAnimation(SpriteAnimation anim) {
 		if (anim == null)
 			preFiringRight = -1;
-		else
-		{
+		else {
 			anim.setHoldLastFrame(true);
 			preFiringRight = addAnimation(anim);
 		}
 	}
 
-	public void setPreFiringRightAnimation(int animID)
-	{
+	public void setPreFiringRightAnimation(int animID) {
 		preFiringRight = animID;
 	}
 
-	// Returns true if a pre-firing animation is present and was restarted, false if there is no pre-firing animation
-	public boolean preFiringAnim()
-	{
-		if (facingLeft)
-		{
+	/**
+	 * @return true if a pre-firing animation is present and was restarted, false if there is no pre-firing animation
+	 */
+	public boolean preFiringAnim() {
+		if (facingLeft) {
 			if (preFiringLeft >= 0)
 				restartAnimation(preFiringLeft);
 			else if (preFiringRight >= 0)
 				restartAnimation(preFiringRight);
 			else
 				return false;
-		}
-		else
-		{
+		} else {
 			if (preFiringRight >= 0)
 				restartAnimation(preFiringRight);
 			else if (preFiringLeft >= 0)
@@ -494,52 +448,44 @@ public abstract class Unit extends MobileEntity implements Dash
 		return true;
 	}
 
-	public void setPostFiringLeftAnimation(SpriteAnimation anim)
-	{
+	public void setPostFiringLeftAnimation(SpriteAnimation anim) {
 		if (anim == null)
 			postFiringLeft = -1;
-		else
-		{
+		else {
 			anim.setHoldLastFrame(true);
 			postFiringLeft = addAnimation(anim);
 		}
 	}
 
-	public void setPostFiringLeftAnimation(int animID)
-	{
+	public void setPostFiringLeftAnimation(int animID) {
 		postFiringLeft = animID;
 	}
 
-	public void setPostFiringRightAnimation(SpriteAnimation anim)
-	{
+	public void setPostFiringRightAnimation(SpriteAnimation anim) {
 		if (anim == null)
 			postFiringRight = -1;
-		else
-		{
+		else {
 			anim.setHoldLastFrame(true);
 			postFiringRight = addAnimation(anim);
 		}
 	}
 
-	public void setPostFiringRightAnimation(int animID)
-	{
+	public void setPostFiringRightAnimation(int animID) {
 		postFiringRight = animID;
 	}
 
-	// Returns true if a post-firing animation is present and was restarted, false if there is no post-firing animation
-	public boolean postFiringAnim(boolean preferLeftAnim)
-	{
-		if (preferLeftAnim)
-		{
+	/**
+	 * @return true if a post-firing animation is present and was restarted, false if there is no post-firing animation
+	 */
+	public boolean postFiringAnim(boolean preferLeftAnim) {
+		if (preferLeftAnim) {
 			if (postFiringLeft >= 0)
 				restartAnimation(postFiringLeft);
 			else if (postFiringRight >= 0)
 				restartAnimation(postFiringRight);
 			else
 				return false;
-		}
-		else
-		{
+		} else {
 			if (postFiringRight >= 0)
 				restartAnimation(postFiringRight);
 			else if (postFiringLeft >= 0)
@@ -552,51 +498,41 @@ public abstract class Unit extends MobileEntity implements Dash
 		return true;
 	}
 
-	public void setPreChannelingLeftAnimation(SpriteAnimation anim)
-	{
+	public void setPreChannelingLeftAnimation(SpriteAnimation anim) {
 		if (anim == null)
 			preChannelingLeft = -1;
-		else
-		{
+		else {
 			anim.setHoldLastFrame(true);
 			preChannelingLeft = addAnimation(anim);
 		}
 	}
 
-	public void setPreChannelingLeftAnimation(int animID)
-	{
+	public void setPreChannelingLeftAnimation(int animID) {
 		preChannelingLeft = animID;
 	}
 
-	public void setPreChannelingRightAnimation(SpriteAnimation anim)
-	{
+	public void setPreChannelingRightAnimation(SpriteAnimation anim) {
 		if (anim == null)
 			preChannelingRight = -1;
-		else
-		{
+		else {
 			anim.setHoldLastFrame(true);
 			preChannelingRight = addAnimation(anim);
 		}
 	}
 
-	public void setPreChannelingRightAnimation(int animID)
-	{
+	public void setPreChannelingRightAnimation(int animID) {
 		preChannelingRight = animID;
 	}
 
-	public boolean preChannelingAnim()
-	{
-		if (facingLeft)
-		{
+	public boolean preChannelingAnim() {
+		if (facingLeft) {
 			if (preChannelingLeft >= 0)
 				restartAnimation(preChannelingLeft);
 			else if (preChannelingRight >= 0)
 				restartAnimation(preChannelingRight);
 			else
 				return false;
-		}
-		else
-		{
+		} else {
 			if (preChannelingRight >= 0)
 				restartAnimation(preChannelingRight);
 			else if (preChannelingLeft >= 0)
@@ -609,69 +545,53 @@ public abstract class Unit extends MobileEntity implements Dash
 		return true;
 	}
 
-	public void setChannelingLeftAnimation(SpriteAnimation anim)
-	{
+	public void setChannelingLeftAnimation(SpriteAnimation anim) {
 		if (anim == null)
 			channelingLeft = -1;
-		else
-		{
+		else {
 			anim.setHoldLastFrame(true);
 			channelingLeft = addAnimation(anim);
 		}
 	}
 
-	public void setChannelingLeftAnimation(int animID)
-	{
+	public void setChannelingLeftAnimation(int animID) {
 		channelingLeft = animID;
 	}
 
-	public void setChannelingRightAnimation(SpriteAnimation anim)
-	{
+	public void setChannelingRightAnimation(SpriteAnimation anim) {
 		if (anim == null)
 			channelingRight = -1;
-		else
-		{
+		else {
 			anim.setHoldLastFrame(true);
 			channelingRight = addAnimation(anim);
 		}
 	}
 
-	public void setChannelingRightAnimation(int animID)
-	{
+	public void setChannelingRightAnimation(int animID) {
 		channelingRight = animID;
 	}
 
-	// Returns true if a channeling animation is present and was restarted, false if there is no channeling animation
-	public boolean channelingAnim(boolean preferLeftAnim, int duration)
-	{
-		if (preferLeftAnim)
-		{
-			if (channelingLeft >= 0)
-			{
+	/**
+	 * @return true if a channeling animation is present and was restarted, false if there is no channeling animation
+	 */
+	public boolean channelingAnim(boolean preferLeftAnim, int duration) {
+		if (preferLeftAnim) {
+			if (channelingLeft >= 0) {
 				getAnimation(channelingLeft).setDuration(duration);
 				restartAnimation(channelingLeft);
-			}
-			else if (channelingRight >= 0)
-			{
+			} else if (channelingRight >= 0) {
 				getAnimation(channelingRight).setDuration(duration);
 				restartAnimation(channelingRight);
-			}
-			else
+			} else
 				return false;
-		}
-		else
-		{
-			if (channelingRight >= 0)
-			{
+		} else {
+			if (channelingRight >= 0) {
 				getAnimation(channelingRight).setDuration(duration);
 				restartAnimation(channelingRight);
-			}
-			else if (channelingLeft >= 0)
-			{
+			} else if (channelingLeft >= 0) {
 				getAnimation(channelingLeft).setDuration(duration);
 				restartAnimation(channelingLeft);
-			}
-			else
+			} else
 				return false;
 		}
 
@@ -679,51 +599,41 @@ public abstract class Unit extends MobileEntity implements Dash
 		return true;
 	}
 
-	public void setPostChannelingLeftAnimation(SpriteAnimation anim)
-	{
+	public void setPostChannelingLeftAnimation(SpriteAnimation anim) {
 		if (anim == null)
 			postChannelingLeft = -1;
-		else
-		{
+		else {
 			anim.setHoldLastFrame(true);
 			postChannelingLeft = addAnimation(anim);
 		}
 	}
 
-	public void setPostChannelingLeftAnimation(int animID)
-	{
+	public void setPostChannelingLeftAnimation(int animID) {
 		postChannelingLeft = animID;
 	}
 
-	public void setPostChannelingRightAnimation(SpriteAnimation anim)
-	{
+	public void setPostChannelingRightAnimation(SpriteAnimation anim) {
 		if (anim == null)
 			postChannelingRight = -1;
-		else
-		{
+		else {
 			anim.setHoldLastFrame(true);
 			postChannelingRight = addAnimation(anim);
 		}
 	}
 
-	public void setPostChannelingRightAnimation(int animID)
-	{
+	public void setPostChannelingRightAnimation(int animID) {
 		postChannelingRight = animID;
 	}
 
-	public boolean postChannelingAnim(boolean preferLeftAnim)
-	{
-		if (preferLeftAnim)
-		{
+	public boolean postChannelingAnim(boolean preferLeftAnim) {
+		if (preferLeftAnim) {
 			if (postChannelingLeft >= 0)
 				restartAnimation(postChannelingLeft);
 			else if (postChannelingRight >= 0)
 				restartAnimation(postChannelingRight);
 			else
 				return false;
-		}
-		else
-		{
+		} else {
 			if (postChannelingRight >= 0)
 				restartAnimation(postChannelingRight);
 			else if (postChannelingLeft >= 0)
@@ -736,56 +646,42 @@ public abstract class Unit extends MobileEntity implements Dash
 		return true;
 	}
 
-	public void setDeathAnimationLeft(SpriteAnimation anim)
-	{
+	public void setDeathAnimationLeft(SpriteAnimation anim) {
 		deathAnimationLeft = anim;
 	}
 
-	public void setDeathAnimationLeft(int animID)
-	{
+	public void setDeathAnimationLeft(int animID) {
 		deathAnimationLeft = getAnimation(animID);
 	}
 
-	public void setDeathAnimationRight(SpriteAnimation anim)
-	{
+	public void setDeathAnimationRight(SpriteAnimation anim) {
 		deathAnimationRight = anim;
 	}
 
-	public void setDeathAnimationRight(int animID)
-	{
+	public void setDeathAnimationRight(int animID) {
 		deathAnimationRight = getAnimation(animID);
 	}
 
-	public void deathAnim()
-	{
-		if (facingLeft)
-		{
-			if (deathAnimationLeft != null)
-			{
+	public void deathAnim() {
+		if (facingLeft) {
+			if (deathAnimationLeft != null) {
 				final Point imageCenter = getImageCenter();
 				deathAnimationLeft.offsetTo(imageCenter.x - deathAnimXOffset, imageCenter.y);
 				deathAnimationLeft.setLayerHeight(getLayerHeight());
 				GameScreen.playAnimation(deathAnimationLeft, getImage());
-			}
-			else if (deathAnimationRight != null)
-			{
+			} else if (deathAnimationRight != null) {
 				final Point imageCenter = getImageCenter();
 				deathAnimationRight.offsetTo(imageCenter.x + deathAnimXOffset, imageCenter.y);
 				deathAnimationRight.setLayerHeight(getLayerHeight());
 				GameScreen.playAnimation(deathAnimationRight, getImage());
 			}
-		}
-		else
-		{
-			if (deathAnimationRight != null)
-			{
+		} else {
+			if (deathAnimationRight != null) {
 				final Point imageCenter = getImageCenter();
 				deathAnimationRight.offsetTo(imageCenter.x + deathAnimXOffset, imageCenter.y);
 				deathAnimationRight.setLayerHeight(getLayerHeight());
 				GameScreen.playAnimation(deathAnimationRight, getImage());
-			}
-			else if (deathAnimationLeft != null)
-			{
+			} else if (deathAnimationLeft != null) {
 				final Point imageCenter = getImageCenter();
 				deathAnimationLeft.offsetTo(imageCenter.x - deathAnimXOffset, imageCenter.y);
 				deathAnimationLeft.setLayerHeight(getLayerHeight());
@@ -794,24 +690,20 @@ public abstract class Unit extends MobileEntity implements Dash
 		}
 	}
 
-	public void setDeathAnimXOffset(float xOffset)
-	{
+	public void setDeathAnimXOffset(float xOffset) {
 		deathAnimXOffset = xOffset;
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
 		updateStatusEffects(deltaTime);
 	}
 
 	@Override
-	protected void destinationReached()
-	{
-		if (isDisplacing())
-		{
+	protected void destinationReached() {
+		if (isDisplacing()) {
 			if (displacementEffect.getFaction() == getFaction())
 				dashComplete();
 			if (dashCallback != null)
@@ -821,19 +713,19 @@ public abstract class Unit extends MobileEntity implements Dash
 			setVelocityPerSecond(getMoveSpeed());
 			if (!path.isEmpty())
 				pathTo(path.removeLast());
-		}
-		else if (!path.isEmpty())
+		} else if (!path.isEmpty())
 			setDestination(path.remove());
 		else
 			pathDestinationReached();
 	}
 
-	protected void pathDestinationReached()
-	{
-	}        // Triggered when unit has reached the end of its path
+	/**
+	 * Triggered when unit has reached the end of its path
+	 */
+	protected void pathDestinationReached() {
+	}
 
-	public void hit(HitBundle bundle)
-	{
+	public void hit(HitBundle bundle) {
 		// Apply status effects
 		for (final StatusEffect se : bundle.getStatusEffects())
 			addStatusEffect(se.copy());
@@ -852,8 +744,7 @@ public abstract class Unit extends MobileEntity implements Dash
 		updateHealthBar();
 	}
 
-	public void addStatusEffect(StatusEffect statusEffect)
-	{
+	public void addStatusEffect(StatusEffect statusEffect) {
 		final StatusEffect adder = statusEffect.copy();
 
 		// Init adder's animation (if any)
@@ -863,8 +754,7 @@ public abstract class Unit extends MobileEntity implements Dash
 
 		// Handle slow immunity (if applicable)
 		final StatPack sp = adder.getStats();
-		if (!slowable && (sp.moveSpeed < 0 || sp.moveSpeedPercent < 1.0))
-		{
+		if (!slowable && (sp.moveSpeed < 0 || sp.moveSpeedPercent < 1.0)) {
 			sp.moveSpeed = 0;
 			sp.moveSpeedPercent = 1.0;
 
@@ -872,10 +762,8 @@ public abstract class Unit extends MobileEntity implements Dash
 				return;
 		}
 
-		for (final StatusEffect se : statusEffects)
-		{
-			if (se.getId() == adder.getId())
-			{
+		for (final StatusEffect se : statusEffects) {
+			if (se.getId() == adder.getId()) {
 				se.combine(adder);
 				se.reattach(this);
 				Collections.sort(statusEffects, StatusEffect.statusEffectComparator);
@@ -896,26 +784,23 @@ public abstract class Unit extends MobileEntity implements Dash
 		updateHealthBar();
 	}
 
-	public void addStatusEffect(DisplacementEffect displacementEffect)
-	{
+	public void addStatusEffect(DisplacementEffect displacementEffect) {
 		// Handle displacement immunity
 		if (!isDisplaceable() && displacementEffect.getFaction() != getFaction())
 			return;
 
 		// Case: unit was being displaced. Consider current displacement effect finished and inform it's dashCallback if
 		//applicable
-		if (isDisplacing())
-		{
+		if (isDisplacing()) {
 			if (displacementEffect.getFaction() == getFaction())
 				dashComplete();
 			if (dashCallback != null)
 				dashCallback.dashComplete();
 		}
 
-		// Case: unit was walking somewhere. Shove that destination onto the front of the queue. At the end of the
-		//displacement, the back of the queue will be used to generate a new path to that final destination. (i.e. the
-		//current destination that we are pushing onto the front of the queue will only matter if it is the only Point
-		//along the current path)
+		// Case: unit was walking somewhere. Shove that destination onto the front of the queue. At the end of the displacement, the back of the
+		//queue will be used to generate a new path to that final destination. (i.e. the current destination that we are pushing onto the front of
+		//the queue will only matter if it is the only Point along the current path)
 		else if (getDestination() != null)
 			path.addFirst(getDestination());
 
@@ -933,8 +818,7 @@ public abstract class Unit extends MobileEntity implements Dash
 		idleSprite();
 	}
 
-	public void addStatusEffect(DisplacementEffect displacementEffect, Dash dashCallback)
-	{
+	public void addStatusEffect(DisplacementEffect displacementEffect, Dash dashCallback) {
 		// Handle displacement immunity
 		if (!isDisplaceable() && displacementEffect.getFaction() != getFaction())
 			return;
@@ -944,38 +828,34 @@ public abstract class Unit extends MobileEntity implements Dash
 		this.dashCallback = dashCallback;
 	}
 
+	/**
+	 * Called when a friendly dash is completed (but not on knockback)
+	 */
 	@Override
-	public void dashComplete()
-	{
-	}    // Called when a friendly dash is completed (but not on knockback)
+	public void dashComplete() {
+	}
 
-	private void updateStatusEffects(int deltaTime)
-	{
+	private void updateStatusEffects(int deltaTime) {
 		boolean hasChanged = false;
 		final Iterator<StatusEffect> itr = statusEffects.iterator();
-		while (itr.hasNext())
-		{
+		while (itr.hasNext()) {
 			final StatusEffect se = itr.next();
-			if (se.update(deltaTime))
-			{
+			if (se.update(deltaTime)) {
 				hasChanged = true;
-				if (se.isFinished())
-				{
+				if (se.isFinished()) {
 					se.close();
 					itr.remove();
 				}
 			}
 		}
 
-		if (hasChanged)
-		{
+		if (hasChanged) {
 			updateStats();
 			updateHealthBar();
 		}
 	}
 
-	protected void updateStats()
-	{
+	protected void updateStats() {
 		float oldMaxHp = 0;
 		if (stats != null)
 			oldMaxHp = stats.maxHp;
@@ -995,8 +875,7 @@ public abstract class Unit extends MobileEntity implements Dash
 			setVelocityPerSecond(getMoveSpeed());
 	}
 
-	void takeDamage(float damage, boolean absorbSound, SoundEffect hitSound)
-	{
+	void takeDamage(float damage, boolean absorbSound, SoundEffect hitSound) {
 		float thisDamage = damage;
 
 		for (final StatusEffect se : statusEffects)
@@ -1011,23 +890,19 @@ public abstract class Unit extends MobileEntity implements Dash
 		hp -= thisDamage;
 	}
 
-	void heal(float amount)
-	{
+	void heal(float amount) {
 		hp += amount;
 		if (hp > getMaxHp())
 			hp = getMaxHp();
 	}
 
-	public static Unit getNearestMember(Point point, int faction)
-	{
+	public static Unit getNearestMember(Point point, int faction) {
 		double minDistanceSquared = Double.MAX_VALUE;
 		Unit target = null;
 
-		for (final Unit u : GameScreen.units[faction])
-		{
+		for (final Unit u : GameScreen.units[faction]) {
 			final double d2 = point.distanceToPointSquared(u.getCenter());
-			if (d2 < minDistanceSquared)
-			{
+			if (d2 < minDistanceSquared) {
 				minDistanceSquared = d2;
 				target = u;
 			}
@@ -1036,16 +911,13 @@ public abstract class Unit extends MobileEntity implements Dash
 		return target;
 	}
 
-	public static Unit getNearestMember(Point point, int faction, int rangeSquared)
-	{
+	public static Unit getNearestMember(Point point, int faction, int rangeSquared) {
 		double minDistanceSquared = rangeSquared;
 		Unit target = null;
 
-		for (final Unit u : GameScreen.units[faction])
-		{
+		for (final Unit u : GameScreen.units[faction]) {
 			final double d2 = point.distanceToPointSquared(u.getCenter());
-			if (d2 <= minDistanceSquared)
-			{
+			if (d2 <= minDistanceSquared) {
 				minDistanceSquared = d2;
 				target = u;
 			}
@@ -1055,8 +927,7 @@ public abstract class Unit extends MobileEntity implements Dash
 	}
 
 	@Override
-	public void offset(float dx, float dy)
-	{
+	public void offset(float dx, float dy) {
 		super.offset(dx, dy);
 
 		for (final StatusEffect se : statusEffects)
@@ -1066,8 +937,7 @@ public abstract class Unit extends MobileEntity implements Dash
 	}
 
 	@Override
-	protected void move(float dx, float dy)
-	{
+	protected void move(float dx, float dy) {
 		super.move(dx, dy);
 
 		for (final StatusEffect se : statusEffects)
@@ -1076,8 +946,7 @@ public abstract class Unit extends MobileEntity implements Dash
 		offsetHealthBar(dx, dy);
 	}
 
-	protected void offsetHealthBar(float dx, float dy)
-	{
+	protected void offsetHealthBar(float dx, float dy) {
 		if (healthBar == null)
 			return;
 
@@ -1106,12 +975,10 @@ public abstract class Unit extends MobileEntity implements Dash
 		healthBar.offset(barDx, barDy);
 	}
 
-	public void constrainHealthBar(boolean constrainHealthBar)
-	{
+	public void constrainHealthBar(boolean constrainHealthBar) {
 		if (this.constrainHealthBar == constrainHealthBar)
 			return;
-		else if (healthBar == null)
-		{
+		else if (healthBar == null) {
 			this.constrainHealthBar = constrainHealthBar;
 			return;
 		}
@@ -1119,8 +986,7 @@ public abstract class Unit extends MobileEntity implements Dash
 		final float barDx;
 		final float barDy;
 
-		if (constrainHealthBar)
-		{
+		if (constrainHealthBar) {
 			if (healthBarVirtualX <= healthBarVirtualXGap)
 				barDx = healthBarVirtualXGap - healthBarBackground.getX();
 			else if (healthBarVirtualX >= Screen.WIDTH - healthBarVirtualXGap)
@@ -1132,18 +998,11 @@ public abstract class Unit extends MobileEntity implements Dash
 				barDy = HEALTH_BAR_MIN_Y - healthBarBackground.getY();
 			else
 				barDy = healthBarVirtualY - healthBarBackground.getY();
-
-			//healthBarBackground.offset(barDx, barDy);
-			//healthBar.offset(barDx, barDy);
-		}
-		else
-		{
+		} else {
 			barDx = getImageX() - healthBarBackground.getX();
 			barDy = hitbox.getBottom() - ((hitbox.getBottom() - getImageY()) * 2) - HEALTH_BAR_GAP - healthBarBackground.getY();
 		}
 
-		// TESTME: these offsets were moved from the if section above (previously the else section set barDx and barDy but they were
-		//never used)
 		healthBarBackground.offset(barDx, barDy);
 		healthBar.offset(barDx, barDy);
 
@@ -1151,8 +1010,7 @@ public abstract class Unit extends MobileEntity implements Dash
 	}
 
 	@Override
-	public void scale(double widthRatio, double heightRatio)
-	{
+	public void scale(double widthRatio, double heightRatio) {
 		// Remember some values for moving the health bar after the scale has happened
 		final float curYGap = healthBarVirtualY - getImageY();
 		final float oldImageY = getImageY();    // Used for health bar positioning later in scale()
@@ -1165,18 +1023,13 @@ public abstract class Unit extends MobileEntity implements Dash
 
 		// Entity scale method will scale all animations and the current image. This means that one or both of the idle
 		//Sprites will be left unscaled so scale it/them here
-		if (getSprite() == idleLeftSprite)
-		{
+		if (getSprite() == idleLeftSprite) {
 			if (idleRightSprite != null)
 				idleRightSprite.scale(widthRatio, heightRatio);
-		}
-		else if (getSprite() == idleRightSprite)
-		{
+		} else if (getSprite() == idleRightSprite) {
 			if (idleLeftSprite != null)
 				idleLeftSprite.scale(widthRatio, heightRatio);
-		}
-		else
-		{
+		} else {
 			if (idleLeftSprite != null)
 				idleLeftSprite.scale(widthRatio, heightRatio);
 			if (idleRightSprite != null)
@@ -1193,18 +1046,15 @@ public abstract class Unit extends MobileEntity implements Dash
 		deathAnimXOffset *= widthRatio;
 
 		// Move hpBar to compensate for heightChange
-		if (!Util.equals(heightRatio, 1.0))
-		{
+		if (!Util.equals(heightRatio, 1.0)) {
 			final float newYGap = (float) (curYGap * heightRatio);
 			final float dImageY = getImageY() - oldImageY;    // Represents the change in imageY position
 			offsetHealthBar(0, newYGap - curYGap + dImageY);
 		}
 	}
 
-	public void setPath(List<Point> path)
-	{
-		if (path == null || path.isEmpty())
-		{
+	public void setPath(List<Point> path) {
+		if (path == null || path.isEmpty()) {
 			this.path.clear();
 			if (!isDisplacing())
 				setDestination(null);
@@ -1217,26 +1067,24 @@ public abstract class Unit extends MobileEntity implements Dash
 			setDestination(this.path.remove());
 	}
 
-	public void pathTo(Point end)
-	{
+	public void pathTo(Point end) {
 		setPath(GameScreen.map.getPath(getCenter(), end));
 	}
 
-	// Kills this Unit. Also, this is called by GameScreen when the unit has died via other means so if there is any special
-	//death related code to run, over-write this method and do it there
-	public void die()
-	{
+	/**
+	 * Kills this Unit. Also, this is called by GameScreen when the unit has died via other means so if there is any special death related code to
+	 * run, over-write this method and do it there
+	 */
+	public void die() {
 		hp = 0;
-		if (pickUp != null)
-		{
+		if (pickUp != null) {
 			pickUp.offsetTo(getX(), getY());
 			queueAreaEffect(pickUp);
 		}
 	}
 
 	@Override
-	public void setDestination(Point p)
-	{
+	public void setDestination(Point p) {
 		super.setDestination(p);
 
 		if (p == null)
@@ -1244,8 +1092,7 @@ public abstract class Unit extends MobileEntity implements Dash
 	}
 
 	@Override
-	public void setDestination(float destX, float destY)
-	{
+	public void setDestination(float destX, float destY) {
 		faceTowards(destX);
 
 		super.setDestination(destX, destY);
@@ -1254,26 +1101,26 @@ public abstract class Unit extends MobileEntity implements Dash
 			walkingAnim();
 	}
 
-	public Point getPathDestination()
-	{
+	public Point getPathDestination() {
 		if (!path.isEmpty())
 			return path.get(path.size() - 1);
 		else
 			return getDestination();
 	}
 
-	// Returns the appropriate firing location (e.g. gun / hand position). Abilities may ask for this location when firing
-	//a projectile
-	public Point getFiringLocation(Point destination)
-	{
+	/**
+	 * @return the appropriate firing location (e.g. gun / hand position). Abilities may ask for this location when firing a projectile
+	 */
+	public Point getFiringLocation(Point destination) {
 		faceTowards(destination.x);
 
 		return getFiringLocation();
 	}
 
-	// Returns the firing location based on the direction this Unit is currently facing (left or right)
-	public Point getFiringLocation()
-	{
+	/**
+	 * @return the firing location based on the direction this Unit is currently facing (left or right)
+	 */
+	public Point getFiringLocation() {
 		if (facingLeft)
 			return new Point(getImageX() - firingOffsetX, getImageY() + firingOffsetY);
 		else
@@ -1281,167 +1128,135 @@ public abstract class Unit extends MobileEntity implements Dash
 	}
 
 	@Override
-	public void setLayerHeight(int layerHeight)
-	{
+	public void setLayerHeight(int layerHeight) {
 		super.setLayerHeight(layerHeight);
 
 		for (final StatusEffect se : statusEffects)
 			se.setLayerHeight(layerHeight + 1);        // + 1 added to make buffs draw on top of unit
 	}
 
-	public float getShields()
-	{
+	public float getShields() {
 		float ret = 0;
-		for (final StatusEffect se : statusEffects)
-		{
+		for (final StatusEffect se : statusEffects) {
 			if (se.getStats().bonusShields > 0)
 				ret += se.getStats().bonusShields;
 		}
 		return ret;
 	}
 
-	public float getFiringOffsetX()
-	{
+	public float getFiringOffsetX() {
 		return firingOffsetX;
 	}
 
-	public float getFiringOffsetY()
-	{
+	public float getFiringOffsetY() {
 		return firingOffsetY;
 	}
 
-	public float getTopGap()
-	{
+	public float getTopGap() {
 		return topGap;
 	}
 
-	public float getMoveSpeed()
-	{
+	public float getMoveSpeed() {
 		return ((float) (stats.moveSpeedPercent * stats.moveSpeed));
 	}
 
-	public float getHp()
-	{
+	public float getHp() {
 		return hp;
 	}
 
-	public float getMaxHp()
-	{
+	public float getMaxHp() {
 		return stats.maxHp;
 	}
 
-	public int getFaction()
-	{
+	public int getFaction() {
 		return teammates;
 	}
 
-	public int getOpponents()
-	{
+	public int getOpponents() {
 		return opponents;
 	}
 
-	public int getTeammates()
-	{
+	public int getTeammates() {
 		return teammates;
 	}
 
-	public boolean isSlowable()
-	{
+	public boolean isSlowable() {
 		return slowable;
 	}
 
-	public boolean isDisplaceable()
-	{
+	public boolean isDisplaceable() {
 		return displaceable;
 	}
 
-	public boolean isDisplacing()
-	{
+	public boolean isDisplacing() {
 		return displacementEffect != null;
 	}
 
-	public boolean isFacingLeft()
-	{
+	public boolean isFacingLeft() {
 		return facingLeft;
 	}
 
-	public boolean isFacingRight()
-	{
+	public boolean isFacingRight() {
 		return !facingLeft;
 	}
 
-	public int getWalkingLeftIndex()
-	{
+	public int getWalkingLeftIndex() {
 		return walkingLeft;
 	}
 
-	public int getWalkingRightIndex()
-	{
+	public int getWalkingRightIndex() {
 		return walkingRight;
 	}
 
-	public int getPreFiringLeftIndex()
-	{
+	public int getPreFiringLeftIndex() {
 		return preFiringLeft;
 	}
 
-	public int getPreFiringRightIndex()
-	{
+	public int getPreFiringRightIndex() {
 		return preFiringRight;
 	}
 
-	public int getPreChannelingLeftIndex()
-	{
+	public int getPreChannelingLeftIndex() {
 		return preChannelingLeft;
 	}
 
-	public int getPreChannelingRightIndex()
-	{
+	public int getPreChannelingRightIndex() {
 		return preChannelingRight;
 	}
 
-	public int getChannelingLeftIndex()
-	{
+	public int getChannelingLeftIndex() {
 		return channelingLeft;
 	}
 
-	public int getChannelingRightIndex()
-	{
+	public int getChannelingRightIndex() {
 		return channelingRight;
 	}
 
-	public int getPostChannelingLeftIndex()
-	{
+	public int getPostChannelingLeftIndex() {
 		return postChannelingLeft;
 	}
 
-	public int getPostChannelingRightIndex()
-	{
+	public int getPostChannelingRightIndex() {
 		return postChannelingRight;
 	}
 
-	public int getPostFiringLeftIndex()
-	{
+	public int getPostFiringLeftIndex() {
 		return postFiringLeft;
 	}
 
-	public int getPostFiringRightIndex()
-	{
+	public int getPostFiringRightIndex() {
 		return postFiringRight;
 	}
 
-	public boolean isFiring()
-	{
+	public boolean isFiring() {
 		return isFiring;
 	}
 
-	public boolean isMainUnit()
-	{
+	public boolean isMainUnit() {
 		return mainUnit;
 	}
 
-	public void setFaction(int faction)
-	{
+	public void setFaction(int faction) {
 		teammates = faction;
 		opponents = (teammates + 1) % 2;
 
@@ -1451,51 +1266,42 @@ public abstract class Unit extends MobileEntity implements Dash
 			createHealthBar(SpriteManager.hpBarBackground, SpriteManager.hpGregHealth);
 	}
 
-	public void setPickUp(PickUp pickUp)
-	{
+	public void setPickUp(PickUp pickUp) {
 		this.pickUp = pickUp;
 	}
 
-	public void setMainUnit(boolean mainUnit)
-	{
+	public void setMainUnit(boolean mainUnit) {
 		this.mainUnit = mainUnit;
 	}
 
-	public void setFiring(boolean isFiring)
-	{
+	public void setFiring(boolean isFiring) {
 		this.isFiring = isFiring;
 	}
 
-	public void setBaseMoveSpeed(float moveSpeed)
-	{
+	public void setBaseMoveSpeed(float moveSpeed) {
 		baseStats.moveSpeed = moveSpeed;
 		updateStats();
 	}
 
-	public void setSlowable(boolean slowable)
-	{
+	public void setSlowable(boolean slowable) {
 		this.slowable = slowable;
 	}
 
-	public void setDisplaceable(boolean displaceable)
-	{
+	public void setDisplaceable(boolean displaceable) {
 		this.displaceable = displaceable;
 	}
 
-	public void setTopGap(float topGap)
-	{
+	public void setTopGap(float topGap) {
 		this.topGap = topGap;
 	}
 
-	protected void setFiringOffsets(float offsetX, float offsetY)
-	{
+	protected void setFiringOffsets(float offsetX, float offsetY) {
 		firingOffsetX = offsetX;
 		firingOffsetY = offsetY - Projectile.DEFAULT_IMAGE_OFFSET_Y;
 	}
 
 	@Override
-	public void setVisible(boolean isVisible)
-	{
+	public void setVisible(boolean isVisible) {
 		super.setVisible(isVisible);
 
 		// Set statusEffect animation visibility
@@ -1509,52 +1315,44 @@ public abstract class Unit extends MobileEntity implements Dash
 			healthBar.setVisible(isVisible);
 	}
 
-	public void queueProjectile(Projectile p)
-	{
+	public void queueProjectile(Projectile p) {
 		projectilesBuffer.add(p);
 	}
 
-	public List<Projectile> getProjectileQueue()
-	{
+	public List<Projectile> getProjectileQueue() {
 		projectilesReady.clear();
 		projectilesReady.addAll(projectilesBuffer);
 		projectilesBuffer.clear();
 		return projectilesReady;
 	}
 
-	public void queueAreaEffect(AreaEffect ae)
-	{
+	public void queueAreaEffect(AreaEffect ae) {
 		areaEffectsBuffer.add(ae);
 	}
 
-	public List<AreaEffect> getAreaEffectQueue()
-	{
+	public List<AreaEffect> getAreaEffectQueue() {
 		areaEffectsReady.clear();
 		areaEffectsReady.addAll(areaEffectsBuffer);
 		areaEffectsBuffer.clear();
 		return areaEffectsReady;
 	}
 
-	public void queueExplosion(Explosion e)
-	{
+	public void queueExplosion(Explosion e) {
 		explosionsBuffer.add(e);
 	}
 
-	public List<Explosion> getExplosionQueue()
-	{
+	public List<Explosion> getExplosionQueue() {
 		explosionsReady.clear();
 		explosionsReady.addAll(explosionsBuffer);
 		explosionsBuffer.clear();
 		return explosionsReady;
 	}
 
-	public void queueAIUnit(AIUnit unit)
-	{
+	public void queueAIUnit(AIUnit unit) {
 		unitsBuffer.add(unit);
 	}
 
-	public List<AIUnit> getAIUnitQueue()
-	{
+	public List<AIUnit> getAIUnitQueue() {
 		unitsReady.clear();
 		unitsReady.addAll(unitsBuffer);
 		unitsBuffer.clear();
@@ -1562,8 +1360,7 @@ public abstract class Unit extends MobileEntity implements Dash
 	}
 
 	@Override
-	public void close()
-	{
+	public void close() {
 		super.close();
 
 		deathAnim();

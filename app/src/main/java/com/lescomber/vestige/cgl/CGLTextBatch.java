@@ -4,8 +4,7 @@ package com.lescomber.vestige.cgl;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 
-public class CGLTextBatch
-{
+public class CGLTextBatch {
 	private final static int VERTEX_SIZE = 5;            // Vertex Size (in Components) ie. (X,Y,U,V,M), M is MVP matrix index
 	private final static int VERTICES_PER_SPRITE = 4;    // Vertices Per Sprite
 	private final static int INDICES_PER_SPRITE = 6;    // Indices Per Sprite
@@ -24,8 +23,7 @@ public class CGLTextBatch
 	// D: prepare the sprite batcher for specified maximum number of sprites
 	// A: maxSprites - the maximum allowed sprites per batch
 	// program - program to use when drawing
-	public CGLTextBatch(int maxSprites, int programHandle/* , Program program */)
-	{
+	public CGLTextBatch(int maxSprites, int programHandle/* , Program program */) {
 		vertexBuffer = new float[maxSprites * VERTICES_PER_SPRITE * VERTEX_SIZE]; // Create Vertex Buffer
 
 		// Create rendering Vertices
@@ -38,8 +36,7 @@ public class CGLTextBatch
 		final short[] indices = new short[maxSprites * INDICES_PER_SPRITE]; // Create Temp Index Buffer
 		final int len = indices.length; // Get Index Buffer Length
 		short j = 0; // Counter
-		for (int i = 0; i < len; i += INDICES_PER_SPRITE, j += VERTICES_PER_SPRITE)
-		{ // FOR Each Index Set (Per Sprite)
+		for (int i = 0; i < len; i += INDICES_PER_SPRITE, j += VERTICES_PER_SPRITE) { // FOR Each Index Set (Per Sprite)
 			indices[i + 0] = (short) (j + 0); // Calculate Index 0
 			indices[i + 1] = (short) (j + 1); // Calculate Index 1
 			indices[i + 2] = (short) (j + 2); // Calculate Index 2
@@ -51,8 +48,7 @@ public class CGLTextBatch
 		mMVPMatricesHandle = GLES20.glGetUniformLocation(programHandle, "u_MVPMatrix");
 	}
 
-	public void beginBatch()
-	{
+	public void beginBatch() {
 		numSprites = 0;    // Empty Sprite Counter
 		bufferIndex = 0;    // Reset Buffer Index (Empty)
 	}
@@ -61,8 +57,7 @@ public class CGLTextBatch
 	// D: signal the end of a batch. render the batched sprites
 	// A: [none]
 	// R: [none]
-	public void endBatch()
-	{
+	public void endBatch() {
 		if (numSprites > 0) // IF Any Sprites to render, bind MVP matrices array to shader
 		{
 			GLES20.glUniformMatrix4fv(mMVPMatricesHandle, numSprites, false, uMVPMatrices, 0);
@@ -85,10 +80,8 @@ public class CGLTextBatch
 	// region - the texture region to use for sprite
 	// modelMatrix - the model matrix to assign to the sprite
 	// R: [none]
-	public void drawSprite(float x, float y, float width, float height, CGLTextureRegion region, float[] mModelView)
-	{
-		if (numSprites == maxSprites)
-		{ // IF Sprite Buffer is Full
+	public void drawSprite(float x, float y, float width, float height, CGLTextureRegion region, float[] mModelView) {
+		if (numSprites == maxSprites) { // IF Sprite Buffer is Full
 			endBatch(); // End Batch
 			// NOTE: leave current texture bound!!
 			numSprites = 0; // Empty Sprite Counter
@@ -131,8 +124,7 @@ public class CGLTextBatch
 		Matrix.multiplyMM(mMVPMatrix, 0, CGLRenderer.mProjectionMatrix, 0, mModelView, 0);
 
 		// TODO: make sure numSprites < 24
-		for (int i = 0; i < 16; ++i)
-		{
+		for (int i = 0; i < 16; ++i) {
 			uMVPMatrices[numSprites * 16 + i] = mMVPMatrix[i];
 		}
 

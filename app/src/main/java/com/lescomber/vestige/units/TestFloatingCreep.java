@@ -4,10 +4,8 @@ import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.statuseffects.StatPack;
 
-public class TestFloatingCreep extends AIUnit
-{
-	public TestFloatingCreep()
-	{
+public class TestFloatingCreep extends AIUnit {
+	public TestFloatingCreep() {
 		super(32, 28, -13, 17);
 
 		final StatPack baseStats = new StatPack();
@@ -32,14 +30,12 @@ public class TestFloatingCreep extends AIUnit
 		setPreFiringRightAnimation(preFiringRightAnim);
 	}
 
-	public TestFloatingCreep(TestFloatingCreep copyMe)
-	{
+	public TestFloatingCreep(TestFloatingCreep copyMe) {
 		super(copyMe);
 	}
 
 	@Override
-	public TestFloatingCreep copy()
-	{
+	public TestFloatingCreep copy() {
 		return new TestFloatingCreep(this);
 	}
 }

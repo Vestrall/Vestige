@@ -9,8 +9,7 @@ import com.lescomber.vestige.screens.GameScreen;
 import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.statuseffects.StatPack;
 
-public class PewBallGoalie extends AIUnit
-{
+public class PewBallGoalie extends AIUnit {
 	// Levels 1-9 base + increasePerLevel[0]
 	// Levels 10-20 = base + (increasePerLevel[1] * (levelNum - 10))
 	// Levels 21+ = Levels 10-20 + (increasePerLevel[2] * (levelNum - 20))
@@ -23,20 +22,19 @@ public class PewBallGoalie extends AIUnit
 	private static final float X = 750;
 	private final float[] yRange;
 
-	// Goalie will move in moveRange increments in the direction of whatever PewBall it is currently tracking. Larger moveRange results
-	//in a less responsive goalie (since he won't pick their next destination until they reach their current one). The decreasePerLevel
-	//part occurs between KEY_LEVELS[0] and KEY_LEVELS[1]
+	// Goalie will move in moveRange increments in the direction of whatever PewBall it is currently tracking. Larger moveRange results in a less
+	//responsive goalie (since he won't pick their next destination until they reach their current one). The decreasePerLevel part occurs between
+	//KEY_LEVELS[0] and KEY_LEVELS[1]
 	private static final float BASE_MOVE_RANGE = 60;
 	private static final float MOVE_RANGE_DECREASE_PER_LEVEL = 4;
 	private static final float MOVE_RANGE_DECREASE_MAX = 40;
 	private final float moveRange;
 
-	private PewBall targetBall;		// targetBall is the ball this goalie has been assigned (by PewBallMap) to track and stop (for now)
+	private PewBall targetBall;        // targetBall is the ball this goalie has been assigned (by PewBallMap) to track and stop (for now)
 
 	private int destinationDelay;
 
-	public PewBallGoalie(int levelNum, float startY)
-	{
+	public PewBallGoalie(int levelNum, float startY) {
 		super(50, 40, -23, 30);
 
 		// PewBallGoalies are treated like good guys so they don't eat player projectiles
@@ -49,10 +47,9 @@ public class PewBallGoalie extends AIUnit
 		final float speedIncrease;
 		if (levelNum < PewBallMap.KEY_LEVELS[0])
 			speedIncrease = levelNum * SPEED_INCREASE_PER_LEVEL[0];
-		else
-		{
-			int midCount = Math.min(PewBallMap.KEY_LEVELS[1] - PewBallMap.KEY_LEVELS[0], levelNum - PewBallMap.KEY_LEVELS[0]);
-			int highCount = Math.max(levelNum - PewBallMap.KEY_LEVELS[1], 0);
+		else {
+			final int midCount = Math.min(PewBallMap.KEY_LEVELS[1] - PewBallMap.KEY_LEVELS[0], levelNum - PewBallMap.KEY_LEVELS[0]);
+			final int highCount = Math.max(levelNum - PewBallMap.KEY_LEVELS[1], 0);
 			speedIncrease = (midCount * SPEED_INCREASE_PER_LEVEL[1]) + (highCount * SPEED_INCREASE_PER_LEVEL[2]);
 		}
 		baseStats.moveSpeed = BASE_SPEED + speedIncrease;
@@ -95,8 +92,7 @@ public class PewBallGoalie extends AIUnit
 		float moveRangeDecrease;
 		if (levelNum < PewBallMap.KEY_LEVELS[0])
 			moveRangeDecrease = levelNum * MOVE_RANGE_DECREASE_PER_LEVEL;
-		else
-		{
+		else {
 			moveRangeDecrease = (levelNum - PewBallMap.KEY_LEVELS[0]) * MOVE_RANGE_DECREASE_PER_LEVEL;
 			if (moveRangeDecrease > MOVE_RANGE_DECREASE_MAX)
 				moveRangeDecrease = MOVE_RANGE_DECREASE_MAX;
@@ -108,8 +104,7 @@ public class PewBallGoalie extends AIUnit
 		destinationDelay = 0;
 	}
 
-	public PewBallGoalie(PewBallGoalie copyMe)
-	{
+	public PewBallGoalie(PewBallGoalie copyMe) {
 		super(copyMe);
 
 		yRange = new float[2];
@@ -122,19 +117,18 @@ public class PewBallGoalie extends AIUnit
 		destinationDelay = 1;
 	}
 
-	private boolean isInRange(float y)
-	{
+	private boolean isInRange(float y) {
 		return y >= yRange[0] && y <= yRange[1];
 	}
 
-	// Used to determine how close a given PewBall's y-coord is to this goalie's yRange in order to determine which goalie should
-	//track which ball. We return the distance rather than a simple boolean in order to support > 2 goalies (which isn't curently used)
-	public float distanceFromRange(float y)
-	{
+	/**
+	 * Used to determine how close a given PewBall's y-coord is to this goalie's yRange in order to determine which goalie should track which ball.
+	 * We return the distance rather than a simple boolean in order to support > 2 goalies (which isn't curently used)
+	 */
+	public float distanceFromRange(float y) {
 		if (isInRange(y))
 			return 0;
-		else
-		{
+		else {
 			if (y > yRange[1])
 				return y - yRange[1];
 			else
@@ -142,17 +136,14 @@ public class PewBallGoalie extends AIUnit
 		}
 	}
 
-	public void track(PewBall ball)
-	{
+	public void track(PewBall ball) {
 		this.targetBall = ball;
 		if (getDestination() == null)
 			chooseDestination();
 	}
 
-	private void chooseDestination()
-	{
-		if (targetBall == null)
-		{
+	private void chooseDestination() {
+		if (targetBall == null) {
 			destinationDelay = 60;
 			return;
 		}
@@ -173,10 +164,9 @@ public class PewBallGoalie extends AIUnit
 		else if (yDest > yRange[1])
 			yDest = yRange[1];
 
-		// Don't bother setting a new destination if it is very close to our current position (prevents infinitely looping
-		//pathDestinationReached() -> chooseDestination() -> repeat)
-		if (Math.abs(yDest - getY()) < 5)
-		{
+		// Don't set a new destination if it is very close to our current position (prevents infinitely looping
+		//pathDestinationReached() -> chooseDestination())
+		if (Math.abs(yDest - getY()) < 5) {
 			destinationDelay = 60;
 			return;
 		}
@@ -185,31 +175,30 @@ public class PewBallGoalie extends AIUnit
 	}
 
 	@Override
-	protected void pathDestinationReached()
-	{
+	protected void pathDestinationReached() {
 		chooseDestination();
 
 		super.pathDestinationReached();
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
-		if (destinationDelay > 0)
-		{
+		if (destinationDelay > 0) {
 			destinationDelay -= deltaTime;
 			if (destinationDelay <= 0)
 				chooseDestination();
 		}
 	}
 
-	@Override public void hit(HitBundle bundle) { }        // Invincible
+	@Override
+	public void hit(HitBundle bundle) {
+		// Invincible
+	}
 
 	@Override
-	public AIUnit copy()
-	{
+	public AIUnit copy() {
 		return new PewBallGoalie(this);
 	}
 }

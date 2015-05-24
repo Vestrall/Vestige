@@ -7,9 +7,9 @@ import com.lescomber.vestige.R;
 import com.lescomber.vestige.audio.AudioManager;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.AndroidGame;
-import com.lescomber.vestige.framework.Input.TouchEvent;
 import com.lescomber.vestige.framework.Preferences;
 import com.lescomber.vestige.framework.Screen;
+import com.lescomber.vestige.framework.TouchHandler.TouchEvent;
 import com.lescomber.vestige.graphics.Text;
 import com.lescomber.vestige.graphics.Text.Alignment;
 import com.lescomber.vestige.graphics.TextStyle;
@@ -22,13 +22,12 @@ import com.lescomber.vestige.widgets.WidgetListener;
 
 import java.util.List;
 
-public class OptionsScreen extends Screen implements WidgetListener
-{
+public class OptionsScreen extends Screen implements WidgetListener {
 	// Global option fields
-	public static float musicVolume = Preferences.getFloat("musicVolume", 1.0f);
-	public static float sfxVolume = Preferences.getFloat("sfxVolume", 1.0f);
-	public static boolean displayFPS = Preferences.getBoolean("displayFPS", true);
-	public static boolean displayWave = Preferences.getBoolean("displayWave", true);
+	public static float musicVolume = Preferences.getMusicVolume();
+	public static float sfxVolume = Preferences.getSfxVolume();
+	public static boolean displayFps = Preferences.isFpsDisplayed();
+	public static boolean displayWave = Preferences.isWaveDisplayed();
 
 	public static int difficulty = 0;
 	public static final int EASY = 0;
@@ -39,12 +38,11 @@ public class OptionsScreen extends Screen implements WidgetListener
 	private final Button unlockAllButton;
 	private final Slider musicVolumeSlider;
 	private final Slider sfxVolumeSlider;
-	private final CheckBox displayFPSBox;
+	private final CheckBox displayFpsBox;
 	private final CheckBox displayWaveBox;
 	private final Button backButton;
 
-	public OptionsScreen(AndroidGame game)
-	{
+	public OptionsScreen(AndroidGame game) {
 		super(game);
 
 		SpriteManager.getInstance().setBackground(Assets.genericBackground);
@@ -53,14 +51,12 @@ public class OptionsScreen extends Screen implements WidgetListener
 		final Resources res = AndroidGame.res;
 		final TextStyle headingStyle = TextStyle.headingStyle();
 		final TextStyle optionsStyle = TextStyle.bodyStyleWhite();
-		//final TextStyle optionsStyle = new TextStyle("BLANCH_CAPS.otf", 57, 255, 255, 255);
-		//optionsStyle.setSpacing(2.5f);
 
 		final float LEFT_COLUMN_X = 220;
 		new Text(headingStyle, res.getString(R.string.options), Screen.MIDX, 75);
 		new Text(optionsStyle, res.getString(R.string.music), LEFT_COLUMN_X, 169);
 		new Text(optionsStyle, res.getString(R.string.sfx), LEFT_COLUMN_X, 223);
-		new Text(optionsStyle, res.getString(R.string.displayFPS), 276, 277, Alignment.LEFT);
+		new Text(optionsStyle, res.getString(R.string.displayFps), 276, 277, Alignment.LEFT);
 		new Text(optionsStyle, res.getString(R.string.displayWave), 276, 328, Alignment.LEFT);
 
 		musicVolumeSlider = new Slider(460, 169, 368, 30, 0, 100);
@@ -71,10 +67,10 @@ public class OptionsScreen extends Screen implements WidgetListener
 		sfxVolumeSlider.setValue((int) (sfxVolume * 100));
 		sfxVolumeSlider.addWidgetListener(this);
 		sfxVolumeSlider.setVisible(true);
-		displayFPSBox = new CheckBox(LEFT_COLUMN_X, 277);
-		displayFPSBox.setValue(displayFPS);
-		displayFPSBox.addWidgetListener(this);
-		displayFPSBox.setVisible(true);
+		displayFpsBox = new CheckBox(LEFT_COLUMN_X, 277);
+		displayFpsBox.setValue(displayFps);
+		displayFpsBox.addWidgetListener(this);
+		displayFpsBox.setVisible(true);
 		displayWaveBox = new CheckBox(LEFT_COLUMN_X, 328);
 		displayWaveBox.setValue(displayWave);
 		displayWaveBox.addWidgetListener(this);
@@ -93,110 +89,86 @@ public class OptionsScreen extends Screen implements WidgetListener
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		resetProgressButton.update(deltaTime);
 		unlockAllButton.update(deltaTime);
 		backButton.update(deltaTime);
 
-		final List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
+		final List<TouchEvent> touchEvents = game.getTouchEvents();
 
 		final int len = touchEvents.size();
-		for (int i = 0; i < len; i++)
-		{
+		for (int i = 0; i < len; i++) {
 			final TouchEvent event = touchEvents.get(i);
 
 			resetProgressButton.handleEvent(event);
 			unlockAllButton.handleEvent(event);
 			musicVolumeSlider.handleEvent(event);
 			sfxVolumeSlider.handleEvent(event);
-			displayFPSBox.handleEvent(event);
+			displayFpsBox.handleEvent(event);
 			displayWaveBox.handleEvent(event);
 			backButton.handleEvent(event);
 		}
 	}
 
 	@Override
-	public void widgetEvent(WidgetEvent we)
-	{
+	public void widgetEvent(WidgetEvent we) {
 		final Object source = we.getSource();
 
-		if (source == backButton)
-		{
-			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
-			{
-				if (!Screen.isScreenChanging())
-				{
+		if (source == backButton) {
+			if (we.getCommand().equals(Button.ANIMATION_FINISHED)) {
+				if (!Screen.isScreenChanging()) {
 					prepScreenChange();
 					game.setScreen(new MainMenuScreen(game, false));
 				}
 			}
-		}
-		else if (source == resetProgressButton)
-		{
-			if (we.getCommand().equals(Button.BUTTON_PRESSED))
-			{
+		} else if (source == resetProgressButton) {
+			if (we.getCommand().equals(Button.BUTTON_PRESSED)) {
 				Preferences.clear();
 			}
-		}
-		else if (source == unlockAllButton)
-		{
-			if (we.getCommand().equals(Button.BUTTON_PRESSED))
-			{
-				Preferences.setInt("easyStageProgress", 1);
-				Preferences.setInt("easyLevelProgress", Levels.LEVEL_COUNT[0] + 1);
-				Preferences.setInt("mediumStageProgress", 1);
-				Preferences.setInt("mediumLevelProgress", Levels.LEVEL_COUNT[0] + 1);
-				Preferences.setInt("hardStageProgress", 1);
-				Preferences.setInt("hardLevelProgress", Levels.LEVEL_COUNT[0] + 1);
+		} else if (source == unlockAllButton) {
+			if (we.getCommand().equals(Button.BUTTON_PRESSED)) {
+				Preferences.setStageProgress(EASY, 1);
+				Preferences.setLevelProgress(EASY, Levels.LEVEL_COUNT[0] + 1);
+				Preferences.setStageProgress(MEDIUM, 1);
+				Preferences.setLevelProgress(MEDIUM, Levels.LEVEL_COUNT[0] + 1);
+				Preferences.setStageProgress(HARD, 1);
+				Preferences.setLevelProgress(HARD, Levels.LEVEL_COUNT[0] + 1);
 			}
-		}
-		else if (source == musicVolumeSlider)
-		{
+		} else if (source == musicVolumeSlider) {
 			musicVolume = (float) musicVolumeSlider.getValue() / 100;
-			Preferences.setFloat("musicVolume", musicVolume);
+			Preferences.setMusicVolume(musicVolume);
 
 			// Inform AudioManager that music volume has changed so it can update the volume
 			AudioManager.musicVolumeChanged();
-		}
-		else if (source == sfxVolumeSlider)
-		{
+		} else if (source == sfxVolumeSlider) {
 			sfxVolume = (float) sfxVolumeSlider.getValue() / 100;
-			Preferences.setFloat("sfxVolume", sfxVolume);
+			Preferences.setSfxVolume(sfxVolume);
 
 			// Inform AudioManager that sfx volume has changed so it can update the volume of all sound effects
 			AudioManager.sfxVolumeChanged();
-		}
-		else if (source == displayFPSBox)
-		{
-			displayFPS = displayFPSBox.isChecked();
-			Preferences.setBoolean("displayFPS", displayFPS);
-		}
-		else if (source == displayWaveBox)
-		{
+		} else if (source == displayFpsBox) {
+			displayFps = displayFpsBox.isChecked();
+			Preferences.setFpsDisplayed(displayFps);
+		} else if (source == displayWaveBox) {
 			displayWave = displayWaveBox.isChecked();
-			Preferences.setBoolean("displayWave", displayWave);
+			Preferences.setWaveDisplayed(displayWave);
 		}
 	}
 
 	@Override
-	public void pause()
-	{
+	public void pause() {
 	}
 
 	@Override
-	public void resume()
-	{
+	public void resume() {
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 	}
 
 	@Override
-	public void backButton()
-	{
+	public void backButton() {
 		if (!Screen.isScreenChanging())
 			backButton.click();
 	}

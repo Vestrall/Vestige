@@ -8,12 +8,10 @@ import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.statuseffects.StatPack;
 import com.lescomber.vestige.units.FloatingCreep;
 
-public class BabyCreep extends FloatingCreep
-{
+public class BabyCreep extends FloatingCreep {
 	private final int dancingAnim;
 
-	public BabyCreep()
-	{
+	public BabyCreep() {
 		super();
 
 		final StatPack baseStats = new StatPack();
@@ -41,15 +39,13 @@ public class BabyCreep extends FloatingCreep
 		scale(0.5, 0.5);
 	}
 
-	private void randomMove()
-	{
+	private void randomMove() {
 		final Point dest = new Point((Util.rand.nextFloat() * 700) + 50, (Util.rand.nextFloat() * 380) + 50);
 		pathTo(dest);
 	}
 
 	@Override
-	public void die()
-	{
+	public void die() {
 		super.die();
 
 		// Spawn the angries
@@ -83,8 +79,7 @@ public class BabyCreep extends FloatingCreep
 	}
 
 	@Override
-	protected void pathDestinationReached()
-	{
+	protected void pathDestinationReached() {
 		// Random chance to dance
 		if (Util.rand.nextFloat() < 0.3f)
 			restartAnimation(dancingAnim);
@@ -93,15 +88,13 @@ public class BabyCreep extends FloatingCreep
 	}
 
 	@Override
-	protected void animationFinished(int animIndex)
-	{
+	protected void animationFinished(int animIndex) {
 		super.animationFinished(animIndex);
 
 		randomMove();
 	}
 
 	@Override
-	public void chooseDestination()
-	{
+	public void chooseDestination() {
 	}
 }

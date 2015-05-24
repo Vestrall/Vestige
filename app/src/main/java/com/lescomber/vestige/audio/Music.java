@@ -5,94 +5,75 @@ import android.media.MediaPlayer;
 
 import java.io.IOException;
 
-public class Music
-{
+public class Music {
 	private final MediaPlayer mediaPlayer;
 	private boolean isPrepared;
 	private final String filename;
 
-	public Music(AssetFileDescriptor assetDescriptor, String filename)
-	{
+	public Music(AssetFileDescriptor assetDescriptor, String filename) {
 		this.filename = filename;
 		mediaPlayer = new MediaPlayer();
-		try
-		{
+		try {
 			mediaPlayer.setDataSource(assetDescriptor.getFileDescriptor(), assetDescriptor.getStartOffset(), assetDescriptor.getLength());
 			mediaPlayer.prepare();
 			isPrepared = true;
 			mediaPlayer.setLooping(true);
-		} catch (final Exception e)
-		{
+		} catch (final Exception e) {
 			throw new RuntimeException("Couldn't load music");
 		}
 	}
 
-	public void dispose()
-	{
+	public void dispose() {
 		if (mediaPlayer.isPlaying())
 			mediaPlayer.stop();
 
 		mediaPlayer.release();
 	}
 
-	public boolean isPlaying()
-	{
+	public boolean isPlaying() {
 		return mediaPlayer.isPlaying();
 	}
 
-	public boolean isPlaying(String filename)
-	{
+	public boolean isPlaying(String filename) {
 		return (this.filename.equals(filename) && isPlaying());
 	}
 
-	public void pause()
-	{
+	public void pause() {
 		if (mediaPlayer.isPlaying())
 			mediaPlayer.pause();
 	}
 
-	public void play()
-	{
+	public void play() {
 		if (mediaPlayer.isPlaying())
 			return;
 
-		try
-		{
-			synchronized (this)
-			{
-				if (!isPrepared)
-				{
+		try {
+			synchronized (this) {
+				if (!isPrepared) {
 					mediaPlayer.prepare();
 					isPrepared = true;
 				}
 			}
 			mediaPlayer.start();
-		} catch (final IllegalStateException e)
-		{
+		} catch (final IllegalStateException e) {
 			e.printStackTrace();
-		} catch (final IOException e)
-		{
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void resume()
-	{
+	public void resume() {
 		if (isPrepared && !mediaPlayer.isPlaying())
 			mediaPlayer.start();
 	}
 
-	public void setVolume(float volume)
-	{
+	public void setVolume(float volume) {
 		mediaPlayer.setVolume(volume, volume);
 	}
 
-	public void stop()
-	{
-		if (mediaPlayer.isPlaying() == true)
-		{
-			synchronized (this)
-			{
+	public void stop() {
+		if (mediaPlayer.isPlaying() == true) {
+			synchronized (this) {
 				mediaPlayer.stop();
 				isPrepared = false;
 			}

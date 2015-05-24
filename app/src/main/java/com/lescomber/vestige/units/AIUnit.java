@@ -9,8 +9,7 @@ import com.lescomber.vestige.statuseffects.StatPack;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AIUnit extends Unit
-{
+public abstract class AIUnit extends Unit {
 	private final ArrayList<AIAbility> abilities;
 
 	private AIAbility queuedAbility;
@@ -18,8 +17,7 @@ public abstract class AIUnit extends Unit
 	// true when this unit is first entering the map and should therefore not use abilities or move orders until arrival
 	private boolean isEntering;
 
-	public AIUnit(float hitboxWidth, float hitboxHeight, float imageOffsetY, float topGap)
-	{
+	public AIUnit(float hitboxWidth, float hitboxHeight, float imageOffsetY, float topGap) {
 		super(hitboxWidth, hitboxHeight, imageOffsetY);
 
 		setTopGap(topGap);
@@ -33,15 +31,13 @@ public abstract class AIUnit extends Unit
 		isEntering = false;
 	}
 
-	public AIUnit(AIUnit copyMe)
-	{
+	public AIUnit(AIUnit copyMe) {
 		super(copyMe);
 
 		teammates = copyMe.teammates;
 		opponents = copyMe.opponents;
 		abilities = new ArrayList<AIAbility>(3);
-		for (final AIAbility aib : copyMe.abilities)
-		{
+		for (final AIAbility aib : copyMe.abilities) {
 			final AIAbility aibCopy = aib.copy();
 			aibCopy.setOwner(this);
 			abilities.add(aibCopy);
@@ -52,33 +48,27 @@ public abstract class AIUnit extends Unit
 		queuedAbility = null;
 	}
 
-	protected void setDifficultyScaledBaseStats(StatPack baseStats)
-	{
+	protected void setDifficultyScaledBaseStats(StatPack baseStats) {
 		baseStats.maxHp *= 1.0 + ((OptionsScreen.difficulty - 1) * 0.20);
 		baseStats.moveSpeed *= (0.9 + ((OptionsScreen.difficulty - 1) * 0.1)) * (0.9 + Util.rand.nextDouble() * 0.15);
 		setBaseStats(baseStats);
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		// Update frame destination and any animations
 		super.update(deltaTime);
 
 		// Update abilities and fire one if applicable. Note: Will only happen after unit has finished entering GameScreen
-		if (!isEntering)
-		{
+		if (!isEntering) {
 			for (final AIAbility aia : abilities)
 				aia.update(deltaTime);
 
 			// If we are not displacing or currently firing an ability, ask each ability if it's ready to fire until we find one
 			//that is ready to go or we have checked all abilities once each
-			if (!isFiring() && !isDisplacing())
-			{
-				for (final AIAbility aia : abilities)
-				{
-					if (aia.isReadyToFire())
-					{
+			if (!isFiring() && !isDisplacing()) {
+				for (final AIAbility aia : abilities) {
+					if (aia.isReadyToFire()) {
 						startAbility(aia);
 						break;
 					}
@@ -88,96 +78,75 @@ public abstract class AIUnit extends Unit
 	}
 
 	@Override    // Prevent move() from having an effect in the middle of firing an ability (unless that ability is displacing us)
-	protected void move(float dx, float dy)
-	{
+	protected void move(float dx, float dy) {
 		if (!isFiring() || isDisplacing())
 			super.move(dx, dy);
 	}
 
-	public void startAbility(AIAbility ability)
-	{
-		if (ability.usesAnimation())
-		{
-			if ((ability.isChanneled() && preChannelingAnim()) || preFiringAnim())
-			{
+	public void startAbility(AIAbility ability) {
+		if (ability.usesAnimation()) {
+			if ((ability.isChanneled() && preChannelingAnim()) || preFiringAnim()) {
 				setFiring(true);
 				queuedAbility = ability;    // Queue up ability to fire once animation is complete
 				return;
 			}
-		}
-		else
+		} else
 			fire(ability);
 	}
 
-	protected void fire(AIAbility ability)
-	{
+	protected void fire(AIAbility ability) {
 		ability.fire();
 	}
 
-	protected void finishedFiring()
-	{
+	protected void finishedFiring() {
 		setFiring(false);
-		if (getPathDestination() != null)
-		{
+		if (getPathDestination() != null) {
 			faceTowards(getDestination().x);
 			walkingAnim();
-		}
-		else
+		} else
 			idleSprite();
 	}
 
 	@Override
-	protected void animationFinished(int animIndex)
-	{
+	protected void animationFinished(int animIndex) {
 		if (animIndex == getPreFiringLeftIndex() || animIndex == getPreFiringRightIndex() ||
-				animIndex == getPreChannelingLeftIndex() || animIndex == getPreChannelingRightIndex())
-		{
+				animIndex == getPreChannelingLeftIndex() || animIndex == getPreChannelingRightIndex()) {
 			final boolean facingLeft = (animIndex == getPreFiringLeftIndex() || animIndex == getPreChannelingLeftIndex());
 
 			fire(queuedAbility);
 
-			if (!queuedAbility.isChanneled() || !channelingAnim(facingLeft, queuedAbility.getChannelDuration()))
-			{
+			if (!queuedAbility.isChanneled() || !channelingAnim(facingLeft, queuedAbility.getChannelDuration())) {
 				if (!postFiringAnim(facingLeft))
 					finishedFiring();
 			}
 
 			queuedAbility = null;
-		}
-		else if (animIndex == getChannelingLeftIndex())
-		{
+		} else if (animIndex == getChannelingLeftIndex()) {
 			if (!postChannelingAnim(true) && !postFiringAnim(true))
 				finishedFiring();
-		}
-		else if (animIndex == getChannelingRightIndex())
-		{
+		} else if (animIndex == getChannelingRightIndex()) {
 			if (!postChannelingAnim(false) && !postFiringAnim(false))
 				finishedFiring();
-		}
-		else if (animIndex == getPostFiringLeftIndex() || animIndex == getPostFiringRightIndex() ||
+		} else if (animIndex == getPostFiringLeftIndex() || animIndex == getPostFiringRightIndex() ||
 				animIndex == getPostChannelingLeftIndex() || animIndex == getPostChannelingRightIndex())
 			finishedFiring();
 	}
 
-	public void channelFinished()
-	{
+	public void channelFinished() {
 		if (getCurrentAnimID() == getChannelingLeftIndex() || getCurrentAnimID() == getChannelingRightIndex())
 			getAnimation(getCurrentAnimID()).setDuration(0);
 	}
 
 	// Prevent unit from changing move destination if unit is still entering playing field from off-screen
 	@Override
-	public void setDestination(float destX, float destY)
-	{
+	public void setDestination(float destX, float destY) {
 		if (!isEntering)
 			super.setDestination(destX, destY);
 	}
 
 	@Override
-	public void destinationReached()
-	{
-		if (isEntering)
-		{
+	public void destinationReached() {
+		if (isEntering) {
 			isEntering = false;
 			hasEntered();
 		}
@@ -185,53 +154,44 @@ public abstract class AIUnit extends Unit
 	}
 
 	@Override
-	protected void pathDestinationReached()
-	{
+	protected void pathDestinationReached() {
 		if (getPathDestination() == null)
 			idleSprite();
 	}
 
-	public void clearAbilities()
-	{
+	public void clearAbilities() {
 		abilities.clear();
 	}
 
-	public void setBossDefaults()
-	{
+	public void setBossDefaults() {
 		setSlowable(false);
 		setDisplaceable(false);
 	}
 
 	// Override to insert any code that needs to run only after the unit has marched onto the playing field (if spawned
 	//off-screen by GameScreen.map
-	protected void hasEntered()
-	{
+	protected void hasEntered() {
 		constrainHealthBar(true);
 	}
 
-	public void addAbility(AIAbility ability)
-	{
+	public void addAbility(AIAbility ability) {
 		abilities.add(ability);
 	}
 
-	public void setEntering(boolean entering)
-	{
+	public void setEntering(boolean entering) {
 		this.isEntering = entering;
 	}
 
-	public List<AIAbility> getAbilities()
-	{
+	public List<AIAbility> getAbilities() {
 		return abilities;
 	}
 
-	public boolean isEntering()
-	{
+	public boolean isEntering() {
 		return isEntering;
 	}
 
 	@Override
-	public void close()
-	{
+	public void close() {
 		super.close();
 
 		for (final AIAbility aia : abilities)

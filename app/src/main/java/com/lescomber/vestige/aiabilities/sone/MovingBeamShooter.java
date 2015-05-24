@@ -9,8 +9,7 @@ import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.AIUnit;
 import com.lescomber.vestige.units.Unit;
 
-public class MovingBeamShooter extends AIChanneledAbility
-{
+public class MovingBeamShooter extends AIChanneledAbility {
 	private static final float DPS[] = new float[] { 15, 20, 25 };
 	private static final double CHANNEL_DURATION = 4;
 	private static final int DELAY_MAX[] = new int[] { 1600, 1300, 1000 };
@@ -21,8 +20,7 @@ public class MovingBeamShooter extends AIChanneledAbility
 	private Point beamStart;    // Starting point for the beam (a.k.a. firingLocation)
 	private int delay;            // Delay before beam starts rotating
 
-	public MovingBeamShooter(AIUnit owner, double cooldownSeconds)
-	{
+	public MovingBeamShooter(AIUnit owner, double cooldownSeconds) {
 		super(owner, CHANNEL_DURATION, cooldownSeconds);
 
 		beam = null;
@@ -31,8 +29,7 @@ public class MovingBeamShooter extends AIChanneledAbility
 		delay = 0;
 	}
 
-	public MovingBeamShooter(MovingBeamShooter copyMe)
-	{
+	public MovingBeamShooter(MovingBeamShooter copyMe) {
 		super(copyMe);
 
 		beam = copyMe.beam;
@@ -42,8 +39,7 @@ public class MovingBeamShooter extends AIChanneledAbility
 	}
 
 	@Override
-	public void activate()
-	{
+	public void activate() {
 		super.activate();
 
 		// Init delay
@@ -58,12 +54,10 @@ public class MovingBeamShooter extends AIChanneledAbility
 	}
 
 	@Override
-	protected void channeling(int deltaTime)
-	{
+	protected void channeling(int deltaTime) {
 		if (delay > 0)
 			delay -= deltaTime;
-		else
-		{
+		else {
 			// Rotate beam to track target
 			final float maxRotation = RADIANS_PER_MS[OptionsScreen.difficulty] * deltaTime;
 			final Line line = new Line(beamStart, target.getCenter());
@@ -80,30 +74,25 @@ public class MovingBeamShooter extends AIChanneledAbility
 	}
 
 	@Override
-	protected void channelFinished()
-	{
+	protected void channelFinished() {
 		if (beam != null)
 			beam.stopGrowth();
 	}
 
 	@Override
-	public boolean decideToFire()
-	{
+	public boolean decideToFire() {
 		target = Unit.getNearestMember(owner.getCenter(), getTargetFaction());
 
-		if (target != null)
-		{
+		if (target != null) {
 			owner.faceTowards(target.getX());
 			beamStart = owner.getFiringLocation(target.getCenter());
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
 
 	@Override
-	public MovingBeamShooter copy()
-	{
+	public MovingBeamShooter copy() {
 		return new MovingBeamShooter(this);
 	}
 }

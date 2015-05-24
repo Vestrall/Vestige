@@ -8,8 +8,7 @@ import com.lescomber.vestige.screens.GameScreen;
 import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.AIUnit;
 
-public abstract class AIAbility extends Ability
-{
+public abstract class AIAbility extends Ability {
 	protected AIUnit owner;                // AIUnit this Ability belongs to
 
 	private boolean usesAnimation;        // true = activate ability after pre-fire animation completes
@@ -31,8 +30,7 @@ public abstract class AIAbility extends Ability
 
 	private boolean decidedToFire;
 
-	public AIAbility(AIUnit owner, double cooldownSeconds)
-	{
+	public AIAbility(AIUnit owner, double cooldownSeconds) {
 		super();
 
 		this.owner = owner;
@@ -49,8 +47,7 @@ public abstract class AIAbility extends Ability
 		triggerCooldown();
 	}
 
-	public AIAbility(AIAbility copyMe)
-	{
+	public AIAbility(AIAbility copyMe) {
 		super(copyMe);
 
 		owner = copyMe.owner;
@@ -64,14 +61,12 @@ public abstract class AIAbility extends Ability
 	}
 
 	@Override
-	public boolean isReadyToFire()
-	{
+	public boolean isReadyToFire() {
 		// Paraphrase: return (cooldown ready) and (ability specific decision making about whether or not to fire)
 		return super.isReadyToFire() && decideToFire();
 	}
 
-	public void fire()
-	{
+	public void fire() {
 		decidedToFire = false;
 		activate();
 		playSoundEffect();
@@ -79,31 +74,29 @@ public abstract class AIAbility extends Ability
 	}
 
 	@Override
-	public void triggerCooldown()
-	{
+	public void triggerCooldown() {
 		super.triggerCooldown();
 		if (randomCooldowns)
 			cooldown *= 1.0 + (0.2 * Util.rand.nextDouble());
 	}
 
 	@Override
-	public void setMaxCooldown(double cooldownSeconds)
-	{
+	public void setMaxCooldown(double cooldownSeconds) {
 		// Friendly unit cooldowns are unchanged. Also, cooldown remains unchanged if this AIAbility has not been told to
 		//scale with difficulty levels
 		if (owner.getFaction() == GameScreen.gregs || !difficultyScaled)
 			super.setMaxCooldown(cooldownSeconds);
-		else
-		{
+		else {
 			// Grant enemy AI Units a percentage based cooldown reduction based on difficulty level
 			final double adjustedCD = CD_REDUCTION[OptionsScreen.difficulty] * cooldownSeconds;
 			super.setMaxCooldown(adjustedCD);
 		}
 	}
 
-	// Returns true if difficulty was scaled, false if no changes were made (i.e. if it has already been scaled previously)
-	public boolean scaleForDifficulty()
-	{
+	/**
+	 * Returns true if difficulty was scaled, false if no changes were made (i.e. if it has already been scaled previously)
+	 */
+	public boolean scaleForDifficulty() {
 		// If already scaled, do nothing
 		if (difficultyScaled)
 			return false;
@@ -116,84 +109,77 @@ public abstract class AIAbility extends Ability
 		return true;
 	}
 
-	// Helper method to choose a random map location
-	protected Point getRandomLocation()
-	{
+	/**
+	 * Helper method to choose a random map location
+	 */
+	protected Point getRandomLocation() {
 		final Point ret = new Point();
 		ret.x = Util.rand.nextFloat() * Screen.WIDTH;
 		ret.y = Util.rand.nextFloat() * Screen.HEIGHT;
 		return ret;
 	}
 
-	// Called when owner gets killed/stunned etc (regardless of whether or not this ability was currently firing).
-	//Particularly used for channeled abilities
-	public void interrupted()
-	{
+	/**
+	 * Called when owner gets killed/stunned etc (regardless of whether or not this ability was currently firing). Particularly used for channeled
+	 * abilities
+	 */
+	public void interrupted() {
 	}
 
-	public boolean usesAnimation()
-	{
+	public boolean usesAnimation() {
 		return usesAnimation;
 	}
 
-	public boolean isChanneled()
-	{
+	public boolean isChanneled() {
 		return channelAnimDuration > 0;
 	}
 
-	public int getChannelDuration()
-	{
+	public int getChannelDuration() {
 		return channelAnimDuration;
 	}
 
-	public int getTargetFaction()
-	{
+	public int getTargetFaction() {
 		return targetFaction;
 	}
 
-	public void setOwner(AIUnit owner)
-	{
+	public void setOwner(AIUnit owner) {
 		this.owner = owner;
 	}
 
-	public void setUsesAnimation(boolean usesAnimation)
-	{
+	public void setUsesAnimation(boolean usesAnimation) {
 		this.usesAnimation = usesAnimation;
 	}
 
-	public void setChannelAnimDuration(int channelAnimDuration)
-	{
+	public void setChannelAnimDuration(int channelAnimDuration) {
 		this.channelAnimDuration = channelAnimDuration;
 	}
 
-	public void setCooldownRandomness(boolean randomCooldowns)
-	{
+	public void setCooldownRandomness(boolean randomCooldowns) {
 		this.randomCooldowns = randomCooldowns;
 	}
 
-	//public void setRange(int range) { rangeSquared = Math.max(range * range, Integer.MAX_VALUE); }
-	public void setRange(int range)
-	{
+	public void setRange(int range) {
 		rangeSquared = range <= 46340 ? range * range : Integer.MAX_VALUE;
 	}
 
-	public void targetEnemies()
-	{
+	public void targetEnemies() {
 		targetFaction = owner.getOpponents();
 	}
 
-	public void targetTeammates()
-	{
+	public void targetTeammates() {
 		targetFaction = owner.getTeammates();
 	}
 
-	// Override decideToFire() if this ability needs to decide whether or not to activate once off cooldown
-	public boolean decideToFire()
-	{
+	/**
+	 * Override decideToFire() if this ability needs to decide whether or not to activate once off cooldown
+	 */
+	public boolean decideToFire() {
 		return true;
 	}
 
-	// Called when ability is activated and cooldown is started
+	/**
+	 * Called when ability is activated and cooldown is started
+	 */
 	public abstract void activate();
 
 	@Override

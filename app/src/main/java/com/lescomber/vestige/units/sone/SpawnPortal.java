@@ -9,8 +9,7 @@ import com.lescomber.vestige.statuseffects.StatusEffect;
 import com.lescomber.vestige.units.AIUnit;
 import com.lescomber.vestige.units.FloatingCreep;
 
-public class SpawnPortal extends AIUnit
-{
+public class SpawnPortal extends AIUnit {
 	private static final int[] GROWTH_INTERVAL = new int[] { 180, 145, 110 };
 	private static final int SIZE_MAX = 100;
 	private static final float SPAWN_DISTANCE = 70;
@@ -26,8 +25,7 @@ public class SpawnPortal extends AIUnit
 	private final int portalUnitSpawnAnim;
 	private boolean allSpawned;
 
-	public SpawnPortal()
-	{
+	public SpawnPortal() {
 		super(48, 34, -22, 25);
 
 		setIdleLeftSprite(SpriteManager.spawnPortalSpawn[0]);
@@ -63,8 +61,7 @@ public class SpawnPortal extends AIUnit
 		scale(0.7, 0.7);
 	}
 
-	public SpawnPortal(SpawnPortal copyMe)
-	{
+	public SpawnPortal(SpawnPortal copyMe) {
 		super(copyMe);
 
 		portalInitAnim = copyMe.portalInitAnim;
@@ -79,21 +76,18 @@ public class SpawnPortal extends AIUnit
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
 		growthCooldown -= deltaTime;
 
-		while (growthCooldown <= 0)
-		{
+		while (growthCooldown <= 0) {
 			growthCooldown = GROWTH_INTERVAL[OptionsScreen.difficulty];
 
 			size++;
 			if (size == SIZE_MAX)
 				playAnimation(portalOpenAnim);
-			else if (size < SIZE_MAX)
-			{
+			else if (size < SIZE_MAX) {
 				// Increase size of animation/hitbox
 				final double scale = (curSize + 1.2) / curSize;
 				scale(scale, scale);
@@ -106,23 +100,16 @@ public class SpawnPortal extends AIUnit
 	}
 
 	@Override
-	protected void animationFinished(int animID)
-	{
-		if (animID == portalInitAnim)
-		{
+	protected void animationFinished(int animID) {
+		if (animID == portalInitAnim) {
 			playAnimation(portalSpawnAnim);
-		}
-		else if (animID == portalOpenAnim)
-		{
+		} else if (animID == portalOpenAnim) {
 			spawnUnit();
 
 			// Begin unitSpawning animation which will trigger the 2nd unit to spawn once it has completed its sequence
 			playAnimation(portalUnitSpawnAnim);
-		}
-		else if (animID == portalUnitSpawnAnim)
-		{
-			if (!allSpawned)
-			{
+		} else if (animID == portalUnitSpawnAnim) {
+			if (!allSpawned) {
 				spawnUnit();
 
 				// Restart portalUnitSpawnAnim one more time so this last unit has a portal to walk through
@@ -130,14 +117,12 @@ public class SpawnPortal extends AIUnit
 				restartAnimation(portalUnitSpawnAnim);
 
 				allSpawned = true;
-			}
-			else
+			} else
 				die();
 		}
 	}
 
-	private void spawnUnit()
-	{
+	private void spawnUnit() {
 		final FloatingCreep creep = new FloatingCreep();
 		creep.offsetTo(getImageCenter());
 		creep.setDestination(getImageCenter().x, getImageCenter().y + SPAWN_DISTANCE);
@@ -146,14 +131,12 @@ public class SpawnPortal extends AIUnit
 	}
 
 	@Override
-	protected void pathDestinationReached()
-	{
+	protected void pathDestinationReached() {
 		playAnimation(portalInitAnim);
 	}
 
 	@Override
-	public void die()
-	{
+	public void die() {
 		super.die();
 
 		final SpriteAnimation anim = new SpriteAnimation(SpriteManager.spawnPortalEnd);
@@ -162,8 +145,7 @@ public class SpawnPortal extends AIUnit
 	}
 
 	@Override
-	public SpawnPortal copy()
-	{
+	public SpawnPortal copy() {
 		return new SpawnPortal(this);
 	}
 }

@@ -13,18 +13,16 @@ import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.units.Boss;
 
-public class OneFourBoss extends Boss
-{
-	public OneFourBoss()
-	{
+public class OneFourBoss extends Boss {
+	public OneFourBoss() {
 		super(600 + (350 * OptionsScreen.difficulty), 200 + (15 * OptionsScreen.difficulty));
 
 		final SpinnyLaserScatter sls = new SpinnyLaserScatter(this, 10);
 		sls.setCooldown(4);
 		addAbility(sls);
 
-		final Projectile basicShot = new Projectile(SpriteManager.enemyProjectile, 4, Projectile.ENEMY_PROJECTILE_WIDTH,
-				Projectile.ENEMY_PROJECTILE_HEIGHT);
+		final Projectile basicShot = new Projectile(SpriteManager.enemyProjectile, 4, Projectile.ENEMY_PROJECTILE_WIDTH, Projectile
+				.ENEMY_PROJECTILE_HEIGHT);
 		basicShot.setUnitHitSound(AudioManager.enemyProjectileHit);
 		basicShot.scale(0.6, 0.6);
 		basicShot.setGlow(SpriteManager.redGlow);
@@ -46,26 +44,21 @@ public class OneFourBoss extends Boss
 		addAbility(new ShieldMeteorShower(this, 18));
 	}
 
-	public OneFourBoss(OneFourBoss copyMe)
-	{
+	public OneFourBoss(OneFourBoss copyMe) {
 		super(copyMe);
 	}
 
 	@Override
-	protected void updateHealthBar()
-	{
-		if (getShields() > 0)
-		{
+	protected void updateHealthBar() {
+		if (getShields() > 0) {
 			final float shieldPercentage = getShields() / ShieldMeteorShower.SHIELD_STRENGTH[OptionsScreen.difficulty];
 			healthBar.setTexWidth(shieldPercentage);
-		}
-		else
+		} else
 			super.updateHealthBar();
 	}
 
 	@Override
-	public void startAbility(AIAbility ability)
-	{
+	public void startAbility(AIAbility ability) {
 		if (ability instanceof ShieldMeteorShower)
 			createHealthBar(SpriteManager.hpBarBackground, SpriteManager.hpShieldHealth);
 
@@ -73,22 +66,19 @@ public class OneFourBoss extends Boss
 	}
 
 	@Override
-	public void hit(HitBundle bundle)
-	{
+	public void hit(HitBundle bundle) {
 		final boolean hadShields = getShields() > 0;
 
 		super.hit(bundle);
 
-		if (hadShields && getShields() <= 0)
-		{
+		if (hadShields && getShields() <= 0) {
 			createHealthBar(SpriteManager.hpBossBackground, SpriteManager.hpBossHealth);
 			updateHealthBar();
 		}
 	}
 
 	@Override
-	public OneFourBoss copy()
-	{
+	public OneFourBoss copy() {
 		return new OneFourBoss(this);
 	}
 }

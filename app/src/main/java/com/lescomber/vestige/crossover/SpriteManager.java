@@ -13,8 +13,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SpriteManager
-{
+public class SpriteManager {
 	private static SpriteManager instance;
 
 	private final Object bufferWaitLock;
@@ -63,7 +62,8 @@ public class SpriteManager
 	public static SpriteTemplate tiles[], wallTops[], wallBottoms[], wallMid, portal[];
 
 	// Menu images
-	public static SpriteTemplate title[], smallEyes[], mediumEyes[], bigEyes[], scoreEmpty, scoreHalf, scoreFull, loadingCircleBackground, loadingCircleFill;
+	public static SpriteTemplate title[], smallEyes[], mediumEyes[], bigEyes[], scoreEmpty, scoreHalf, scoreFull, loadingCircleBackground,
+			loadingCircleFill;
 
 	// Stages
 	public static SpriteTemplate stageLocked, stageLockedSelected, darkWoods, darkWoodsSelected;
@@ -82,8 +82,8 @@ public class SpriteManager
 			spawnPortalOpen[], spawnPortalEnd[];
 
 	// Projectiles/AreaEffects
-	public static SpriteTemplate explosion[], plasmaBall[], groundFire[], enemyLaserHead, enemyLaserBody, doubleEnemyLaser,
-			sOneSwipe, sOneChargeSwipe, enemyProjectile, purpleProjectile, purpleComet, sOneDoubleTapLaser;
+	public static SpriteTemplate explosion[], plasmaBall[], groundFire[], enemyLaserHead, enemyLaserBody, doubleEnemyLaser, sOneSwipe,
+			sOneChargeSwipe, enemyProjectile, purpleProjectile, purpleComet, sOneDoubleTapLaser;
 
 	// PickUps
 	public static SpriteTemplate pickUpGlow, healthPickUp, healthPickUpAnimation[];
@@ -92,22 +92,20 @@ public class SpriteManager
 	public static SpriteTemplate shield[];
 
 	// UI elements
-	public static SpriteTemplate hpGregHealth, hpBarBackground, hpSteveHealth, hpBossBackground, hpBossHealth, hpShieldHealth,
-			swipeArrow, cdArcEmpty, cdArcFull, cdTeleportEmpty, cdTeleportFull, cdShieldEmpty,
-			cdShieldFull, cdInnerBlueArc, cdInnerGrayArc, chargeArrowTail, chargeArrowHead,
-			chargeArrowCooldownTail, chargeArrowCooldownHead, chargeArrowSparks[], /*uiTextBackground, */uiTextBackgroundPieces[];
+	public static SpriteTemplate hpGregHealth, hpBarBackground, hpSteveHealth, hpBossBackground, hpBossHealth, hpShieldHealth, swipeArrow,
+			cdArcEmpty, cdArcFull, cdTeleportEmpty, cdTeleportFull, cdShieldEmpty, cdShieldFull, cdInnerBlueArc, cdInnerGrayArc, chargeArrowTail,
+			chargeArrowHead, chargeArrowCooldownTail, chargeArrowCooldownHead, chargeArrowSparks[], /*uiTextBackground, */
+			uiTextBackgroundPieces[];
 
 	// Widgets
-	public static SpriteTemplate /*menuButton, menuButtonClick,*/ menuButtonPieces[], menuButtonClickPieces[], backButton,
-			backButtonClick, tutorialNextButton, tutorialNextButtonClick, levelSelectButtonLocked,
-			levelSelectButtonUnlocked, pauseButton, pauseButtonClick, checkBoxOff, checkBoxOn, sliderEmpty,
-			sliderFull, sliderKnob;
+	public static SpriteTemplate /*menuButton, menuButtonClick,*/ menuButtonPieces[], menuButtonClickPieces[], backButton, backButtonClick,
+			tutorialNextButton, tutorialNextButtonClick, levelSelectButtonLocked, levelSelectButtonUnlocked, pauseButton, pauseButtonClick,
+			checkBoxOff, checkBoxOn, sliderEmpty, sliderFull, sliderKnob;
 
 	@SuppressWarnings("unchecked")
-	private SpriteManager()
-	{
-		// TODO: Possibly reduce the amount of work (e.g. adding all the SpriteBundles) that needs to be done here as this all
-		//happens right when the app first launches
+	private SpriteManager() {
+		// TODO: Possibly reduce the amount of work (e.g. adding all the SpriteBundles) that needs to be done here as this all happens right when the
+		//app first launches
 
 		bufferWaitLock = new Object();
 		backgroundTextureHandle = -1;
@@ -135,8 +133,7 @@ public class SpriteManager
 		actualListSize = 0;
 	}
 
-	public static void initTemplates()
-	{
+	public static void initTemplates() {
 		//============
 		// Map objects
 		//============
@@ -291,7 +288,6 @@ public class SpriteManager
 
 		chargeArrowSparks = createTemplates(Assets.gameUITexture, 0, 256, 4, 1, 12, 103, 43);
 
-		//uiTextBackground = new SpriteTemplate(Assets.gameUITexture, new Rect(278, 61, 394, 97));
 		uiTextBackgroundPieces = new SpriteTemplate[3];
 		uiTextBackgroundPieces[1] = new SpriteTemplate(Assets.gameUITexture, new Rect(278, 61, 299, 97));
 		uiTextBackgroundPieces[0] = new SpriteTemplate(Assets.gameUITexture, new Rect(299, 61, 373, 97));
@@ -329,28 +325,25 @@ public class SpriteManager
 		sliderKnob = new SpriteTemplate(Assets.gameUITexture, new Rect(448, 0, 478, 30));
 	}
 
-	private static SpriteTemplate[] createTemplates(CGLTexture[] textures)
-	{
-		//final int totalImages = endNum - startNum + 1;
-		int size = textures.length;
+	/**
+	 * Note: these textures will all reference the same subTexRect object, which is fine since it isn't meant to be modified but if this ever
+	 * changes,
+	 * this method should be updated to create copies of subTexRect for each texture
+	 */
+	private static SpriteTemplate[] createTemplates(CGLTexture[] textures) {
+		final int size = textures.length;
 		final SpriteTemplate[] templates = new SpriteTemplate[size];
-
-		/*int curImageNum = startNum;
-		int x = startX + (((curImageNum - 1) % imagesPerRow) * width);
-		int y = startY + (((int) Math.floor(curImageNum / imagesPerRow)) * height);
-		if (curImageNum % imagesPerRow == 0)
-			y -= height;*/
+		final Rect subTexRect = new Rect(0, 0, textures[0].getWidth(), textures[0].getHeight());
 
 		for (int i = 0; i < size; i++) {
-			templates[i] = new SpriteTemplate(textures[i]);
+			templates[i] = new SpriteTemplate(textures[i], subTexRect);
 		}
 
 		return templates;
 	}
 
-	private static SpriteTemplate[] createTemplates(CGLTexture texture, int startX, int startY, int imagesPerRow, int startNum,
-													int endNum, int width, int height)
-	{
+	private static SpriteTemplate[] createTemplates(CGLTexture texture, int startX, int startY, int imagesPerRow, int startNum, int endNum, int
+			width, int height) {
 		final int totalImages = endNum - startNum + 1;
 		final SpriteTemplate[] templates = new SpriteTemplate[totalImages];
 
@@ -360,16 +353,13 @@ public class SpriteManager
 		if (curImageNum % imagesPerRow == 0)
 			y -= height;
 
-		for (int i = 0; i < totalImages; i++)
-		{
+		for (int i = 0; i < totalImages; i++) {
 			templates[i] = new SpriteTemplate(texture, new Rect(x, y, x + width, y + height));
 
-			if (curImageNum % imagesPerRow == 0)
-			{
+			if (curImageNum % imagesPerRow == 0) {
 				x = startX;
 				y += height;
-			}
-			else
+			} else
 				x += width;
 
 			curImageNum++;
@@ -378,13 +368,11 @@ public class SpriteManager
 		return templates;
 	}
 
-	private static SpriteTemplate[] createTemplates(CGLTexture texture, int imagesPerRow, int startNum, int endNum, int width, int height)
-	{
+	private static SpriteTemplate[] createTemplates(CGLTexture texture, int imagesPerRow, int startNum, int endNum, int width, int height) {
 		return createTemplates(texture, 0, 0, imagesPerRow, startNum, endNum, width, height);
 	}
 
-	public static SpriteManager getInstance()
-	{
+	public static SpriteManager getInstance() {
 		if (instance == null)
 			instance = new SpriteManager();
 
@@ -392,8 +380,7 @@ public class SpriteManager
 	}
 
 	@SuppressWarnings("unchecked")
-	public void startBuffer()
-	{
+	public void startBuffer() {
 		isBuffering = true;
 
 		bufferListSize = 0;
@@ -413,8 +400,7 @@ public class SpriteManager
 		bufferLayerCount = 0;
 	}
 
-	private void finishBuffer()
-	{
+	private void finishBuffer() {
 		backgroundTextureHandle = bufferBackgroundTextureHandle;
 		backgroundList = bufferBackgroundList;
 
@@ -441,110 +427,89 @@ public class SpriteManager
 		bufferSwap = false;
 
 		// Inform game logic thread that the swap has been completed (if it was waiting)
-		synchronized (bufferWaitLock)
-		{
+		synchronized (bufferWaitLock) {
 			isBuffering = false;
 			bufferWaitLock.notifyAll();
 		}
 	}
 
-	public void swapBuffer()
-	{
+	public void swapBuffer() {
 		bufferSwap = true;
 
 		// Wait for the buffer swap to be performed by the renderer thread (after its next draw() is finished) before proceeding
-		synchronized (bufferWaitLock)
-		{
-			while (isBuffering)
-			{
-				try
-				{
+		synchronized (bufferWaitLock) {
+			while (isBuffering) {
+				try {
 					bufferWaitLock.wait();
-				} catch (final InterruptedException e)
-				{
+				} catch (final InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
 		}
 	}
 
-	public void clearBackgroundSprites()
-	{
+	public void clearBackgroundSprites() {
 		if (isBuffering)
 			bufferBackgroundList.clear();
-		else
-		{
-			synchronized (backgroundList)
-			{
+		else {
+			synchronized (backgroundList) {
 				backgroundList.clear();
 			}
 		}
 	}
 
-	public void addBackgroundSprite(SpriteTemplate template, float x, float y)
-	{
-		final CGLTexturedRect newSprite = new CGLTexturedRect(template.texture.getTextureHandle(), x, y, template.texture.getWidth(),
-				template.texture.getHeight(), template.subTexRect);
+	public void addBackgroundSprite(SpriteTemplate template, float x, float y) {
+		final CGLTexturedRect newSprite = new CGLTexturedRect(template.texture.getTextureHandle(), x, y, template.texture.getWidth(), template
+				.texture
+				.getHeight(), template.subTexRect);
 
-		if (isBuffering)
-		{
+		if (isBuffering) {
 			bufferBackgroundList.add(newSprite);
-		}
-		else
-		{
-			synchronized (backgroundList)
-			{
+		} else {
+			synchronized (backgroundList) {
 				backgroundList.add(newSprite);
 			}
 		}
 	}
 
-	public void setBackground(CGLTexture texture)
-	{
-		final CGLTexturedRect newSprite = new CGLTexturedRect(texture.getTextureHandle(), Screen.MIDX, Screen.MIDY, texture.getWidth(), texture.getHeight());
+	public void setBackground(CGLTexture texture) {
+		final CGLTexturedRect newSprite = new CGLTexturedRect(texture.getTextureHandle(), Screen.MIDX, Screen.MIDY, texture.getWidth(), texture
+				.getHeight());
 
-		if (isBuffering)
-		{
+		if (isBuffering) {
 			bufferBackgroundTextureHandle = texture.getTextureHandle();
 			bufferBackgroundList.add(newSprite);
-		}
-		else    // Note: probably should never be reached
+		} else    // Note: probably should never be reached
 		{
 			backgroundTextureHandle = texture.getTextureHandle();
-			synchronized (backgroundList)
-			{
+			synchronized (backgroundList) {
 				backgroundList.add(newSprite);
 			}
 		}
 	}
 
-	public void setBackgroundTextureHandle(int textureHandle)
-	{
+	public void setBackgroundTextureHandle(int textureHandle) {
 		if (isBuffering)
 			bufferBackgroundTextureHandle = textureHandle;
 		else
 			backgroundTextureHandle = textureHandle;    // Note: probably should never be reached
 	}
 
-	public void setUITextureHandle(int textureHandle)
-	{
+	public void setUITextureHandle(int textureHandle) {
 		if (isBuffering)
 			bufferUITextureHandle = textureHandle;
 		else
 			uiTextureHandle = textureHandle;
 	}
 
-	public void drawGameLayer()
-	{
+	public void drawGameLayer() {
 		processChangeQueue();
 
 		sortLayerList();
 
 		// Bind and draw background images. They must all be on the texture specified by backgroundTextureHandle
-		if (!backgroundList.isEmpty())
-		{
-			synchronized (backgroundList)
-			{
+		if (!backgroundList.isEmpty()) {
+			synchronized (backgroundList) {
 				// Bind the background texture
 				GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 				GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, backgroundTextureHandle);
@@ -557,11 +522,9 @@ public class SpriteManager
 
 		// Draw game sprites in the order specified by layeringList. They binded and drawn one at a time (for now...)
 		SpriteBundle gsb;
-		for (int i = 0; i < layerCount; i++)
-		{
+		for (int i = 0; i < layerCount; i++) {
 			gsb = theList.get(layerInsertionSort[i]);
-			synchronized (gsb)
-			{
+			synchronized (gsb) {
 				if (gsb.texturedRect != null)
 					gsb.texturedRect.bindDraw();
 			}
@@ -572,13 +535,10 @@ public class SpriteManager
 		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, uiTextureHandle);
 
 		// Draw "under blankets" UI layers. Elements within each layer are drawn in the order they were added
-		for (int i = 0; i < 2; i++)
-		{
-			for (final Integer j : uiLayers[i])
-			{
+		for (int i = 0; i < 2; i++) {
+			for (final Integer j : uiLayers[i]) {
 				gsb = theList.get(j);
-				synchronized (gsb)
-				{
+				synchronized (gsb) {
 					if (gsb.texturedRect != null)
 						gsb.texturedRect.draw();
 				}
@@ -586,22 +546,20 @@ public class SpriteManager
 		}
 	}
 
-	// Draw "over blankets" UI layers
-	public void drawUILayer()
-	{
+	/**
+	 * Draw "over blankets" UI layers
+	 */
+	public void drawUILayer() {
 		// Bind the UI Texture
 		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, uiTextureHandle);
 
 		// Draw UI sprites. Elements within each layer are drawn in the order they were added
 		SpriteBundle gsb;
-		for (int i = 2; i < 5; i++)
-		{
-			for (final Integer j : uiLayers[i])
-			{
+		for (int i = 2; i < 5; i++) {
+			for (final Integer j : uiLayers[i]) {
 				gsb = theList.get(j);
-				synchronized (gsb)
-				{
+				synchronized (gsb) {
 					if (gsb.texturedRect != null)
 						gsb.texturedRect.draw();
 				}
@@ -613,41 +571,31 @@ public class SpriteManager
 			finishBuffer();
 	}
 
-	private void processChangeQueue()
-	{
+	private void processChangeQueue() {
 		ListChange change;
-		synchronized (changes)
-		{
-			while (!changes.isEmpty())
-			{
+		synchronized (changes) {
+			while (!changes.isEmpty()) {
 				change = changes.removeFirst();
 
-				if (change.command == ListChange.NEW_SPRITE)
-				{
-					if (theList.get(change.index).layerHeight < UI_LAYER_UNDER_ONE)
-					{
+				if (change.command == ListChange.NEW_SPRITE) {
+					if (theList.get(change.index).layerHeight < UI_LAYER_UNDER_ONE) {
 						layerInsertionSort[layerCount] = change.index;
 						layerCount++;
 
 						// Dynamically resize layerInsertionSort array if it is about to be exceeded on the next add.
 						//INITIAL_LAYER_SIZE should be chosen to be large enough that this never actually happens for performance
 						//reasons. Still, if it comes down to it, dynamically resizing is obviously better than a crash
-						if (layerCount >= layerInsertionSort.length)
-						{
+						if (layerCount >= layerInsertionSort.length) {
 							final int newArray[] = new int[layerInsertionSort.length + INITIAL_LAYER_SIZE];
 							System.arraycopy(layerInsertionSort, 0, newArray, 0, layerInsertionSort.length);
 							layerInsertionSort = newArray;
 						}
-					}
-					else
+					} else
 						uiLayers[theList.get(change.index).layerHeight - UI_LAYER_UNDER_ONE].add(change.index);
-				}
-				else    // command == REMOVE_SPRITE
+				} else    // command == REMOVE_SPRITE
 				{
-					for (int i = 0; i < layerCount; i++)
-					{
-						if (layerInsertionSort[i] == change.index)
-						{
+					for (int i = 0; i < layerCount; i++) {
+						if (layerInsertionSort[i] == change.index) {
 							System.arraycopy(layerInsertionSort, i + 1, layerInsertionSort, i, layerCount - i);
 
 							layerCount--;
@@ -659,29 +607,24 @@ public class SpriteManager
 		}
 	}
 
-	private void sortLayerList()
-	{
+	private void sortLayerList() {
 		// Perform insertion sort
 		int curHeight;
 		int curTheListIndex;
 		int backwardsLayerIndex;
 		int moveAmount;
-		for (int i = 1; i < layerCount; i++)
-		{
-			if (theList.get(layerInsertionSort[i]).layerHeight < theList.get(layerInsertionSort[i - 1]).layerHeight)
-			{
+		for (int i = 1; i < layerCount; i++) {
+			if (theList.get(layerInsertionSort[i]).layerHeight < theList.get(layerInsertionSort[i - 1]).layerHeight) {
 				curHeight = theList.get(layerInsertionSort[i]).layerHeight;
 				curTheListIndex = layerInsertionSort[i];
 				backwardsLayerIndex = i - 1;
 
-				while (backwardsLayerIndex > 0 && curHeight < theList.get(layerInsertionSort[backwardsLayerIndex - 1]).layerHeight)
-				{
+				while (backwardsLayerIndex > 0 && curHeight < theList.get(layerInsertionSort[backwardsLayerIndex - 1]).layerHeight) {
 					backwardsLayerIndex--;
 				}
 
 				moveAmount = i - backwardsLayerIndex;
-				switch (moveAmount)
-				{
+				switch (moveAmount) {
 					case 2:
 						layerInsertionSort[backwardsLayerIndex + 2] = layerInsertionSort[backwardsLayerIndex + 1];
 					case 1:
@@ -695,12 +638,10 @@ public class SpriteManager
 		}
 	}
 
-	private int newSprite(CGLTexturedRect newSprite, SpriteInfo info)
-	{
+	private int newSprite(CGLTexturedRect newSprite, SpriteInfo info) {
 		// Retrieve index value to place newSprite in
 		final int index;
-		if (isBuffering)
-		{
+		if (isBuffering) {
 			index = bufferListSize;
 			bufferListSize++;
 
@@ -708,16 +649,14 @@ public class SpriteManager
 			if (index == bufferList.size())
 				bufferList.add(new SpriteBundle());
 
-			if (info.layerHeight < UI_LAYER_UNDER_ONE)
-			{
+			if (info.layerHeight < UI_LAYER_UNDER_ONE) {
 				bufferLayerInsertionSort[bufferLayerCount] = index;
 				bufferLayerCount++;
 
 				// Dynamically resize bufferLayerInsertionSort array if it is about to be exceeded on the next add.
 				//INITIAL_LAYER_SIZE should be chosen to be large enough that this never actually happens for performance
 				//reasons. Still, if it comes down to it, dynamically resizing is obviously better than a crash
-				if (bufferLayerCount >= bufferLayerInsertionSort.length)
-				{
+				if (bufferLayerCount >= bufferLayerInsertionSort.length) {
 					final int newArray[] = new int[bufferLayerInsertionSort.length + INITIAL_LAYER_SIZE];
 					System.arraycopy(bufferLayerInsertionSort, 0, newArray, 0, bufferLayerInsertionSort.length);
 					bufferLayerInsertionSort = newArray;
@@ -726,23 +665,18 @@ public class SpriteManager
 				// Sort newly added sprite into its correct position in buffereLayerInsertionSort
 				int backwardsLayerIndex = bufferLayerCount - 1;
 
-				while (backwardsLayerIndex > 0 &&
-						info.layerHeight < bufferList.get(bufferLayerInsertionSort[backwardsLayerIndex - 1]).layerHeight)
-				{
+				while (backwardsLayerIndex > 0 && info.layerHeight < bufferList.get(bufferLayerInsertionSort[backwardsLayerIndex - 1]).layerHeight) {
 					backwardsLayerIndex--;
 				}
 
-				System.arraycopy(bufferLayerInsertionSort, backwardsLayerIndex, bufferLayerInsertionSort, backwardsLayerIndex + 1,
-						(bufferLayerCount - 1) - backwardsLayerIndex);
+				System.arraycopy(bufferLayerInsertionSort, backwardsLayerIndex, bufferLayerInsertionSort, backwardsLayerIndex + 1, (bufferLayerCount
+						- 1) - backwardsLayerIndex);
 				bufferLayerInsertionSort[backwardsLayerIndex] = index;
-			}
-			else
+			} else
 				bufferUILayers[info.layerHeight - UI_LAYER_UNDER_ONE].add(index);
-		}
-		else if (!nulls.isEmpty())
+		} else if (!nulls.isEmpty())
 			index = nulls.removeFirst();
-		else
-		{
+		else {
 			index = actualListSize;
 			actualListSize++;
 
@@ -752,21 +686,16 @@ public class SpriteManager
 		}
 
 		// Add the new sprite to theList or bufferList
-		if (isBuffering)
-		{
+		if (isBuffering) {
 			bufferList.get(index).texturedRect = newSprite;
 			bufferList.get(index).layerHeight = info.layerHeight;
-		}
-		else
-		{
-			synchronized (theList.get(index))
-			{
+		} else {
+			synchronized (theList.get(index)) {
 				theList.get(index).texturedRect = newSprite;
 				theList.get(index).layerHeight = info.layerHeight;
 			}
 
-			synchronized (changes)
-			{
+			synchronized (changes) {
 				changes.add(new ListChange(ListChange.NEW_SPRITE, index));
 			}
 		}
@@ -774,11 +703,10 @@ public class SpriteManager
 		return index;
 	}
 
-	public int newSprite(SpriteInfo info)
-	{
+	public int newSprite(SpriteInfo info) {
 		final CGLTexture texture = info.template.texture;
-		final CGLTexturedRect newSprite = new CGLTexturedRect(texture.getTextureHandle(), info.x, info.y,
-				texture.getWidth(), texture.getHeight(), info.template.subTexRect);
+		final CGLTexturedRect newSprite = new CGLTexturedRect(texture.getTextureHandle(), info.x, info.y, texture.getWidth(), texture
+				.getHeight(), info.template.subTexRect);
 
 		// Apply info's specifications
 		if (info.direction != 0)
@@ -793,22 +721,19 @@ public class SpriteManager
 		return newSprite(newSprite, info);
 	}
 
-	public int newThreePatchSprite(SpriteInfo info, SpriteTemplate left, SpriteTemplate right)
-	{
+	public int newThreePatchSprite(SpriteInfo info, SpriteTemplate left, SpriteTemplate right) {
 		CGLTexture texture = info.template.texture;
-		final CGLThreePatchTexturedRect newSprite = new CGLThreePatchTexturedRect(texture.getTextureHandle(), info.x,
-				info.y, texture.getWidth(), texture.getHeight(), info.template.subTexRect);
+		final CGLThreePatchTexturedRect newSprite = new CGLThreePatchTexturedRect(texture.getTextureHandle(), info.x, info.y, texture
+				.getWidth(), texture.getHeight(), info.template.subTexRect);
 
 		if (info.widthScale != 1)
 			newSprite.scale(info.widthScale, 1);
 
-		if (left != null)
-		{
+		if (left != null) {
 			texture = left.texture;
 			newSprite.setLeft(texture.getTextureHandle(), texture.getWidth(), texture.getHeight(), left.subTexRect);
 		}
-		if (right != null)
-		{
+		if (right != null) {
 			texture = right.texture;
 			newSprite.setRight(texture.getTextureHandle(), texture.getWidth(), texture.getHeight(), right.subTexRect);
 		}
@@ -826,36 +751,30 @@ public class SpriteManager
 		return newSprite(newSprite, info);
 	}
 
-	public void removeSprite(int index)
-	{
+	public void removeSprite(int index) {
 		if (index < 0)
 			return;
 
-		synchronized (theList.get(index))
-		{
+		synchronized (theList.get(index)) {
 			theList.get(index).texturedRect = null;
 		}
 
-		synchronized (changes)
-		{
+		synchronized (changes) {
 			changes.add(new ListChange(ListChange.REMOVE_SPRITE, index));
 		}
 	}
 
-	private void replaceSprite(int removeIndex, CGLTexturedRect newSprite, SpriteInfo addInfo)
-	{
-		synchronized (theList.get(removeIndex))
-		{
+	private void replaceSprite(int removeIndex, CGLTexturedRect newSprite, SpriteInfo addInfo) {
+		synchronized (theList.get(removeIndex)) {
 			theList.get(removeIndex).texturedRect = newSprite;
 			theList.get(removeIndex).layerHeight = addInfo.layerHeight;
 		}
 	}
 
-	public void replaceSprite(int removeIndex, SpriteInfo addInfo)
-	{
+	public void replaceSprite(int removeIndex, SpriteInfo addInfo) {
 		final CGLTexture texture = addInfo.template.texture;
-		final CGLTexturedRect newSprite = new CGLTexturedRect(texture.getTextureHandle(), addInfo.x, addInfo.y,
-				texture.getWidth(), texture.getHeight(), addInfo.template.subTexRect);
+		final CGLTexturedRect newSprite = new CGLTexturedRect(texture.getTextureHandle(), addInfo.x, addInfo.y, texture.getWidth(), texture
+				.getHeight(), addInfo.template.subTexRect);
 
 		if (addInfo.direction != 0)
 			newSprite.rotate(addInfo.direction);
@@ -869,22 +788,19 @@ public class SpriteManager
 		replaceSprite(removeIndex, newSprite, addInfo);
 	}
 
-	public void replaceSprite(int removeIndex, SpriteInfo addInfo, SpriteTemplate left, SpriteTemplate right)
-	{
+	public void replaceSprite(int removeIndex, SpriteInfo addInfo, SpriteTemplate left, SpriteTemplate right) {
 		CGLTexture texture = addInfo.template.texture;
-		final CGLThreePatchTexturedRect newSprite = new CGLThreePatchTexturedRect(texture.getTextureHandle(), addInfo.x,
-				addInfo.y, texture.getWidth(), texture.getHeight(), addInfo.template.subTexRect);
+		final CGLThreePatchTexturedRect newSprite = new CGLThreePatchTexturedRect(texture.getTextureHandle(), addInfo.x, addInfo.y, texture
+				.getWidth(), texture.getHeight(), addInfo.template.subTexRect);
 
 		if (addInfo.widthScale != 1)
 			newSprite.scale(addInfo.widthScale, 1);
 
-		if (left != null)
-		{
+		if (left != null) {
 			texture = left.texture;
 			newSprite.setLeft(texture.getTextureHandle(), texture.getWidth(), texture.getHeight(), left.subTexRect);
 		}
-		if (right != null)
-		{
+		if (right != null) {
 			texture = right.texture;
 			newSprite.setRight(texture.getTextureHandle(), texture.getWidth(), texture.getHeight(), right.subTexRect);
 		}
@@ -901,76 +817,59 @@ public class SpriteManager
 		replaceSprite(removeIndex, newSprite, addInfo);
 	}
 
-	public void offset(int index, float dx, float dy)
-	{
-		synchronized (theList.get(index))
-		{
+	public void offset(int index, float dx, float dy) {
+		synchronized (theList.get(index)) {
 			theList.get(index).texturedRect.offset(dx, dy);
 		}
 	}
 
-	public void rotate(int index, float radians)
-	{
-		synchronized (theList.get(index))
-		{
+	public void rotate(int index, float radians) {
+		synchronized (theList.get(index)) {
 			theList.get(index).texturedRect.rotate(radians);
 		}
 	}
 
-	public void scale(int index, float widthRatio, float heightRatio)
-	{
-		synchronized (theList.get(index))
-		{
+	public void scale(int index, float widthRatio, float heightRatio) {
+		synchronized (theList.get(index)) {
 			theList.get(index).texturedRect.scale(widthRatio, heightRatio);
 		}
 	}
 
-	public void setAlpha(int index, float alpha)
-	{
-		synchronized (theList.get(index))
-		{
+	public void setAlpha(int index, float alpha) {
+		synchronized (theList.get(index)) {
 			theList.get(index).texturedRect.setAlpha(alpha);
 		}
 	}
 
-	public void setLayerHeight(int index, int layerHeight)
-	{
-		synchronized (theList.get(index))
-		{
+	public void setLayerHeight(int index, int layerHeight) {
+		synchronized (theList.get(index)) {
 			theList.get(index).layerHeight = layerHeight;
 		}
 	}
 
-	public void setTexRect(int index, float[] texRect, float dx, float wScale)
-	{
+	public void setTexRect(int index, float[] texRect, float dx, float wScale) {
 		final SpriteBundle gsb;
-		synchronized (gsb = theList.get(index))
-		{
+		synchronized (gsb = theList.get(index)) {
 			gsb.texturedRect.setTexRect(texRect[0], texRect[1], texRect[2], texRect[3]);
 			gsb.texturedRect.scale(wScale, 1);
 			gsb.texturedRect.offset(dx, 0);
 		}
 	}
 
-	public static class SpriteTemplate
-	{
+	public static class SpriteTemplate {
 		private final CGLTexture texture;
 		private final Rect subTexRect;
 		private final int width;
 		private final int height;
 
-		public SpriteTemplate(CGLTexture texture, Rect subTexRect)
-		{
+		public SpriteTemplate(CGLTexture texture, Rect subTexRect) {
 			this.texture = texture;
 
-			if (subTexRect != null)
-			{
+			if (subTexRect != null) {
 				this.subTexRect = subTexRect;
 				width = subTexRect.right - subTexRect.left;
 				height = subTexRect.bottom - subTexRect.top;
-			}
-			else
-			{
+			} else {
 				width = texture.getWidth();
 				height = texture.getHeight();
 				this.subTexRect = new Rect(0, 0, width, height);
@@ -981,34 +880,28 @@ public class SpriteManager
 			this(texture, null);
 		}
 
-		public int getWidth()
-		{
+		public int getWidth() {
 			return width;
 		}
 
-		public int getHeight()
-		{
+		public int getHeight() {
 			return height;
 		}
 
-		public Rect getSubTexRect()
-		{
+		public Rect getSubTexRect() {
 			return subTexRect;
 		}
 
-		public int getTexWidth()
-		{
+		public int getTexWidth() {
 			return texture.getWidth();
 		}
 
-		public int getTexHeight()
-		{
+		public int getTexHeight() {
 			return texture.getHeight();
 		}
 	}
 
-	public static class SpriteInfo
-	{
+	public static class SpriteInfo {
 		public SpriteTemplate template;
 		public float[] texRect;
 		public float x = 0;
@@ -1019,8 +912,7 @@ public class SpriteManager
 		public float alpha = 1;
 		public int layerHeight = 0;
 
-		public SpriteInfo(SpriteTemplate template, float x, float y)
-		{
+		public SpriteInfo(SpriteTemplate template, float x, float y) {
 			this.template = template;
 			texRect = null;
 			this.x = x;
@@ -1032,12 +924,10 @@ public class SpriteManager
 			layerHeight = 0;
 		}
 
-		public SpriteInfo(SpriteInfo copyMe)
-		{
+		public SpriteInfo(SpriteInfo copyMe) {
 			template = copyMe.template;
 			texRect = null;
-			if (copyMe.texRect != null)
-			{
+			if (copyMe.texRect != null) {
 				texRect = new float[4];
 				for (int i = 0; i < 4; i++)
 					texRect[i] = copyMe.texRect[i];
@@ -1052,28 +942,24 @@ public class SpriteManager
 		}
 	}
 
-	private class ListChange
-	{
+	private class ListChange {
 		private static final int NEW_SPRITE = 0;
 		private static final int REMOVE_SPRITE = 1;
 
 		private final int index;
 		private final int command;
 
-		private ListChange(int command, int index)
-		{
+		private ListChange(int command, int index) {
 			this.index = index;
 			this.command = command;
 		}
 	}
 
-	private class SpriteBundle
-	{
+	private class SpriteBundle {
 		private CGLTexturedRect texturedRect;
 		private int layerHeight;
 
-		private SpriteBundle()
-		{
+		private SpriteBundle() {
 			texturedRect = null;
 			layerHeight = 0;
 		}

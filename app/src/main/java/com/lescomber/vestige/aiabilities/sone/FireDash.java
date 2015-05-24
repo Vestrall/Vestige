@@ -14,8 +14,7 @@ import com.lescomber.vestige.statuseffects.DisplacementEffect;
 import com.lescomber.vestige.units.AIRailUnit;
 import com.lescomber.vestige.units.sone.OneEightBoss;
 
-public class FireDash extends AIAbility implements Dash
-{
+public class FireDash extends AIAbility implements Dash {
 	private static final int[] VELOCITY_PER_SECOND = new int[] { 500, 600, 700 };
 
 	private static final float FIRE_WIDTH = 28;
@@ -29,8 +28,7 @@ public class FireDash extends AIAbility implements Dash
 
 	private final HitGroup fireGroup;
 
-	public FireDash(OneEightBoss owner, double cooldownSeconds)
-	{
+	public FireDash(OneEightBoss owner, double cooldownSeconds) {
 		super(owner, cooldownSeconds);
 
 		setUsesAnimation(false);
@@ -41,8 +39,7 @@ public class FireDash extends AIAbility implements Dash
 		fireGroup = new HitGroup();
 	}
 
-	public FireDash(FireDash copyMe)
-	{
+	public FireDash(FireDash copyMe) {
 		super(copyMe);
 
 		firing = copyMe.firing;
@@ -53,17 +50,14 @@ public class FireDash extends AIAbility implements Dash
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
 		fireGroup.update(deltaTime);
 
-		if (firing)
-		{
+		if (firing) {
 			firingCooldown -= deltaTime;
-			if (firingCooldown <= 0)
-			{
+			if (firingCooldown <= 0) {
 				firingCooldown += FIRING_INTERVAL;
 
 				final AreaEffect ae = new AreaEffect(FIRE_WIDTH, FIRE_HEIGHT, 0, FIRE_DURATION);
@@ -79,8 +73,7 @@ public class FireDash extends AIAbility implements Dash
 	}
 
 	@Override
-	public void activate()
-	{
+	public void activate() {
 		final float dashX = Util.rand.nextFloat() * Screen.WIDTH;
 		final float dashY = Util.rand.nextFloat() * Screen.HEIGHT;
 		final Point dashPoint = GameScreen.map.adjustDestination(dashX, dashY, owner.getTopGap());
@@ -98,15 +91,13 @@ public class FireDash extends AIAbility implements Dash
 	}
 
 	@Override
-	public void dashComplete()
-	{
+	public void dashComplete() {
 		firing = false;
 		triggerCooldown();
 	}
 
 	@Override
-	public FireDash copy()
-	{
+	public FireDash copy() {
 		return new FireDash(this);
 	}
 }

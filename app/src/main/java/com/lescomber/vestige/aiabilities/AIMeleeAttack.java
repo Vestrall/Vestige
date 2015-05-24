@@ -6,8 +6,7 @@ import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.units.AIUnit;
 import com.lescomber.vestige.units.Unit;
 
-public class AIMeleeAttack extends AIAbility
-{
+public class AIMeleeAttack extends AIAbility {
 	private static final int CLOSE_RANGE_SQUARED = 250 * 250;    // Close enough to target to update destination frequently
 	private static final int MELEE_RANGE_SQUARED = 80 * 80;        // Close enough to attack target
 
@@ -23,8 +22,7 @@ public class AIMeleeAttack extends AIAbility
 
 	private Unit target;            // Current target for both moving towards and, if in range, attacking
 
-	public AIMeleeAttack(AIUnit owner, float damage, double cooldownSeconds)
-	{
+	public AIMeleeAttack(AIUnit owner, float damage, double cooldownSeconds) {
 		super(owner, cooldownSeconds);
 
 		hitBundle = new HitBundle(damage);
@@ -32,8 +30,7 @@ public class AIMeleeAttack extends AIAbility
 		target = null;
 	}
 
-	public AIMeleeAttack(AIMeleeAttack copyMe)
-	{
+	public AIMeleeAttack(AIMeleeAttack copyMe) {
 		super(copyMe);
 
 		hitBundle = new HitBundle(copyMe.hitBundle);
@@ -43,22 +40,18 @@ public class AIMeleeAttack extends AIAbility
 	}
 
 	@Override
-	public boolean scaleForDifficulty()
-	{
-		if (super.scaleForDifficulty())
-		{
+	public boolean scaleForDifficulty() {
+		if (super.scaleForDifficulty()) {
 			// Scale damage
 			hitBundle.setDamage(hitBundle.getDamage() * DAMAGE_SCALING[OptionsScreen.difficulty]);
 
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
 
 	@Override
-	public boolean decideToFire()
-	{
+	public boolean decideToFire() {
 		// Select nearest enemy
 		target = Unit.getNearestMember(owner.getCenter(), owner.getOpponents());
 		if (target == null)
@@ -71,8 +64,7 @@ public class AIMeleeAttack extends AIAbility
 		{
 			setCooldown(SHORT_RANGE_CD);
 			return false;
-		}
-		else                            // If not in range and far away from  target, trigger long CD before deciding again
+		} else                            // If not in range and far away from  target, trigger long CD before deciding again
 		{
 			setCooldown(LONG_RANGE_CD);
 			return false;
@@ -80,19 +72,16 @@ public class AIMeleeAttack extends AIAbility
 	}
 
 	@Override
-	public void activate()
-	{
+	public void activate() {
 		target.hit(hitBundle);
 	}
 
-	public void setHitSound(SoundEffect hitSound)
-	{
+	public void setHitSound(SoundEffect hitSound) {
 		hitBundle.setHitSound(hitSound);
 	}
 
 	@Override
-	public AIMeleeAttack copy()
-	{
+	public AIMeleeAttack copy() {
 		return new AIMeleeAttack(this);
 	}
 }

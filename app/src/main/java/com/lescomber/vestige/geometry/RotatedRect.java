@@ -1,13 +1,11 @@
 package com.lescomber.vestige.geometry;
 
-public class RotatedRect extends Shape
-{
+public class RotatedRect extends Shape {
 	private float halfWidth;
 	private float halfHeight;
 	private final Line[] sides;    // index 0 == top when direction = 0, then go clockwise
 
-	public RotatedRect(float midX, float midY, float width, float height, float radians)
-	{
+	public RotatedRect(float midX, float midY, float width, float height, float radians) {
 		center = new Point(midX, midY);
 		halfWidth = width / 2;
 		halfHeight = height / 2;
@@ -20,23 +18,19 @@ public class RotatedRect extends Shape
 		rotateTo(radians);
 	}
 
-	public RotatedRect(float midX, float midY, float width, float height)
-	{
+	public RotatedRect(float midX, float midY, float width, float height) {
 		this(midX, midY, width, height, 0);
 	}
 
-	public RotatedRect()
-	{
+	public RotatedRect() {
 		this(0, 0, 0, 0, 0);
 	}
 
-	public RotatedRect(Rectangle rect)
-	{
+	public RotatedRect(Rectangle rect) {
 		this(rect.getCenterX(), rect.getCenterY(), rect.getWidth(), rect.getHeight(), 0);
 	}
 
-	public RotatedRect(RotatedRect copyMe)
-	{
+	public RotatedRect(RotatedRect copyMe) {
 		center = new Point(copyMe.center);
 		halfWidth = copyMe.halfWidth;
 		halfHeight = copyMe.halfHeight;
@@ -48,8 +42,7 @@ public class RotatedRect extends Shape
 	}
 
 	@Override
-	public boolean overlaps(Circle circle)
-	{
+	public boolean overlaps(Circle circle) {
 		// Time saver for most cases
 		if (!boundingBox.overlaps(circle.getBoundingBox()))
 			return false;
@@ -59,8 +52,7 @@ public class RotatedRect extends Shape
 			return true;
 
 		// Check if any side overlaps circle
-		for (int i = 0; i < 4; i++)
-		{
+		for (int i = 0; i < 4; i++) {
 			if (circle.overlaps(sides[i]))
 				return true;
 		}
@@ -70,14 +62,12 @@ public class RotatedRect extends Shape
 	}
 
 	@Override
-	public boolean overlaps(Cone cone)
-	{
+	public boolean overlaps(Cone cone) {
 		return cone.overlaps(this);
 	}
 
 	@Override
-	public boolean overlaps(Rectangle rect)
-	{
+	public boolean overlaps(Rectangle rect) {
 		// Time saver for most cases
 		if (!boundingBox.overlaps(rect))
 			return false;
@@ -92,8 +82,7 @@ public class RotatedRect extends Shape
 	}
 
 	@Override
-	public boolean overlaps(RotatedRect rect)
-	{
+	public boolean overlaps(RotatedRect rect) {
 		// Time saver for most cases
 		if (!boundingBox.overlaps(rect.boundingBox))
 			return false;
@@ -103,10 +92,8 @@ public class RotatedRect extends Shape
 			return true;
 
 		// Check if any sides of rect intersect sides of this RotatedRect
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
 				if (rect.sides[i].intersects(sides[j]))
 					return true;
 			}
@@ -117,8 +104,7 @@ public class RotatedRect extends Shape
 	}
 
 	@Override
-	public boolean overlaps(Line line)
-	{
+	public boolean overlaps(Line line) {
 		// Time saver for most cases
 		if (!boundingBox.overlaps(line))
 			return false;
@@ -139,46 +125,37 @@ public class RotatedRect extends Shape
 	}
 
 	@Override
-	public boolean contains(float x, float y)
-	{
+	public boolean contains(float x, float y) {
 		// Time saver for most cases
 		if (!boundingBox.contains(x, y))
 			return false;
 
 		// Handle "top"
-		if (direction > Angle.WEST || direction == Angle.EAST)
-		{
+		if (direction > Angle.WEST || direction == Angle.EAST) {
 			if (sides[0].isPointRight(x, y) < 0)
 				return false;
-		}
-		else if (sides[0].isPointRight(x, y) > 0)
+		} else if (sides[0].isPointRight(x, y) > 0)
 			return false;
 
 		// Handle "right"
-		if (direction > Angle.SOUTH && direction <= Angle.NORTH)
-		{
+		if (direction > Angle.SOUTH && direction <= Angle.NORTH) {
 			if (sides[1].isPointRight(x, y) < 0)
 				return false;
-		}
-		else if (sides[1].isPointRight(x, y) > 0)
+		} else if (sides[1].isPointRight(x, y) > 0)
 			return false;
 
 		// Handle "bottom"
-		if (direction <= Angle.WEST && direction > Angle.EAST)
-		{
+		if (direction <= Angle.WEST && direction > Angle.EAST) {
 			if (sides[2].isPointRight(x, y) < 0)
 				return false;
-		}
-		else if (sides[2].isPointRight(x, y) > 0)
+		} else if (sides[2].isPointRight(x, y) > 0)
 			return false;
 
 		// Handle "left"
-		if (direction > Angle.NORTH || direction <= Angle.SOUTH)
-		{
+		if (direction > Angle.NORTH || direction <= Angle.SOUTH) {
 			if (sides[3].isPointRight(x, y) < 0)
 				return false;
-		}
-		else if (sides[3].isPointRight(x, y) > 0)
+		} else if (sides[3].isPointRight(x, y) > 0)
 			return false;
 
 		// If none of the above have been hit, (x,y) must be in this RotatedRect
@@ -186,14 +163,12 @@ public class RotatedRect extends Shape
 	}
 
 	@Override
-	public boolean contains(Point p)
-	{
+	public boolean contains(Point p) {
 		return contains(p.x, p.y);
 	}
 
 	@Override
-	public void offset(float dx, float dy)
-	{
+	public void offset(float dx, float dy) {
 		center.offset(dx, dy);
 		boundingBox.offset(dx, dy);
 		for (int i = 0; i < 4; i++)
@@ -201,8 +176,7 @@ public class RotatedRect extends Shape
 	}
 
 	@Override
-	public void offsetTo(float midX, float midY)
-	{
+	public void offsetTo(float midX, float midY) {
 		final float dx = midX - center.x;
 		final float dy = midY - center.y;
 
@@ -210,56 +184,48 @@ public class RotatedRect extends Shape
 	}
 
 	@Override
-	public void rotate(float radians)
-	{
+	public void rotate(float radians) {
 		rotateTo(direction + radians);
 	}
 
 	@Override
-	public void rotateTo(float radians)
-	{
+	public void rotateTo(float radians) {
 		direction = Angle.normalizeRadians(radians);
 		buildSides();
 	}
 
 	@Override
-	public void rotateAbout(float radians, float rotateX, float rotateY)
-	{
+	public void rotateAbout(float radians, float rotateX, float rotateY) {
 		Point.rotate(center, radians, rotateX, rotateY);
 		direction = Angle.normalizeRadians(direction + radians);
 		buildSides();
 	}
 
 	@Override
-	public void scaleTo(float width, float height)
-	{
+	public void scaleTo(float width, float height) {
 		halfWidth = width / 2;
 		halfHeight = height / 2;
 		buildSides();
 	}
 
 	@Override
-	public void scale(double wRatio, double hRatio)
-	{
+	public void scale(double wRatio, double hRatio) {
 		halfWidth = (float) wRatio * halfWidth;
 		halfHeight = (float) hRatio * halfHeight;
 		buildSides();
 	}
 
-	public void setWidth(float width)
-	{
+	public void setWidth(float width) {
 		halfWidth = width / 2;
 		buildSides();
 	}
 
-	public void setHeight(float height)
-	{
+	public void setHeight(float height) {
 		halfHeight = height / 2;
 		buildSides();
 	}
 
-	private void buildSides()
-	{
+	private void buildSides() {
 		final Point[] ps = new Point[4];
 		ps[0] = new Point(center.x - halfWidth, center.y - halfHeight);
 		ps[1] = new Point(center.x + halfWidth, center.y - halfHeight);
@@ -275,8 +241,7 @@ public class RotatedRect extends Shape
 
 		// Update boundingBox
 		boundingBox.set(ps[0].x, ps[0].y, ps[0].x, ps[0].y);
-		for (int i = 1; i < 4; i++)
-		{
+		for (int i = 1; i < 4; i++) {
 			boundingBox.left = Math.min(boundingBox.left, ps[i].x);
 			boundingBox.right = Math.max(boundingBox.right, ps[i].x);
 			boundingBox.top = Math.min(boundingBox.top, ps[i].y);
@@ -284,24 +249,20 @@ public class RotatedRect extends Shape
 		}
 	}
 
-	public float getWidth()
-	{
+	public float getWidth() {
 		return halfWidth * 2;
 	}
 
-	public float getHeight()
-	{
+	public float getHeight() {
 		return halfHeight * 2;
 	}
 
-	public Line[] getSides()
-	{
+	public Line[] getSides() {
 		return sides;
 	}
 
 	@Override
-	public RotatedRect copy()
-	{
+	public RotatedRect copy() {
 		return new RotatedRect(this);
 	}
 }

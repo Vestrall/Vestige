@@ -7,9 +7,9 @@ import com.lescomber.vestige.R;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
 import com.lescomber.vestige.framework.AndroidGame;
-import com.lescomber.vestige.framework.Input.TouchEvent;
 import com.lescomber.vestige.framework.Preferences;
 import com.lescomber.vestige.framework.Screen;
+import com.lescomber.vestige.framework.TouchHandler.TouchEvent;
 import com.lescomber.vestige.framework.Util;
 import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.graphics.Sprite;
@@ -24,8 +24,7 @@ import com.lescomber.vestige.widgets.WidgetListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StageSelectionScreen extends Screen implements WidgetListener
-{
+public class StageSelectionScreen extends Screen implements WidgetListener {
 	private static final int STAGE_GAP = 300;
 	private static final float SELECTION_WINDOW_LEFT = (Screen.MIDX) - (STAGE_GAP / 2) + 15;
 	private static final float SELECTION_WINDOW_RIGHT = SELECTION_WINDOW_LEFT + STAGE_GAP - 15;
@@ -54,35 +53,19 @@ public class StageSelectionScreen extends Screen implements WidgetListener
 	private int stageClickCountdown;
 	private static final int STAGE_CLICK_COUNTDOWN_MAX = 300;    // In ms
 
-	public StageSelectionScreen(AndroidGame game)
-	{
+	public StageSelectionScreen(AndroidGame game) {
 		super(game);
 
 		SpriteManager.getInstance().setBackground(Assets.genericBackground);
 		SpriteManager.getInstance().setUITextureHandle(Assets.menuUITexture.getTextureHandle());
 
 		stageStyle = TextStyle.bodyStyleCyan(90);
-		//stageStyle = new TextStyle("BLANCH_CAPS.otf", 90, 87, 233, 255, 1);
-		//stageStyle.setSpacing(2.5f);
 
-		switch (OptionsScreen.difficulty)
-		{
-			case OptionsScreen.EASY:
-				stageProgress = Preferences.getInt("easyStageProgress", 0);
-				levelProgress = Preferences.getInt("easyLevelProgress", 0);
-				break;
-			case OptionsScreen.MEDIUM:
-				stageProgress = Preferences.getInt("mediumStageProgress", 0);
-				levelProgress = Preferences.getInt("mediumLevelProgress", 0);
-				break;
-			default:
-				stageProgress = Preferences.getInt("hardStageProgress", 0);
-				levelProgress = Preferences.getInt("hardLevelProgress", 0);
-				break;
-		}
+		stageProgress = Preferences.getStageProgress(OptionsScreen.difficulty);
+		levelProgress = Preferences.getLevelProgress(OptionsScreen.difficulty);
 
 		final Resources res = AndroidGame.res;
-		final int lastStage = Preferences.getInt("lastStage", 1);
+		final int lastStage = Preferences.getLastStage();
 		stages = new ArrayList<Stage>(Levels.STAGE_COUNT);
 		stages.add(new Stage(1, res.getString(R.string.darkWoods), SpriteManager.darkWoodsSelected, SpriteManager.darkWoods));
 		stages.add(new Stage(2, res.getString(R.string.unknown), SpriteManager.stageLockedSelected, SpriteManager.stageLocked));
@@ -108,13 +91,11 @@ public class StageSelectionScreen extends Screen implements WidgetListener
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
-		final List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
+	public void update(int deltaTime) {
+		final List<TouchEvent> touchEvents = game.getTouchEvents();
 
 		// Perform camera "glide" towards nearest stage
-		if (!dragging && !Util.equals(cameraX, cameraDestX))
-		{
+		if (!dragging && !Util.equals(cameraX, cameraDestX)) {
 			final float maxGlideDistance;
 			if (Math.abs(cameraDestX - cameraX) < GLIDE_SHORT_RANGE)
 				maxGlideDistance = (GLIDE_SPEED / 2) * deltaTime;
@@ -131,17 +112,13 @@ public class StageSelectionScreen extends Screen implements WidgetListener
 		}
 
 		// Case: stage has been selected and we are just displaying the bigger stage briefly before loading it
-		if (stageClickCountdown > 0)
-		{
+		if (stageClickCountdown > 0) {
 			stageClickCountdown -= deltaTime;
 
-			if (stageClickCountdown <= 0)
-			{
-				for (int j = 0; j < stages.size(); j++)
-				{
-					if (stages.get(j).centered)
-					{
-						Preferences.setInt("lastStage", j + 1);        // Remember last stage
+			if (stageClickCountdown <= 0) {
+				for (int j = 0; j < stages.size(); j++) {
+					if (stages.get(j).centered) {
+						Preferences.setLastStage(j + 1);	// Remember last stage
 						prepScreenChange();
 						game.setScreen(new LevelSelectionScreen(game, j + 1));
 						return;
@@ -155,70 +132,50 @@ public class StageSelectionScreen extends Screen implements WidgetListener
 		backButton.update(deltaTime);
 
 		final int len = touchEvents.size();
-		for (int i = 0; i < len; i++)
-		{
+		for (int i = 0; i < len; i++) {
 			final TouchEvent event = touchEvents.get(i);
 
 			backButton.handleEvent(event);
 			if (backing)
 				return;
 
-			if (event.type == TouchEvent.TOUCH_DOWN)
-			{
+			if (event.type == TouchEvent.TOUCH_DOWN) {
 				downPoint.set(event.x, event.y);
 				lastDragPoint.set(event.x, event.y);
-			}
-			else if (event.type == TouchEvent.TOUCH_DRAGGED)
-			{
+			} else if (event.type == TouchEvent.TOUCH_DRAGGED) {
 				if (Math.abs(event.x - downPoint.x) > DRAG_TOLERANCE)
 					dragging = true;
 
 				offsetStages(event.x - lastDragPoint.x);
 				lastDragPoint.set(event.x, event.y);
-			}
-			else if (event.type == TouchEvent.TOUCH_UP)
-			{
-				if (dragging)
-				{
+			} else if (event.type == TouchEvent.TOUCH_UP) {
+				if (dragging) {
 					// Find nearest stage from camera center
 					final int index = Math.round(cameraX / STAGE_GAP);
 					cameraDestX = index * STAGE_GAP;
 				}
 
 				// Case: User selected centered stage
-				else if (event.x > SELECTION_WINDOW_LEFT && event.x < SELECTION_WINDOW_RIGHT)
-				{
+				else if (event.x > SELECTION_WINDOW_LEFT && event.x < SELECTION_WINDOW_RIGHT) {
 					// Enter currently selected stage if it is more or less centered on screen
-					if (Math.abs(cameraDestX - cameraX) < 50)
-					{
-						for (int j = 0; j < stages.size(); j++)
-						{
-							if (stages.get(j).centered && stageProgress > j)
-							{
+					if (Math.abs(cameraDestX - cameraX) < 50) {
+						for (int j = 0; j < stages.size(); j++) {
+							if (stages.get(j).centered && stageProgress > j) {
 								stageClickCountdown = STAGE_CLICK_COUNTDOWN_MAX;
 								stages.get(j).select();
 							}
 						}
 					}
-				}
-
-				else if (event.x > SELECTION_WINDOW_RIGHT)
-				{
-					for (int j = 0; j < stages.size(); j++)
-					{
-						if (stages.get(j).centered)
-						{
+				} else if (event.x > SELECTION_WINDOW_RIGHT) {
+					for (int j = 0; j < stages.size(); j++) {
+						if (stages.get(j).centered) {
 							if (stages.size() > (j + 1))
 								cameraDestX = (j + 1) * STAGE_GAP;
 						}
 					}
-				}
-				else if (event.x < SELECTION_WINDOW_LEFT)
-				{
-					for (int j = 0; j < stages.size(); j++)
-					{
-						if (stages.get(j).centered)
-						{
+				} else if (event.x < SELECTION_WINDOW_LEFT) {
+					for (int j = 0; j < stages.size(); j++) {
+						if (stages.get(j).centered) {
 							if (j > 0)
 								cameraDestX = (j - 1) * STAGE_GAP;
 						}
@@ -230,8 +187,7 @@ public class StageSelectionScreen extends Screen implements WidgetListener
 		}
 	}
 
-	private void offsetStages(float dx)
-	{
+	private void offsetStages(float dx) {
 		// Limit the camera's movement
 		if (cameraX - dx < 0)
 			dx = cameraX;
@@ -242,24 +198,20 @@ public class StageSelectionScreen extends Screen implements WidgetListener
 		cameraX -= dx;
 
 		// Offset stages and change selection if necessary
-		for (final Stage s : stages)
-		{
+		for (final Stage s : stages) {
 			s.offsetX(dx);
 			s.setCentered(s.getX() > SELECTION_WINDOW_LEFT && s.getX() < SELECTION_WINDOW_RIGHT);
 		}
 	}
 
 	@Override
-	public void widgetEvent(WidgetEvent we)
-	{
+	public void widgetEvent(WidgetEvent we) {
 		final Object source = we.getSource();
 
-		if (source == backButton)
-		{
+		if (source == backButton) {
 			backing = true;
 
-			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
-			{
+			if (we.getCommand().equals(Button.ANIMATION_FINISHED)) {
 				prepScreenChange();
 				game.setScreen(new MainMenuScreen(game, false));
 			}
@@ -267,42 +219,35 @@ public class StageSelectionScreen extends Screen implements WidgetListener
 	}
 
 	@Override
-	public void pause()
-	{
+	public void pause() {
 	}
 
 	@Override
-	public void resume()
-	{
+	public void resume() {
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 	}
 
 	@Override
-	public void backButton()
-	{
+	public void backButton() {
 		if (!Screen.isScreenChanging())
 			backButton.click();
 	}
 
-	private class Stage
-	{
+	private class Stage {
 		private final Text nameText;
 		private final Text progressText;
 		private boolean centered;
 		private final Sprite selectedSprite;
 		private final Sprite unselectedSprite;
 
-		private Stage(int stageNum, String name, SpriteTemplate selectedTemplate, SpriteTemplate unselectedTemplate)
-		{
+		private Stage(int stageNum, String name, SpriteTemplate selectedTemplate, SpriteTemplate unselectedTemplate) {
 			centered = false;
 			final float x = (Screen.MIDX) + (stageNum - 1) * STAGE_GAP;
 
-			if (stageProgress >= stageNum)
-			{
+			if (stageProgress >= stageNum) {
 				selectedSprite = new Sprite(selectedTemplate, x, Screen.MIDY);
 				unselectedSprite = new Sprite(unselectedTemplate, x, Screen.MIDY);
 				nameText = new Text(stageStyle, name, x, STAGE_NAME_Y, false);
@@ -313,9 +258,7 @@ public class StageSelectionScreen extends Screen implements WidgetListener
 					progress = "" + Levels.LEVEL_COUNT[stageNum - 1] + "/" + Levels.LEVEL_COUNT[stageNum - 1];
 
 				progressText = new Text(stageStyle, progress, x, STAGE_PROGRESS_Y, false);
-			}
-			else
-			{
+			} else {
 				selectedSprite = new Sprite(SpriteManager.stageLockedSelected, x, Screen.MIDY);
 				unselectedSprite = new Sprite(SpriteManager.stageLocked, x, Screen.MIDY/* + 70*/);
 				nameText = new Text(stageStyle, "???", x, STAGE_NAME_Y, false);
@@ -323,37 +266,31 @@ public class StageSelectionScreen extends Screen implements WidgetListener
 			}
 		}
 
-		private void offsetX(float dx)
-		{
+		private void offsetX(float dx) {
 			selectedSprite.offset(dx, 0);
 			unselectedSprite.offset(dx, 0);
 			nameText.offset(dx, 0);
 			progressText.offset(dx, 0);
 		}
 
-		private void setCentered(boolean centered)
-		{
+		private void setCentered(boolean centered) {
 			this.centered = centered;
 
 			nameText.setVisible(centered);
 			progressText.setVisible(centered);
 		}
 
-		private void select()
-		{
-			if (!selectedSprite.isVisible())
-			{
+		private void select() {
+			if (!selectedSprite.isVisible()) {
 				Swapper.swapImages(unselectedSprite, selectedSprite);
 			}
 		}
 
-		private float getX()
-		{
+		private float getX() {
 			return selectedSprite.getX();
 		}
 
-		private void initVisible()
-		{
+		private void initVisible() {
 			unselectedSprite.setVisible(true);
 		}
 	}

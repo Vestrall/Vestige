@@ -11,8 +11,7 @@ import com.lescomber.vestige.screens.OptionsScreen;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RollingFire extends AreaEffect
-{
+public class RollingFire extends AreaEffect {
 	public static final float HEIGHT = 120;
 	private static final float DPS[] = new float[] { 10, 15, 20 };
 	private static final double MAX_DURATION = 3;
@@ -30,8 +29,7 @@ public class RollingFire extends AreaEffect
 
 	private final Rectangle hitboxRect;
 
-	public RollingFire(float y)
-	{
+	public RollingFire(float y) {
 		super(DPS[OptionsScreen.difficulty], MAX_DURATION);
 
 		topY = y - (HEIGHT / 2);
@@ -43,8 +41,7 @@ public class RollingFire extends AreaEffect
 		hitbox = new Hitbox(hitboxRect);
 	}
 
-	public RollingFire(RollingFire copyMe)
-	{
+	public RollingFire(RollingFire copyMe) {
 		super(copyMe);
 
 		this.topY = copyMe.topY;
@@ -59,16 +56,14 @@ public class RollingFire extends AreaEffect
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
 		for (final FireAnimation fa : anims)
 			fa.update(deltaTime);
 
 		countdown -= deltaTime;
-		if (countdown <= 0)
-		{
+		if (countdown <= 0) {
 			countdown += MAX_COUNTDOWN[OptionsScreen.difficulty];
 
 			createNextColumn();
@@ -79,8 +74,7 @@ public class RollingFire extends AreaEffect
 		}
 	}
 
-	private void createNextColumn()
-	{
+	private void createNextColumn() {
 		final List<FireAnimation> newAnims = new ArrayList<FireAnimation>(5);
 
 		final float animX = hitboxRect.left - (X_GAP / 2);
@@ -91,8 +85,7 @@ public class RollingFire extends AreaEffect
 		final float imageOffsetY = FireAnimation.IMAGE_OFFSET_Y / 2;
 
 		// Add FireAnimations
-		for (float y = topY + imageOffsetY; y < topY + HEIGHT + imageOffsetY; y += Y_GAP)
-		{
+		for (float y = topY + imageOffsetY; y < topY + HEIGHT + imageOffsetY; y += Y_GAP) {
 			final FireAnimation anim = new FireAnimation();
 			anim.offsetTo(animX, y);
 			anim.setLayerHeight(Math.round(y));
@@ -106,8 +99,7 @@ public class RollingFire extends AreaEffect
 	}
 
 	@Override
-	public void close()
-	{
+	public void close() {
 		for (final FireAnimation fa : anims)
 			fa.close();
 
@@ -115,8 +107,7 @@ public class RollingFire extends AreaEffect
 	}
 
 	@Override
-	public RollingFire copy()
-	{
+	public RollingFire copy() {
 		return new RollingFire(this);
 	}
 }

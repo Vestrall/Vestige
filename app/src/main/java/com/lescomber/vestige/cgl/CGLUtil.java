@@ -2,8 +2,7 @@ package com.lescomber.vestige.cgl;
 
 import android.opengl.GLES20;
 
-public class CGLUtil
-{
+public class CGLUtil {
 	/**
 	 * Creates a program, given source code for vertex and fragment shaders.
 	 *
@@ -11,8 +10,7 @@ public class CGLUtil
 	 * @param fragmentShaderCode Source code for fragment shader.
 	 * @return Handle to program.
 	 */
-	public static int createProgram(String vertexShaderCode, String fragmentShaderCode)
-	{
+	public static int createProgram(String vertexShaderCode, String fragmentShaderCode) {
 		// Load vertex shader
 		final int vertexShader = GLES20.glCreateShader(GLES20.GL_VERTEX_SHADER);
 		GLES20.glShaderSource(vertexShader, vertexShaderCode);

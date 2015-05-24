@@ -1,6 +1,5 @@
 package com.lescomber.vestige.aiabilities;
 
-public interface Dash
-{
-	public void dashComplete();
+public interface Dash {
+	void dashComplete();
 }

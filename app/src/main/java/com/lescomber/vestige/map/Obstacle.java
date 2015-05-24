@@ -6,27 +6,26 @@ import com.lescomber.vestige.geometry.Point;
 
 import java.util.List;
 
-public interface Obstacle
-{
-	public List<Point> getCorners();
+public interface Obstacle {
+	List<Point> getCorners();
 
-	public Point adjustPathPoint(Point point);
+	Point adjustPathPoint(Point point);
 
-	public boolean intersectsPath(Line line);
+	boolean intersectsPath(Line line);
 
-	public boolean containsPathPoint(Point p);
+	boolean containsPathPoint(Point p);
 
-	public boolean contains(Point p);
+	boolean contains(Point p);
 
-	public void buildBoundaries(List<Obstacle> obstacles);
+	void buildBoundaries(List<Obstacle> obstacles);
 
-	public List<BoundaryLine> getBoundaryLines();
+	List<BoundaryLine> getBoundaryLines();
 
-	public void removeBoundaryLine(BoundaryLine boundaryLine);
+	void removeBoundaryLine(BoundaryLine boundaryLine);
 
-	public void becomeVisible();
+	void becomeVisible();
 
-	public Obstacle copy();
+	Obstacle copy();
 
-	public boolean overlaps(Entity other);
+	boolean overlaps(Entity other);
 }

@@ -9,8 +9,7 @@ import com.lescomber.vestige.projectiles.FireAnimation;
 import com.lescomber.vestige.projectiles.HitGroup;
 import com.lescomber.vestige.units.Unit;
 
-public class CreepingFire extends AreaEffect
-{
+public class CreepingFire extends AreaEffect {
 	private static final float FLAME_WIDTH = 40;
 	private static final float FLAME_HEIGHT = 50;
 
@@ -27,8 +26,7 @@ public class CreepingFire extends AreaEffect
 
 	private boolean hasCrept;
 
-	public CreepingFire(float dps, double durationSeconds, int countdown, float lastFlameAngle, HitGroup fireGroup)
-	{
+	public CreepingFire(float dps, double durationSeconds, int countdown, float lastFlameAngle, HitGroup fireGroup) {
 		super(FLAME_WIDTH, FLAME_HEIGHT, 0, durationSeconds);
 
 		flameDuration = durationSeconds;
@@ -48,8 +46,7 @@ public class CreepingFire extends AreaEffect
 		hasCrept = false;
 	}
 
-	public CreepingFire(CreepingFire copyMe)
-	{
+	public CreepingFire(CreepingFire copyMe) {
 		super(copyMe);
 
 		flameDuration = copyMe.flameDuration;
@@ -61,8 +58,7 @@ public class CreepingFire extends AreaEffect
 	}
 
 	@Override
-	public void update(int deltaTime)
-	{
+	public void update(int deltaTime) {
 		super.update(deltaTime);
 
 		if (hasCrept)
@@ -71,8 +67,7 @@ public class CreepingFire extends AreaEffect
 		storedRadians += RADIANS_PER_MS * deltaTime;
 
 		countdown -= deltaTime;
-		if (countdown <= 0)
-		{
+		if (countdown <= 0) {
 			hasCrept = true;
 
 			// Assumes only one target faction
@@ -90,8 +85,7 @@ public class CreepingFire extends AreaEffect
 			final Point nextFlamePoint = new Point(getX() + DIST_PER_FLAME, getY());
 			Point.rotate(nextFlamePoint, flameAngle, getX(), getY());
 
-			if (Screen.contains(nextFlamePoint))
-			{
+			if (Screen.contains(nextFlamePoint)) {
 				final CreepingFire nextFire = new CreepingFire(getDPS(), flameDuration, nextCountdown, flameAngle, getHitGroup());
 				nextFire.offsetTo(nextFlamePoint);
 				queueAreaEffect(nextFire);
@@ -100,8 +94,7 @@ public class CreepingFire extends AreaEffect
 	}
 
 	@Override
-	public CreepingFire copy()
-	{
+	public CreepingFire copy() {
 		return new CreepingFire(this);
 	}
 }

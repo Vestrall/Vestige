@@ -5,12 +5,10 @@ import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.projectiles.Projectile;
 import com.lescomber.vestige.units.Player;
 
-public class SOneChargeSwipe extends ProjectileShooter
-{
+public class SOneChargeSwipe extends ProjectileShooter {
 	private static final float DAMAGE = 30;
 
-	public SOneChargeSwipe(Player player)
-	{
+	public SOneChargeSwipe(Player player) {
 		super(player);
 
 		final Projectile shot = new Projectile(SpriteManager.sOneChargeSwipe, DAMAGE);

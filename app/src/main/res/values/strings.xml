@@ -1,6 +1,6 @@
 <resources>
     <string name="appName">Vestige</string>
-    
+
     <!-- Main Menu -->
     <string name="play">Play</string>
     <string name="pewBall">Pew Ball</string>
@@ -11,13 +11,13 @@
     <string name="easy">Easy</string>
     <string name="medium">Medium</string>
     <string name="hard">Hard</string>
-    
+
     <!-- Options Menu -->
     <string name="music">Music</string>
     <string name="sfx">SFX</string>
-    <string name="displayFPS">Display FPS (In-Game)</string>
+    <string name="displayFps">Display FPS (In-Game)</string>
     <string name="displayWave">Display Wave (In-Game)</string>
-    
+
     <!-- Credits Menu -->
     <string name="art">Art</string>
     <string name="graceZhang">Grace Zhang</string>
@@ -28,15 +28,15 @@
     <string name="soundEffects">Sound Effects</string>
     <string name="freeSFX">http://www.freesfx.co.uk</string>
     <string name="audioMicro">http://www.audiomicro.com</string>
-    
+
     <!-- Stage / Level Select -->
     <string name="darkWoods">Dark Woods</string>
     <string name="unknown">Unknown</string>
     <string name="levelSelect">Level Select</string>
-    
+
     <!-- Loading Screen -->
     <string name="mapIsLoaded">TAP TO CONTINUE</string>
-    
+
     <!-- In-game / Pause Menu -->
     <string name="paused">Paused</string>
     <string name="mainMenu">Main Menu</string>
@@ -44,13 +44,13 @@
     <string name="resume">Resume</string>
     <string name="fps">FPS</string>
     <string name="wave">Wave</string>
-    <string name="displayFPSCounter">Display FPS Counter</string>
+    <string name="displayFpsCounter">Display FPS Counter</string>
     <string name="displayWaveCounter">Display Wave Counter</string>
-    
+
     <!-- Game Over -->
     <string name="gameOver">Game Over</string>
     <string name="retry">Retry</string>
-    
+
     <!-- Tutorial -->
     <string name="welcome">Welcome to the Vestige tutorial. Let\'s learn the basics.</string>
     <string name="move">Tap anywhere on the screen to move to that location.</string>
@@ -95,5 +95,5 @@
     <string name="pewBallConfirmConcede">Yes, Concede</string>
     <string name="pewBallConfirmMainMenu">Yes, Leave</string>
     <string name="pewBallCancel">Cancel</string>
-    
+
 </resources>
