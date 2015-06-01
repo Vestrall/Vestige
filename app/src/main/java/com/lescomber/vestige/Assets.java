@@ -47,7 +47,7 @@ public class Assets {
 
 	// Projectiles/AreaEffects
 	public static CGLTexture sOneSwipe, sOneChargeSwipe, sOneDoubleTapLaser, explosion[], groundFire[], doubleEnemyLaser, enemyProjectile,
-			purpleProjectile, purpleComet, plasmaBall[];
+			purpleProjectile, purpleComet, plasmaBall[], pewBall[];
 
 	// PickUps
 	public static CGLTexture pickUpGlow, healthPickUp, healthPickUpAnimation[];
@@ -170,6 +170,7 @@ public class Assets {
 		purpleProjectile = new CGLTexture();
 		purpleComet = new CGLTexture();
 		plasmaBall = initCGLTextureArray(3);
+		pewBall = initCGLTextureArray(3);
 
 		// PickUps
 		pickUpGlow = new CGLTexture();
@@ -268,6 +269,7 @@ public class Assets {
 		purpleProjectile.createImageTexture("PurpleProjectile.png");
 		purpleComet.createImageTexture("PurpleComet.png");
 		createCGLTextureArray(plasmaBall, "PlasmaBall");
+		createCGLTextureArray(pewBall, "PewBall");
 
 		// PickUps
 		pickUpGlow.createImageTexture("PickUpGlow.png");

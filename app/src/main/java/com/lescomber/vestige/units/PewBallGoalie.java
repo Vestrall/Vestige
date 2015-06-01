@@ -12,9 +12,9 @@ import com.lescomber.vestige.statuseffects.StatPack;
 public class PewBallGoalie extends AIUnit {
 	// Levels 1-9 base + increasePerLevel[0]
 	// Levels 10-20 = base + (increasePerLevel[1] * (levelNum - 10))
-	// Levels 21+ = Levels 10-20 + (increasePerLevel[2] * (levelNum - 20))
+	// Levels 21+ = Level 20 + (increasePerLevel[2] * (levelNum - 20))
 	private static final float BASE_SPEED = 24;
-	private static final float[] SPEED_INCREASE_PER_LEVEL = new float[] { 5.4f, 5, 6.15f };
+	private static final float[] SPEED_INCREASE_PER_LEVEL = new float[] { 5.4f, 5, 6.6f };
 
 	private static final double SCALE = 0.65;
 
@@ -23,7 +23,7 @@ public class PewBallGoalie extends AIUnit {
 	private final float[] yRange;
 
 	// Goalie will move in moveRange increments in the direction of whatever PewBall it is currently tracking. Larger moveRange results in a less
-	//responsive goalie (since he won't pick their next destination until they reach their current one). The decreasePerLevel part occurs between
+	//responsive goalie (since he won't pick his next destination until he reaches his current one). The decreasePerLevel part occurs between
 	//KEY_LEVELS[0] and KEY_LEVELS[1]
 	private static final float BASE_MOVE_RANGE = 60;
 	private static final float MOVE_RANGE_DECREASE_PER_LEVEL = 4;
@@ -62,7 +62,7 @@ public class PewBallGoalie extends AIUnit {
 		final SpriteAnimation walkLeftAnim = new SpriteAnimation(SpriteManager.casterWalkLeft);
 		setWalkLeftAnimation(walkLeftAnim);
 
-		// Get rid of health bars
+		// Remove health bar
 		createHealthBar(null, null);
 
 		scale(SCALE, SCALE);

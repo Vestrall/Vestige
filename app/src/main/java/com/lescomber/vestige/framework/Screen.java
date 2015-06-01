@@ -17,7 +17,9 @@ public abstract class Screen {
 
 	private static boolean isChanging = false;
 
+	public static final float SCREEN_HITBOX_PADDING = 50;
 	private static final Hitbox SCREEN_HITBOX = new Hitbox(new Rectangle(0, 0, WIDTH, HEIGHT));
+	private static final Hitbox SCREEN_HITBOX_PADDED = new Hitbox(new Rectangle(-50, -50, WIDTH + SCREEN_HITBOX_PADDING, HEIGHT + SCREEN_HITBOX_PADDING));
 
 	protected final AndroidGame game;
 
@@ -47,7 +49,11 @@ public abstract class Screen {
 	}
 
 	public static boolean overlaps(Hitbox hitbox) {
-		return SCREEN_HITBOX.overlaps(hitbox);
+		return overlaps(hitbox, false);
+	}
+
+	public static boolean overlaps(Hitbox hitbox, boolean padded) {
+		return padded ? SCREEN_HITBOX_PADDED.overlaps(hitbox) : SCREEN_HITBOX.overlaps(hitbox);
 	}
 
 	public abstract void update(int deltaTime);

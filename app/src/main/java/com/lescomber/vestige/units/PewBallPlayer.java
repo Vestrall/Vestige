@@ -21,6 +21,9 @@ public class PewBallPlayer extends Player {
 
 		// Put doubleTapAbility's CDIndicator back in its place
 		doubleTapAbility.offsetCDIndicatorTo(pos.x, pos.y);
+
+		// Remove health bar
+		createHealthBar(null, null);
 	}
 
 	/**
@@ -28,7 +31,7 @@ public class PewBallPlayer extends Player {
 	 */
 	public void repulse(PewBall ball) {
 		final Line centers = new Line(getCenter(), ball.getCenter());
-		ball.setDestination(centers.getExtEnd(PewBall.RADIUS, PewBall.RADIUS));
+		ball.setDestination(centers.getExtEnd());
 	}
 
 	@Override

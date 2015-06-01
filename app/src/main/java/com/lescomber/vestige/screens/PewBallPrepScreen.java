@@ -111,7 +111,7 @@ public class PewBallPrepScreen extends Screen implements WidgetListener {
 		levelSlider.addWidgetListener(this);
 		//levelSlider.setVisible(true);
 		levelText = new Text(descriptionStyle, Integer.toString(currentLevel), 50, 50, false);
-		///levelText.setVisible(true);
+		//levelText.setVisible(true);
 	}
 
 	private void displayRestartWarning(boolean warningVisible) {

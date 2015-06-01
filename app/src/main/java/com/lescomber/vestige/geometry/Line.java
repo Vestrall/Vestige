@@ -180,21 +180,7 @@ public class Line {
 	 * Extends the line off screen and returns the resulting endpoint
 	 */
 	public Point getExtEnd() {
-		return getExtEnd(0, 0);
-		/*if (point0.equals(point1))
-			return new Point(point1);
-		
-		final float dx = point1.x - point0.x;
-		final float dy = point1.y - point0.y;
-		final Point ret = new Point(point1);
-		
-		while (Screen.contains(ret))
-		{
-			ret.x += dx * Screen.WIDTH;
-			ret.y += dy * Screen.WIDTH;
-		}
-		
-		return ret;*/
+		return getExtEnd(Screen.SCREEN_HITBOX_PADDING, Screen.SCREEN_HITBOX_PADDING);
 	}
 
 	public Point getExtEnd(float xBuffer, float yBuffer) {

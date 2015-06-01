@@ -83,7 +83,7 @@ public class SpriteManager {
 
 	// Projectiles/AreaEffects
 	public static SpriteTemplate explosion[], plasmaBall[], groundFire[], enemyLaserHead, enemyLaserBody, doubleEnemyLaser, sOneSwipe,
-			sOneChargeSwipe, enemyProjectile, purpleProjectile, purpleComet, sOneDoubleTapLaser;
+			sOneChargeSwipe, enemyProjectile, purpleProjectile, purpleComet, sOneDoubleTapLaser, pewBall[];
 
 	// PickUps
 	public static SpriteTemplate pickUpGlow, healthPickUp, healthPickUpAnimation[];
@@ -246,6 +246,8 @@ public class SpriteManager {
 		purpleProjectile = new SpriteTemplate(Assets.purpleProjectile);
 
 		purpleComet = new SpriteTemplate(Assets.purpleComet);
+
+		pewBall = createTemplates(Assets.pewBall);
 
 		//========
 		// PickUps

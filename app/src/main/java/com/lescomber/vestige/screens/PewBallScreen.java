@@ -87,20 +87,18 @@ public class PewBallScreen extends GameScreen {
 		levelBackground.setVisible(true);
 
 		resultTextDelay = RESULT_TEXT_DELAY;
-		final TextStyle resultHeadingStyle = TextStyle.bodyStyleWhite(80);
+		final TextStyle heqdingStyle = TextStyle.headingStyle();
 		final TextStyle resultBodyStyle = TextStyle.bodyStyleWhite();
 		resultBodyStyle.setSpacing(0);
-		victoryHeading = new Text(resultHeadingStyle, res.getString(R.string.pewBallVictoryHeading), Screen.MIDX, 160, false);
+		victoryHeading = new Text(heqdingStyle, res.getString(R.string.pewBallVictoryHeading), Screen.MIDX, 160, false);
 		victoryBody = new Text(resultBodyStyle, res.getString(R.string.pewBallVictoryBody), Screen.MIDX, 310, false);
-		defeatHeading = new Text(resultHeadingStyle, res.getString(R.string.pewBallDefeatHeading), Screen.MIDX, 160, false);
+		defeatHeading = new Text(heqdingStyle, res.getString(R.string.pewBallDefeatHeading), Screen.MIDX, 160, false);
 		defeatBody = new Text(resultBodyStyle, res.getString(R.string.pewBallDefeatBody), Screen.MIDX, 310, false);
 
 		// Change restart button into a concede button
 		pRestartButton.setText(AndroidGame.res.getString(R.string.pewBallConcede));
 
-		final TextStyle warningHeadingStyle = TextStyle.headingStyle();
-
-		concedeHeading = new Text(warningHeadingStyle, res.getString(R.string.pewBallWarning), Screen.MIDX, 75, false);
+		concedeHeading = new Text(heqdingStyle, res.getString(R.string.pewBallWarning), Screen.MIDX, 75, false);
 		concedeWarning = new TextArea(Screen.MIDX, WARNING_TOP_Y, CHARS_PER_LINE, LINE_SPACING, resultBodyStyle, res
 				.getString(R.string.pewBallConcedeBody), false);
 		mainMenuWarning = new TextArea(Screen.MIDX, WARNING_TOP_Y, CHARS_PER_LINE, LINE_SPACING, resultBodyStyle, res

@@ -198,7 +198,7 @@ public class Projectile extends MobileEntity {
 		}
 
 		// Check if projectile is completely off screen, remove if so
-		if (offScreenRemoval && !Screen.overlaps(hitbox)) {
+		if (offScreenRemoval && !Screen.overlaps(hitbox, true)) {
 			isFinished = true;
 			return;
 		}

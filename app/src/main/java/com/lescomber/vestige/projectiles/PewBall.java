@@ -47,14 +47,14 @@ public class PewBall extends Projectile implements Comparable<PewBall> {
 		setUnitPassThrough(true);
 
 		// Init pulsing animation
-		final SpriteAnimation anim = new SpriteAnimation(SpriteManager.plasmaBall);
+		final SpriteAnimation anim = new SpriteAnimation(SpriteManager.pewBall);
 		anim.scale(2, 2);
 		anim.setSequenceLimit(-1);
 		setImage(anim);
-		setGlow(SpriteManager.purpleGlow);
+		setGlow(SpriteManager.redGlow);
 
 		lastHit = null;
-		passThroughHits = new ArrayList<Projectile>(3);
+		passThroughHits = new ArrayList<Projectile>(5);
 
 		boost = 0;
 		BOOST_DECAY_PER_MS = NORMAL_VELOCITY / 1200;
@@ -113,7 +113,7 @@ public class PewBall extends Projectile implements Comparable<PewBall> {
 		final float newAngle = (float) ((Math.PI / 2) + (0.3f)) + (Util.rand.nextFloat() * ((float) Math.PI - 0.6f));
 		final Line newPath = new Line(getX(), getY(), getX() + 1, getY());
 		Point.rotate(newPath.point1, newAngle, newPath.point0.x, newPath.point0.y);
-		setDestination(newPath.getExtEnd(RADIUS, RADIUS));
+		setDestination(newPath.getExtEnd());
 
 		// Add random, decaying burst of speed
 		speedBoost();
@@ -150,12 +150,12 @@ public class PewBall extends Projectile implements Comparable<PewBall> {
 		}
 
 		final Line centers = new Line(pBox.getCenter(), box.getCenter());
-		setDestination(centers.getExtEnd(RADIUS, RADIUS));
+		setDestination(centers.getExtEnd());
 
 		// Case: p is another PewBall
 		if (p instanceof PewBall) {
 			final Line reverseCenters = new Line(centers.point1, centers.point0);
-			p.setDestination(reverseCenters.getExtEnd(RADIUS, RADIUS));
+			p.setDestination(reverseCenters.getExtEnd());
 		}
 
 		// Case: p is a player projectile that can deflect (i.e. does not pass through units)
@@ -178,7 +178,7 @@ public class PewBall extends Projectile implements Comparable<PewBall> {
 
 			Point.rotate(centers.point1, deflectAngle, centers.point0.x, centers.point0.y);
 			p.rotateTo(centers.getDirection());
-			p.setDestination(centers.getExtEnd(RADIUS, RADIUS));
+			p.setDestination(centers.getExtEnd());
 		}
 	}
 
@@ -193,7 +193,7 @@ public class PewBall extends Projectile implements Comparable<PewBall> {
 		final float rotationAngle = -2 * path.getDirection();
 
 		Point.rotate(path.point1, rotationAngle, path.point0.x, path.point0.y);
-		path.point1 = path.getExtEnd(RADIUS, RADIUS);
+		path.point1 = path.getExtEnd();
 
 		// Move the ball slightly so it is no longer overlapping o to prevent repeatedly hitting the same obstacle
 		final float dx = path.point1.x - path.point0.x;
