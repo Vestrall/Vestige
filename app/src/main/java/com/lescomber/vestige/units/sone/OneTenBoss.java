@@ -1,16 +1,16 @@
 package com.lescomber.vestige.units.sone;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.aiabilities.sone.MultiCreepingFireShooter;
 import com.lescomber.vestige.aiabilities.sone.PerpetualPortalSpawner;
 import com.lescomber.vestige.aiabilities.sone.RoamingExploderShooter;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.Boss;
 
 public class OneTenBoss extends Boss {
 	private final MultiCreepingFireShooter fireShooter;
 
 	public OneTenBoss() {
-		super(700 + (200 * OptionsScreen.difficulty), 100 + (20 * OptionsScreen.difficulty));
+		super(700 + (200 * Options.difficulty), 100 + (20 * Options.difficulty));
 
 		fireShooter = new MultiCreepingFireShooter(this, 9.5);
 		fireShooter.setCooldownRandomness(false);

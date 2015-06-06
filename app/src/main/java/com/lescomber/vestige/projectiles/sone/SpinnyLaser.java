@@ -1,14 +1,14 @@
 package com.lescomber.vestige.projectiles.sone;
 
-import com.lescomber.vestige.audio.AudioManager;
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.crossover.SpriteManager;
+import com.lescomber.vestige.framework.AudioManager;
 import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.graphics.Sprite;
 import com.lescomber.vestige.projectiles.Beam;
 import com.lescomber.vestige.projectiles.HitGroup;
 import com.lescomber.vestige.projectiles.Projectile;
 import com.lescomber.vestige.projectiles.glows.BeamGlow;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.AIUnit;
 
 public class SpinnyLaser extends Projectile {
@@ -54,7 +54,7 @@ public class SpinnyLaser extends Projectile {
 		setUnitPassThrough(true);
 		setWallPassThrough(true);
 
-		setVelocityPerSecond(350 + (50 * OptionsScreen.difficulty));
+		setVelocityPerSecond(350 + (50 * Options.difficulty));
 
 		this.owner = owner;
 		delayRemaining = delayMS;
@@ -97,7 +97,7 @@ public class SpinnyLaser extends Projectile {
 
 			if (delayRemaining <= 0) {
 				// Turn on the damage
-				setDamage(BEAM_DAMAGE[OptionsScreen.difficulty]);
+				setDamage(BEAM_DAMAGE[Options.difficulty]);
 				setHitGroup(hitGroup);
 				setUnitHitSound(AudioManager.enemyLaserHit);
 				clearHitList();

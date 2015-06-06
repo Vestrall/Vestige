@@ -1,11 +1,10 @@
-package com.lescomber.vestige.audio;
+package com.lescomber.vestige.framework;
 
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.SoundPool;
 
-import com.lescomber.vestige.framework.AndroidGameActivity;
-import com.lescomber.vestige.screens.OptionsScreen;
+import com.lescomber.vestige.Options;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -143,7 +142,7 @@ public class AudioManager {
 
 	public static void musicVolumeChanged() {
 		if (music != null)
-			music.setVolume(OptionsScreen.musicVolume);
+			music.setVolume(Options.getMusicVolume());
 	}
 
 	public static void sfxVolumeChanged() {
@@ -170,7 +169,7 @@ public class AudioManager {
 
 			music = createMusic(filename);
 			if (music != null)
-				music.setVolume(OptionsScreen.musicVolume);
+				music.setVolume(Options.getMusicVolume());
 
 			music.play();
 		} else {
@@ -198,7 +197,7 @@ public class AudioManager {
 
 			music = queuedMusic;
 			if (music != null)
-				music.setVolume(OptionsScreen.musicVolume);
+				music.setVolume(Options.getMusicVolume());
 			music.play();
 
 			queuedMusic = null;
@@ -259,7 +258,7 @@ public class AudioManager {
 		}
 
 		private void updateVolume() {
-			volume = OptionsScreen.sfxVolume * baseVolume;
+			volume = Options.getSfxVolume() * baseVolume;
 		}
 
 		public void play() {

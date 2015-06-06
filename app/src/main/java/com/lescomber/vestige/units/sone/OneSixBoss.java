@@ -1,5 +1,6 @@
 package com.lescomber.vestige.units.sone;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.aiabilities.AIAbility;
 import com.lescomber.vestige.aiabilities.AIShooter;
 import com.lescomber.vestige.aiabilities.DummyAbility;
@@ -7,15 +8,14 @@ import com.lescomber.vestige.aiabilities.sone.Charge;
 import com.lescomber.vestige.aiabilities.sone.CreepingFireShooter;
 import com.lescomber.vestige.aiabilities.sone.MovingBeamShooter;
 import com.lescomber.vestige.aiabilities.sone.MultiShooter;
-import com.lescomber.vestige.audio.AudioManager;
 import com.lescomber.vestige.crossover.SpriteManager;
+import com.lescomber.vestige.framework.AudioManager;
 import com.lescomber.vestige.framework.Util;
 import com.lescomber.vestige.graphics.Sprite;
 import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.projectiles.HitGroup;
 import com.lescomber.vestige.projectiles.Projectile;
 import com.lescomber.vestige.projectiles.sone.Seeker;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.Boss;
 
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public class OneSixBoss extends Boss {
 	private final DummyAbility trigger;
 
 	public OneSixBoss() {
-		super(850 + (350 * OptionsScreen.difficulty), 160 + (10 * OptionsScreen.difficulty));
+		super(850 + (350 * Options.difficulty), 160 + (10 * Options.difficulty));
 
 		isBossState = true;
 		isFiringShapeShift = false;

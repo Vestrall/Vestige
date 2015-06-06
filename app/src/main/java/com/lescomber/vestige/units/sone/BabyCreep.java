@@ -1,10 +1,10 @@
 package com.lescomber.vestige.units.sone;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.Util;
 import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.graphics.SpriteAnimation;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.statuseffects.StatPack;
 import com.lescomber.vestige.units.FloatingCreep;
 
@@ -15,8 +15,8 @@ public class BabyCreep extends FloatingCreep {
 		super();
 
 		final StatPack baseStats = new StatPack();
-		baseStats.maxHp = 45 + (15 * OptionsScreen.difficulty);
-		baseStats.moveSpeed = 400 + (50 * OptionsScreen.difficulty);
+		baseStats.maxHp = 45 + (15 * Options.difficulty);
+		baseStats.moveSpeed = 400 + (50 * Options.difficulty);
 		setBaseStats(baseStats);
 
 		clearAbilities();

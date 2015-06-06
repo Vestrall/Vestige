@@ -1,11 +1,11 @@
 package com.lescomber.vestige.aiabilities.sone;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.aiabilities.AIAbility;
 import com.lescomber.vestige.framework.Util;
 import com.lescomber.vestige.geometry.Line;
 import com.lescomber.vestige.projectiles.HitGroup;
 import com.lescomber.vestige.projectiles.sone.CreepingFire;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.AIUnit;
 import com.lescomber.vestige.units.Unit;
 
@@ -37,7 +37,7 @@ public class CreepingFireShooter extends AIAbility {
 		final Line line = new Line(owner.getCenter(), target.getCenter());
 		final float firstFlameAngle = line.getDirection() - (ANGLE_RANGE / 2) + (Util.rand.nextFloat() * ANGLE_RANGE);
 
-		final CreepingFire firstFire = new CreepingFire(DPS[OptionsScreen.difficulty], FLAME_DURATION, COUNTDOWN_INIT, firstFlameAngle, fireGroup);
+		final CreepingFire firstFire = new CreepingFire(DPS[Options.difficulty], FLAME_DURATION, COUNTDOWN_INIT, firstFlameAngle, fireGroup);
 		firstFire.offsetTo(owner.getCenter());
 		owner.queueAreaEffect(firstFire);
 	}

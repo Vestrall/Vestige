@@ -1,8 +1,8 @@
 package com.lescomber.vestige.aiabilities.sone;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.aiabilities.AIAbility;
-import com.lescomber.vestige.audio.AudioManager;
-import com.lescomber.vestige.screens.OptionsScreen;
+import com.lescomber.vestige.framework.AudioManager;
 import com.lescomber.vestige.statuseffects.DisplacementEffect;
 import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.units.AIUnit;
@@ -23,7 +23,7 @@ public class Charge extends AIAbility {
 
 		setUsesAnimation(false);
 
-		hitBundle = new HitBundle(DAMAGE[OptionsScreen.difficulty]);
+		hitBundle = new HitBundle(DAMAGE[Options.difficulty]);
 
 		target = null;
 	}
@@ -48,7 +48,7 @@ public class Charge extends AIAbility {
 
 	@Override
 	public void activate() {
-		final DisplacementEffect dashEffect = new DisplacementEffect(target.getCenter(), VELOCITY_PER_SECOND[OptionsScreen.difficulty]);
+		final DisplacementEffect dashEffect = new DisplacementEffect(target.getCenter(), VELOCITY_PER_SECOND[Options.difficulty]);
 		owner.addStatusEffect(dashEffect);
 	}
 

@@ -11,7 +11,6 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 
 import com.lescomber.vestige.FpsCounter;
-import com.lescomber.vestige.audio.AudioManager;
 import com.lescomber.vestige.cgl.CGLRenderer;
 import com.lescomber.vestige.crossover.ColorRectManager;
 import com.lescomber.vestige.crossover.SpriteManager;

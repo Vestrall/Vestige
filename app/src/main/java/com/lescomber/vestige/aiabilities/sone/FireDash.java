@@ -1,5 +1,6 @@
 package com.lescomber.vestige.aiabilities.sone;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.aiabilities.AIAbility;
 import com.lescomber.vestige.aiabilities.Dash;
 import com.lescomber.vestige.framework.Screen;
@@ -9,7 +10,6 @@ import com.lescomber.vestige.projectiles.AreaEffect;
 import com.lescomber.vestige.projectiles.FireAnimation;
 import com.lescomber.vestige.projectiles.HitGroup;
 import com.lescomber.vestige.screens.GameScreen;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.statuseffects.DisplacementEffect;
 import com.lescomber.vestige.units.AIRailUnit;
 import com.lescomber.vestige.units.sone.OneEightBoss;
@@ -61,7 +61,7 @@ public class FireDash extends AIAbility implements Dash {
 				firingCooldown += FIRING_INTERVAL;
 
 				final AreaEffect ae = new AreaEffect(FIRE_WIDTH, FIRE_HEIGHT, 0, FIRE_DURATION);
-				ae.setDamagePerSecond(FIRE_DPS[OptionsScreen.difficulty]);
+				ae.setDamagePerSecond(FIRE_DPS[Options.difficulty]);
 				ae.setImage(new FireAnimation());
 				ae.setImageOffsetY(FireAnimation.IMAGE_OFFSET_Y);
 				ae.setHitGroup(fireGroup);
@@ -79,7 +79,7 @@ public class FireDash extends AIAbility implements Dash {
 		final Point dashPoint = GameScreen.map.adjustDestination(dashX, dashY, owner.getTopGap());
 
 		// Create and apply DisplacementEffect
-		final DisplacementEffect dashEffect = new DisplacementEffect(dashPoint, VELOCITY_PER_SECOND[OptionsScreen.difficulty]);
+		final DisplacementEffect dashEffect = new DisplacementEffect(dashPoint, VELOCITY_PER_SECOND[Options.difficulty]);
 		owner.addStatusEffect(dashEffect, this);
 
 		// Cause owner to pick a new walking destination once dash is completed

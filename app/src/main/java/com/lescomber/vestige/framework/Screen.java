@@ -1,6 +1,5 @@
 package com.lescomber.vestige.framework;
 
-import com.lescomber.vestige.audio.AudioManager;
 import com.lescomber.vestige.crossover.ColorRectManager;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.crossover.TextManager;

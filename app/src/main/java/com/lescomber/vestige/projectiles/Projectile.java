@@ -1,9 +1,9 @@
 package com.lescomber.vestige.projectiles;
 
 import com.lescomber.vestige.MobileEntity;
-import com.lescomber.vestige.audio.AudioManager.SoundEffect;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
+import com.lescomber.vestige.framework.AudioManager.SoundEffect;
 import com.lescomber.vestige.framework.Screen;
 import com.lescomber.vestige.geometry.Hitbox;
 import com.lescomber.vestige.graphics.Sprite;

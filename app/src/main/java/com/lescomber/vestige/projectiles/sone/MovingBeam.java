@@ -1,6 +1,6 @@
 package com.lescomber.vestige.projectiles.sone;
 
-import com.lescomber.vestige.audio.AudioManager;
+import com.lescomber.vestige.framework.AudioManager;
 import com.lescomber.vestige.projectiles.Beam;
 import com.lescomber.vestige.units.Unit;
 

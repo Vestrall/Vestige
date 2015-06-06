@@ -1,7 +1,8 @@
 package com.lescomber.vestige.projectiles.sone;
 
-import com.lescomber.vestige.audio.AudioManager;
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.crossover.SpriteManager;
+import com.lescomber.vestige.framework.AudioManager;
 import com.lescomber.vestige.geometry.Angle;
 import com.lescomber.vestige.geometry.Circle;
 import com.lescomber.vestige.geometry.Hitbox;
@@ -11,7 +12,6 @@ import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.projectiles.Explosion;
 import com.lescomber.vestige.projectiles.Projectile;
 import com.lescomber.vestige.screens.GameScreen;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.Unit;
 
 public class Seeker extends Projectile {
@@ -35,7 +35,7 @@ public class Seeker extends Projectile {
 		setImage(anim);
 		setGlow(SpriteManager.purpleGlow);
 
-		setExplosion(new Explosion(EXPLOSION_RADIUS, DAMAGE[OptionsScreen.difficulty]));
+		setExplosion(new Explosion(EXPLOSION_RADIUS, DAMAGE[Options.difficulty]));
 		setExplosionSound(AudioManager.purpleExplosion);
 	}
 
@@ -74,7 +74,7 @@ public class Seeker extends Projectile {
 		if (target == null)
 			return;
 
-		final float maxRotation = RADIANS_PER_MS[OptionsScreen.difficulty] * deltaTime;
+		final float maxRotation = RADIANS_PER_MS[Options.difficulty] * deltaTime;
 		final Line line = new Line(getCenter(), target.getCenter());
 		final float targetAngle = line.getDirection();
 		final Line curAngleLine = new Line(getCenter(), getDestination());

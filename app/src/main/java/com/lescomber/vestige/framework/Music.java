@@ -1,4 +1,4 @@
-package com.lescomber.vestige.audio;
+package com.lescomber.vestige.framework;
 
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;

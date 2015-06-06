@@ -1,5 +1,6 @@
 package com.lescomber.vestige.aiabilities.sone;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.aiabilities.AIChanneledAbility;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.Screen;
@@ -7,7 +8,6 @@ import com.lescomber.vestige.framework.Util;
 import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.projectiles.sone.Meteor;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.statuseffects.StatPack;
 import com.lescomber.vestige.statuseffects.StatusEffect;
@@ -33,7 +33,7 @@ public class ShieldMeteorShower extends AIChanneledAbility {
 		super(owner, 3600, cooldownSeconds);
 
 		final StatPack sp = new StatPack();
-		sp.bonusShields = SHIELD_STRENGTH[OptionsScreen.difficulty];
+		sp.bonusShields = SHIELD_STRENGTH[Options.difficulty];
 		final SpriteAnimation anim = new SpriteAnimation(SpriteManager.shield);
 		anim.scale(1.5, 1.5);
 		anim.setSequenceLimit(-1);
@@ -75,7 +75,7 @@ public class ShieldMeteorShower extends AIChanneledAbility {
 
 		owner.addStatusEffect(shieldEffect);
 
-		countdown = SPAWN_INTERVAL[OptionsScreen.difficulty] / 2;
+		countdown = SPAWN_INTERVAL[Options.difficulty] / 2;
 	}
 
 	@Override
@@ -83,14 +83,14 @@ public class ShieldMeteorShower extends AIChanneledAbility {
 		countdown -= deltaTime;
 
 		while (countdown <= 0) {
-			countdown += SPAWN_INTERVAL[OptionsScreen.difficulty];
+			countdown += SPAWN_INTERVAL[Options.difficulty];
 
 			// Remove next spawnPoint from the start of the list and return it to the back of the list
 			final Point spawnPoint = spawnPoints.removeFirst();
 			spawnPoints.add(spawnPoint);
 
-			owner.queueProjectile(new Meteor(Screen.WIDTH / SPAWN_COLS, Screen.HEIGHT / SPAWN_ROWS, spawnPoint, DPS[OptionsScreen.difficulty],
-					FIRE_DURATION[OptionsScreen.difficulty]));
+			owner.queueProjectile(new Meteor(Screen.WIDTH / SPAWN_COLS, Screen.HEIGHT / SPAWN_ROWS, spawnPoint, DPS[Options.difficulty],
+					FIRE_DURATION[Options.difficulty]));
 		}
 
 		if (owner.getShields() <= 0)

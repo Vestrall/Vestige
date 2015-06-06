@@ -1,9 +1,9 @@
 package com.lescomber.vestige.aiabilities;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.geometry.Line;
 import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.projectiles.Beam;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.AIUnit;
 import com.lescomber.vestige.units.Unit;
 
@@ -58,7 +58,7 @@ public class BeamShooter extends AIChanneledAbility {
 
 		// Set path information for new beam
 		final Line line = new Line(firingLocation, target.getCenter());
-		beam = new Beam(firingLocation.x, firingLocation.y, line.getDirection(), BEAM_DAMAGE[OptionsScreen.difficulty]);
+		beam = new Beam(firingLocation.x, firingLocation.y, line.getDirection(), BEAM_DAMAGE[Options.difficulty]);
 
 		// Fire
 		owner.queueProjectile(beam);

@@ -94,11 +94,10 @@ public class SpriteManager {
 	// UI elements
 	public static SpriteTemplate hpGregHealth, hpBarBackground, hpSteveHealth, hpBossBackground, hpBossHealth, hpShieldHealth, swipeArrow,
 			cdArcEmpty, cdArcFull, cdTeleportEmpty, cdTeleportFull, cdShieldEmpty, cdShieldFull, cdInnerBlueArc, cdInnerGrayArc, chargeArrowTail,
-			chargeArrowHead, chargeArrowCooldownTail, chargeArrowCooldownHead, chargeArrowSparks[], /*uiTextBackground, */
-			uiTextBackgroundPieces[];
+			chargeArrowHead, chargeArrowCooldownTail, chargeArrowCooldownHead, chargeArrowSparks[], uiTextBackgroundPieces[];
 
 	// Widgets
-	public static SpriteTemplate /*menuButton, menuButtonClick,*/ menuButtonPieces[], menuButtonClickPieces[], backButton, backButtonClick,
+	public static SpriteTemplate menuButtonPieces[], menuButtonClickPieces[], backButton, backButtonClick, soundToggleOff, soundToggleOn,
 			tutorialNextButton, tutorialNextButtonClick, levelSelectButtonLocked, levelSelectButtonUnlocked, pauseButton, pauseButtonClick,
 			checkBoxOff, checkBoxOn, sliderEmpty, sliderFull, sliderKnob;
 
@@ -309,6 +308,9 @@ public class SpriteManager {
 
 		backButton = new SpriteTemplate(Assets.gameUITexture, new Rect(200, 140, 262, 202));
 		backButtonClick = new SpriteTemplate(Assets.gameUITexture, new Rect(262, 140, 324, 202));
+
+		soundToggleOff = new SpriteTemplate(Assets.menuUITexture, new Rect(324, 140, 386, 202));
+		soundToggleOn = new SpriteTemplate(Assets.menuUITexture, new Rect(386, 140, 448, 202));
 
 		tutorialNextButton = new SpriteTemplate(Assets.gameUITexture, new Rect(200, 66, 239, 105));
 		tutorialNextButtonClick = new SpriteTemplate(Assets.gameUITexture, new Rect(239, 66, 278, 105));

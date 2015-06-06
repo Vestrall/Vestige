@@ -2,10 +2,11 @@ package com.lescomber.vestige.screens;
 
 import android.content.res.Resources;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.R;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.AndroidGame;
-import com.lescomber.vestige.framework.Preferences;
+import com.lescomber.vestige.framework.PersistentData;
 import com.lescomber.vestige.framework.Screen;
 import com.lescomber.vestige.framework.TouchHandler.TouchEvent;
 import com.lescomber.vestige.geometry.Line;
@@ -333,10 +334,10 @@ public class TutorialScreen extends GameScreen implements GestureHandlerListener
 
 	@Override
 	void saveProgress() {
-		if (Preferences.getStageProgress(OptionsScreen.EASY) == 0) {
-			for (int i = OptionsScreen.EASY; i <= OptionsScreen.HARD; i++) {
-				Preferences.setStageProgress(i, 1);
-				Preferences.setLevelProgress(i, 1);
+		if (PersistentData.getStageProgress(Options.EASY) == 0) {
+			for (int i = Options.EASY; i <= Options.HARD; i++) {
+				PersistentData.setStageProgress(i, 1);
+				PersistentData.setLevelProgress(i, 1);
 			}
 		}
 	}

@@ -4,13 +4,14 @@ import android.content.res.Resources;
 
 import com.lescomber.vestige.Assets;
 import com.lescomber.vestige.ChargeSwipeArrow;
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.R;
 import com.lescomber.vestige.SwipeArrow;
-import com.lescomber.vestige.audio.AudioManager;
 import com.lescomber.vestige.cgl.CGLRenderer;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.AndroidGame;
-import com.lescomber.vestige.framework.Preferences;
+import com.lescomber.vestige.framework.AudioManager;
+import com.lescomber.vestige.framework.PersistentData;
 import com.lescomber.vestige.framework.Screen;
 import com.lescomber.vestige.framework.TouchHandler.TouchEvent;
 import com.lescomber.vestige.geometry.Point;
@@ -169,22 +170,22 @@ public class GameScreen extends Screen implements WidgetListener {
 
 		pMusicVolumeText = new Text(pausedOptionsStyle, res.getString(R.string.music), LEFT_COLUMN_X, 172, Alignment.CENTER, false);
 		pMusicVolumeSlider = new Slider(460, 174, 368, 30, 0, 100);
-		pMusicVolumeSlider.setValue((int) (OptionsScreen.musicVolume * 100));
+		pMusicVolumeSlider.setValue((int) (Options.getMusicVolume() * 100));
 		pMusicVolumeSlider.addWidgetListener(this);
 
 		pSfxText = new Text(pausedOptionsStyle, res.getString(R.string.sfx), LEFT_COLUMN_X, 223, Alignment.CENTER, false);
 		pSfxSlider = new Slider(460, 223, 368, 30, 0, 100);
-		pSfxSlider.setValue((int) (OptionsScreen.sfxVolume * 100));
+		pSfxSlider.setValue((int) (Options.getSfxVolume() * 100));
 		pSfxSlider.addWidgetListener(this);
 
 		pDisplayFpsText = new Text(pausedOptionsStyle, res.getString(R.string.displayFpsCounter), 276, 280, Alignment.LEFT, false);
 		pDisplayFpsBox = new CheckBox(LEFT_COLUMN_X, 280);
-		pDisplayFpsBox.setValue(OptionsScreen.displayFps);
+		pDisplayFpsBox.setValue(Options.displayFps);
 		pDisplayFpsBox.addWidgetListener(this);
 
 		pDisplayWaveText = new Text(pausedOptionsStyle, res.getString(R.string.displayWaveCounter), 276, 335, Alignment.LEFT, false);
 		pDisplayWaveBox = new CheckBox(LEFT_COLUMN_X, 335);
-		pDisplayWaveBox.setValue(OptionsScreen.displayWave);
+		pDisplayWaveBox.setValue(Options.displayWave);
 		pDisplayWaveBox.addWidgetListener(this);
 
 		// Game over transition
@@ -218,7 +219,7 @@ public class GameScreen extends Screen implements WidgetListener {
 		waveTextBackground.setLayerHeight(SpriteManager.UI_LAYER_OVER_THREE);
 		fpsTextBackground = new UIThreePatchSprite(SpriteManager.uiTextBackgroundPieces, FPS_RIGHT_X, 35);
 		fpsTextBackground.setLayerHeight(SpriteManager.UI_LAYER_OVER_THREE);
-		fpsTextBackground.setVisible(OptionsScreen.displayFps);
+		fpsTextBackground.setVisible(Options.displayFps);
 
 		waveNum = 0;
 
@@ -428,7 +429,7 @@ public class GameScreen extends Screen implements WidgetListener {
 	}
 
 	void updateWaveText() {
-		if (!OptionsScreen.displayWave)
+		if (!Options.displayWave)
 			return;
 
 		if (map.getWaveCount() > 1) {
@@ -438,7 +439,7 @@ public class GameScreen extends Screen implements WidgetListener {
 	}
 
 	void updateFpsText() {
-		if (!OptionsScreen.displayFps)
+		if (!Options.displayFps)
 			return;
 
 		final double curUPS = game.getFps();
@@ -514,11 +515,11 @@ public class GameScreen extends Screen implements WidgetListener {
 		final int curStage = map.getStageNum();
 		final int curLevel = map.getLevelNum();
 
-		for (int i = OptionsScreen.difficulty; i >= OptionsScreen.EASY; i--) {
-			int stageProgress = Preferences.getStageProgress(i);
-			int levelProgress = Preferences.getLevelProgress(i);
+		for (int i = Options.difficulty; i >= Options.EASY; i--) {
+			final int stageProgress = PersistentData.getStageProgress(i);
+			final int levelProgress = PersistentData.getLevelProgress(i);
 			if (stageProgress == curStage && levelProgress == curLevel)
-				Preferences.setLevelProgress(i, levelProgress + 1);
+				PersistentData.setLevelProgress(i, levelProgress + 1);
 			else
 				break;
 		}
@@ -671,23 +672,15 @@ public class GameScreen extends Screen implements WidgetListener {
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
 				unpauseGame();
 		} else if (source == pMusicVolumeSlider) {
-			OptionsScreen.musicVolume = (float) pMusicVolumeSlider.getValue() / 100;
-			Preferences.setMusicVolume(OptionsScreen.musicVolume);
-
-			// Inform AudioManager that master volume has changed so it can update the volume of all music / sound effects
-			AudioManager.musicVolumeChanged();
+			Options.setMusicVolume((float) pMusicVolumeSlider.getValue() / 100);
 		} else if (source == pSfxSlider) {
-			OptionsScreen.sfxVolume = (float) pSfxSlider.getValue() / 100;
-			Preferences.setSfxVolume(OptionsScreen.sfxVolume);
-
-			// Inform AudioManager that sfx volume has changed so it can update the volume of all sound effects
-			AudioManager.sfxVolumeChanged();
+			Options.setSfxVolume((float) pSfxSlider.getValue() / 100);
 		} else if (source == pDisplayFpsBox) {
-			OptionsScreen.displayFps = pDisplayFpsBox.isChecked();
-			Preferences.setFpsDisplayed(OptionsScreen.displayFps);
+			Options.displayFps = pDisplayFpsBox.isChecked();
+			PersistentData.setFpsDisplayed(Options.displayFps);
 		} else if (source == pDisplayWaveBox) {
-			OptionsScreen.displayWave = pDisplayWaveBox.isChecked();
-			Preferences.setWaveDisplayed(OptionsScreen.displayWave);
+			Options.displayWave = pDisplayWaveBox.isChecked();
+			PersistentData.setWaveDisplayed(Options.displayWave);
 		}
 	}
 
@@ -731,13 +724,13 @@ public class GameScreen extends Screen implements WidgetListener {
 
 		positionUIText();
 
-		if (OptionsScreen.displayWave) {
+		if (Options.displayWave) {
 			updateWaveText();
 			waveTextBackground.setVisible(map.getWaveCount() > 1);
 		} else
 			waveText.setText(" ");
 
-		if (OptionsScreen.displayFps)
+		if (Options.displayFps)
 			fpsTextBackground.setVisible(true);
 		else
 			fpsText.setText(" ");
@@ -767,8 +760,8 @@ public class GameScreen extends Screen implements WidgetListener {
 	}
 
 	private void positionUIText() {
-		if (OptionsScreen.displayWave && map.getWaveCount() > 1) {
-			if (OptionsScreen.displayFps) {
+		if (Options.displayWave && map.getWaveCount() > 1) {
+			if (Options.displayFps) {
 				waveText.offsetTo(WAVE_LEFT_X, waveText.getY());
 				waveTextBackground.offsetTo(WAVE_LEFT_X, waveTextBackground.getY());
 				fpsText.offsetTo(FPS_RIGHT_X, fpsText.getY());
@@ -806,7 +799,7 @@ public class GameScreen extends Screen implements WidgetListener {
 		if (state == GAME_STATE) {
 			positionUIText();
 
-			if (OptionsScreen.displayWave)
+			if (Options.displayWave)
 				waveTextBackground.setVisible(map.getWaveCount() > 1);
 		}
 	}
@@ -824,6 +817,7 @@ public class GameScreen extends Screen implements WidgetListener {
 	}
 
 	// TODO: when exactly does nullify needs to be called?
+
 	/**
 	 * Clear GameScreen variables to avoid memory leaks. They will be re-created when the game is restarted
 	 */

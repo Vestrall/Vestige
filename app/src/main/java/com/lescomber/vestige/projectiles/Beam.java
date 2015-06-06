@@ -1,8 +1,8 @@
 package com.lescomber.vestige.projectiles;
 
-import com.lescomber.vestige.audio.AudioManager;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
+import com.lescomber.vestige.framework.AudioManager;
 import com.lescomber.vestige.graphics.Swapper;
 import com.lescomber.vestige.graphics.ThreePatchSwingSprite;
 import com.lescomber.vestige.map.Obstacle;

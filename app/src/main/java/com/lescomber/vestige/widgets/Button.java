@@ -1,9 +1,9 @@
 package com.lescomber.vestige.widgets;
 
-import com.lescomber.vestige.audio.AudioManager;
-import com.lescomber.vestige.audio.AudioManager.SoundEffect;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
+import com.lescomber.vestige.framework.AudioManager;
+import com.lescomber.vestige.framework.AudioManager.SoundEffect;
 import com.lescomber.vestige.framework.TouchHandler.TouchEvent;
 import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.geometry.RotatedRect;

@@ -4,9 +4,9 @@ import android.content.res.Resources;
 
 import com.lescomber.vestige.Assets;
 import com.lescomber.vestige.R;
-import com.lescomber.vestige.audio.AudioManager;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.AndroidGame;
+import com.lescomber.vestige.framework.AudioManager;
 import com.lescomber.vestige.framework.Screen;
 import com.lescomber.vestige.framework.TouchHandler.TouchEvent;
 import com.lescomber.vestige.graphics.Text;

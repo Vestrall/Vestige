@@ -1,10 +1,10 @@
 package com.lescomber.vestige.aiabilities.sone;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.aiabilities.AIChanneledAbility;
 import com.lescomber.vestige.framework.Util;
 import com.lescomber.vestige.geometry.Rectangle;
 import com.lescomber.vestige.projectiles.HealPickUp;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.sone.OneTenBoss;
 import com.lescomber.vestige.units.sone.PerpetualSpawnPortal;
 
@@ -61,7 +61,7 @@ public class PerpetualPortalSpawner extends AIChanneledAbility {
 	protected void channeling(int deltaTime) {
 		countdown -= deltaTime;
 		if (countdown <= 0) {
-			countdown += INTERVAL[OptionsScreen.difficulty];
+			countdown += INTERVAL[Options.difficulty];
 
 			float x = 0;
 			float y = 0;
@@ -80,7 +80,7 @@ public class PerpetualPortalSpawner extends AIChanneledAbility {
 			final Rectangle newRect = new Rectangle(x - SPACE_HALF_WIDTH, y - SPACE_HALF_HEIGHT, x + SPACE_HALF_WIDTH, y + SPACE_HALF_HEIGHT);
 			portalPersonalSpaces.add(newRect);
 			final PerpetualSpawnPortal psp = new PerpetualSpawnPortal(x, y);
-			if (getChannelDuration() < INTERVAL[OptionsScreen.difficulty])    // If last portal, give it a HealPickUp
+			if (getChannelDuration() < INTERVAL[Options.difficulty])    // If last portal, give it a HealPickUp
 				psp.setPickUp(new HealPickUp(HEAL_AMOUNT));
 			owner.queueAIUnit(psp);
 		}

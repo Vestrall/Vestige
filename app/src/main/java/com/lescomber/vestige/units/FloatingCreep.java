@@ -1,8 +1,8 @@
 package com.lescomber.vestige.units;
 
 import com.lescomber.vestige.aiabilities.AIMeleeAttack;
-import com.lescomber.vestige.audio.AudioManager;
 import com.lescomber.vestige.crossover.SpriteManager;
+import com.lescomber.vestige.framework.AudioManager;
 import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.projectiles.HealPickUp;
 import com.lescomber.vestige.statuseffects.StatPack;

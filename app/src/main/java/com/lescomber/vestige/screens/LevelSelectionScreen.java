@@ -1,11 +1,12 @@
 package com.lescomber.vestige.screens;
 
 import com.lescomber.vestige.Assets;
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.R;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
 import com.lescomber.vestige.framework.AndroidGame;
-import com.lescomber.vestige.framework.Preferences;
+import com.lescomber.vestige.framework.PersistentData;
 import com.lescomber.vestige.framework.Screen;
 import com.lescomber.vestige.framework.TouchHandler.TouchEvent;
 import com.lescomber.vestige.graphics.Sprite;
@@ -72,8 +73,8 @@ public class LevelSelectionScreen extends Screen implements WidgetListener {
 		final int leftMargin = (Screen.WIDTH - (cols * BUTTON_WIDTH) - ((cols - 1) * SPACING)) / 2;
 
 		// Retrieve user's level progress
-		stageProgress = Preferences.getStageProgress(OptionsScreen.difficulty);
-		levelProgress = Preferences.getLevelProgress(OptionsScreen.difficulty);
+		stageProgress = PersistentData.getStageProgress(Options.difficulty);
+		levelProgress = PersistentData.getLevelProgress(Options.difficulty);
 
 		// Finally, create the Rectangles and their Sprites
 		levelButtons = new Button[levelCount];

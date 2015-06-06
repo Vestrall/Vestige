@@ -1,7 +1,7 @@
 package com.lescomber.vestige.aiabilities;
 
-import com.lescomber.vestige.audio.AudioManager.SoundEffect;
-import com.lescomber.vestige.screens.OptionsScreen;
+import com.lescomber.vestige.Options;
+import com.lescomber.vestige.framework.AudioManager.SoundEffect;
 import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.units.AIUnit;
 import com.lescomber.vestige.units.Unit;
@@ -43,7 +43,7 @@ public class AIMeleeAttack extends AIAbility {
 	public boolean scaleForDifficulty() {
 		if (super.scaleForDifficulty()) {
 			// Scale damage
-			hitBundle.setDamage(hitBundle.getDamage() * DAMAGE_SCALING[OptionsScreen.difficulty]);
+			hitBundle.setDamage(hitBundle.getDamage() * DAMAGE_SCALING[Options.difficulty]);
 
 			return true;
 		} else

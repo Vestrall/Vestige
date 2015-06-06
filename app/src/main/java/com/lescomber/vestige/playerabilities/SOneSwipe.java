@@ -1,7 +1,7 @@
 package com.lescomber.vestige.playerabilities;
 
-import com.lescomber.vestige.audio.AudioManager;
 import com.lescomber.vestige.crossover.SpriteManager;
+import com.lescomber.vestige.framework.AudioManager;
 import com.lescomber.vestige.projectiles.Projectile;
 import com.lescomber.vestige.statuseffects.StatPack;
 import com.lescomber.vestige.statuseffects.StatusEffect;

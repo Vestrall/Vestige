@@ -1,12 +1,12 @@
 package com.lescomber.vestige.projectiles.sone;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.Screen;
 import com.lescomber.vestige.geometry.Hitbox;
 import com.lescomber.vestige.geometry.Rectangle;
 import com.lescomber.vestige.projectiles.AreaEffect;
 import com.lescomber.vestige.projectiles.FireAnimation;
-import com.lescomber.vestige.screens.OptionsScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class RollingFire extends AreaEffect {
 	private final Rectangle hitboxRect;
 
 	public RollingFire(float y) {
-		super(DPS[OptionsScreen.difficulty], MAX_DURATION);
+		super(DPS[Options.difficulty], MAX_DURATION);
 
 		topY = y - (HEIGHT / 2);
 
@@ -64,7 +64,7 @@ public class RollingFire extends AreaEffect {
 
 		countdown -= deltaTime;
 		if (countdown <= 0) {
-			countdown += MAX_COUNTDOWN[OptionsScreen.difficulty];
+			countdown += MAX_COUNTDOWN[Options.difficulty];
 
 			createNextColumn();
 

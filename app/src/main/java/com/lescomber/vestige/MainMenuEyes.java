@@ -47,10 +47,10 @@ public class MainMenuEyes {
 			anim.setAlpha(alpha);
 		}
 
-		if (anim.isPlaying()) {    // Case: currently animating a blink
-			if (anim.update(deltaTime))		// Case: anim just finished
+		if (anim.isPlaying()) {         // Case: currently animating a blink
+			if (anim.update(deltaTime))        // Case: anim just finished
 				Swapper.swapImages(anim, idleSprite);
-		} else {	// Case: currently idle, awaiting next blink
+		} else {    // Case: currently idle, awaiting next blink
 			blinkDelay -= deltaTime;
 			if (blinkDelay < 0) {
 				// Restart animation

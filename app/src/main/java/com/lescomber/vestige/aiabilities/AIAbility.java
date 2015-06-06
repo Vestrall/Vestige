@@ -1,11 +1,11 @@
 package com.lescomber.vestige.aiabilities;
 
 import com.lescomber.vestige.Ability;
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.framework.Screen;
 import com.lescomber.vestige.framework.Util;
 import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.screens.GameScreen;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.AIUnit;
 
 public abstract class AIAbility extends Ability {
@@ -88,7 +88,7 @@ public abstract class AIAbility extends Ability {
 			super.setMaxCooldown(cooldownSeconds);
 		else {
 			// Grant enemy AI Units a percentage based cooldown reduction based on difficulty level
-			final double adjustedCD = CD_REDUCTION[OptionsScreen.difficulty] * cooldownSeconds;
+			final double adjustedCD = CD_REDUCTION[Options.difficulty] * cooldownSeconds;
 			super.setMaxCooldown(adjustedCD);
 		}
 	}

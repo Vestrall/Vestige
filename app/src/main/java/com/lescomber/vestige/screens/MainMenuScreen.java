@@ -4,11 +4,13 @@ import android.content.res.Resources;
 
 import com.lescomber.vestige.Assets;
 import com.lescomber.vestige.MainMenuEyes;
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.R;
-import com.lescomber.vestige.audio.AudioManager;
 import com.lescomber.vestige.crossover.SpriteManager;
+import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
 import com.lescomber.vestige.framework.AndroidGame;
-import com.lescomber.vestige.framework.Preferences;
+import com.lescomber.vestige.framework.AudioManager;
+import com.lescomber.vestige.framework.PersistentData;
 import com.lescomber.vestige.framework.Screen;
 import com.lescomber.vestige.framework.TouchHandler.TouchEvent;
 import com.lescomber.vestige.graphics.Sprite;
@@ -47,6 +49,9 @@ public class MainMenuScreen extends Screen implements WidgetListener {
 	private final Button[] mainMenuButtons;
 	private final Button[] newGameButtons;
 	private final Button backButton;
+	private final Button soundToggleButton;
+
+	private boolean soundOn;
 
 	private final Text versionText;
 
@@ -58,7 +63,7 @@ public class MainMenuScreen extends Screen implements WidgetListener {
 		SpriteManager.getInstance().setBackground(Assets.mainMenuScreen);
 		SpriteManager.getInstance().setUITextureHandle(Assets.menuUITexture.getTextureHandle());
 
-		isTutorialComplete = Preferences.getStageProgress(OptionsScreen.EASY) > 0;
+		isTutorialComplete = PersistentData.getStageProgress(Options.EASY) > 0;
 
 		titleAnim = new SpriteAnimation(SpriteManager.title);
 		titleAnim.offsetTo(Screen.MIDX, 125);
@@ -123,10 +128,17 @@ public class MainMenuScreen extends Screen implements WidgetListener {
 		backButton.addWidgetListener(this);
 		backButton.registerGroup(buttonGroup);
 
+		// Init sound toggle button
+		soundOn = Options.getMusicVolume() > 0 || Options.getSfxVolume() > 0;
+		final SpriteTemplate soundToggleTemplate = soundOn ? SpriteManager.soundToggleOn : SpriteManager.soundToggleOff;
+		soundToggleButton = new Button(40, 440, null, null, soundToggleTemplate);
+		soundToggleButton.scaleRect(1.25, 1.25);    // Enlarge button hitbox slightly
+		soundToggleButton.addWidgetListener(this);
+
 		// Init version text
 		final String version = game.gameVersion();
 		final TextStyle versionTextStyle = TextStyle.bodyStyleWhite(20);
-		versionText = new Text(versionTextStyle, version, 45, 465, false);
+		versionText = new Text(versionTextStyle, version, Screen.MIDX, 465, false);
 	}
 
 	private void loadMainMenu() {
@@ -141,6 +153,7 @@ public class MainMenuScreen extends Screen implements WidgetListener {
 			b.setVisible(true);
 
 		versionText.setVisible(true);
+		soundToggleButton.setVisible(true);    // Only necessary when intro anim finishes on its own (i.e. no popIn)
 	}
 
 	private void loadNewGameMenu() {
@@ -157,8 +170,9 @@ public class MainMenuScreen extends Screen implements WidgetListener {
 
 	@Override
 	public void update(int deltaTime) {
+		final int titleAnimTime = titleAnim.getTimeRemaining();
 		if (titleAnim.update(deltaTime)) {
-			buttonAppearDelay = 90 + deltaTime;
+			buttonAppearDelay = 90 + titleAnimTime - deltaTime;
 			Swapper.swapImages(titleAnim, titleSprite);
 		}
 		if (buttonAppearDelay > 0) {
@@ -193,16 +207,11 @@ public class MainMenuScreen extends Screen implements WidgetListener {
 			for (final MainMenuEyes mme : eyes)
 				mme.popIn();
 
-			// Pop title in
+			// Pop in title, buttons, and version text
 			Swapper.swapImages(titleAnim, titleSprite);
-
-			// Pop buttons in (also updates state)
-			loadMainMenu();
-
-			// Pop in version number
+			loadMainMenu();        // Also updates state
 			versionText.setVisible(true);
-
-			return;
+			soundToggleButton.setVisible(true);
 		} else {
 			eyesDelay -= deltaTime;
 			if (eyesDelay <= 0) {
@@ -232,6 +241,8 @@ public class MainMenuScreen extends Screen implements WidgetListener {
 
 			for (final Button b : mainMenuButtons)
 				b.handleEvent(event);
+
+			soundToggleButton.handleEvent(event);
 		}
 	}
 
@@ -255,6 +266,7 @@ public class MainMenuScreen extends Screen implements WidgetListener {
 			}
 
 			backButton.handleEvent(event);
+			soundToggleButton.handleEvent(event);
 		}
 	}
 
@@ -270,7 +282,6 @@ public class MainMenuScreen extends Screen implements WidgetListener {
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED)) {
 				prepScreenChange();
 				game.setScreen(new PewBallPrepScreen(game));
-				//game.setScreen(new OptionsScreen(game));	// TODO: Re-enable OptionsScreen
 			}
 		} else if (source == mainMenuButtons[2]) {
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED)) {
@@ -280,38 +291,52 @@ public class MainMenuScreen extends Screen implements WidgetListener {
 		} else if (source == mainMenuButtons[3]) {
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
 				android.os.Process.killProcess(android.os.Process.myPid());
-		}
 
 		// New game buttons
-		else if (source == newGameButtons[0]) {
+		} else if (source == newGameButtons[0]) {
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED)) {
 				prepScreenChange();
 				game.setScreen(new MapLoadingScreen(game, Levels.TUTORIAL_STAGE, 0));
 			}
 		} else if (source == newGameButtons[1]) {
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED)) {
-				OptionsScreen.difficulty = OptionsScreen.EASY;
+				Options.difficulty = Options.EASY;
 
 				prepScreenChange();
 				game.setScreen(new StageSelectionScreen(game));
 			}
 		} else if (source == newGameButtons[2]) {
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED)) {
-				OptionsScreen.difficulty = OptionsScreen.MEDIUM;
+				Options.difficulty = Options.MEDIUM;
 
 				prepScreenChange();
 				game.setScreen(new StageSelectionScreen(game));
 			}
 		} else if (source == newGameButtons[3]) {
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED)) {
-				OptionsScreen.difficulty = OptionsScreen.HARD;
+				Options.difficulty = Options.HARD;
 
 				prepScreenChange();
 				game.setScreen(new StageSelectionScreen(game));
 			}
+
+		// Other
 		} else if (source == backButton) {
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
 				loadMainMenu();
+		} else if (source == soundToggleButton) {
+			if (soundOn) {
+				PersistentData.setLiveMusicVolume(Options.getMusicVolume());
+				PersistentData.setLiveSfxVolume(Options.getSfxVolume());
+				soundToggleButton.setImage(SpriteManager.soundToggleOff);
+				Options.setMusicVolume(0);
+				Options.setSfxVolume(0);
+			} else {
+				soundToggleButton.setImage(SpriteManager.soundToggleOn);
+				Options.setMusicVolume(PersistentData.getLiveMusicVolume());
+				Options.setSfxVolume(PersistentData.getLiveSfxVolume());
+			}
+			soundOn = !soundOn;
 		}
 	}
 

@@ -1,9 +1,9 @@
 package com.lescomber.vestige.units.sone;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.screens.GameScreen;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.statuseffects.StatPack;
 import com.lescomber.vestige.statuseffects.StatusEffect;
 import com.lescomber.vestige.units.AIUnit;
@@ -32,8 +32,8 @@ public class SpawnPortal extends AIUnit {
 
 		// Init stats
 		final StatPack baseStats = new StatPack();
-		baseStats.maxHp = 36 + (OptionsScreen.difficulty * 5);
-		baseStats.moveSpeed = 350 + (OptionsScreen.difficulty * 25);
+		baseStats.maxHp = 36 + (Options.difficulty * 5);
+		baseStats.moveSpeed = 350 + (Options.difficulty * 25);
 		setBaseStats(baseStats);
 
 		setSlowable(false);
@@ -51,10 +51,10 @@ public class SpawnPortal extends AIUnit {
 		allSpawned = false;
 
 		size = 0;
-		growthCooldown = GROWTH_INTERVAL[OptionsScreen.difficulty];
+		growthCooldown = GROWTH_INTERVAL[Options.difficulty];
 		curSize = 100;
 		final StatPack sp = new StatPack();
-		sp.maxHp = 0.3f * (1 + OptionsScreen.difficulty);
+		sp.maxHp = 0.3f * (1 + Options.difficulty);
 		growthPrototype = new StatusEffect(sp, 1000);
 		growthPrototype.setStacks(1, 100, 0);
 
@@ -82,7 +82,7 @@ public class SpawnPortal extends AIUnit {
 		growthCooldown -= deltaTime;
 
 		while (growthCooldown <= 0) {
-			growthCooldown = GROWTH_INTERVAL[OptionsScreen.difficulty];
+			growthCooldown = GROWTH_INTERVAL[Options.difficulty];
 
 			size++;
 			if (size == SIZE_MAX)

@@ -1,8 +1,8 @@
 package com.lescomber.vestige.aiabilities.sone;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.aiabilities.AIChanneledAbility;
 import com.lescomber.vestige.projectiles.sone.Meteor;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.AIUnit;
 
 public class MeteorShower extends AIChanneledAbility {
@@ -28,7 +28,7 @@ public class MeteorShower extends AIChanneledAbility {
 	public void activate() {
 		super.activate();
 
-		countdown = SPAWN_INTERVAL[OptionsScreen.difficulty] / 2;
+		countdown = SPAWN_INTERVAL[Options.difficulty] / 2;
 	}
 
 	@Override
@@ -36,10 +36,10 @@ public class MeteorShower extends AIChanneledAbility {
 		countdown -= deltaTime;
 
 		while (countdown <= 0) {
-			countdown += SPAWN_INTERVAL[OptionsScreen.difficulty];
+			countdown += SPAWN_INTERVAL[Options.difficulty];
 
-			final int difficulty = OptionsScreen.difficulty;
-			owner.queueProjectile(new Meteor(FIRE_WIDTH[difficulty], FIRE_WIDTH[difficulty], getRandomLocation(), DPS[OptionsScreen.difficulty],
+			final int difficulty = Options.difficulty;
+			owner.queueProjectile(new Meteor(FIRE_WIDTH[difficulty], FIRE_WIDTH[difficulty], getRandomLocation(), DPS[Options.difficulty],
 					FIRE_DURATION[difficulty]));
 		}
 	}

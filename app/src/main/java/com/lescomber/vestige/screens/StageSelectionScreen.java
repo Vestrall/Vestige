@@ -3,11 +3,12 @@ package com.lescomber.vestige.screens;
 import android.content.res.Resources;
 
 import com.lescomber.vestige.Assets;
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.R;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
 import com.lescomber.vestige.framework.AndroidGame;
-import com.lescomber.vestige.framework.Preferences;
+import com.lescomber.vestige.framework.PersistentData;
 import com.lescomber.vestige.framework.Screen;
 import com.lescomber.vestige.framework.TouchHandler.TouchEvent;
 import com.lescomber.vestige.framework.Util;
@@ -61,11 +62,11 @@ public class StageSelectionScreen extends Screen implements WidgetListener {
 
 		stageStyle = TextStyle.bodyStyleCyan(90);
 
-		stageProgress = Preferences.getStageProgress(OptionsScreen.difficulty);
-		levelProgress = Preferences.getLevelProgress(OptionsScreen.difficulty);
+		stageProgress = PersistentData.getStageProgress(Options.difficulty);
+		levelProgress = PersistentData.getLevelProgress(Options.difficulty);
 
 		final Resources res = AndroidGame.res;
-		final int lastStage = Preferences.getLastStage();
+		final int lastStage = PersistentData.getLastStage();
 		stages = new ArrayList<Stage>(Levels.STAGE_COUNT);
 		stages.add(new Stage(1, res.getString(R.string.darkWoods), SpriteManager.darkWoodsSelected, SpriteManager.darkWoods));
 		stages.add(new Stage(2, res.getString(R.string.unknown), SpriteManager.stageLockedSelected, SpriteManager.stageLocked));
@@ -118,7 +119,7 @@ public class StageSelectionScreen extends Screen implements WidgetListener {
 			if (stageClickCountdown <= 0) {
 				for (int j = 0; j < stages.size(); j++) {
 					if (stages.get(j).centered) {
-						Preferences.setLastStage(j + 1);	// Remember last stage
+						PersistentData.setLastStage(j + 1);    // Remember last stage
 						prepScreenChange();
 						game.setScreen(new LevelSelectionScreen(game, j + 1));
 						return;

@@ -1,10 +1,10 @@
 package com.lescomber.vestige.aiabilities.sone;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.aiabilities.AIAbility;
 import com.lescomber.vestige.framework.Util;
 import com.lescomber.vestige.projectiles.HitGroup;
 import com.lescomber.vestige.projectiles.sone.CreepingFire;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.AIUnit;
 
 public class MultiCreepingFireShooter extends AIAbility {
@@ -38,11 +38,11 @@ public class MultiCreepingFireShooter extends AIAbility {
 	@Override
 	public void activate() {
 		float direction = Util.rand.nextFloat() * (float) Math.PI * 2;
-		for (int i = 0; i < OptionsScreen.difficulty + 2; i++) {
-			final CreepingFire newFire = new CreepingFire(DPS[OptionsScreen.difficulty], FLAME_DURATION, COUNTDOWN_INIT, direction, fireGroup);
+		for (int i = 0; i < Options.difficulty + 2; i++) {
+			final CreepingFire newFire = new CreepingFire(DPS[Options.difficulty], FLAME_DURATION, COUNTDOWN_INIT, direction, fireGroup);
 			newFire.offsetTo(owner.getCenter());
 			owner.queueAreaEffect(newFire);
-			direction += DIRECTION_GAP[OptionsScreen.difficulty];
+			direction += DIRECTION_GAP[Options.difficulty];
 		}
 	}
 

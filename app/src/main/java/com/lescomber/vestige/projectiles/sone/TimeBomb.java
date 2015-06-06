@@ -1,11 +1,11 @@
 package com.lescomber.vestige.projectiles.sone;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.projectiles.AIProjectileBehavior;
 import com.lescomber.vestige.projectiles.Explosion;
 import com.lescomber.vestige.projectiles.Projectile;
-import com.lescomber.vestige.screens.OptionsScreen;
 
 public class TimeBomb extends Projectile {
 	private static final float[] DAMAGE = new float[] { 5, 7.5f, 10 };
@@ -34,9 +34,9 @@ public class TimeBomb extends Projectile {
 
 		this.timer = timer;
 
-		setVelocityPerSecond(450 + 225 * OptionsScreen.difficulty);
+		setVelocityPerSecond(450 + 225 * Options.difficulty);
 
-		final Explosion e = new Explosion(EXPLOSION_RADIUS, DAMAGE[OptionsScreen.difficulty]);
+		final Explosion e = new Explosion(EXPLOSION_RADIUS, DAMAGE[Options.difficulty]);
 		setExplosion(e);
 	}
 

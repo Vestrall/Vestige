@@ -6,7 +6,7 @@ import com.lescomber.vestige.Assets;
 import com.lescomber.vestige.R;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.AndroidGame;
-import com.lescomber.vestige.framework.Preferences;
+import com.lescomber.vestige.framework.PersistentData;
 import com.lescomber.vestige.framework.Screen;
 import com.lescomber.vestige.framework.TouchHandler.TouchEvent;
 import com.lescomber.vestige.graphics.Text;
@@ -21,9 +21,9 @@ import com.lescomber.vestige.widgets.WidgetListener;
 import java.util.List;
 
 public class PewBallPrepScreen extends Screen implements WidgetListener {
-	public static int currentLevel = Preferences.getPewBallCurrentLevel();
-	public static int highScore = Preferences.getPewBallHighScore();
-	public static boolean pewBallInProgress = Preferences.isPewBallInProgress();
+	public static int currentLevel = PersistentData.getPewBallCurrentLevel();
+	public static int highScore = PersistentData.getPewBallHighScore();
+	public static boolean pewBallInProgress = PersistentData.isPewBallInProgress();
 
 	// Pew Ball description settings
 	private static final int DESCRIPTION_CHARS_PER_LINE = 49;
@@ -56,7 +56,7 @@ public class PewBallPrepScreen extends Screen implements WidgetListener {
 		if (pewBallInProgress) {
 			defeat();
 			pewBallInProgress = false;
-			Preferences.setPewBallInProgress(pewBallInProgress);
+			PersistentData.setPewBallInProgress(pewBallInProgress);
 		}
 
 		final Resources res = AndroidGame.res;
@@ -137,19 +137,19 @@ public class PewBallPrepScreen extends Screen implements WidgetListener {
 		// Update high score (if appropriate)
 		if (currentLevel > highScore) {
 			highScore = currentLevel;
-			Preferences.setPewBallHighScore(highScore);
+			PersistentData.setPewBallHighScore(highScore);
 		}
 
 		// Update current level
 		currentLevel++;
-		Preferences.setPewBallCurrentLevel(currentLevel);
+		PersistentData.setPewBallCurrentLevel(currentLevel);
 	}
 
 	public static void defeat() {
 		// Update current level
 		if (currentLevel > 1) {
 			currentLevel = Math.max(1, currentLevel - 3);
-			Preferences.setPewBallCurrentLevel(currentLevel);
+			PersistentData.setPewBallCurrentLevel(currentLevel);
 		}
 	}
 
@@ -160,7 +160,7 @@ public class PewBallPrepScreen extends Screen implements WidgetListener {
 	 */
 	static void setGameInProgress(boolean isInProgress) {
 		pewBallInProgress = isInProgress;
-		Preferences.setPewBallInProgress(pewBallInProgress);
+		PersistentData.setPewBallInProgress(pewBallInProgress);
 	}
 
 	@Override
@@ -204,7 +204,7 @@ public class PewBallPrepScreen extends Screen implements WidgetListener {
 				// Case: restartButton is currently a "Begin" button or it is currently the "Yes, Restart" button
 				if (currentLevel == 1 || warningVisible) {
 					currentLevel = 1;
-					Preferences.setPewBallCurrentLevel(currentLevel);
+					PersistentData.setPewBallCurrentLevel(currentLevel);
 					prepScreenChange();
 					game.setScreen(new MapLoadingScreen(game, Levels.PEW_BALL_STAGE, currentLevel));
 				} else
@@ -222,7 +222,7 @@ public class PewBallPrepScreen extends Screen implements WidgetListener {
 		//testing
 		else if (source == levelSlider) {
 			currentLevel = levelSlider.getValue();
-			Preferences.setPewBallCurrentLevel(currentLevel);
+			PersistentData.setPewBallCurrentLevel(currentLevel);
 			levelText.setText(Integer.toString(currentLevel));
 		}
 	}

@@ -1,6 +1,6 @@
 package com.lescomber.vestige;
 
-import com.lescomber.vestige.audio.AudioManager.SoundEffect;
+import com.lescomber.vestige.framework.AudioManager.SoundEffect;
 
 public abstract class Ability {
 	private SoundEffect soundEffect;

@@ -1,10 +1,10 @@
 package com.lescomber.vestige.aiabilities.sone;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.aiabilities.AIShooter;
 import com.lescomber.vestige.geometry.Line;
 import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.projectiles.Projectile;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.AIUnit;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class MultiShooter extends AIShooter {
 	protected void fire(Line path) {
 		final ArrayList<Line> paths = new ArrayList<Line>(4);
 
-		if (OptionsScreen.difficulty == OptionsScreen.HARD) {
+		if (Options.difficulty == Options.HARD) {
 			Line line = new Line(path);
 			Point.rotate(line.point1, -(float) (Math.PI / 7), line.point0.x, line.point0.y);
 			paths.add(line);
@@ -38,7 +38,7 @@ public class MultiShooter extends AIShooter {
 			line = new Line(path);
 			Point.rotate(line.point1, (float) (Math.PI / 7), line.point0.x, line.point0.y);
 			paths.add(line);
-		} else if (OptionsScreen.difficulty == OptionsScreen.MEDIUM) {
+		} else if (Options.difficulty == Options.MEDIUM) {
 			Line line = new Line(path);
 			Point.rotate(line.point1, -(float) (Math.PI / 12), line.point0.x, line.point0.y);
 			paths.add(line);

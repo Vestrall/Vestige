@@ -1,10 +1,10 @@
 package com.lescomber.vestige.aiabilities.sone;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.aiabilities.AIAbility;
 import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.projectiles.sone.SpinnyLaser;
 import com.lescomber.vestige.screens.GameScreen;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.AIUnit;
 
 public class SpinnyLaserScatter extends AIAbility {
@@ -24,7 +24,7 @@ public class SpinnyLaserScatter extends AIAbility {
 		final Point firingLocation = owner.getFiringLocation();
 		Point dest;
 
-		for (int i = 0; i < LASER_COUNT[OptionsScreen.difficulty]; i++) {
+		for (int i = 0; i < LASER_COUNT[Options.difficulty]; i++) {
 			dest = GameScreen.map.adjustDestination(getRandomLocation());
 
 			final SpinnyLaser laser = new SpinnyLaser(firingLocation.x, firingLocation.y, dest.x, dest.y, owner, LASER_DELAY);

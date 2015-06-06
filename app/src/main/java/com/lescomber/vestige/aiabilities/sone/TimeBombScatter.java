@@ -1,12 +1,12 @@
 package com.lescomber.vestige.aiabilities.sone;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.aiabilities.AIChanneledAbility;
-import com.lescomber.vestige.audio.AudioManager;
+import com.lescomber.vestige.framework.AudioManager;
 import com.lescomber.vestige.framework.Util;
 import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.projectiles.sone.TimeBomb;
 import com.lescomber.vestige.screens.GameScreen;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.AIUnit;
 
 public class TimeBombScatter extends AIChanneledAbility {
@@ -24,7 +24,7 @@ public class TimeBombScatter extends AIChanneledAbility {
 	public TimeBombScatter(AIUnit owner, double cooldownSeconds) {
 		super(owner, CHANNEL_DURATION, cooldownSeconds);
 
-		spawnCooldown = SPAWN_INTERVAL[OptionsScreen.difficulty];
+		spawnCooldown = SPAWN_INTERVAL[Options.difficulty];
 		explosionSoundCount = 0;
 	}
 
@@ -47,19 +47,19 @@ public class TimeBombScatter extends AIChanneledAbility {
 		spawnCooldown -= deltaTime;
 
 		while (spawnCooldown <= 0) {
-			spawnCooldown += SPAWN_INTERVAL[OptionsScreen.difficulty];
+			spawnCooldown += SPAWN_INTERVAL[Options.difficulty];
 
 			// Spawn projectile
 			final Point firingLocation = owner.getFiringLocation();
 
 			// Magic number 0.1 = chance to target player location
 			final Point dest;
-			if (getChannelDuration() > 3 * SPAWN_INTERVAL[OptionsScreen.difficulty] && Util.rand.nextFloat() < 0.1)
+			if (getChannelDuration() > 3 * SPAWN_INTERVAL[Options.difficulty] && Util.rand.nextFloat() < 0.1)
 				dest = new Point(GameScreen.player.getCenter());
 			else
 				dest = getRandomLocation();
 
-			final int bombTimer = getChannelDuration() + BOMB_TIMER[OptionsScreen.difficulty];
+			final int bombTimer = getChannelDuration() + BOMB_TIMER[Options.difficulty];
 			final TimeBomb tb = new TimeBomb(firingLocation.x, firingLocation.y, dest.x, dest.y, bombTimer);
 			if (explosionSoundCount < EXPLOSION_SOUND_MAX) {
 				tb.setExplosionSound(AudioManager.purpleExplosion);

@@ -1,11 +1,11 @@
 package com.lescomber.vestige.aiabilities.sone;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.aiabilities.AIChanneledAbility;
 import com.lescomber.vestige.geometry.Angle;
 import com.lescomber.vestige.geometry.Line;
 import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.projectiles.sone.MovingBeam;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.AIUnit;
 import com.lescomber.vestige.units.Unit;
 
@@ -43,11 +43,11 @@ public class MovingBeamShooter extends AIChanneledAbility {
 		super.activate();
 
 		// Init delay
-		delay = DELAY_MAX[OptionsScreen.difficulty];
+		delay = DELAY_MAX[Options.difficulty];
 
 		// Init original beam destination
 		final Line line = new Line(beamStart, target.getCenter());
-		beam = new MovingBeam(beamStart.x, beamStart.y, line.getDirection(), DPS[OptionsScreen.difficulty]);
+		beam = new MovingBeam(beamStart.x, beamStart.y, line.getDirection(), DPS[Options.difficulty]);
 
 		// Fire
 		owner.queueProjectile(beam);
@@ -59,7 +59,7 @@ public class MovingBeamShooter extends AIChanneledAbility {
 			delay -= deltaTime;
 		else {
 			// Rotate beam to track target
-			final float maxRotation = RADIANS_PER_MS[OptionsScreen.difficulty] * deltaTime;
+			final float maxRotation = RADIANS_PER_MS[Options.difficulty] * deltaTime;
 			final Line line = new Line(beamStart, target.getCenter());
 			final float targetAngle = Angle.normalizeRadians(line.getDirection());
 			final float curAngle = Angle.normalizeRadians(beam.getDirection());

@@ -1,9 +1,9 @@
 package com.lescomber.vestige.units;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.aiabilities.AIAbility;
 import com.lescomber.vestige.framework.Util;
 import com.lescomber.vestige.screens.GameScreen;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.statuseffects.StatPack;
 
 import java.util.ArrayList;
@@ -49,8 +49,8 @@ public abstract class AIUnit extends Unit {
 	}
 
 	protected void setDifficultyScaledBaseStats(StatPack baseStats) {
-		baseStats.maxHp *= 1.0 + ((OptionsScreen.difficulty - 1) * 0.20);
-		baseStats.moveSpeed *= (0.9 + ((OptionsScreen.difficulty - 1) * 0.1)) * (0.9 + Util.rand.nextDouble() * 0.15);
+		baseStats.maxHp *= 1.0 + ((Options.difficulty - 1) * 0.20);
+		baseStats.moveSpeed *= (0.9 + ((Options.difficulty - 1) * 0.1)) * (0.9 + Util.rand.nextDouble() * 0.15);
 		setBaseStats(baseStats);
 	}
 

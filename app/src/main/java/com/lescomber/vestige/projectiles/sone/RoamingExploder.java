@@ -1,13 +1,13 @@
 package com.lescomber.vestige.projectiles.sone;
 
-import com.lescomber.vestige.audio.AudioManager;
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.crossover.SpriteManager;
+import com.lescomber.vestige.framework.AudioManager;
 import com.lescomber.vestige.framework.Screen;
 import com.lescomber.vestige.framework.Util;
 import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.projectiles.Explosion;
 import com.lescomber.vestige.projectiles.Projectile;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.AIUnit;
 
 public class RoamingExploder extends Projectile {
@@ -37,7 +37,7 @@ public class RoamingExploder extends Projectile {
 		setWallPassThrough(true);
 		disableImageDrop();
 		setImageOffsetY(-5);
-		setVelocityPerSecond(VELOCITY[OptionsScreen.difficulty]);
+		setVelocityPerSecond(VELOCITY[Options.difficulty]);
 
 		newDestination();
 
@@ -63,7 +63,7 @@ public class RoamingExploder extends Projectile {
 		if (countdown <= 0) {
 			countdown += INTERVAL;
 			AudioManager.purpleExplosion.play();
-			queueExplosion(new Explosion(getX(), getY(), RADIUS, DAMAGE[OptionsScreen.difficulty]));
+			queueExplosion(new Explosion(getX(), getY(), RADIUS, DAMAGE[Options.difficulty]));
 		}
 
 		duration -= deltaTime;

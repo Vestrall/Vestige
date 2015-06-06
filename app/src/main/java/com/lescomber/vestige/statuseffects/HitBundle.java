@@ -1,6 +1,6 @@
 package com.lescomber.vestige.statuseffects;
 
-import com.lescomber.vestige.audio.AudioManager.SoundEffect;
+import com.lescomber.vestige.framework.AudioManager.SoundEffect;
 import com.lescomber.vestige.graphics.SpriteAnimation;
 
 import java.util.ArrayList;

@@ -1,12 +1,12 @@
 package com.lescomber.vestige.projectiles;
 
-import com.lescomber.vestige.audio.AudioManager.SoundEffect;
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
+import com.lescomber.vestige.framework.AudioManager.SoundEffect;
 import com.lescomber.vestige.graphics.Sprite;
 import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.screens.GameScreen;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.statuseffects.AnimationEffect;
 import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.units.Player;
@@ -32,13 +32,13 @@ public class PickUp extends AreaEffect {
 	private int flickerCountdown;        // Time (in ms) until next flicker (either on or off)
 
 	public PickUp(SpriteTemplate template, float width, float height, float damage) {
-		super(40, 30, 0, DURATION[OptionsScreen.difficulty]);
+		super(40, 30, 0, DURATION[Options.difficulty]);
 
 		init(template, damage);
 	}
 
 	public PickUp(SpriteTemplate template, float radius, float damage) {
-		super(radius, 0, DURATION[OptionsScreen.difficulty]);
+		super(radius, 0, DURATION[Options.difficulty]);
 
 		init(template, damage);
 	}
@@ -75,8 +75,8 @@ public class PickUp extends AreaEffect {
 		soundEffect = null;
 
 		isAlphaVisible = true;
-		final int flickerLifespan = (4 - OptionsScreen.difficulty);    // Flicker for the last 2-4 seconds of this PickUp's life
-		flickerCountdown = (int) (1000 * (DURATION[OptionsScreen.difficulty] - flickerLifespan));
+		final int flickerLifespan = (4 - Options.difficulty);    // Flicker for the last 2-4 seconds of this PickUp's life
+		flickerCountdown = (int) (1000 * (DURATION[Options.difficulty] - flickerLifespan));
 	}
 
 	@Override

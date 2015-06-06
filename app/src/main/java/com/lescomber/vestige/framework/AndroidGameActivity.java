@@ -12,7 +12,6 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.lescomber.vestige.Assets;
-import com.lescomber.vestige.audio.AudioManager;
 import com.lescomber.vestige.cgl.CGLSurfaceView;
 
 @SuppressLint("NewApi")
@@ -35,7 +34,7 @@ public class AndroidGameActivity extends Activity/* implements OnSystemUiVisibil
 		//StrictMode.enableDefaults();
 
 		// Init Preferences reference
-		Preferences.initPrefs(getPreferences(MODE_PRIVATE));
+		PersistentData.initPrefs(getPreferences(MODE_PRIVATE));
 
 		// Init AssetManager reference
 		Assets.initAssetManager(getAssets());

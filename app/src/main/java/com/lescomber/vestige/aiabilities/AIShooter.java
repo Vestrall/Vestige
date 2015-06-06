@@ -1,11 +1,11 @@
 package com.lescomber.vestige.aiabilities;
 
+import com.lescomber.vestige.Options;
 import com.lescomber.vestige.framework.Util;
 import com.lescomber.vestige.geometry.Line;
 import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.projectiles.AIProjectileBehavior;
 import com.lescomber.vestige.projectiles.Projectile;
-import com.lescomber.vestige.screens.OptionsScreen;
 import com.lescomber.vestige.units.AIUnit;
 import com.lescomber.vestige.units.Unit;
 
@@ -51,10 +51,10 @@ public class AIShooter extends AIAbility {
 	public boolean scaleForDifficulty() {
 		if (super.scaleForDifficulty()) {
 			// Scale prototype damage
-			prototype.setDamage(DAMAGE_SCALING[OptionsScreen.difficulty] * prototype.getDamage());
+			prototype.setDamage(DAMAGE_SCALING[Options.difficulty] * prototype.getDamage());
 
 			// Scale prototype velocity
-			final int newVelocity = Math.round(VELOCITY_SCALING[OptionsScreen.difficulty] * prototype.getVelocityPerSecond());
+			final int newVelocity = Math.round(VELOCITY_SCALING[Options.difficulty] * prototype.getVelocityPerSecond());
 			prototype.setVelocityPerSecond(newVelocity);
 
 			return true;

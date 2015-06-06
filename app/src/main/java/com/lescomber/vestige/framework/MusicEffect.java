@@ -1,6 +1,6 @@
-package com.lescomber.vestige.audio;
+package com.lescomber.vestige.framework;
 
-import com.lescomber.vestige.screens.OptionsScreen;
+import com.lescomber.vestige.Options;
 
 public class MusicEffect {
 	private Music music;
@@ -44,7 +44,7 @@ public class MusicEffect {
 	}
 
 	public void updateVolume() {
-		volume = OptionsScreen.sfxVolume * baseVolume;
+		volume = Options.getSfxVolume() * baseVolume;
 		if (music != null)
 			music.setVolume(volume);
 	}

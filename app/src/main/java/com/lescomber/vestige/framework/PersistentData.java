@@ -2,13 +2,13 @@ package com.lescomber.vestige.framework;
 
 import android.content.SharedPreferences;
 
-import com.lescomber.vestige.screens.OptionsScreen;
+import com.lescomber.vestige.Options;
 
-public class Preferences {
+public class PersistentData {
 	private static SharedPreferences prefs;
 
 	public static void initPrefs(SharedPreferences prefs) {
-		Preferences.prefs = prefs;
+		PersistentData.prefs = prefs;
 	}
 
 	public static int getLastStage() {
@@ -55,6 +55,22 @@ public class Preferences {
 		setFloat("sfxVolume", volume);
 	}
 
+	public static float getLiveMusicVolume() {
+		return prefs.getFloat("liveMusicVolume", 1);
+	}
+
+	public static void setLiveMusicVolume(float volume) {
+		setFloat("liveMusicVolume", volume);
+	}
+
+	public static float getLiveSfxVolume() {
+		return prefs.getFloat("liveSfxVolume", 1);
+	}
+
+	public static void setLiveSfxVolume(float volume) {
+		setFloat("liveSfxVolume", volume);
+	}
+
 	public static boolean isFpsDisplayed() {
 		return prefs.getBoolean("displayFPS", true);
 	}
@@ -97,11 +113,11 @@ public class Preferences {
 
 	private static String parseDifficulty(int difficulty) {
 		switch (difficulty) {
-			case OptionsScreen.EASY:
+			case Options.EASY:
 				return "easy";
-			case OptionsScreen.MEDIUM:
+			case Options.MEDIUM:
 				return "medium";
-			case OptionsScreen.HARD:
+			case Options.HARD:
 				return "hard";
 			default:
 				return "";
