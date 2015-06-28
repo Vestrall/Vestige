@@ -17,12 +17,10 @@ public abstract class AIUnit extends Unit {
 	// true when this unit is first entering the map and should therefore not use abilities or move orders until arrival
 	private boolean isEntering;
 
-	public AIUnit(float hitboxWidth, float hitboxHeight, float imageOffsetY, float topGap) {
-		super(hitboxWidth, hitboxHeight, imageOffsetY);
+	public AIUnit(int faction, float hitboxWidth, float hitboxHeight, float imageOffsetY, float topGap) {
+		super(faction, hitboxWidth, hitboxHeight, imageOffsetY);
 
 		setTopGap(topGap);
-
-		setFaction(GameScreen.steves);
 
 		abilities = new ArrayList<AIAbility>(3);
 
@@ -34,8 +32,6 @@ public abstract class AIUnit extends Unit {
 	public AIUnit(AIUnit copyMe) {
 		super(copyMe);
 
-		teammates = copyMe.teammates;
-		opponents = copyMe.opponents;
 		abilities = new ArrayList<AIAbility>(3);
 		for (final AIAbility aib : copyMe.abilities) {
 			final AIAbility aibCopy = aib.copy();

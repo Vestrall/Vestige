@@ -1,7 +1,6 @@
 package com.lescomber.vestige.units.sone;
 
 import com.lescomber.vestige.Options;
-import com.lescomber.vestige.aiabilities.AIAbility;
 import com.lescomber.vestige.aiabilities.AIShooter;
 import com.lescomber.vestige.aiabilities.sone.MirrorImage;
 import com.lescomber.vestige.aiabilities.sone.ShieldMeteorShower;
@@ -10,16 +9,15 @@ import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.AudioManager;
 import com.lescomber.vestige.projectiles.HealPickUp;
 import com.lescomber.vestige.projectiles.Projectile;
-import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.units.Boss;
 
 public class OneFourBoss extends Boss {
 	public OneFourBoss() {
 		super(600 + (350 * Options.difficulty), 200 + (15 * Options.difficulty));
 
-		final SpinnyLaserScatter sls = new SpinnyLaserScatter(this, 10);
-		sls.setCooldown(4);
-		addAbility(sls);
+		final SpinnyLaserScatter spinnyLaserScatter = new SpinnyLaserScatter(this, 10);
+		spinnyLaserScatter.setCooldown(4);
+		addAbility(spinnyLaserScatter);
 
 		final Projectile basicShot = new Projectile(SpriteManager.enemyProjectile, 4, Projectile.ENEMY_PROJECTILE_WIDTH, Projectile
 				.ENEMY_PROJECTILE_HEIGHT);
@@ -46,35 +44,6 @@ public class OneFourBoss extends Boss {
 
 	public OneFourBoss(OneFourBoss copyMe) {
 		super(copyMe);
-	}
-
-	@Override
-	protected void updateHealthBar() {
-		if (getShields() > 0) {
-			final float shieldPercentage = getShields() / ShieldMeteorShower.SHIELD_STRENGTH[Options.difficulty];
-			healthBar.setTexWidth(shieldPercentage);
-		} else
-			super.updateHealthBar();
-	}
-
-	@Override
-	public void startAbility(AIAbility ability) {
-		if (ability instanceof ShieldMeteorShower)
-			createHealthBar(SpriteManager.hpBarBackground, SpriteManager.hpShieldHealth);
-
-		super.startAbility(ability);
-	}
-
-	@Override
-	public void hit(HitBundle bundle) {
-		final boolean hadShields = getShields() > 0;
-
-		super.hit(bundle);
-
-		if (hadShields && getShields() <= 0) {
-			createHealthBar(SpriteManager.hpBossBackground, SpriteManager.hpBossHealth);
-			updateHealthBar();
-		}
 	}
 
 	@Override

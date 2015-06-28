@@ -5,6 +5,7 @@ import com.lescomber.vestige.aiabilities.AIShooter;
 import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.projectiles.Projectile;
+import com.lescomber.vestige.screens.GameScreen;
 import com.lescomber.vestige.statuseffects.HitBundle;
 import com.lescomber.vestige.statuseffects.StatPack;
 
@@ -12,7 +13,7 @@ public class TutorialCaster extends AIUnit {
 	private boolean isAngry;
 
 	public TutorialCaster() {
-		super(60, 40, -23, 30);
+		super(GameScreen.steves, 60, 40, -23, 30);
 
 		setIdleLeftSprite(SpriteManager.casterAttackLeft[0]);
 		setIdleRightSprite(SpriteManager.casterAttackRight[0]);

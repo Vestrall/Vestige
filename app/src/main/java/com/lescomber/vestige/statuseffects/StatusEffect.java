@@ -62,10 +62,10 @@ public class StatusEffect {
 			if (stacksLostOnDuration < 0)
 				stacks = 0;
 			else {
-				// FIXME: Make this work with bonusShields. Probably issues if bonusShields absorb some dmg then get portioned
-				final float portion = 1 - ((float) stacksLostOnDuration / stacks);
+				final int stacksLost = Math.min(stacksLostOnDuration, stacks);
+				final float portion = 1 - ((float) stacksLost / stacks);
 				stats = stats.portion(portion);
-				stacks -= stacksLostOnDuration;
+				stacks -= stacksLost;
 			}
 		}
 
@@ -76,12 +76,12 @@ public class StatusEffect {
 	}
 
 	public float absorbDamage(float damage) {
-		if (stats.bonusShields > 0) {
-			if (damage > stats.bonusShields) {
-				damage -= stats.bonusShields;
-				stats.bonusShields = 0;
+		if (stats.shields > 0) {
+			if (damage > stats.shields) {
+				damage -= stats.shields;
+				stats.shields = 0;
 			} else {
-				stats.bonusShields -= damage;
+				stats.shields -= damage;
 				damage = 0;
 			}
 		}

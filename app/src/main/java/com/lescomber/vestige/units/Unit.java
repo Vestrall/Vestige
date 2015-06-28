@@ -31,13 +31,13 @@ import java.util.List;
 public abstract class Unit extends MobileEntity implements Dash {
 	private float hp;
 	private StatPack baseStats;
-	private StatPack stats;
+	private final StatPack stats;
 	private final ArrayList<StatusEffect> statusEffects;
 
 	private PickUp pickUp;
 
-	int teammates;
-	int opponents;
+	private final int teammates;
+	final int opponents;
 
 	// Immunity flags
 	private boolean displaceable;
@@ -53,7 +53,7 @@ public abstract class Unit extends MobileEntity implements Dash {
 	private float firingOffsetY;    // Y offset from center of Unit's image to firing location
 
 	private float topGap;   // No fly zone at the top of the screen for this particular unit. Used to stop units from walking largely off the top of
-	//the screen
+							//the screen
 
 	private final LinkedList<Projectile> projectilesBuffer;
 	private final LinkedList<Projectile> projectilesReady;
@@ -88,8 +88,9 @@ public abstract class Unit extends MobileEntity implements Dash {
 
 	// Health bar fields
 	private static final int HEALTH_BAR_GAP = 10;    // Gap between top of image and centerY of health bar
-	protected UISprite healthBarBackground;
-	protected UISprite healthBar;
+	private UISprite healthBarBackground;
+	private UISprite healthBar;
+	private UISprite shieldBar;
 	private static final float HEALTH_BAR_MIN_Y = 6;
 
 	private boolean constrainHealthBar;
@@ -97,8 +98,11 @@ public abstract class Unit extends MobileEntity implements Dash {
 	private float healthBarVirtualX;    // Tracks healthBar's virtual x position for use when it would be off the screen
 	private float healthBarVirtualY;    // Tracks healthBar's virtual y position for use when it would be off the screen
 
-	public Unit(float hitboxWidth, float hitboxHeight, float imageOffsetY) {
+	public Unit(int faction, float hitboxWidth, float hitboxHeight, float imageOffsetY) {
 		super();
+
+		teammates = faction;
+		opponents = (teammates + 1) % 2;
 
 		createRectangleHitbox(hitboxWidth, hitboxHeight);
 		setImageOffsetY(imageOffsetY);
@@ -107,7 +111,7 @@ public abstract class Unit extends MobileEntity implements Dash {
 		firingOffsetY = 0;
 		topGap = 0;
 
-		statusEffects = new ArrayList<StatusEffect>();
+		statusEffects = new ArrayList<>();
 
 		pickUp = null;
 
@@ -118,16 +122,16 @@ public abstract class Unit extends MobileEntity implements Dash {
 
 		displacementEffect = null;
 		dashCallback = null;
-		path = new LinkedList<Point>();
+		path = new LinkedList<>();
 
-		projectilesReady = new LinkedList<Projectile>();
-		projectilesBuffer = new LinkedList<Projectile>();
-		areaEffectsReady = new LinkedList<AreaEffect>();
-		areaEffectsBuffer = new LinkedList<AreaEffect>();
-		explosionsReady = new LinkedList<Explosion>();
-		explosionsBuffer = new LinkedList<Explosion>();
-		unitsBuffer = new LinkedList<AIUnit>();
-		unitsReady = new LinkedList<AIUnit>();
+		projectilesReady = new LinkedList<>();
+		projectilesBuffer = new LinkedList<>();
+		areaEffectsReady = new LinkedList<>();
+		areaEffectsBuffer = new LinkedList<>();
+		explosionsReady = new LinkedList<>();
+		explosionsBuffer = new LinkedList<>();
+		unitsBuffer = new LinkedList<>();
+		unitsReady = new LinkedList<>();
 
 		// Init stats
 		baseStats = new StatPack();
@@ -161,6 +165,7 @@ public abstract class Unit extends MobileEntity implements Dash {
 		healthBarVirtualXGap = 0;
 		healthBarVirtualX = 0;
 		healthBarVirtualY = 0;
+		createHealthBar(getHealthBarBackground(), getHealthBar(), getShieldBar());
 	}
 
 	public Unit(Unit copyMe) {
@@ -172,6 +177,8 @@ public abstract class Unit extends MobileEntity implements Dash {
 		if (copyMe.pickUp != null)
 			pickUp = copyMe.pickUp.copy();
 		mainUnit = copyMe.mainUnit;
+		teammates = copyMe.teammates;
+		opponents = copyMe.opponents;
 		displaceable = copyMe.displaceable;
 		slowable = copyMe.slowable;
 		firingOffsetX = copyMe.firingOffsetX;
@@ -205,6 +212,8 @@ public abstract class Unit extends MobileEntity implements Dash {
 			healthBarBackground = new UISprite(copyMe.healthBarBackground);
 		if (copyMe.healthBar != null)
 			healthBar = new UISprite(copyMe.healthBar);
+		if (copyMe.shieldBar != null)
+			shieldBar = new UISprite(copyMe.shieldBar);
 		constrainHealthBar = copyMe.constrainHealthBar;
 		healthBarVirtualXGap = copyMe.healthBarVirtualXGap;
 		healthBarVirtualX = copyMe.healthBarVirtualX;
@@ -213,16 +222,16 @@ public abstract class Unit extends MobileEntity implements Dash {
 		// The following fields are not copied and are instead initialized to their defaults
 		displacementEffect = null;
 		dashCallback = null;
-		path = new LinkedList<Point>();
-		statusEffects = new ArrayList<StatusEffect>();
-		projectilesReady = new LinkedList<Projectile>();
-		projectilesBuffer = new LinkedList<Projectile>();
-		areaEffectsReady = new LinkedList<AreaEffect>();
-		areaEffectsBuffer = new LinkedList<AreaEffect>();
-		explosionsReady = new LinkedList<Explosion>();
-		explosionsBuffer = new LinkedList<Explosion>();
-		unitsBuffer = new LinkedList<AIUnit>();
-		unitsReady = new LinkedList<AIUnit>();
+		path = new LinkedList<>();
+		statusEffects = new ArrayList<>();
+		projectilesReady = new LinkedList<>();
+		projectilesBuffer = new LinkedList<>();
+		areaEffectsReady = new LinkedList<>();
+		areaEffectsBuffer = new LinkedList<>();
+		explosionsReady = new LinkedList<>();
+		explosionsBuffer = new LinkedList<>();
+		unitsBuffer = new LinkedList<>();
+		unitsReady = new LinkedList<>();
 	}
 
 	public void setBaseStats(StatPack baseStats) {
@@ -231,15 +240,18 @@ public abstract class Unit extends MobileEntity implements Dash {
 		hp = baseStats.maxHp;
 	}
 
-	protected void createHealthBar(SpriteTemplate healthBackground, SpriteTemplate health) {
+	private void createHealthBar(SpriteTemplate healthBackground, SpriteTemplate health, SpriteTemplate shield) {
 		if (healthBarBackground != null)
 			healthBarBackground.close();
 		if (healthBar != null)
 			healthBar.close();
+		if (shieldBar != null)
+			shieldBar.close();
 
 		if (healthBackground == null || health == null) {
 			healthBarBackground = null;
 			healthBar = null;
+			shieldBar = null;
 			return;
 		}
 
@@ -263,18 +275,41 @@ public abstract class Unit extends MobileEntity implements Dash {
 		healthBarBackground.setLayerHeight(SpriteManager.UI_LAYER_UNDER_ONE);
 		healthBar = new UISprite(health, x, y);
 		healthBar.setLayerHeight(SpriteManager.UI_LAYER_UNDER_TWO);
+		shieldBar = new UISprite(shield, x, y);
+		shieldBar.setLayerHeight(SpriteManager.UI_LAYER_UNDER_THREE);
 
 		// Set health bar visibility
 		healthBarBackground.setVisible(isVisible());
 		healthBar.setVisible(isVisible());
+		shieldBar.setVisible(false);
 	}
 
-	protected void updateHealthBar() {
+	private void updateHealthBar() {
 		if (healthBar == null)
 			return;
 
-		final float healthFraction = hp / getMaxHp();
-		healthBar.setTexWidth(healthFraction);
+		if (stats.shields > 0) {
+			shieldBar.setTexWidth(stats.shields / stats.maxShields);
+			shieldBar.setVisible(true);
+		} else
+			shieldBar.setVisible(false);
+
+		healthBar.setTexWidth(hp / getMaxHp());
+	}
+
+	protected SpriteTemplate getHealthBarBackground() {
+		return SpriteManager.hpBarBackground;
+	}
+
+	protected SpriteTemplate getHealthBar() {
+		if (teammates == GameScreen.steves)
+			return SpriteManager.hpSteveHealth;
+		else
+			return SpriteManager.hpGregHealth;
+	}
+
+	protected SpriteTemplate getShieldBar() {
+		return SpriteManager.hpShieldHealth;
 	}
 
 	public void faceLeft() {
@@ -855,42 +890,41 @@ public abstract class Unit extends MobileEntity implements Dash {
 		}
 	}
 
-	protected void updateStats() {
-		float oldMaxHp = 0;
-		if (stats != null)
-			oldMaxHp = stats.maxHp;
+	private void updateStats() {
+		final float oldMaxHp = stats.maxHp;
 
-		stats = new StatPack();
+		stats.clear();
 
 		stats.add(baseStats);
 		for (final StatusEffect se : statusEffects)
 			stats.add(se.getStats());
 
-		// Increase hp appropriately if maxHp went up during this update
-		if (stats.maxHp > oldMaxHp)
+		// Update hp appropriately if maxHp-related status effects were gained or lost
+		if (stats.maxHp != oldMaxHp) {
 			hp += stats.maxHp - oldMaxHp;
-		hp = Math.min(hp, stats.maxHp);        // Make sure hp isn't over the maxHp cap
+			hp = Math.min(hp, stats.maxHp);		// Cap hp (e.g. if maxHp status effects were lost)
+		}
 
 		if (!isDisplacing())
 			setVelocityPerSecond(getMoveSpeed());
 	}
 
-	void takeDamage(float damage, boolean absorbSound, SoundEffect hitSound) {
-		float thisDamage = damage;
+	private void takeDamage(float damage, boolean absorbSound, SoundEffect hitSound) {
+		float remainingDamage = damage;
 
 		for (final StatusEffect se : statusEffects)
-			thisDamage = se.absorbDamage(damage);
+			remainingDamage = se.absorbDamage(damage);
 
 		// Play shield absorb sound effect if any damage was absorbed
-		if (absorbSound && thisDamage < damage)
+		if (absorbSound && remainingDamage < damage)
 			AudioManager.shieldAbsorb.play();
-		else if (thisDamage > 0 && hitSound != null)
+		else if (remainingDamage > 0 && hitSound != null)
 			hitSound.play();
 
-		hp -= thisDamage;
+		hp -= remainingDamage;
 	}
 
-	void heal(float amount) {
+	private void heal(float amount) {
 		hp += amount;
 		if (hp > getMaxHp())
 			hp = getMaxHp();
@@ -973,6 +1007,7 @@ public abstract class Unit extends MobileEntity implements Dash {
 
 		healthBarBackground.offset(barDx, barDy);
 		healthBar.offset(barDx, barDy);
+		shieldBar.offset(barDx, barDy);
 	}
 
 	public void constrainHealthBar(boolean constrainHealthBar) {
@@ -1005,6 +1040,7 @@ public abstract class Unit extends MobileEntity implements Dash {
 
 		healthBarBackground.offset(barDx, barDy);
 		healthBar.offset(barDx, barDy);
+		shieldBar.offset(barDx, barDy);
 
 		this.constrainHealthBar = constrainHealthBar;
 	}
@@ -1135,15 +1171,6 @@ public abstract class Unit extends MobileEntity implements Dash {
 			se.setLayerHeight(layerHeight + 1);        // + 1 added to make buffs draw on top of unit
 	}
 
-	public float getShields() {
-		float ret = 0;
-		for (final StatusEffect se : statusEffects) {
-			if (se.getStats().bonusShields > 0)
-				ret += se.getStats().bonusShields;
-		}
-		return ret;
-	}
-
 	public float getFiringOffsetX() {
 		return firingOffsetX;
 	}
@@ -1162,6 +1189,10 @@ public abstract class Unit extends MobileEntity implements Dash {
 
 	public float getHp() {
 		return hp;
+	}
+
+	public float getShields() {
+		return stats.shields;
 	}
 
 	public float getMaxHp() {
@@ -1184,7 +1215,7 @@ public abstract class Unit extends MobileEntity implements Dash {
 		return slowable;
 	}
 
-	public boolean isDisplaceable() {
+	private boolean isDisplaceable() {
 		return displaceable;
 	}
 
@@ -1192,11 +1223,11 @@ public abstract class Unit extends MobileEntity implements Dash {
 		return displacementEffect != null;
 	}
 
-	public boolean isFacingLeft() {
+	private boolean isFacingLeft() {
 		return facingLeft;
 	}
 
-	public boolean isFacingRight() {
+	private boolean isFacingRight() {
 		return !facingLeft;
 	}
 
@@ -1256,16 +1287,6 @@ public abstract class Unit extends MobileEntity implements Dash {
 		return mainUnit;
 	}
 
-	public void setFaction(int faction) {
-		teammates = faction;
-		opponents = (teammates + 1) % 2;
-
-		if (teammates == GameScreen.steves)
-			createHealthBar(SpriteManager.hpBarBackground, SpriteManager.hpSteveHealth);
-		else
-			createHealthBar(SpriteManager.hpBarBackground, SpriteManager.hpGregHealth);
-	}
-
 	public void setPickUp(PickUp pickUp) {
 		this.pickUp = pickUp;
 	}
@@ -1313,6 +1334,8 @@ public abstract class Unit extends MobileEntity implements Dash {
 			healthBarBackground.setVisible(isVisible);
 		if (healthBar != null)
 			healthBar.setVisible(isVisible);
+		if (shieldBar != null)
+			shieldBar.setVisible(isVisible && stats.shields > 0);
 	}
 
 	public void queueProjectile(Projectile p) {

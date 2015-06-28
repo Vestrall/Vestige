@@ -11,8 +11,8 @@ public abstract class AIMeleeUnit extends AIUnit {
 
 	private int destinationCooldown;    // Cooldown before re-deciding on a new destination
 
-	public AIMeleeUnit(float hitboxWidth, float hitboxHeight, float imageOffsetY, float topGap) {
-		super(hitboxWidth, hitboxHeight, imageOffsetY, topGap);
+	public AIMeleeUnit(int faction, float hitboxWidth, float hitboxHeight, float imageOffsetY, float topGap) {
+		super(faction, hitboxWidth, hitboxHeight, imageOffsetY, topGap);
 
 		destinationCooldown = 0;
 	}

@@ -84,7 +84,7 @@ public class PewBallMap extends Map {
 		portalSpawnCountdown = 1500;    // 1.5s delay before first ball spawn
 
 		// Init dummy unit used to spawn projectiles (Map does not have projectile spawning capabilities)
-		spawner = new AIUnit(0, 0, 0, 0) {
+		spawner = new AIUnit(GameScreen.gregs, 0, 0, 0, 0) {
 			@Override
 			public AIUnit copy() {
 				return null;

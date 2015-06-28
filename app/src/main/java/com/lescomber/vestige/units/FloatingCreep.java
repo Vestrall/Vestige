@@ -5,11 +5,12 @@ import com.lescomber.vestige.crossover.SpriteManager;
 import com.lescomber.vestige.framework.AudioManager;
 import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.projectiles.HealPickUp;
+import com.lescomber.vestige.screens.GameScreen;
 import com.lescomber.vestige.statuseffects.StatPack;
 
 public class FloatingCreep extends AIMeleeUnit {
 	public FloatingCreep() {
-		super(32, 28, -16, 17);
+		super(GameScreen.steves, 32, 28, -16, 17);
 
 		final StatPack baseStats = new StatPack();
 		baseStats.maxHp = 30;

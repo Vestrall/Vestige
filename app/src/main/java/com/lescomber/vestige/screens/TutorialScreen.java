@@ -59,8 +59,6 @@ public class TutorialScreen extends GameScreen implements GestureHandlerListener
 
 	private static final int CHAR_LIMIT_PER_LINE = 28;
 	private static final int LINE_SPACING = 43;
-	private static final int LINE_LIMIT = 6;
-	//private Text messages[];
 	private TextArea messageArea;
 	private Text messageReminder;
 
@@ -222,7 +220,7 @@ public class TutorialScreen extends GameScreen implements GestureHandlerListener
 				endMessage(res.getString(R.string.combatReminder));
 		} else if (lessonNum == EXIT_TUTORIAL) {
 			if (messagingNum == 1) {
-				saveProgress();
+				unlockLevelOne();
 				if (player.getX() > Screen.MIDX)
 					map.setPortalPoint(70, Screen.MIDY);
 				((TutorialMap) map).enablePortalSpawn();
@@ -332,8 +330,7 @@ public class TutorialScreen extends GameScreen implements GestureHandlerListener
 		}
 	}
 
-	@Override
-	void saveProgress() {
+	private void unlockLevelOne() {
 		if (PersistentData.getStageProgress(Options.EASY) == 0) {
 			for (int i = Options.EASY; i <= Options.HARD; i++) {
 				PersistentData.setStageProgress(i, 1);
@@ -341,6 +338,9 @@ public class TutorialScreen extends GameScreen implements GestureHandlerListener
 			}
 		}
 	}
+
+	@Override
+	void saveProgress() { }
 
 	@Override
 	public void handleDoubleTap(Point tapPoint) {

@@ -1,14 +1,15 @@
 package com.lescomber.vestige.units;
 
 import com.lescomber.vestige.crossover.SpriteManager;
+import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
 import com.lescomber.vestige.graphics.SpriteAnimation;
+import com.lescomber.vestige.screens.GameScreen;
 import com.lescomber.vestige.statuseffects.StatPack;
 
 public class Boss extends AIRailUnit {
 	public Boss(float maxHp, int moveSpeed) {
-		super(120, 70, -47, 100);
+		super(GameScreen.steves, 120, 70, -47, 100);
 
-		createHealthBar(SpriteManager.hpBossBackground, SpriteManager.hpBossHealth);
 		offsetHealthBar(0, 12);
 
 		// Init stats
@@ -61,6 +62,21 @@ public class Boss extends AIRailUnit {
 		setDeathAnimationLeft(new SpriteAnimation(SpriteManager.bossDeathLeft));
 		setDeathAnimationRight(new SpriteAnimation(SpriteManager.bossDeathRight));
 		setDeathAnimXOffset(22);
+	}
+
+	@Override
+	protected SpriteTemplate getHealthBarBackground() {
+		return SpriteManager.hpBossBackground;
+	}
+
+	@Override
+	protected SpriteTemplate getHealthBar() {
+		return SpriteManager.hpBossHealth;
+	}
+
+	@Override
+	protected SpriteTemplate getShieldBar() {
+		return SpriteManager.hpBossShieldHealth;
 	}
 
 	public Boss(Boss copyMe) {

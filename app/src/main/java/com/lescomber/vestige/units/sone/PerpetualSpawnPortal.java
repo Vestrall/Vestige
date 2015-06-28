@@ -23,7 +23,7 @@ public class PerpetualSpawnPortal extends AIUnit {
 	private static Caster PROTOTYPE_CASTER;
 
 	public PerpetualSpawnPortal(float x, float y) {
-		super(48, 26, -22, 25);
+		super(GameScreen.steves, 48, 26, -22, 25);
 
 		offsetTo(x, y);
 

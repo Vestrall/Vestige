@@ -16,8 +16,8 @@ public abstract class AIRailUnit extends AIUnit {
 	private final boolean randomLocations;
 	private int index;        // for use when randomLocations == false
 
-	public AIRailUnit(float hitboxWidth, float hitboxHeight, float imageOffsetY, float topGap) {
-		super(hitboxWidth, hitboxHeight, imageOffsetY, topGap);
+	public AIRailUnit(int faction, float hitboxWidth, float hitboxHeight, float imageOffsetY, float topGap) {
+		super(faction, hitboxWidth, hitboxHeight, imageOffsetY, topGap);
 
 		locations = new ArrayList<Point>();
 		randomLocations = true;

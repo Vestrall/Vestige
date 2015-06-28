@@ -26,7 +26,7 @@ public class SpawnPortal extends AIUnit {
 	private boolean allSpawned;
 
 	public SpawnPortal() {
-		super(48, 34, -22, 25);
+		super(GameScreen.steves, 48, 34, -22, 25);
 
 		setIdleLeftSprite(SpriteManager.spawnPortalSpawn[0]);
 

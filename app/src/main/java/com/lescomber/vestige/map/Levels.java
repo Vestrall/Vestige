@@ -4,7 +4,6 @@ import com.lescomber.vestige.geometry.Hitbox;
 import com.lescomber.vestige.geometry.Rectangle;
 import com.lescomber.vestige.units.Caster;
 import com.lescomber.vestige.units.FloatingCreep;
-import com.lescomber.vestige.units.TestBoss;
 import com.lescomber.vestige.units.sone.BabyCreep;
 import com.lescomber.vestige.units.sone.DanceCoordinator;
 import com.lescomber.vestige.units.sone.DancingCaster;
@@ -567,8 +566,7 @@ public class Levels {
 			level.addWave(wave);
 
 			return level;
-		} else if (levelNum == 11)    // Test level
-		{
+		} else if (levelNum == 11) {    // Test level
 			final Map level = new Map(1, levelNum);
 			level.setPlayerSpawnPoint(50, 240);
 			level.addEnemySpawnPoint(600, 100);
@@ -578,10 +576,6 @@ public class Levels {
 			level.setPortalPoint(765, 430);
 
 			final Wave wave = new Wave(0);
-
-			wave.addUnit(new TestBoss(), 0);
-			wave.addUnit(new TestBoss(), 0);
-			wave.addUnit(new TestBoss(), 0);
 
 			level.addWave(wave);
 

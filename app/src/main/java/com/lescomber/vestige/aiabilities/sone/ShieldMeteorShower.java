@@ -33,7 +33,7 @@ public class ShieldMeteorShower extends AIChanneledAbility {
 		super(owner, 3600, cooldownSeconds);
 
 		final StatPack sp = new StatPack();
-		sp.bonusShields = SHIELD_STRENGTH[Options.difficulty];
+		sp.setMaxShields(SHIELD_STRENGTH[Options.difficulty]);
 		final SpriteAnimation anim = new SpriteAnimation(SpriteManager.shield);
 		anim.scale(1.5, 1.5);
 		anim.setSequenceLimit(-1);

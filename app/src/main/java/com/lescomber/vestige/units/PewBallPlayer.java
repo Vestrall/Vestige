@@ -1,5 +1,6 @@
 package com.lescomber.vestige.units;
 
+import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
 import com.lescomber.vestige.geometry.Line;
 import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.playerabilities.PewBallDoubleTap;
@@ -21,9 +22,11 @@ public class PewBallPlayer extends Player {
 
 		// Put doubleTapAbility's CDIndicator back in its place
 		doubleTapAbility.offsetCDIndicatorTo(pos.x, pos.y);
+	}
 
-		// Remove health bar
-		createHealthBar(null, null);
+	@Override
+	protected SpriteTemplate getHealthBar() {
+		return null;
 	}
 
 	/**

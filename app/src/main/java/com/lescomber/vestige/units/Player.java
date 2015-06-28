@@ -44,9 +44,8 @@ public class Player extends Unit implements GestureHandlerListener {
 	private boolean isSwiping;
 
 	public Player() {
-		super(37, 31, -27);
+		super(GameScreen.gregs, 37, 31, -27);
 
-		createHealthBar(SpriteManager.hpBarBackground, SpriteManager.hpGregHealth);
 		constrainHealthBar(true);
 
 		setFiringOffsets(FIRING_OFFSET_X, FIRING_OFFSET_Y);

@@ -44,10 +44,14 @@ public class SpriteManager {
 	private int layerCount;
 	private int[] layerInsertionSort;
 
+	private static final int UI_LAYER_UNDER_COUNT = 3;
+	private static final int UI_LAYER_OVER_COUNT = 3;
+	private static final int UI_LAYER_COUNT = UI_LAYER_UNDER_COUNT + UI_LAYER_OVER_COUNT;
 	public static final int UI_LAYER_OVER_THREE = Integer.MAX_VALUE;
 	public static final int UI_LAYER_OVER_TWO = UI_LAYER_OVER_THREE - 1;
 	public static final int UI_LAYER_OVER_ONE = UI_LAYER_OVER_TWO - 1;
-	public static final int UI_LAYER_UNDER_TWO = UI_LAYER_OVER_ONE - 1;
+	public static final int UI_LAYER_UNDER_THREE = UI_LAYER_OVER_ONE - 1;
+	public static final int UI_LAYER_UNDER_TWO = UI_LAYER_UNDER_THREE - 1;
 	public static final int UI_LAYER_UNDER_ONE = UI_LAYER_UNDER_TWO - 1;
 
 	private final List<Integer>[] uiLayers;
@@ -92,9 +96,9 @@ public class SpriteManager {
 	public static SpriteTemplate shield[];
 
 	// UI elements
-	public static SpriteTemplate hpGregHealth, hpBarBackground, hpSteveHealth, hpBossBackground, hpBossHealth, hpShieldHealth, swipeArrow,
-			cdArcEmpty, cdArcFull, cdTeleportEmpty, cdTeleportFull, cdShieldEmpty, cdShieldFull, cdInnerBlueArc, cdInnerGrayArc, chargeArrowTail,
-			chargeArrowHead, chargeArrowCooldownTail, chargeArrowCooldownHead, chargeArrowSparks[], uiTextBackgroundPieces[];
+	public static SpriteTemplate hpGregHealth, hpBarBackground, hpSteveHealth, hpBossBackground, hpBossHealth, hpShieldHealth, hpBossShieldHealth,
+			swipeArrow, cdArcEmpty, cdArcFull, cdTeleportEmpty, cdTeleportFull, cdShieldEmpty, cdShieldFull, cdInnerBlueArc, cdInnerGrayArc,
+			chargeArrowTail, chargeArrowHead, chargeArrowCooldownTail, chargeArrowCooldownHead, chargeArrowSparks[], uiTextBackgroundPieces[];
 
 	// Widgets
 	public static SpriteTemplate menuButtonPieces[], menuButtonClickPieces[], backButton, backButtonClick, soundToggleOff, soundToggleOn,
@@ -122,12 +126,9 @@ public class SpriteManager {
 		layerCount = 0;
 		layerInsertionSort = new int[INITIAL_LAYER_SIZE];
 		bufferLayerInsertionSort = new int[INITIAL_LAYER_SIZE];
-		uiLayers = new ArrayList[5];
-		uiLayers[0] = new ArrayList<Integer>();
-		uiLayers[1] = new ArrayList<Integer>();
-		uiLayers[2] = new ArrayList<Integer>();
-		uiLayers[3] = new ArrayList<Integer>();
-		uiLayers[4] = new ArrayList<Integer>();
+		uiLayers = new ArrayList[UI_LAYER_COUNT];
+		for (int i = 0; i < UI_LAYER_COUNT; i++)
+			uiLayers[i] = new ArrayList<Integer>();
 		changes = new LinkedList<ListChange>();
 		actualListSize = 0;
 	}
@@ -269,6 +270,7 @@ public class SpriteManager {
 		hpBossBackground = new SpriteTemplate(Assets.gameUITexture, new Rect(258, 24, 354, 38));
 		hpBossHealth = new SpriteTemplate(Assets.gameUITexture, new Rect(258, 38, 354, 52));
 		hpShieldHealth = new SpriteTemplate(Assets.gameUITexture, new Rect(210, 56, 256, 66));
+		hpBossShieldHealth = new SpriteTemplate(Assets.gameUITexture, new Rect(278, 97, 376, 111));
 
 		cdArcEmpty = new SpriteTemplate(Assets.gameUITexture, new Rect(0, 27, 35, 62));
 		cdArcFull = new SpriteTemplate(Assets.gameUITexture, new Rect(35, 27, 70, 62));
@@ -394,12 +396,9 @@ public class SpriteManager {
 
 		bufferUITextureHandle = -1;
 
-		bufferUILayers = new ArrayList[5];
-		bufferUILayers[0] = new ArrayList<Integer>();
-		bufferUILayers[1] = new ArrayList<Integer>();
-		bufferUILayers[2] = new ArrayList<Integer>();
-		bufferUILayers[3] = new ArrayList<Integer>();
-		bufferUILayers[4] = new ArrayList<Integer>();
+		bufferUILayers = new ArrayList[UI_LAYER_COUNT];
+		for (int i = 0; i < UI_LAYER_COUNT; i++)
+			bufferUILayers[i] = new ArrayList<Integer>();
 
 		bufferLayerCount = 0;
 	}
@@ -422,7 +421,7 @@ public class SpriteManager {
 		bufferLayerInsertionSort = tempArray;
 		layerCount = bufferLayerCount;
 
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < uiLayers.length; i++)
 			uiLayers[i] = bufferUILayers[i];
 
 		changes.clear();
@@ -539,7 +538,7 @@ public class SpriteManager {
 		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, uiTextureHandle);
 
 		// Draw "under blankets" UI layers. Elements within each layer are drawn in the order they were added
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < UI_LAYER_UNDER_COUNT; i++) {
 			for (final Integer j : uiLayers[i]) {
 				gsb = theList.get(j);
 				synchronized (gsb) {
@@ -560,7 +559,7 @@ public class SpriteManager {
 
 		// Draw UI sprites. Elements within each layer are drawn in the order they were added
 		SpriteBundle gsb;
-		for (int i = 2; i < 5; i++) {
+		for (int i = UI_LAYER_UNDER_COUNT; i < UI_LAYER_COUNT; i++) {
 			for (final Integer j : uiLayers[i]) {
 				gsb = theList.get(j);
 				synchronized (gsb) {

@@ -1,6 +1,7 @@
 package com.lescomber.vestige.units;
 
 import com.lescomber.vestige.crossover.SpriteManager;
+import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
 import com.lescomber.vestige.framework.Screen;
 import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.map.PewBallMap;
@@ -35,10 +36,7 @@ public class PewBallGoalie extends AIUnit {
 	private int destinationDelay;
 
 	public PewBallGoalie(int levelNum, float startY) {
-		super(50, 40, -23, 30);
-
-		// PewBallGoalies are treated like good guys so they don't eat player projectiles
-		setFaction(GameScreen.gregs);
+		super(GameScreen.gregs, 50, 40, -23, 30);	// PewBallGoalies are treated like good guys so they don't eat player projectiles
 
 		// Init stats
 		final StatPack baseStats = new StatPack();
@@ -61,9 +59,6 @@ public class PewBallGoalie extends AIUnit {
 		// Init walking animations
 		final SpriteAnimation walkLeftAnim = new SpriteAnimation(SpriteManager.casterWalkLeft);
 		setWalkLeftAnimation(walkLeftAnim);
-
-		// Remove health bar
-		createHealthBar(null, null);
 
 		scale(SCALE, SCALE);
 		offsetTo(X, startY);
@@ -115,6 +110,11 @@ public class PewBallGoalie extends AIUnit {
 		// Not copied
 		targetBall = null;
 		destinationDelay = 1;
+	}
+
+	@Override
+	protected SpriteTemplate getHealthBar() {
+		return null;
 	}
 
 	private boolean isInRange(float y) {

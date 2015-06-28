@@ -10,6 +10,7 @@ import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.projectiles.Explosion;
 import com.lescomber.vestige.projectiles.HealPickUp;
 import com.lescomber.vestige.projectiles.Projectile;
+import com.lescomber.vestige.screens.GameScreen;
 import com.lescomber.vestige.statuseffects.StatPack;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class Caster extends AIRailUnit {
 	private static final ArrayList<AIAbility> ABILITY_POOL = new ArrayList<AIAbility>(5);
 
 	public Caster() {
-		super(60, 40, -23, 30);
+		super(GameScreen.steves, 60, 40, -23, 30);
 
 		// Init stats
 		final StatPack baseStats = new StatPack();

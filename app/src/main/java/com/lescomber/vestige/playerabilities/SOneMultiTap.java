@@ -17,7 +17,7 @@ public class SOneMultiTap extends MultiTapAbility {
 		setCDIndicator(SpriteManager.cdShieldFull, SpriteManager.cdShieldEmpty);
 
 		final StatPack sp = new StatPack();
-		sp.bonusShields = 25;
+		sp.setMaxShields(25);
 		final SpriteAnimation anim = new SpriteAnimation(SpriteManager.shield);
 		anim.setSequenceLimit(-1);
 		anim.setFadeIn(0.2f, 0.5);
