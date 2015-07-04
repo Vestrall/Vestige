@@ -69,7 +69,7 @@ public class PewBallMap extends Map {
 		BALL_SPAWN_DELAY = PORTAL_ANIM.getTimeRemaining();
 		PORTAL_ANIM.addFrames(SpriteManager.spawnPortalEnd);
 
-		balls = new ArrayList<PewBall>();
+		balls = new ArrayList<>();
 
 		// Calculate portal spawn interval
 		if (levelNum <= KEY_LEVELS[0])
@@ -102,7 +102,7 @@ public class PewBallMap extends Map {
 		queueGregsUnit(spawner);
 
 		// Init goalies
-		goalies = new ArrayList<PewBallGoalie>(2);
+		goalies = new ArrayList<>(2);
 		if (levelNum < KEY_LEVELS[0])
 			goalies.add(new PewBallGoalie(levelNum, Screen.MIDY));
 		else {
@@ -207,7 +207,7 @@ public class PewBallMap extends Map {
 				pbg.track(null);
 		} else {
 			Collections.sort(balls);    // Sort by yPosition
-			final ArrayList<PewBallGoalie> goalieCopy = new ArrayList<PewBallGoalie>(goalies);
+			final ArrayList<PewBallGoalie> goalieCopy = new ArrayList<>(goalies);
 
 			final int size = Math.min(balls.size(), goalieCopy.size());
 			for (int i = 0; i < size; i++) {

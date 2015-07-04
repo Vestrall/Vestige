@@ -25,7 +25,7 @@ public abstract class RectangleObstacle extends Entity implements Obstacle {
 
 		wallRect = new Rectangle(left, top, right, bottom);
 
-		boundaryLines = new ArrayList<BoundaryLine>();
+		boundaryLines = new ArrayList<>();
 
 		pathRect = new Rectangle(wallRect.left - Map.PLAYER_HALF_WIDTH, wallRect.top - Map.PLAYER_HALF_HEIGHT, wallRect.right + Map
 				.PLAYER_HALF_WIDTH, wallRect.bottom + Map.PLAYER_HALF_HEIGHT);
@@ -35,7 +35,7 @@ public abstract class RectangleObstacle extends Entity implements Obstacle {
 		super(copyMe);
 
 		wallRect = new Rectangle(copyMe.wallRect);
-		boundaryLines = new ArrayList<BoundaryLine>();
+		boundaryLines = new ArrayList<>();
 		for (final BoundaryLine bl : copyMe.boundaryLines)
 			boundaryLines.add(bl.copy());
 		pathRect = new Rectangle(copyMe.pathRect);
@@ -46,7 +46,7 @@ public abstract class RectangleObstacle extends Entity implements Obstacle {
 		final boolean pathableCorners[] = new boolean[4];
 		for (int i = 0; i < 4; i++)
 			pathableCorners[i] = false;
-		final ArrayList<Point> corners = new ArrayList<Point>(4);
+		final ArrayList<Point> corners = new ArrayList<>(4);
 
 		for (final BoundaryLine bl : boundaryLines) {
 			if (bl.contains(pathRect.left - 1, pathRect.top - 1))
@@ -95,10 +95,7 @@ public abstract class RectangleObstacle extends Entity implements Obstacle {
 
 	@Override
 	public boolean containsPathPoint(Point p) {
-		if (p == null)
-			return false;
-		else
-			return pathRect.contains(p.x, p.y);
+		return p != null && pathRect.contains(p.x, p.y);
 	}
 
 	@Override

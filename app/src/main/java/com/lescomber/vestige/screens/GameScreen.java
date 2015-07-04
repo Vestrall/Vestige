@@ -100,8 +100,8 @@ public class GameScreen extends Screen implements WidgetListener {
 	private int waveNum;
 	private Text fpsText;    // Frames per second
 	private DecimalFormat fpsFormat;
-	UIThreePatchSprite waveTextBackground;
-	UIThreePatchSprite fpsTextBackground;
+	final UIThreePatchSprite waveTextBackground;
+	final UIThreePatchSprite fpsTextBackground;
 
 	// Unit related elements
 	public static Player player;
@@ -119,7 +119,7 @@ public class GameScreen extends Screen implements WidgetListener {
 	List<Projectile> newProjectiles;
 	List<AreaEffect> newAreaEffects;
 	List<Explosion> newExplosions;
-	List<AIUnit> newUnits;
+	final List<AIUnit> newUnits;
 
 	@SuppressWarnings("unchecked")
 	public GameScreen(AndroidGame game) {
@@ -198,17 +198,17 @@ public class GameScreen extends Screen implements WidgetListener {
 		chargeSwipeArrow = new ChargeSwipeArrow(gestureHandler);
 
 		units = new LinkedList[2];
-		units[0] = new LinkedList<Unit>();
-		units[1] = new LinkedList<Unit>();
+		units[0] = new LinkedList<>();
+		units[1] = new LinkedList<>();
 
-		projectiles = new LinkedList<Projectile>();
-		newProjectiles = new LinkedList<Projectile>();
-		areaEffects = new LinkedList<AreaEffect>();
-		newAreaEffects = new LinkedList<AreaEffect>();
-		explosions = new LinkedList<Explosion>();
-		newExplosions = new LinkedList<Explosion>();
-		newUnits = new LinkedList<AIUnit>();
-		standaloneAnims = new LinkedList<SpriteAnimation>();
+		projectiles = new LinkedList<>();
+		newProjectiles = new LinkedList<>();
+		areaEffects = new LinkedList<>();
+		newAreaEffects = new LinkedList<>();
+		explosions = new LinkedList<>();
+		newExplosions = new LinkedList<>();
+		newUnits = new LinkedList<>();
+		standaloneAnims = new LinkedList<>();
 
 		final TextStyle uiStyle = TextStyle.bodyStyleWhite(25);
 		uiStyle.setSpacing(0);

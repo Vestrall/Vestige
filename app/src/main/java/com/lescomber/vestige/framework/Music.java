@@ -55,9 +55,7 @@ public class Music {
 				}
 			}
 			mediaPlayer.start();
-		} catch (final IllegalStateException e) {
-			e.printStackTrace();
-		} catch (final IOException e) {
+		} catch (final IllegalStateException | IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -72,7 +70,7 @@ public class Music {
 	}
 
 	public void stop() {
-		if (mediaPlayer.isPlaying() == true) {
+		if (mediaPlayer.isPlaying()) {
 			synchronized (this) {
 				mediaPlayer.stop();
 				isPrepared = false;

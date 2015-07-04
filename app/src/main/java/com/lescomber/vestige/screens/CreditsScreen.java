@@ -17,9 +17,6 @@ import com.lescomber.vestige.widgets.WidgetListener;
 import java.util.List;
 
 public class CreditsScreen extends Screen implements WidgetListener {
-	private final TextStyle titleStyle;
-	private final TextStyle nameStyle;
-
 	private final Button backButton;
 
 	public CreditsScreen(AndroidGame game) {
@@ -29,8 +26,8 @@ public class CreditsScreen extends Screen implements WidgetListener {
 		SpriteManager.getInstance().setUITextureHandle(Assets.menuUITexture.getTextureHandle());
 
 		final Resources res = AndroidGame.res;
-		titleStyle = TextStyle.bodyStyleCyan();
-		nameStyle = TextStyle.bodyStyleWhite(43);
+		final TextStyle titleStyle = TextStyle.bodyStyleCyan();
+		final TextStyle nameStyle = TextStyle.bodyStyleWhite(43);
 
 		new Text(titleStyle, res.getString(R.string.art), Screen.MIDX, 75);
 		new Text(nameStyle, res.getString(R.string.graceZhang), Screen.MIDX, 110);

@@ -1,10 +1,6 @@
 package com.lescomber.vestige.geometry;
 
 public abstract class Shape {
-	public enum Shapes {
-		RECTANGLE, CIRCLE, CONE, ROTATED_RECT;
-	}
-
 	Point center;
 	Rectangle boundingBox;
 	float direction;

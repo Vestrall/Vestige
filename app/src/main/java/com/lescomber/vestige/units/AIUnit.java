@@ -3,7 +3,6 @@ package com.lescomber.vestige.units;
 import com.lescomber.vestige.Options;
 import com.lescomber.vestige.aiabilities.AIAbility;
 import com.lescomber.vestige.framework.Util;
-import com.lescomber.vestige.screens.GameScreen;
 import com.lescomber.vestige.statuseffects.StatPack;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ public abstract class AIUnit extends Unit {
 
 		setTopGap(topGap);
 
-		abilities = new ArrayList<AIAbility>(3);
+		abilities = new ArrayList<>(3);
 
 		queuedAbility = null;
 
@@ -32,7 +31,7 @@ public abstract class AIUnit extends Unit {
 	public AIUnit(AIUnit copyMe) {
 		super(copyMe);
 
-		abilities = new ArrayList<AIAbility>(3);
+		abilities = new ArrayList<>(3);
 		for (final AIAbility aib : copyMe.abilities) {
 			final AIAbility aibCopy = aib.copy();
 			aibCopy.setOwner(this);
@@ -84,7 +83,6 @@ public abstract class AIUnit extends Unit {
 			if ((ability.isChanneled() && preChannelingAnim()) || preFiringAnim()) {
 				setFiring(true);
 				queuedAbility = ability;    // Queue up ability to fire once animation is complete
-				return;
 			}
 		} else
 			fire(ability);

@@ -46,14 +46,14 @@ public class AreaEffect extends Entity {
 		final float damage = dps / (1000f / tickFrequency);
 		hitBundle = new HitBundle(damage);
 		hitBundle.setAbsorbSound(false);    // By default, area effects make no noise when damaging (or being absorbed)
-		targets = new ArrayList<Integer>(2);
+		targets = new ArrayList<>(2);
 		targets.add(GameScreen.gregs);
 		animID = -1;
 		ignitionAnimID = -1;
 		isFinished = false;
 
-		areaEffectsReady = new LinkedList<AreaEffect>();
-		areaEffectsBuffer = new LinkedList<AreaEffect>();
+		areaEffectsReady = new LinkedList<>();
+		areaEffectsBuffer = new LinkedList<>();
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class AreaEffect extends Entity {
 		tickFrequency = copyMe.tickFrequency;
 		tickCountdown = copyMe.tickCountdown;
 		hitBundle = new HitBundle(copyMe.hitBundle);
-		targets = new ArrayList<Integer>(2);
+		targets = new ArrayList<>(2);
 		for (final Integer i : copyMe.targets)
 			targets.add(i);
 		animID = copyMe.animID;
@@ -91,8 +91,8 @@ public class AreaEffect extends Entity {
 		isFinished = copyMe.isFinished;
 
 		// Not copied
-		areaEffectsReady = new LinkedList<AreaEffect>();
-		areaEffectsBuffer = new LinkedList<AreaEffect>();
+		areaEffectsReady = new LinkedList<>();
+		areaEffectsBuffer = new LinkedList<>();
 	}
 
 	public void createRotatedRectHitbox(float width, float height, float direction) {

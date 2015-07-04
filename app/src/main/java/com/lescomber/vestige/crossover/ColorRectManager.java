@@ -24,12 +24,12 @@ public class ColorRectManager {
 			drawList = 0;
 
 			colorRects = new ArrayList[2];
-			colorRects[0] = new ArrayList<CGLColorRect>();
-			colorRects[1] = new ArrayList<CGLColorRect>();
+			colorRects[0] = new ArrayList<>();
+			colorRects[1] = new ArrayList<>();
 
 			nulls = new LinkedList[2];
-			nulls[0] = new LinkedList<Integer>();
-			nulls[1] = new LinkedList<Integer>();
+			nulls[0] = new LinkedList<>();
+			nulls[1] = new LinkedList<>();
 
 			isInitialized = true;
 		}
@@ -45,7 +45,7 @@ public class ColorRectManager {
 
 	public synchronized static void clearBuild() {
 		if (colorRects != null)
-			colorRects[buildList] = new ArrayList<CGLColorRect>();
+			colorRects[buildList] = new ArrayList<>();
 		if (nulls != null)
 			nulls[buildList].clear();
 	}
@@ -53,7 +53,7 @@ public class ColorRectManager {
 	public synchronized static void clearOtherBuild() {
 		final int otherList = (buildList + 1) % 2;
 		if (colorRects != null)
-			colorRects[otherList] = new ArrayList<CGLColorRect>();
+			colorRects[otherList] = new ArrayList<>();
 		if (nulls != null)
 			nulls[otherList].clear();
 	}

@@ -29,20 +29,4 @@ public class Angle {
 		else
 			return (theta <= high || theta >= low);
 	}
-
-	public static boolean isEast(float direction) {
-		return (Math.abs(direction - EAST) < epsilon);
-	}
-
-	public static boolean isSouth(float direction) {
-		return (Math.abs(direction - SOUTH) < epsilon);
-	}
-
-	public static boolean isWest(float direction) {
-		return (Math.abs(direction - WEST) < epsilon);
-	}
-
-	public static boolean isNorth(float direction) {
-		return (Math.abs(direction - NORTH) < epsilon);
-	}
 }

@@ -15,7 +15,7 @@ import com.lescomber.vestige.Assets;
 import com.lescomber.vestige.cgl.CGLSurfaceView;
 
 @SuppressLint("NewApi")
-public class AndroidGameActivity extends Activity/* implements OnSystemUiVisibilityChangeListener*/ {
+public class AndroidGameActivity extends Activity {
 	private AndroidGame gameLoop;
 
 	private GLSurfaceView glView;
@@ -83,8 +83,6 @@ public class AndroidGameActivity extends Activity/* implements OnSystemUiVisibil
 					decorView.setSystemUiVisibility(UI_FLAGS);
 				}
 			}
-
-			;
 		};
 	}
 
@@ -110,9 +108,5 @@ public class AndroidGameActivity extends Activity/* implements OnSystemUiVisibil
 	@Override
 	public void onBackPressed() {
 		gameLoop.backButton();
-	}
-
-	public View getDecorView() {
-		return decorView;
 	}
 }

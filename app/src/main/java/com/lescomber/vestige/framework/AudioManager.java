@@ -49,8 +49,8 @@ public class AudioManager {
 		soundPool = new SoundPool(20, android.media.AudioManager.STREAM_MUSIC, 0);
 		music = null;
 		queuedMusic = null;
-		allSoundEffects = new ArrayList<SoundEffect>();
-		allMusicEffects = new ArrayList<MusicEffect>();
+		allSoundEffects = new ArrayList<>();
+		allMusicEffects = new ArrayList<>();
 		queueing = false;
 		fireLoop = null;
 		movingBeamLoop = null;

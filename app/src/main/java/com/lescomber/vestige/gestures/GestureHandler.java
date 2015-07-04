@@ -27,7 +27,7 @@ public class GestureHandler {
 	// FIXME: Game crash caused by dragging a few fingers around the screen with a shirt in between fingers and screen
 
 	public GestureHandler() {
-		listeners = new ArrayList<GestureHandlerListener>(3);
+		listeners = new ArrayList<>(3);
 
 		clear();
 	}
@@ -39,10 +39,6 @@ public class GestureHandler {
 	public void addListener(GestureHandlerListener listener) {
 		if (!listeners.contains(listener))
 			listeners.add(listener);
-	}
-
-	public boolean removeListener(GestureHandlerListener listener) {
-		return listeners.remove(listener);
 	}
 
 	public void addTouch(TouchEvent event) {

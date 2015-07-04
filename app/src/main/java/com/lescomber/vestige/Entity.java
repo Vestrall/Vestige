@@ -41,7 +41,7 @@ public class Entity {
 		imageOffsetY = copyMe.imageOffsetY;
 		animations = null;
 		if (copyMe.animations != null) {
-			animations = new ArrayList<SpriteAnimation>(copyMe.animations.size());
+			animations = new ArrayList<>(copyMe.animations.size());
 			for (final SpriteAnimation gsa : copyMe.animations)
 				animations.add(gsa.copy());
 		}
@@ -226,7 +226,7 @@ public class Entity {
 		anim.pause();
 
 		if (animations == null)
-			animations = new ArrayList<SpriteAnimation>(6);
+			animations = new ArrayList<>(6);
 
 		animations.add(anim);
 		return animations.size() - 1;
@@ -256,29 +256,23 @@ public class Entity {
 	/**
 	 * Stop a currently stored animation (not necessarily the currently visible animation)
 	 */
-	public boolean stopAnimation(int index) {
+	public void stopAnimation(int index) {
 		if (index >= 0 && index < animations.size()) {
 			animations.get(index).stop();
 			if (activeAnimIndex == index)
 				activeAnimIndex = -1;
-
-			return true;
 		}
-
-		return false;
 	}
 
 	/**
 	 * Restart a currently stored animation from its beginning (stop() then play() animation)
 	 */
-	public boolean restartAnimation(int index) {
+	public void restartAnimation(int index) {
 		if (index >= 0 && index < animations.size()) {
 			activeAnimIndex = -1;
 			animations.get(index).stop();
-			return playAnimation(index);
+			playAnimation(index);
 		}
-
-		return false;
 	}
 
 	/**

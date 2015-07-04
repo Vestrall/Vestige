@@ -9,7 +9,6 @@ public class SOneDoubleTapLaser {
 	private static final float WIDTH_PER_MS = 3.25f;
 
 	private final Sprite image;
-	private final float direction;
 	private final float cos;
 	private final float sin;
 	private final float maxWidth;
@@ -17,7 +16,7 @@ public class SOneDoubleTapLaser {
 
 	public SOneDoubleTapLaser(Line path) {
 		image = new Sprite(SpriteManager.sOneDoubleTapLaser);
-		direction = path.getDirection();
+		final float direction = path.getDirection();
 		image.rotateTo(direction);
 		cos = (float) Math.cos(direction);
 		sin = (float) Math.sin(direction);

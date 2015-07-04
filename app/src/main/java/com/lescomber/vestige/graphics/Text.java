@@ -35,8 +35,7 @@ public class Text {
 		direction = 0;
 		color = new float[4];
 		final float[] styleColor = style.getColor();
-		for (int i = 0; i < 4; i++)
-			color[i] = styleColor[i];
+		System.arraycopy(styleColor, 0, color, 0, 4);
 
 		centerX = this.swingX;
 		centerY = this.swingY;
@@ -110,8 +109,7 @@ public class Text {
 		this.style = style;
 
 		final float styleColor[] = style.getColor();
-		for (int i = 0; i < 4; i++)
-			color[i] = styleColor[i];
+		System.arraycopy(styleColor, 0, color, 0, 4);
 
 		if (alignment == Alignment.CENTER) {
 			if (isVisible) {

@@ -13,15 +13,12 @@ public class FpsCounter {
 		tickList = new int[MAX_SAMPLES];
 	}
 
-	// Returns average time per frame (in ms)
-	public double addFrame(int newFrameTime) {
+	public void addFrame(int newFrameTime) {
 		sum -= tickList[tickIndex];
 		sum += newFrameTime;
 		tickList[tickIndex] = newFrameTime;
 		if (++tickIndex == MAX_SAMPLES)
 			tickIndex = 0;
-
-		return ((double) sum / MAX_SAMPLES);
 	}
 
 	public double getFps() {

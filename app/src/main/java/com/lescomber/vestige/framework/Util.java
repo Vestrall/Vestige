@@ -16,7 +16,7 @@ public class Util {
 		return Math.abs(d1 - d2) < epsilon;
 	}
 
-	public static Comparator<Float> floatComparator = new Comparator<Float>() {
+	public static final Comparator<Float> FLOAT_COMPARATOR = new Comparator<Float>() {
 		@Override
 		public int compare(Float float1, Float float2) {
 			final int ret;

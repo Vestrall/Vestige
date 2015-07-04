@@ -29,10 +29,6 @@ public class TutorialMap extends Map {
 		}
 	}
 
-	public TutorialMap(TutorialScreen tScreen) {
-		this(tScreen, false);
-	}
-
 	public TutorialMap() {
 		this(null, false);
 	}

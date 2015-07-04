@@ -46,9 +46,9 @@ public class Explosion extends Entity {
 
 		hitBundle = new HitBundle(damage);
 		hitBundle.setAbsorbSound(false);
-		targets = new ArrayList<Integer>(2);
+		targets = new ArrayList<>(2);
 		targets.add(GameScreen.gregs);
-		unitsHit = new ArrayList<Unit>(4);
+		unitsHit = new ArrayList<>(4);
 		isFinished = false;
 	}
 
@@ -66,9 +66,9 @@ public class Explosion extends Entity {
 		FINAL_DIAMETER = copyMe.FINAL_DIAMETER;
 		DIAMETER_PER_MS = copyMe.DIAMETER_PER_MS;
 		hitBundle = new HitBundle(copyMe.hitBundle);
-		targets = new ArrayList<Integer>(2);
+		targets = new ArrayList<>(2);
 		targets.addAll(copyMe.targets);
-		unitsHit = new ArrayList<Unit>(4);
+		unitsHit = new ArrayList<>(4);
 		unitsHit.addAll(copyMe.unitsHit);
 		duration = copyMe.duration;
 		isFinished = copyMe.isFinished;

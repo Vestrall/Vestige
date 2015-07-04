@@ -248,10 +248,6 @@ public class Button extends Widget {
 		this.clickSound = clickSound;
 	}
 
-	public SoundEffect getClickSound() {
-		return clickSound;
-	}
-
 	public void rotate(float radians) {
 		if (text != null)
 			text.rotate(radians);
@@ -383,14 +379,5 @@ public class Button extends Widget {
 			return text.isVisible();
 		else
 			return false;
-	}
-
-	public void wasReplaced() {
-		if (text != null)
-			text.wasRemoved();
-		if (sprite != null)
-			sprite.wasReplaced();
-		if (clickSprite != null)
-			clickSprite.wasReplaced();
 	}
 }

@@ -189,7 +189,7 @@ public class StatusEffect {
 		return new StatusEffect(this);
 	}
 
-	public static Comparator<StatusEffect> statusEffectComparator = new Comparator<StatusEffect>() {
+	public static final Comparator<StatusEffect> STATUS_EFFECT_COMPARATOR = new Comparator<StatusEffect>() {
 		@Override
 		public int compare(StatusEffect one, StatusEffect two) {
 			return one.getDuration() - two.getDuration();

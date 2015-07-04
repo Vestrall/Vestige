@@ -29,7 +29,7 @@ public class SOneDoubleTap extends DoubleTapAbility {
 		hitBundle = new HitBundle(DAMAGE);
 		hitBundle.setHitSound(AudioManager.sOneDoubleTapHit);
 
-		activeLasers = new ArrayList<SOneDoubleTapLaser>(2);
+		activeLasers = new ArrayList<>(2);
 	}
 
 	public SOneDoubleTap(SOneDoubleTap copyMe) {
@@ -37,7 +37,7 @@ public class SOneDoubleTap extends DoubleTapAbility {
 
 		hitBundle = new HitBundle(copyMe.hitBundle);
 
-		activeLasers = new ArrayList<SOneDoubleTapLaser>(2);
+		activeLasers = new ArrayList<>(2);
 	}
 
 	@Override

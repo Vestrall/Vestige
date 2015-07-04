@@ -79,12 +79,9 @@ public class Line {
 
 		// Handle case where one of the isRight vars is equal to 0 (ie. can be equal to 0 without being on the line segment)
 		if (isRight1 == 0 || isRight2 == 0 || oIsRight1 == 0 || oIsRight2 == 0) {
-			if ((isRight1 == 0 && other.isInBigRect(point0.x, point0.y)) || (isRight2 == 0 && other.isInBigRect(point1.x, point1.y)) ||
-					(oIsRight1 == 0 && isInBigRect(other.point0.x, other.point0.y)) || (oIsRight2 == 0 && isInBigRect(other.point1.x, other.point1
-					.y)))
-				return true;
-			else
-				return false;
+			return (isRight1 == 0 && other.isInBigRect(point0.x, point0.y)) || (isRight2 == 0 && other.isInBigRect(point1.x, point1.y))
+					|| (oIsRight1 == 0 && isInBigRect(other.point0.x, other.point0.y))
+					|| (oIsRight2 == 0 && isInBigRect(other.point1.x, other.point1.y));
 		}
 
 		return true;

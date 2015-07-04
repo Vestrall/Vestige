@@ -32,7 +32,7 @@ public class PickUp extends AreaEffect {
 	private int flickerCountdown;        // Time (in ms) until next flicker (either on or off)
 
 	public PickUp(SpriteTemplate template, float width, float height, float damage) {
-		super(40, 30, 0, DURATION[Options.difficulty]);
+		super(width, height, 0, DURATION[Options.difficulty]);
 
 		init(template, damage);
 	}

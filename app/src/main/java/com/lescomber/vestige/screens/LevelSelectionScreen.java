@@ -34,8 +34,6 @@ public class LevelSelectionScreen extends Screen implements WidgetListener {
 
 	private final Button levelButtons[];
 
-	private final TextStyle levelNumStyle;
-
 	private final Button backButton;
 
 	public LevelSelectionScreen(AndroidGame game, int stageNum) {
@@ -48,7 +46,7 @@ public class LevelSelectionScreen extends Screen implements WidgetListener {
 
 		// Level number TextStyle
 		final int fontSize = (int) Math.round(0.7 * Math.min(BUTTON_WIDTH, BUTTON_HEIGHT));
-		levelNumStyle = TextStyle.bodyStyleCyan(fontSize);
+		final TextStyle levelNumStyle = TextStyle.bodyStyleCyan(fontSize);
 
 		levelCount = Levels.LEVEL_COUNT[stageNum - 1];
 
@@ -58,7 +56,7 @@ public class LevelSelectionScreen extends Screen implements WidgetListener {
 
 		// Calculate number of rows and columns we will need to fit all the levels in
 		int cols = 0;
-		int rows = 0;
+		final int rows;
 
 		int pos = 0;
 		while (pos < Screen.WIDTH - (2 * MIN_SIDE_MARGIN)) {

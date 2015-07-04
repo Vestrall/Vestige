@@ -19,7 +19,7 @@ public abstract class AIRailUnit extends AIUnit {
 	public AIRailUnit(int faction, float hitboxWidth, float hitboxHeight, float imageOffsetY, float topGap) {
 		super(faction, hitboxWidth, hitboxHeight, imageOffsetY, topGap);
 
-		locations = new ArrayList<Point>();
+		locations = new ArrayList<>();
 		randomLocations = true;
 		index = 0;
 	}
@@ -27,7 +27,7 @@ public abstract class AIRailUnit extends AIUnit {
 	public AIRailUnit(AIRailUnit copyMe) {
 		super(copyMe);
 
-		locations = new ArrayList<Point>();
+		locations = new ArrayList<>();
 		for (final Point p : copyMe.locations)
 			locations.add(new Point(p));
 		randomLocations = copyMe.randomLocations;

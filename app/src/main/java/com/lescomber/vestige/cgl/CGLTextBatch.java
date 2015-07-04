@@ -22,8 +22,7 @@ public class CGLTextBatch {
 	// --Constructor--//
 	// D: prepare the sprite batcher for specified maximum number of sprites
 	// A: maxSprites - the maximum allowed sprites per batch
-	// program - program to use when drawing
-	public CGLTextBatch(int maxSprites, int programHandle/* , Program program */) {
+	public CGLTextBatch(int maxSprites, int programHandle) {
 		vertexBuffer = new float[maxSprites * VERTICES_PER_SPRITE * VERTEX_SIZE]; // Create Vertex Buffer
 
 		// Create rendering Vertices
@@ -124,9 +123,7 @@ public class CGLTextBatch {
 		Matrix.multiplyMM(mMVPMatrix, 0, CGLRenderer.mProjectionMatrix, 0, mModelView, 0);
 
 		// TODO: make sure numSprites < 24
-		for (int i = 0; i < 16; ++i) {
-			uMVPMatrices[numSprites * 16 + i] = mMVPMatrix[i];
-		}
+		System.arraycopy(mMVPMatrix, 0, uMVPMatrices, numSprites * 16, 16);
 
 		numSprites++; // Increment Sprite Count
 	}

@@ -110,10 +110,8 @@ public class Sprite implements Image {
 	public void scaleWidthTo(float width) {
 		if (info.widthScale <= 0) {
 			info.widthScale = width / getSubTexWidth();
-			if (isVisible) {
-				if (isVisible)
-					Swapper.swapImages(this, this);
-			}
+			if (isVisible)
+				Swapper.swapImages(this, this);
 		} else {
 			final double widthRatio = (double) width / getWidth();
 			scale(widthRatio, 1.0);
@@ -123,10 +121,8 @@ public class Sprite implements Image {
 	public void scaleHeightTo(float height) {
 		if (info.heightScale <= 0) {
 			info.heightScale = height / getSubTexHeight();
-			if (isVisible) {
-				if (isVisible)
-					Swapper.swapImages(this, this);
-			}
+			if (isVisible)
+				Swapper.swapImages(this, this);
 		} else {
 			final double heightRatio = (double) height / getHeight();
 			scale(1.0, heightRatio);

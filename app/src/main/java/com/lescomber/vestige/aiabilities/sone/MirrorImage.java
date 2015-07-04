@@ -23,7 +23,7 @@ public class MirrorImage extends AIAbility {
 
 		this.startingHealth = startingHealth;
 
-		imageAbilities = new ArrayList<AIAbility>(3);
+		imageAbilities = new ArrayList<>(3);
 		imagePowerUp = null;
 	}
 
@@ -31,7 +31,7 @@ public class MirrorImage extends AIAbility {
 		super(copyMe);
 
 		startingHealth = copyMe.startingHealth;
-		imageAbilities = new ArrayList<AIAbility>(3);
+		imageAbilities = new ArrayList<>(3);
 		for (final AIAbility aia : copyMe.imageAbilities)
 			imageAbilities.add(aia.copy());
 		if (copyMe.imagePowerUp != null)

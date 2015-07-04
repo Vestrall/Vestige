@@ -97,10 +97,7 @@ public class Rectangle extends Shape {
 
 	@Override
 	public boolean contains(float x, float y) {
-		if (x >= left && x <= right && y >= top && y <= bottom)
-			return true;
-		else
-			return false;
+		return x >= left && x <= right && y >= top && y <= bottom;
 	}
 
 	@Override
@@ -192,10 +189,7 @@ public class Rectangle extends Shape {
 	}
 
 	public boolean isEmpty() {
-		if (left >= right || top >= bottom)
-			return true;
-		else
-			return false;
+		return left >= right || top >= bottom;
 	}
 
 	public float getWidth() {

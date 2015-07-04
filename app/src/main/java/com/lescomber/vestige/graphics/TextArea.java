@@ -12,7 +12,7 @@ public class TextArea {
 	private final ArrayList<Text> lines;
 
 	public TextArea(float midX, float topY, int charsPerLine, float lineSpacing, TextStyle style, String text, boolean isVisible) {
-		lines = new ArrayList<Text>();
+		lines = new ArrayList<>();
 
 		this.midX = midX;
 		this.topY = topY;
@@ -38,7 +38,7 @@ public class TextArea {
 	}
 
 	public void setText(String text, boolean isVisible) {
-		final ArrayList<String> lineStrings = new ArrayList<String>();
+		final ArrayList<String> lineStrings = new ArrayList<>();
 		while (text.length() > charsPerLine) {
 			// Find the last space before charsPerLine (i.e. locate where the line break should happen)
 			int spaceIndex = charsPerLine + 1;

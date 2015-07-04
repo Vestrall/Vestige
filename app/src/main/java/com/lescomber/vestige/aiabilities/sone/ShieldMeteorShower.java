@@ -40,7 +40,7 @@ public class ShieldMeteorShower extends AIChanneledAbility {
 		anim.setFadeIn(0.2f, 0.5);
 		shieldEffect = new StatusEffect(sp, 60);
 		shieldEffect.setAnimation(anim);
-		spawnPoints = new LinkedList<Point>();
+		spawnPoints = new LinkedList<>();
 	}
 
 	public ShieldMeteorShower(ShieldMeteorShower copyMe) {
@@ -48,7 +48,7 @@ public class ShieldMeteorShower extends AIChanneledAbility {
 
 		shieldEffect = copyMe.shieldEffect.copy();
 		countdown = copyMe.countdown;
-		spawnPoints = new LinkedList<Point>();
+		spawnPoints = new LinkedList<>();
 		for (final Point p : copyMe.spawnPoints)
 			spawnPoints.add(new Point(p));
 	}
@@ -62,7 +62,7 @@ public class ShieldMeteorShower extends AIChanneledAbility {
 		spawnPoints.clear();
 
 		// Build tempArray with the list of possible spawnPoints (in order from top left to bottom right)
-		final LinkedList<Point> tempArray = new LinkedList<Point>();
+		final LinkedList<Point> tempArray = new LinkedList<>();
 		for (int i = 0; i < SPAWN_ROWS; i++) {
 			for (int j = 0; j < SPAWN_COLS; j++)
 				tempArray.add(new Point((j * 2 + 1) * halfXGap, (i * 2 + 1) * halfYGap));

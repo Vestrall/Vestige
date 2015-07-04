@@ -73,10 +73,6 @@ public class CGLTexturedRect extends CGLDrawingRect {
 		this(textureHandle, x, y, texWidth, texHeight, new Rect(0, 0, texWidth, texHeight));
 	}
 
-	public CGLTexturedRect(float x, float y, int texWidth, int texHeight) {
-		this(x, y, texWidth, texHeight, new Rect(0, 0, texWidth, texHeight));
-	}
-
 	public void setTexRect(float left, float top, float right, float bottom) {
 		mTexBuffer.put(0, left);
 		mTexBuffer.put(1, top);

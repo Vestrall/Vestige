@@ -47,8 +47,7 @@ public class ColorRect {
 		height = copyMe.height;
 		direction = copyMe.direction;
 		color = new float[4];
-		for (int i = 0; i < 4; i++)
-			color[i] = copyMe.color[i];
+		System.arraycopy(copyMe.color, 0, color, 0, 4);
 		index = -1;
 		isVisible = false;
 		setVisible(copyMe.isVisible);

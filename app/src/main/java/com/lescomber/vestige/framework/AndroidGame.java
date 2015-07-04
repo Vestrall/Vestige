@@ -108,7 +108,7 @@ public class AndroidGame implements Runnable {
 		}
 
 		long startTime = System.nanoTime();
-		long deltaTime = 0;
+		long deltaTime;
 		while (running) {
 			// Throttle loop speed to a maximum of roughly 60 updates per second
 			deltaTime = (System.nanoTime() - startTime) / 1000000;

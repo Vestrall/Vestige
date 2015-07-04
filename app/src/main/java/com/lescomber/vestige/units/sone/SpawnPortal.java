@@ -82,7 +82,7 @@ public class SpawnPortal extends AIUnit {
 		growthCooldown -= deltaTime;
 
 		while (growthCooldown <= 0) {
-			growthCooldown = GROWTH_INTERVAL[Options.difficulty];
+			growthCooldown += GROWTH_INTERVAL[Options.difficulty];
 
 			size++;
 			if (size == SIZE_MAX)

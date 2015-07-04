@@ -336,10 +336,8 @@ public class PewBallScreen extends GameScreen {
 	 */
 	private boolean isConcedeTerritory() {
 		// Can't go any lower than level 1
-		if (PewBallPrepScreen.currentLevel <= 1)
-			return false;
-
-		return (awayScore > homeScore) || (awayScore == homeScore && awayScore >= ((PewBallMap) map).getScoreLimit() - 1);
+		return PewBallPrepScreen.currentLevel > 1
+				&& ((awayScore > homeScore)|| (awayScore == homeScore && awayScore >= ((PewBallMap) map).getScoreLimit() - 1));
 	}
 
 	private void displayConcedeWarning() {

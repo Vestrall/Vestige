@@ -33,7 +33,7 @@ public class WildFire extends AreaEffect {
 		FireAnimation fa;
 		anims = new ArrayList[rows];
 		for (int i = 0; i < rows; i++) {
-			anims[i] = new ArrayList<FireAnimation>();
+			anims[i] = new ArrayList<>();
 
 			for (int j = 0; j < cols; j++) {
 				fa = new FireAnimation();
@@ -61,7 +61,7 @@ public class WildFire extends AreaEffect {
 
 		anims = new ArrayList[copyMe.anims.length];
 		for (int i = 0; i < copyMe.anims.length; i++) {
-			anims[i] = new ArrayList<FireAnimation>();
+			anims[i] = new ArrayList<>();
 			for (final FireAnimation fa : copyMe.anims[i])
 				anims[i].add(new FireAnimation(fa));
 		}
@@ -71,8 +71,8 @@ public class WildFire extends AreaEffect {
 	public void update(int deltaTime) {
 		super.update(deltaTime);
 
-		for (int i = 0; i < anims.length; i++) {
-			for (final FireAnimation fa : anims[i])
+		for (ArrayList<FireAnimation> anim : anims) {
+			for (final FireAnimation fa : anim)
 				fa.update(deltaTime);
 		}
 	}
@@ -91,8 +91,8 @@ public class WildFire extends AreaEffect {
 
 	@Override
 	public void setVisible(boolean isVisible) {
-		for (int i = 0; i < anims.length; i++) {
-			for (final FireAnimation fa : anims[i]) {
+		for (ArrayList<FireAnimation> anim : anims) {
+			for (final FireAnimation fa : anim) {
 				fa.setVisible(isVisible);
 
 				if (isVisible)
@@ -105,8 +105,8 @@ public class WildFire extends AreaEffect {
 
 	@Override
 	public void close() {
-		for (int i = 0; i < anims.length; i++) {
-			for (final FireAnimation fa : anims[i])
+		for (ArrayList<FireAnimation> anim : anims) {
+			for (final FireAnimation fa : anim)
 				fa.close();
 		}
 

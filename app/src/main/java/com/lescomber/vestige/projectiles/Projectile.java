@@ -87,7 +87,7 @@ public class Projectile extends MobileEntity {
 
 		hitBundle = new HitBundle(damage);
 
-		targets = new ArrayList<Integer>(2);
+		targets = new ArrayList<>(2);
 		targets.add(GameScreen.gregs);
 		explosion = null;
 		areaEffect = null;
@@ -96,15 +96,15 @@ public class Projectile extends MobileEntity {
 
 		setVelocityPerSecond(350);    // Default speed
 
-		projectilesReady = new LinkedList<Projectile>();
-		projectilesBuffer = new LinkedList<Projectile>();
-		explosionsReady = new LinkedList<Explosion>();
-		explosionsBuffer = new LinkedList<Explosion>();
-		areaEffectsReady = new LinkedList<AreaEffect>();
-		areaEffectsBuffer = new LinkedList<AreaEffect>();
+		projectilesReady = new LinkedList<>();
+		projectilesBuffer = new LinkedList<>();
+		explosionsReady = new LinkedList<>();
+		explosionsBuffer = new LinkedList<>();
+		areaEffectsReady = new LinkedList<>();
+		areaEffectsBuffer = new LinkedList<>();
 
 		hitGroup = null;
-		unitsHit = new ArrayList<Unit>(5);
+		unitsHit = new ArrayList<>(5);
 
 		// Init default behavior flags
 		offScreenRemoval = true;
@@ -174,13 +174,13 @@ public class Projectile extends MobileEntity {
 			areaEffect = copyMe.areaEffect.copy();
 
 		// Note: projectile/areaEffect/explosion queues and unitsHit are not copied
-		projectilesReady = new LinkedList<Projectile>();
-		projectilesBuffer = new LinkedList<Projectile>();
-		explosionsReady = new LinkedList<Explosion>();
-		explosionsBuffer = new LinkedList<Explosion>();
-		areaEffectsReady = new LinkedList<AreaEffect>();
-		areaEffectsBuffer = new LinkedList<AreaEffect>();
-		unitsHit = new ArrayList<Unit>(5);
+		projectilesReady = new LinkedList<>();
+		projectilesBuffer = new LinkedList<>();
+		explosionsReady = new LinkedList<>();
+		explosionsBuffer = new LinkedList<>();
+		areaEffectsReady = new LinkedList<>();
+		areaEffectsBuffer = new LinkedList<>();
+		unitsHit = new ArrayList<>(5);
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import com.lescomber.vestige.units.AIUnit;
 
 // Spawns units on cooldown at the standard firingLocation
 public class AIUnitSpawner extends AIAbility {
-	AIUnit spawn;
+	final AIUnit spawn;
 
 	// If non-null, destBox defines where spawned unit destinations can be applied to
 	private Hitbox destBox;
@@ -19,7 +19,7 @@ public class AIUnitSpawner extends AIAbility {
 	private int copiesPerSpawn;
 
 	public AIUnitSpawner(AIUnit owner, double cooldownSeconds, AIUnit spawn) {
-		super(owner, cooldownSeconds/*, false*/);
+		super(owner, cooldownSeconds);
 
 		this.spawn = spawn.copy();
 

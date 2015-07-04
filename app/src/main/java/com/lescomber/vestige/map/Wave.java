@@ -11,8 +11,8 @@ import java.util.List;
 public class Wave {
 	private static final int DEFAULT_HEALTH_PICK_UP = 15;
 
-	LinkedList<AIUnit> units;
-	LinkedList<Integer> unitCountdowns;
+	final LinkedList<AIUnit> units;
+	final LinkedList<Integer> unitCountdowns;
 	private int waveCountdown;    // in ms
 
 	private final ArrayList<AIUnit> enemiesBuffer;
@@ -20,25 +20,25 @@ public class Wave {
 
 	public Wave(double waveCountdownSeconds) {
 		waveCountdown = (int) (waveCountdownSeconds * 1000);
-		units = new LinkedList<AIUnit>();
-		unitCountdowns = new LinkedList<Integer>();
-		enemiesBuffer = new ArrayList<AIUnit>(5);
-		enemiesReady = new ArrayList<AIUnit>(5);
+		units = new LinkedList<>();
+		unitCountdowns = new LinkedList<>();
+		enemiesBuffer = new ArrayList<>(5);
+		enemiesReady = new ArrayList<>(5);
 	}
 
 	public Wave(Wave copyMe, double waveCountdownSeconds) {
 		waveCountdown = (int) (waveCountdownSeconds * 1000);
 
-		units = new LinkedList<AIUnit>();
+		units = new LinkedList<>();
 		for (final AIUnit aiu : copyMe.units)
 			units.add(aiu.copy());
-		unitCountdowns = new LinkedList<Integer>();
+		unitCountdowns = new LinkedList<>();
 		for (final Integer i : copyMe.unitCountdowns)
 			unitCountdowns.add(i);
 
 		// Not copied
-		enemiesBuffer = new ArrayList<AIUnit>(5);
-		enemiesReady = new ArrayList<AIUnit>(5);
+		enemiesBuffer = new ArrayList<>(5);
+		enemiesReady = new ArrayList<>(5);
 	}
 
 	public Wave(Wave copyMe) {

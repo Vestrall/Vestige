@@ -57,7 +57,6 @@ public class Beam extends Projectile {
 	public Beam(Beam copyMe) {
 		super(copyMe);
 
-		//beamSprite = new BeamSprite(copyMe.beamSprite);
 		beamSprite = new ThreePatchSwingSprite(copyMe.beamSprite);
 		setImage(beamSprite);
 		offsetXPerMs = copyMe.offsetXPerMs;
@@ -79,9 +78,7 @@ public class Beam extends Projectile {
 				hitbox.scaleWidthTo(width);
 				hitbox.offset(dx, dy);
 
-				//beamSprite.age(width, dx, dy);
 				beamSprite.scaleWidthTo(width);
-				//beamSprite.offset(dx, dy);
 				updateGlow(hitbox);
 			}
 		} else {
@@ -95,7 +92,6 @@ public class Beam extends Projectile {
 				hitbox.scaleWidthTo(width);
 				hitbox.offset(dx, dy);
 
-				//beamSprite.age(width, dx, dy);
 				beamSprite.scaleWidthTo(width);
 				beamSprite.offset(dx * 2, dy * 2);
 				updateGlow(hitbox);
@@ -109,11 +105,10 @@ public class Beam extends Projectile {
 
 	@Override
 	protected void obstacleHit(Obstacle o) {
-		if (wallHit == true)
+		if (wallHit)
 			return;
 
 		wallHit = true;
-		//beamSprite.loseHead();
 		final SpriteTemplate[] templates = new SpriteTemplate[3];
 		templates[0] = SpriteManager.enemyLaserBody;
 		templates[1] = null;

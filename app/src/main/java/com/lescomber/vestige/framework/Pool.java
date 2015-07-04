@@ -15,11 +15,11 @@ public class Pool<T> {
 	public Pool(PoolObjectFactory<T> factory, int maxSize) {
 		this.factory = factory;
 		this.maxSize = maxSize;
-		this.freeObjects = new ArrayList<T>(maxSize);
+		this.freeObjects = new ArrayList<>(maxSize);
 	}
 
 	public T newObject() {
-		T object = null;
+		final T object;
 
 		if (freeObjects.size() == 0)
 			object = factory.createObject();

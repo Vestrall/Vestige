@@ -17,8 +17,8 @@ public class TouchHandler implements OnTouchListener {
 	private final float[] touchY = new float[MAX_TOUCHPOINTS];
 	private final int[] id = new int[MAX_TOUCHPOINTS];
 	private final Pool<TouchEvent> touchEventPool;
-	private final List<TouchEvent> touchEvents = new ArrayList<TouchEvent>();
-	private final List<TouchEvent> touchEventsBuffer = new ArrayList<TouchEvent>();
+	private final List<TouchEvent> touchEvents = new ArrayList<>();
+	private final List<TouchEvent> touchEventsBuffer = new ArrayList<>();
 	private final float scaleX;
 	private final float scaleY;
 
@@ -29,7 +29,7 @@ public class TouchHandler implements OnTouchListener {
 				return new TouchEvent();
 			}
 		};
-		touchEventPool = new Pool<TouchEvent>(factory, 100);
+		touchEventPool = new Pool<>(factory, 100);
 		view.setOnTouchListener(this);
 
 		this.scaleX = scaleX;

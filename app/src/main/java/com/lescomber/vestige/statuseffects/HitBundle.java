@@ -18,7 +18,7 @@ public class HitBundle {
 	private SoundEffect hitSound;    // SoundEffect that plays if this HitBundle damages its target
 
 	public HitBundle(float damage) {
-		statusEffects = new ArrayList<StatusEffect>(2);
+		statusEffects = new ArrayList<>(2);
 		this.damage = damage;
 		displacement = null;
 		hitAnimation = null;
@@ -28,7 +28,7 @@ public class HitBundle {
 
 	public HitBundle(HitBundle copyMe) {
 		damage = copyMe.damage;
-		statusEffects = new ArrayList<StatusEffect>(2);
+		statusEffects = new ArrayList<>(2);
 		for (final StatusEffect se : copyMe.statusEffects)
 			statusEffects.add(se.copy());
 		displacement = null;

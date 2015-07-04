@@ -102,13 +102,6 @@ public class FireAnimation extends SpriteAnimation {
 			fa.offset(Util.rand.nextFloat() * xVariance - halfXVar, Util.rand.nextFloat() * yVariance - halfYVar);
 	}
 
-	public static void varyLocations(FireAnimation[] anims, float xVariance, float yVariance) {
-		final float halfXVar = xVariance / 2;
-		final float halfYVar = yVariance / 2;
-		for (final FireAnimation fa : anims)
-			fa.offset(Util.rand.nextFloat() * xVariance - halfXVar, Util.rand.nextFloat() * yVariance - halfYVar);
-	}
-
 	@Override
 	public void setDuration(int duration) {
 		if (isIgniting)

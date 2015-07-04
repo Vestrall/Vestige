@@ -20,7 +20,7 @@ public class MultiShooter extends AIShooter {
 
 	@Override
 	protected void fire(Line path) {
-		final ArrayList<Line> paths = new ArrayList<Line>(4);
+		final ArrayList<Line> paths = new ArrayList<>(4);
 
 		if (Options.difficulty == Options.HARD) {
 			Line line = new Line(path);

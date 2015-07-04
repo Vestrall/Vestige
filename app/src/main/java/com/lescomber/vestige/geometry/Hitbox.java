@@ -20,11 +20,11 @@ public class Hitbox {
 		width = 0;
 		height = 0;
 		direction = 0;
-		shapes = new ArrayList<Shape>(3);
+		shapes = new ArrayList<>(3);
 	}
 
 	public Hitbox(Shape shape) {
-		shapes = new ArrayList<Shape>(3);
+		shapes = new ArrayList<>(3);
 		addShape(shape);
 	}
 
@@ -34,7 +34,7 @@ public class Hitbox {
 		width = copyMe.width;
 		height = copyMe.height;
 		direction = copyMe.direction;
-		shapes = new ArrayList<Shape>(3);
+		shapes = new ArrayList<>(3);
 		for (final Shape s : copyMe.shapes)
 			shapes.add(s.copy());
 	}
@@ -170,7 +170,7 @@ public class Hitbox {
 		width = 0;
 		height = 0;
 		direction = 0;
-		shapes = new ArrayList<Shape>(3);
+		shapes = new ArrayList<>(3);
 	}
 
 	public boolean isCompletelyOffScreen() {

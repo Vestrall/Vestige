@@ -54,7 +54,7 @@ public class PewBall extends Projectile implements Comparable<PewBall> {
 		setGlow(SpriteManager.redGlow);
 
 		lastHit = null;
-		passThroughHits = new ArrayList<Projectile>(5);
+		passThroughHits = new ArrayList<>(5);
 
 		boost = 0;
 		BOOST_DECAY_PER_MS = NORMAL_VELOCITY / 1200;

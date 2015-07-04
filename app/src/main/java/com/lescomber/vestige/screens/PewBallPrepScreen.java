@@ -27,7 +27,6 @@ public class PewBallPrepScreen extends Screen implements WidgetListener {
 
 	// Pew Ball description settings
 	private static final int DESCRIPTION_CHARS_PER_LINE = 49;
-	private static final int WARNING_CHARS_PER_LINE = 32;
 	private static final int TEXT_TOP_Y = 130;
 	private static final int LINE_SPACING = 45;
 
@@ -56,7 +55,7 @@ public class PewBallPrepScreen extends Screen implements WidgetListener {
 		if (pewBallInProgress) {
 			defeat();
 			pewBallInProgress = false;
-			PersistentData.setPewBallInProgress(pewBallInProgress);
+			PersistentData.setPewBallInProgress(false);
 		}
 
 		final Resources res = AndroidGame.res;

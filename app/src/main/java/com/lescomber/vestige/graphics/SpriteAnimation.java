@@ -5,6 +5,7 @@ import com.lescomber.vestige.crossover.SpriteManager.SpriteTemplate;
 import com.lescomber.vestige.geometry.Point;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SpriteAnimation implements Image {
 	private static final int DEFAULT_FRAME_TIME = 67;
@@ -46,7 +47,7 @@ public class SpriteAnimation implements Image {
 
 		isVisible = false;
 
-		frames = new ArrayList<SpriteTemplate>();
+		frames = new ArrayList<>();
 		curFrameIndex = 0;
 		curTime = 0;
 		frameTime = DEFAULT_FRAME_TIME;
@@ -73,8 +74,7 @@ public class SpriteAnimation implements Image {
 	public SpriteAnimation(SpriteTemplate[] templates) {
 		this();
 
-		for (final SpriteTemplate st : templates)
-			frames.add(st);
+		Collections.addAll(frames, templates);
 
 		sharedInfo.template = frames.get(0);
 		curSprite = new Sprite(sharedInfo);
@@ -83,7 +83,7 @@ public class SpriteAnimation implements Image {
 	public SpriteAnimation(SpriteAnimation copyMe) {
 		sharedInfo = new SpriteInfo(copyMe.sharedInfo);
 		curSprite = new Sprite(sharedInfo);
-		frames = new ArrayList<SpriteTemplate>();
+		frames = new ArrayList<>();
 		for (final SpriteTemplate st : copyMe.frames)
 			frames.add(st);
 		curFrameIndex = copyMe.curFrameIndex;
@@ -348,8 +348,7 @@ public class SpriteAnimation implements Image {
 		else {
 			final int curFrameTime = frameTime - curTime;
 			final int curSequence = curFrameTime + (frameTime * (frames.size() - curFrameIndex - 1));
-			final int allRemainingSequences = curSequence + ((sequenceNum - 1) * frames.size() * frameTime);
-			return allRemainingSequences;
+			return curSequence + ((sequenceNum - 1) * frames.size() * frameTime);
 		}
 	}
 

@@ -31,7 +31,7 @@ public class PerpetualPortalSpawner extends AIChanneledAbility {
 		this.owner = owner;
 		countdown = 0;
 
-		portalPersonalSpaces = new ArrayList<Rectangle>();
+		portalPersonalSpaces = new ArrayList<>();
 	}
 
 	public PerpetualPortalSpawner(PerpetualPortalSpawner copyMe) {
@@ -40,7 +40,7 @@ public class PerpetualPortalSpawner extends AIChanneledAbility {
 		this.owner = copyMe.owner;
 		countdown = copyMe.countdown;
 
-		portalPersonalSpaces = new ArrayList<Rectangle>();
+		portalPersonalSpaces = new ArrayList<>();
 		for (final Rectangle r : copyMe.portalPersonalSpaces)
 			portalPersonalSpaces.add(new Rectangle(r));
 	}

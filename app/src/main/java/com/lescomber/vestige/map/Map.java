@@ -64,22 +64,22 @@ public class Map {
 		setBackgroundTiles(randomBackgroundTiles());
 
 		nodesArraySize = 0;
-		obstacles = new ArrayList<Obstacle>();
+		obstacles = new ArrayList<>();
 		playerSpawnPoint = new Point(200, 240);
-		enemySpawnPoints = new ArrayList<Point>(5);
-		availableSpawnPoints = new ArrayList<Integer>(5);
-		spawnPointCDs = new ArrayList<Integer>(5);
+		enemySpawnPoints = new ArrayList<>(5);
+		availableSpawnPoints = new ArrayList<>(5);
+		spawnPointCDs = new ArrayList<>(5);
 
 		portal = new Portal(0, 0);
 
-		upcomingWaves = new LinkedList<Wave>();
+		upcomingWaves = new LinkedList<>();
 		currentWave = null;
 		waveCount = 0;
 
-		enemiesBuffer = new ArrayList<AIUnit>(5);
-		enemiesReady = new ArrayList<AIUnit>(5);
-		friendsBuffer = new ArrayList<AIUnit>(3);
-		friendsReady = new ArrayList<AIUnit>(3);
+		enemiesBuffer = new ArrayList<>(5);
+		enemiesReady = new ArrayList<>(5);
+		friendsBuffer = new ArrayList<>(3);
+		friendsReady = new ArrayList<>(3);
 	}
 
 	public void setBackgroundTiles(int[][] tileNums) {
@@ -140,7 +140,7 @@ public class Map {
 	}
 
 	private void spawnUnit(AIUnit unit) {
-		int spawnIndex = -1;
+		int spawnIndex;
 
 		// Case: all spawn points are on cooldown... so we pick the one with the lowest cooldown...
 		if (availableSpawnPoints.isEmpty()) {
@@ -189,14 +189,14 @@ public class Map {
 		//would collide with that obstacle. Also used for determining pathing nodes
 		buildBoundaries();
 
-		ArrayList<Point> pointList = new ArrayList<Point>();
+		ArrayList<Point> pointList = new ArrayList<>();
 
 		// Retrieve obstacle corner points
 		for (final Obstacle o : obstacles)
 			pointList.addAll(o.getCorners());
 
 		// Prune nodes that are too near the outside of the playing area and prune duplicate nodes
-		final ArrayList<Point> temp = new ArrayList<Point>();
+		final ArrayList<Point> temp = new ArrayList<>();
 		for (final Point p : pointList) {
 			if (p.x > PLAYER_HALF_WIDTH && p.x < (Screen.WIDTH - PLAYER_HALF_WIDTH) &&
 					p.y > PLAYER_HALF_HEIGHT && p.y < (Screen.HEIGHT - PLAYER_HALF_HEIGHT) && !temp.contains(p))
@@ -229,7 +229,7 @@ public class Map {
 			updateDistances(testNode, i);
 
 		// Remove nodes that cannot be reached by any path from player spawn point
-		final ArrayList<MapNode> tempList = new ArrayList<MapNode>(nodesArraySize);
+		final ArrayList<MapNode> tempList = new ArrayList<>(nodesArraySize);
 		for (int i = 0; i < nodesArraySize; i++)
 			if (testNode.distances[i] != Integer.MAX_VALUE)
 				tempList.add(nodes[i]);
@@ -246,7 +246,7 @@ public class Map {
 		if (nodesArraySize > 0) {
 			for (final Obstacle o : obstacles) {
 				// Make a copy of this obstacle's boundaryLines
-				final ArrayList<BoundaryLine> blCopy = new ArrayList<BoundaryLine>();
+				final ArrayList<BoundaryLine> blCopy = new ArrayList<>();
 				for (final BoundaryLine bl : o.getBoundaryLines())
 					blCopy.add(bl);
 
@@ -324,9 +324,9 @@ public class Map {
 		// Adjust endpoint if needed (and able)
 		final Point endPoint = adjustDestination(end/*, topGap*/);
 		if (endPoint == null)
-			return new ArrayList<Point>(1);
+			return new ArrayList<>(1);
 
-		final ArrayList<Point> path = new ArrayList<Point>();
+		final ArrayList<Point> path = new ArrayList<>();
 
 		// Check if a direct path to the destination is possible
 		final Line line = new Line(start, endPoint);
@@ -343,7 +343,7 @@ public class Map {
 
 		// Ensure we have a valid destination, return empty array if not to avoid getting stuck
 		if (endNode.neighbors.size() == 0)
-			return new ArrayList<Point>(1);
+			return new ArrayList<>(1);
 
 		// Establish startNode and find its neighbors and their distances (but not distances to every other node)
 		final MapNode startNode = new MapNode(startPoint);
@@ -362,7 +362,7 @@ public class Map {
 
 		// If no path has been found, abort
 		if (curIndex < 0)
-			return new ArrayList<Point>(1);
+			return new ArrayList<>(1);
 
 		// Build the path starting with the already established neighbor, and ending with the endNode
 		path.add(nodes[curIndex].location);
@@ -552,7 +552,7 @@ public class Map {
 
 		public MapNode(Point point) {
 			location = new Point(point);
-			neighbors = new ArrayList<Integer>();
+			neighbors = new ArrayList<>();
 			distances = new int[nodesArraySize];
 			for (int i = 0; i < nodesArraySize; i++)
 				distances[i] = Integer.MAX_VALUE;

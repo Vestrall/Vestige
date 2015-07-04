@@ -4,7 +4,6 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 
 public class CGLSurfaceView extends GLSurfaceView {
-	private final CGLRenderer renderer;
 
 	public CGLSurfaceView(Context context) {
 		super(context);
@@ -16,7 +15,7 @@ public class CGLSurfaceView extends GLSurfaceView {
 		setEGLConfigChooser(8, 8, 8, 8, 16, 0);
 
 		// Init renderer
-		renderer = new CGLRenderer();
+		final CGLRenderer renderer = new CGLRenderer();
 		setRenderer(renderer);
 	}
 }

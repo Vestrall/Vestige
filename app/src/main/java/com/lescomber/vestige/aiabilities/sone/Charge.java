@@ -53,10 +53,7 @@ public class Charge extends AIAbility {
 	}
 
 	public boolean isInRange() {
-		if (target != null)
-			return (owner.getCenter().distanceToPointSquared(target.getCenter()) <= RANGE_SQUARED);
-		else
-			return false;
+		return target != null && (owner.getCenter().distanceToPointSquared(target.getCenter()) <= RANGE_SQUARED);
 	}
 
 	public void strike() {
@@ -67,10 +64,7 @@ public class Charge extends AIAbility {
 	}
 
 	public boolean isTargetLeft() {
-		if (target != null)
-			return (target.getX() <= owner.getX());
-		else
-			return true;
+		return target == null || (target.getX() <= owner.getX());
 	}
 
 	@Override

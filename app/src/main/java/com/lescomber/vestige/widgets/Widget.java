@@ -8,7 +8,7 @@ public abstract class Widget {
 	private final ArrayList<WidgetListener> listeners;
 
 	public Widget() {
-		listeners = new ArrayList<WidgetListener>(2);
+		listeners = new ArrayList<>(2);
 	}
 
 	public void addWidgetListener(WidgetListener listener) {

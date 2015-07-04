@@ -3,9 +3,9 @@ package com.lescomber.vestige.map;
 import com.lescomber.vestige.geometry.Point;
 
 public class HorizontalBoundaryLine implements BoundaryLine {
-	float x1;
-	float x2;
-	float y;
+	final float x1;
+	final float x2;
+	final float y;
 
 	public HorizontalBoundaryLine(float x1, float x2, float y) {
 		this.x1 = x1;

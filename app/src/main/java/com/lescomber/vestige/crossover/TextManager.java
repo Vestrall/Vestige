@@ -23,12 +23,12 @@ public class TextManager {
 		//from the screen turning off and back on. We don't want to lose our existing text info in the latter case
 		if (!isInitialized) {
 			styles = new ArrayList[2];
-			styles[0] = new ArrayList<TMStyle>();
-			styles[1] = new ArrayList<TMStyle>();
+			styles[0] = new ArrayList<>();
+			styles[1] = new ArrayList<>();
 
 			initTexts = new LinkedList[2];
-			initTexts[0] = new LinkedList<Integer>();
-			initTexts[1] = new LinkedList<Integer>();
+			initTexts[0] = new LinkedList<>();
+			initTexts[1] = new LinkedList<>();
 
 			buildList = 0;
 			drawList = 0;
@@ -78,7 +78,7 @@ public class TextManager {
 		// Reset our first dimension to max 5 spots in order to avoid hanging on to more space than we're likely to
 		//use again
 		if (styles != null)
-			styles[buildList] = new ArrayList<TMStyle>(5);
+			styles[buildList] = new ArrayList<>(5);
 
 		if (initTexts != null)
 			initTexts[buildList].clear();
@@ -90,7 +90,7 @@ public class TextManager {
 		// Reset our first dimension to max 5 spots in order to avoid hanging on to more space than we're likely to
 		//use again
 		if (styles != null)
-			styles[otherList] = new ArrayList<TMStyle>(5);
+			styles[otherList] = new ArrayList<>(5);
 
 		if (initTexts != null)
 			initTexts[otherList].clear();
@@ -160,27 +160,6 @@ public class TextManager {
 		TextManager.class.notifyAll();
 	}
 
-	/**
-	 * Clear string instances without removing TMStyles
-	 */
-	public synchronized static void removeStrings() {
-		for (final TMStyle ts : styles[buildList]) {
-			ts.instances.clear();
-			ts.nulls.clear();
-		}
-	}
-
-	public synchronized static void waitForDraw() {
-		// Wait for the next draw command before proceeding
-		while (true) {
-			try {
-				TextManager.class.wait();
-			} catch (final InterruptedException ie) {
-			}
-			break;
-		}
-	}
-
 	public static int getBuildListNum() {
 		return buildList;
 	}
@@ -205,8 +184,8 @@ public class TextManager {
 			this.padX = padX;
 			this.padY = padY;
 			this.spaceX = spaceX;
-			instances = new ArrayList<TextInstance>();
-			nulls = new LinkedList<Integer>();
+			instances = new ArrayList<>();
+			nulls = new LinkedList<>();
 		}
 
 		private void initCGLText() {

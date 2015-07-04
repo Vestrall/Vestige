@@ -63,7 +63,7 @@ public class DancingCaster extends Caster {
 	public void moonwalk(int times) {
 		final Point left = new Point(getX() - MOONWALK_HALF_WIDTH, getY());
 		final Point right = new Point(getX() + MOONWALK_HALF_WIDTH, getY());
-		final ArrayList<Point> path = new ArrayList<Point>(20);
+		final ArrayList<Point> path = new ArrayList<>(20);
 		for (int i = 0; i < times; i += 2) {
 			path.add(right);
 			if (i + 1 < times)

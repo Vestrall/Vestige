@@ -12,7 +12,7 @@ public class HitGroup {
 	private final LinkedList<UnitTime> units;
 
 	public HitGroup() {
-		units = new LinkedList<UnitTime>();
+		units = new LinkedList<>();
 	}
 
 	public void update(int deltaTime) {

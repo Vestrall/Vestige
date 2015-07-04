@@ -4,7 +4,6 @@
     <!-- Main Menu -->
     <string name="play">Play</string>
     <string name="pewBall">Pew Ball</string>
-    <string name="options">Options</string>
     <string name="credits">Credits</string>
     <string name="exitGame">Exit Game</string>
     <string name="tutorial">Tutorial</string>
@@ -15,8 +14,6 @@
     <!-- Options Menu -->
     <string name="music">Music</string>
     <string name="sfx">SFX</string>
-    <string name="displayFps">Display FPS (In-Game)</string>
-    <string name="displayWave">Display Wave (In-Game)</string>
 
     <!-- Credits Menu -->
     <string name="art">Art</string>

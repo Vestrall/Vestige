@@ -35,16 +35,11 @@ public class Levels {
 	}
 
 	private static Map tutorialStage() {
-		// Init basic level requirements
-		final TutorialMap level = new TutorialMap();
-
-		return level;
+		return new TutorialMap();	// Init basic level requirements
 	}
 
 	private static Map pewBallStage(int levelNum) {
-		final PewBallMap level = new PewBallMap(levelNum);
-
-		return level;
+		return new PewBallMap(levelNum);
 	}
 
 	private static Map stageOne(int levelNum) {

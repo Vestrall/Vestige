@@ -46,10 +46,7 @@ public class Cone extends Shape {
 		// Check the angle of the line between center of cone and center of circle. If this angle falls within the cone's width,
 		//then the cone and circle intersect because we already know bigCircle overlaps with circle
 		final Line centers = new Line(center, circle.getCenter());
-		if (Angle.isInRange(centers.getDirection(), direction - halfWidth, direction + halfWidth))
-			return true;
-		else
-			return false;
+		return Angle.isInRange(centers.getDirection(), direction - halfWidth, direction + halfWidth);
 	}
 
 	@Override
@@ -149,10 +146,7 @@ public class Cone extends Shape {
 
 		// Calculate angle between point (x,y) and center. Check if this angle is between (direction - halfWidth) and (direction + halfWidth)
 		final Line xy = new Line(center.x, center.y, x, y);
-		if (Angle.isInRange(xy.getDirection(), direction - halfWidth, direction + halfWidth))
-			return true;
-		else
-			return false;
+		return Angle.isInRange(xy.getDirection(), direction - halfWidth, direction + halfWidth);
 	}
 
 	@Override

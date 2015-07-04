@@ -67,7 +67,7 @@ public class StageSelectionScreen extends Screen implements WidgetListener {
 
 		final Resources res = AndroidGame.res;
 		final int lastStage = PersistentData.getLastStage();
-		stages = new ArrayList<Stage>(Levels.STAGE_COUNT);
+		stages = new ArrayList<>(Levels.STAGE_COUNT);
 		stages.add(new Stage(1, res.getString(R.string.darkWoods), SpriteManager.darkWoodsSelected, SpriteManager.darkWoods));
 		stages.add(new Stage(2, res.getString(R.string.unknown), SpriteManager.stageLockedSelected, SpriteManager.stageLocked));
 

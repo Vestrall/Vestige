@@ -5,7 +5,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 public class CGLDrawingRect {
-	FloatBuffer vertexBuffer;
+	final FloatBuffer vertexBuffer;
 
 	public static final int COORDS_PER_VERTEX = 2;        // x,y
 	public static final int TEX_COORDS_PER_VERTEX = 2;    // s,t

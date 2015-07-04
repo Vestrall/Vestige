@@ -34,7 +34,7 @@ public class RollingFire extends AreaEffect {
 
 		topY = y - (HEIGHT / 2);
 
-		anims = new ArrayList<FireAnimation>(50);
+		anims = new ArrayList<>(50);
 
 		countdown = 0;
 		hitboxRect = new Rectangle(Screen.WIDTH, topY, Screen.WIDTH, topY + HEIGHT);
@@ -46,7 +46,7 @@ public class RollingFire extends AreaEffect {
 
 		this.topY = copyMe.topY;
 
-		anims = new ArrayList<FireAnimation>(50);
+		anims = new ArrayList<>(50);
 		for (final FireAnimation fa : copyMe.anims)
 			anims.add(new FireAnimation(fa));
 
@@ -75,7 +75,7 @@ public class RollingFire extends AreaEffect {
 	}
 
 	private void createNextColumn() {
-		final List<FireAnimation> newAnims = new ArrayList<FireAnimation>(5);
+		final List<FireAnimation> newAnims = new ArrayList<>(5);
 
 		final float animX = hitboxRect.left - (X_GAP / 2);
 

@@ -250,7 +250,7 @@ public class MapLoadingScreen extends Screen implements Runnable {
 	@Override
 	public void run() {
 		long startTime = System.nanoTime();
-		long deltaTime = 0;
+		long deltaTime;
 
 		while (opacityRunning) {
 			// Throttle loop speed to a maximum of roughly 60 updates per second

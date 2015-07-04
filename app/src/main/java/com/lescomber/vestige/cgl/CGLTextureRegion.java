@@ -2,9 +2,13 @@ package com.lescomber.vestige.cgl;
 
 
 class CGLTextureRegion {
-	//--Members--//
-	public float u1, v1;                               // Top/Left U,V Coordinates
-	public float u2, v2;                               // Bottom/Right U,V Coordinates
+	// Top/Left U,V Coordinates
+	public final float u1;
+	public final float v1;
+
+	// Bottom/Right U,V Coordinates
+	public final float u2;
+	public final float v2;
 
 	//--Constructor--//
 	// D: calculate U,V coordinates from specified texture coordinates

@@ -112,15 +112,15 @@ public class SpriteManager {
 
 		bufferWaitLock = new Object();
 		backgroundTextureHandle = -1;
-		backgroundList = new ArrayList<CGLTexturedRect>();
+		backgroundList = new ArrayList<>();
 		uiTextureHandle = -1;
-		theList = new ArrayList<SpriteBundle>(INITIAL_THE_LIST_SIZE);
+		theList = new ArrayList<>(INITIAL_THE_LIST_SIZE);
 		for (int i = 0; i < INITIAL_THE_LIST_SIZE; i++)
 			theList.add(new SpriteBundle());
-		bufferList = new ArrayList<SpriteBundle>(INITIAL_THE_LIST_SIZE);
+		bufferList = new ArrayList<>(INITIAL_THE_LIST_SIZE);
 		for (int i = 0; i < INITIAL_THE_LIST_SIZE; i++)
 			bufferList.add(new SpriteBundle());
-		nulls = new LinkedList<Integer>();
+		nulls = new LinkedList<>();
 		isBuffering = false;
 		bufferSwap = false;
 		layerCount = 0;
@@ -128,8 +128,8 @@ public class SpriteManager {
 		bufferLayerInsertionSort = new int[INITIAL_LAYER_SIZE];
 		uiLayers = new ArrayList[UI_LAYER_COUNT];
 		for (int i = 0; i < UI_LAYER_COUNT; i++)
-			uiLayers[i] = new ArrayList<Integer>();
-		changes = new LinkedList<ListChange>();
+			uiLayers[i] = new ArrayList<>();
+		changes = new LinkedList<>();
 		actualListSize = 0;
 	}
 
@@ -392,13 +392,13 @@ public class SpriteManager {
 		bufferListSize = 0;
 
 		bufferBackgroundTextureHandle = -1;
-		bufferBackgroundList = new ArrayList<CGLTexturedRect>();
+		bufferBackgroundList = new ArrayList<>();
 
 		bufferUITextureHandle = -1;
 
 		bufferUILayers = new ArrayList[UI_LAYER_COUNT];
 		for (int i = 0; i < UI_LAYER_COUNT; i++)
-			bufferUILayers[i] = new ArrayList<Integer>();
+			bufferUILayers[i] = new ArrayList<>();
 
 		bufferLayerCount = 0;
 	}
@@ -421,8 +421,7 @@ public class SpriteManager {
 		bufferLayerInsertionSort = tempArray;
 		layerCount = bufferLayerCount;
 
-		for (int i = 0; i < uiLayers.length; i++)
-			uiLayers[i] = bufferUILayers[i];
+		System.arraycopy(bufferUILayers, 0, uiLayers, 0, uiLayers.length);
 
 		changes.clear();
 		nulls.clear();
@@ -523,7 +522,7 @@ public class SpriteManager {
 			}
 		}
 
-		// Draw game sprites in the order specified by layeringList. They binded and drawn one at a time (for now...)
+		// Draw game sprites in the order specified by layeringList. They are binded and drawn one at a time
 		SpriteBundle gsb;
 		for (int i = 0; i < layerCount; i++) {
 			gsb = theList.get(layerInsertionSort[i]);
@@ -932,8 +931,7 @@ public class SpriteManager {
 			texRect = null;
 			if (copyMe.texRect != null) {
 				texRect = new float[4];
-				for (int i = 0; i < 4; i++)
-					texRect[i] = copyMe.texRect[i];
+				System.arraycopy(copyMe.texRect, 0, texRect, 0, 4);
 			}
 			x = copyMe.x;
 			y = copyMe.y;

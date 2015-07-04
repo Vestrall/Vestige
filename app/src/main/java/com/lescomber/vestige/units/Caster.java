@@ -16,7 +16,7 @@ import com.lescomber.vestige.statuseffects.StatPack;
 import java.util.ArrayList;
 
 public class Caster extends AIRailUnit {
-	private static final ArrayList<AIAbility> ABILITY_POOL = new ArrayList<AIAbility>(5);
+	private static final ArrayList<AIAbility> ABILITY_POOL = new ArrayList<>(5);
 
 	public Caster() {
 		super(GameScreen.steves, 60, 40, -23, 30);
@@ -101,12 +101,6 @@ public class Caster extends AIRailUnit {
 		selectRandomAbilities(2);
 	}
 
-	public Caster(float healAmount) {
-		this();
-
-		setPickUp(new HealPickUp(healAmount));
-	}
-
 	public Caster(Caster copyMe) {
 		super(copyMe);
 
@@ -124,7 +118,7 @@ public class Caster extends AIRailUnit {
 		clearAbilities();
 
 		// Randomly choose abilityCount indices
-		final ArrayList<Integer> indices = new ArrayList<Integer>(abilityCount);
+		final ArrayList<Integer> indices = new ArrayList<>(abilityCount);
 		while (indices.size() < abilityCount) {
 			final int newIndex = Util.rand.nextInt(ABILITY_POOL.size());
 			if (!indices.contains(newIndex))

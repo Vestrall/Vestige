@@ -165,7 +165,7 @@ public class OneSixBoss extends Boss {
 		addAbility(trigger);
 
 		// Init boss abilities
-		bossAbilities = new ArrayList<AIAbility>(5);
+		bossAbilities = new ArrayList<>(5);
 
 		charge = new Charge(this, 4);
 		charge.scaleForDifficulty();
@@ -179,7 +179,7 @@ public class OneSixBoss extends Boss {
 			addAbility(aia);
 
 		// Init caster abilities
-		casterAbilities = new ArrayList<AIAbility>(5);
+		casterAbilities = new ArrayList<>(5);
 
 		final MovingBeamShooter movingBeamShooter = new MovingBeamShooter(this, 9);
 		movingBeamShooter.scaleForDifficulty();
@@ -214,17 +214,15 @@ public class OneSixBoss extends Boss {
 		chargeLeft = copyMe.chargeLeft;
 
 		bossAnims = new int[12];
-		for (int i = 0; i < 12; i++)
-			bossAnims[i] = copyMe.bossAnims[i];
+		System.arraycopy(copyMe.bossAnims, 0, bossAnims, 0, 12);
 		casterAnims = new int[8];
-		for (int i = 0; i < 8; i++)
-			casterAnims[i] = copyMe.casterAnims[i];
+		System.arraycopy(copyMe.casterAnims, 0, casterAnims, 0, 8);
 		casterIdleLeft = copyMe.casterIdleLeft.copy();
 		casterIdleRight = copyMe.casterIdleRight.copy();
 		casterDeathLeftAnim = copyMe.casterDeathLeftAnim;
 		casterDeathRightAnim = copyMe.casterDeathRightAnim;
 
-		bossAbilities = new ArrayList<AIAbility>(5);
+		bossAbilities = new ArrayList<>(5);
 		creepingFireHitGroup = new HitGroup();
 		for (final AIAbility aia : copyMe.bossAbilities) {
 			final AIAbility newAbility = aia.copy();
@@ -236,7 +234,7 @@ public class OneSixBoss extends Boss {
 			bossAbilities.add(newAbility);
 		}
 
-		casterAbilities = new ArrayList<AIAbility>(5);
+		casterAbilities = new ArrayList<>(5);
 		for (final AIAbility aia : copyMe.casterAbilities) {
 			final AIAbility newAbility = aia.copy();
 			newAbility.setOwner(this);
@@ -393,7 +391,7 @@ public class OneSixBoss extends Boss {
 
 	@Override
 	public void deathAnim() {
-		if (isBossState == false) {
+		if (!isBossState) {
 			setDeathAnimationLeft(casterDeathLeftAnim);
 			setDeathAnimationRight(casterDeathRightAnim);
 			setDeathAnimXOffset(4 * CASTER_SCALE);

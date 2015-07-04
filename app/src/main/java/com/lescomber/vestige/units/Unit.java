@@ -801,7 +801,7 @@ public abstract class Unit extends MobileEntity implements Dash {
 			if (se.getId() == adder.getId()) {
 				se.combine(adder);
 				se.reattach(this);
-				Collections.sort(statusEffects, StatusEffect.statusEffectComparator);
+				Collections.sort(statusEffects, StatusEffect.STATUS_EFFECT_COMPARATOR);
 				updateStats();
 				updateHealthBar();
 				return;
@@ -813,7 +813,7 @@ public abstract class Unit extends MobileEntity implements Dash {
 
 		// TESTME
 		// Sort statusEffects based on duration (e.g. so that buffs will use up their shields in the most efficient order)
-		Collections.sort(statusEffects, StatusEffect.statusEffectComparator);
+		Collections.sort(statusEffects, StatusEffect.STATUS_EFFECT_COMPARATOR);
 
 		updateStats();
 		updateHealthBar();
