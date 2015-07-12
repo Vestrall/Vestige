@@ -120,6 +120,14 @@ public class PewBall extends Projectile implements Comparable<PewBall> {
 	}
 
 	private void projectileHit(Projectile p) {
+		// If either projectile is finished, it must be off screen and its destination will be null, which means we can't change its trajectory here
+		if (isFinished || p.isFinished)
+			return;
+
+		// Crash protection. TODO: Investigate if this is actually needed now that isFinished is checked above
+		if (getDestination() == null || p.getDestination() == null)
+			return;
+
 		final Hitbox box = new Hitbox(getHitbox());
 		final Line path = new Line(getCenter(), getDestination());
 		final Hitbox pBox = new Hitbox(p.getHitbox());
