@@ -15,12 +15,13 @@ public class PewBallGoalie extends AIUnit {
 	// Levels 10-20 = base + (increasePerLevel[1] * (levelNum - 10))
 	// Levels 21+ = Level 20 + (increasePerLevel[2] * (levelNum - 20))
 	private static final float BASE_SPEED = 24;
-	private static final float[] SPEED_INCREASE_PER_LEVEL = new float[] { 5.4f, 5, 6.6f };
+	private static final float[] SPEED_INCREASE_PER_LEVEL = new float[] { 5.4f, 5, 6.75f };
 
 	private static final double SCALE = 0.65;
 
 	// Goalie position vars
 	private static final float X = 750;
+	public static final float RIGHT_EDGE = X + 35;	// Ignore PewBalls that are completely beyond this point
 	private final float[] yRange;
 
 	// Goalie will move in moveRange increments in the direction of whatever PewBall it is currently tracking. Larger moveRange results in a less
@@ -29,10 +30,12 @@ public class PewBallGoalie extends AIUnit {
 	private static final float BASE_MOVE_RANGE = 60;
 	private static final float MOVE_RANGE_DECREASE_PER_LEVEL = 4;
 	private static final float MOVE_RANGE_DECREASE_MAX = 40;
+	private static final float MOVE_RANGE_MIN = 5;
 	private final float moveRange;
 
 	private PewBall targetBall;        // targetBall is the ball this goalie has been assigned (by PewBallMap) to track and stop (for now)
 
+	private static final int DESTINATION_DELAY_DEFAULT = 60;	// Delay when there is no ball to track
 	private int destinationDelay;
 
 	public PewBallGoalie(int levelNum, float startY) {
@@ -143,12 +146,15 @@ public class PewBallGoalie extends AIUnit {
 	}
 
 	private void chooseDestination() {
+		float yDest;
+
 		if (targetBall == null) {
-			destinationDelay = 60;
+			destinationDelay = DESTINATION_DELAY_DEFAULT;
+			yDest = (yRange[0] + yRange[1]) / 2;
+			if (Math.abs(yDest - getY()) > MOVE_RANGE_MIN)
+				setDestination(X, yDest);
 			return;
 		}
-
-		float yDest;
 
 		// Move towards targetBall's current location
 		if (Math.abs(targetBall.getY() - getY()) < moveRange)
@@ -166,7 +172,7 @@ public class PewBallGoalie extends AIUnit {
 
 		// Don't set a new destination if it is very close to our current position (prevents infinitely looping
 		//pathDestinationReached() -> chooseDestination())
-		if (Math.abs(yDest - getY()) < 5) {
+		if (Math.abs(yDest - getY()) < MOVE_RANGE_MIN) {
 			destinationDelay = 60;
 			return;
 		}

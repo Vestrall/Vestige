@@ -23,6 +23,8 @@ public class SpriteAnimation implements Image {
 	private int curFrameIndex;
 	private int curTime;
 	private int frameTime;
+	private int loopStartFrameIndex;
+	private int loopEndFrameIndex;
 
 	// Remaining duration (in ms) for the entire animation. Normally an animation finishes whenever it completes all its sequences but if duration is
 	//set (to a value >= 0) then the animation will stop abruptly when duration drops below 0
@@ -51,6 +53,8 @@ public class SpriteAnimation implements Image {
 		curFrameIndex = 0;
 		curTime = 0;
 		frameTime = DEFAULT_FRAME_TIME;
+		loopStartFrameIndex = 0;
+		loopEndFrameIndex = -1;
 
 		duration = -1;
 
@@ -89,6 +93,8 @@ public class SpriteAnimation implements Image {
 		curFrameIndex = copyMe.curFrameIndex;
 		curTime = copyMe.curTime;
 		frameTime = copyMe.frameTime;
+		loopStartFrameIndex = copyMe.loopStartFrameIndex;
+		loopEndFrameIndex = copyMe.loopEndFrameIndex;
 		duration = copyMe.duration;
 		isPlaying = copyMe.isPlaying;
 		holdLastFrame = copyMe.holdLastFrame;
@@ -143,10 +149,11 @@ public class SpriteAnimation implements Image {
 		curFrameIndex++;
 
 		// Case: we just finished the last frame of the current sequence
-		if (curFrameIndex == frames.size()) {
-			curFrameIndex = 0;
+		if (curFrameIndex == frames.size() || curFrameIndex == loopEndFrameIndex) {
+			curFrameIndex = loopStartFrameIndex;
 
 			// Case: we just finished the last sequence
+			// TODO: If looping, sequenceNum ending should let the post-loop part of the animation finish
 			if (--sequenceNum == 0) {
 				if (holdLastFrame) {
 					curFrameIndex = frames.size() - 1;
@@ -350,6 +357,17 @@ public class SpriteAnimation implements Image {
 			final int curSequence = curFrameTime + (frameTime * (frames.size() - curFrameIndex - 1));
 			return curSequence + ((sequenceNum - 1) * frames.size() * frameTime);
 		}
+	}
+
+	public void setLoop(int startIndex, int endIndex) {
+		loopStartFrameIndex = startIndex;
+		loopEndFrameIndex = endIndex;
+		sequenceNum = -1;
+	}
+
+	public void endLoop() {
+		loopEndFrameIndex = -1;
+		sequenceNum = 1;
 	}
 
 	@Override

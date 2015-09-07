@@ -8,7 +8,9 @@ import com.lescomber.vestige.geometry.Point;
 import com.lescomber.vestige.graphics.SpriteAnimation;
 import com.lescomber.vestige.map.Obstacle;
 import com.lescomber.vestige.map.PewBallMap;
+import com.lescomber.vestige.playerabilities.SOneChargeSwipe;
 import com.lescomber.vestige.screens.GameScreen;
+import com.lescomber.vestige.units.PewBallGoalie;
 import com.lescomber.vestige.units.PewBallPlayer;
 import com.lescomber.vestige.units.Unit;
 
@@ -24,7 +26,8 @@ public class PewBall extends Projectile implements Comparable<PewBall> {
 	private static final int VELOCITY_CHANGE_PER_LEVEL = 10;    // Acts as velocity reduction until KEY_LEVELS[0] and a bonus after KEY_LEVELS[1]
 	private final float NORMAL_VELOCITY;    // Refers to base velocity + difficulty scaled velocity increase (but no speed boosts)
 
-	private static final float[] SPEED_BOOST_RANGE = new float[] { 0.7f, 1.2f };
+	private static final float[] SPEED_BOOST_GOALIE = new float[] { 0.7f, 1.2f };
+	private static final float[] SPEED_BOOST_PLAYER = new float[] { 0.5f, 1 };
 	private float boost;
 	private final float BOOST_DECAY_PER_MS;
 
@@ -93,10 +96,17 @@ public class PewBall extends Projectile implements Comparable<PewBall> {
 		}
 	}
 
-	private void speedBoost() {
-		boost = NORMAL_VELOCITY * (SPEED_BOOST_RANGE[0] + (Util.rand.nextFloat() * (SPEED_BOOST_RANGE[1] - SPEED_BOOST_RANGE[0])));
+	private void speedBoost(boolean fromGoalie) {
+		final float boost;
+		if (fromGoalie)
+			boost = NORMAL_VELOCITY * (SPEED_BOOST_GOALIE[0] + (Util.rand.nextFloat() * (SPEED_BOOST_GOALIE[1] - SPEED_BOOST_GOALIE[0])));
+		else
+			boost = NORMAL_VELOCITY * (SPEED_BOOST_PLAYER[0] + (Util.rand.nextFloat() * (SPEED_BOOST_PLAYER[1] - SPEED_BOOST_PLAYER[0])));
 
-		setVelocityPerSecond(BASE_VELOCITY + boost);
+		if (boost > this.boost) {
+			this.boost = boost;
+			setVelocityPerSecond(BASE_VELOCITY + boost);
+		}
 	}
 
 	/**
@@ -109,14 +119,14 @@ public class PewBall extends Projectile implements Comparable<PewBall> {
 
 		lastHit = unit;
 
-		//	             |----Base angle-----| + |---------------------Random range------------------------|
+		//	             			   |-------Base angle-----| + |---------------------Random range----------------|
 		final float newAngle = (float) ((Math.PI / 2) + (0.3f)) + (Util.rand.nextFloat() * ((float) Math.PI - 0.6f));
 		final Line newPath = new Line(getX(), getY(), getX() + 1, getY());
 		Point.rotate(newPath.point1, newAngle, newPath.point0.x, newPath.point0.y);
 		setDestination(newPath.getExtEnd());
 
 		// Add random, decaying burst of speed
-		speedBoost();
+		speedBoost(true);
 	}
 
 	private void projectileHit(Projectile p) {
@@ -188,6 +198,10 @@ public class PewBall extends Projectile implements Comparable<PewBall> {
 			p.rotateTo(centers.getDirection());
 			p.setDestination(centers.getExtEnd());
 		}
+
+		// Case: SOneChargeSwipe. TODO: Refactor to be more reusable and to not break when there are other non-deflecting projectiles
+		else //if (p instanceof SOneChargeSwipeProjectile)
+			speedBoost(false);
 	}
 
 	/**
@@ -216,8 +230,12 @@ public class PewBall extends Projectile implements Comparable<PewBall> {
 		setDestination(path.point1);
 	}
 
+	private float getGoalieX() {
+		return getX() > PewBallGoalie.RIGHT_EDGE + RADIUS ? Integer.MIN_VALUE : getX();
+	}
+
 	@Override
 	public int compareTo(PewBall another) {
-		return Math.round(another.getX()) - Math.round(getX());
+		return Math.round(another.getGoalieX()) - Math.round(getGoalieX());
 	}
 }

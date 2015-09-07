@@ -107,15 +107,15 @@ public class PewBallScreen extends GameScreen {
 		final ButtonGroup buttonGroup = new ButtonGroup();
 		final TextStyle buttonStyle = TextStyle.bodyStyleCyan();
 
-		confirmConcedeButton = new Button(225, 380, 300, 60, buttonStyle, AndroidGame.res.getString(R.string.pewBallConfirmConcede));
+		confirmConcedeButton = new Button(575, 380, 300, 60, buttonStyle, AndroidGame.res.getString(R.string.pewBallConfirmConcede));
 		confirmConcedeButton.addWidgetListener(this);
 		confirmConcedeButton.registerGroup(buttonGroup);
 
-		confirmMainMenuButton = new Button(225, 380, 300, 60, buttonStyle, AndroidGame.res.getString(R.string.pewBallConfirmMainMenu));
+		confirmMainMenuButton = new Button(575, 380, 300, 60, buttonStyle, AndroidGame.res.getString(R.string.pewBallConfirmMainMenu));
 		confirmMainMenuButton.addWidgetListener(this);
 		confirmMainMenuButton.registerGroup(buttonGroup);
 
-		cancelButton = new Button(575, 380, 300, 60, buttonStyle, AndroidGame.res.getString(R.string.pewBallCancel));
+		cancelButton = new Button(225, 380, 300, 60, buttonStyle, AndroidGame.res.getString(R.string.pewBallCancel));
 		cancelButton.addWidgetListener(this);
 		cancelButton.registerGroup(buttonGroup);
 	}

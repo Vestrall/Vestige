@@ -36,7 +36,7 @@ public class MainMenuScreen extends Screen implements WidgetListener {
 
 	private boolean popIn;
 
-	private final boolean isTutorialComplete;
+	private final boolean tutorialComplete;
 
 	private final SpriteAnimation titleAnim;
 	private final Sprite titleSprite;
@@ -55,6 +55,8 @@ public class MainMenuScreen extends Screen implements WidgetListener {
 
 	private final Text versionText;
 
+	// TODO: Implement disabled buttons for pre-tutorial completion functionality
+
 	public MainMenuScreen(AndroidGame game, boolean introAnimation) {
 		super(game);
 
@@ -63,7 +65,7 @@ public class MainMenuScreen extends Screen implements WidgetListener {
 		SpriteManager.getInstance().setBackground(Assets.mainMenuScreen);
 		SpriteManager.getInstance().setUITextureHandle(Assets.menuUITexture.getTextureHandle());
 
-		isTutorialComplete = PersistentData.getStageProgress(Options.EASY) > 0;
+		tutorialComplete = PersistentData.getStageProgress(Options.EASY) > 0;
 
 		titleAnim = new SpriteAnimation(SpriteManager.title);
 		titleAnim.offsetTo(Screen.MIDX, 125);
@@ -98,8 +100,9 @@ public class MainMenuScreen extends Screen implements WidgetListener {
 		final Resources res = AndroidGame.res;
 
 		mainMenuButtons = new Button[4];
-		mainMenuButtons[0] = new Button(Screen.MIDX, 231, BUTTON_WIDTH, BUTTON_HEIGHT, buttonStyle, res.getString(R.string.play));
-		mainMenuButtons[1] = new Button(Screen.MIDX, 288, BUTTON_WIDTH, BUTTON_HEIGHT, buttonStyle, res.getString(R.string.pewBall));
+		final String playText = tutorialComplete ? res.getString(R.string.play) : res.getString(R.string.tutorial);
+		mainMenuButtons[0] = new Button(Screen.MIDX, 231, BUTTON_WIDTH, BUTTON_HEIGHT, buttonStyle, playText);
+		mainMenuButtons[1] = new Button(Screen.MIDX, 288, BUTTON_WIDTH, BUTTON_HEIGHT, tutorialComplete ? buttonStyle : grayButtonStyle, res.getString(R.string.pewBall));
 		mainMenuButtons[2] = new Button(Screen.MIDX, 344, BUTTON_WIDTH, BUTTON_HEIGHT, buttonStyle, res.getString(R.string.credits));
 		mainMenuButtons[3] = new Button(Screen.MIDX, 400, BUTTON_WIDTH, BUTTON_HEIGHT, buttonStyle, res.getString(R.string.exitGame));
 
@@ -108,7 +111,7 @@ public class MainMenuScreen extends Screen implements WidgetListener {
 			b.registerGroup(buttonGroup);
 		}
 
-		final TextStyle difficultyStyle = isTutorialComplete ? buttonStyle : grayButtonStyle;
+		final TextStyle difficultyStyle = tutorialComplete ? buttonStyle : grayButtonStyle;
 
 		newGameButtons = new Button[4];
 		newGameButtons[0] = new Button(Screen.MIDX, 231, BUTTON_WIDTH, BUTTON_HEIGHT, buttonStyle, res.getString(R.string.tutorial));
@@ -239,8 +242,11 @@ public class MainMenuScreen extends Screen implements WidgetListener {
 		for (int i = 0; i < len; i++) {
 			final TouchEvent event = touchEvents.get(i);
 
-			for (final Button b : mainMenuButtons)
-				b.handleEvent(event);
+			for (int j = 0; j < mainMenuButtons.length; j++) {
+				if (tutorialComplete || j != 1) {
+					mainMenuButtons[j].handleEvent(event);
+				}
+			}
 
 			soundToggleButton.handleEvent(event);
 		}
@@ -260,7 +266,7 @@ public class MainMenuScreen extends Screen implements WidgetListener {
 
 			newGameButtons[0].handleEvent(event);
 
-			if (isTutorialComplete) {
+			if (tutorialComplete) {
 				for (int j = 1; j < 4; j++)
 					newGameButtons[j].handleEvent(event);
 			}
@@ -276,8 +282,14 @@ public class MainMenuScreen extends Screen implements WidgetListener {
 
 		// Main menu buttons
 		if (source == mainMenuButtons[0]) {
-			if (we.getCommand().equals(Button.ANIMATION_FINISHED))
-				loadNewGameMenu();
+			if (we.getCommand().equals(Button.ANIMATION_FINISHED)) {
+				if (tutorialComplete)
+					loadNewGameMenu();
+				else {
+					prepScreenChange();
+					game.setScreen(new MapLoadingScreen(game, Levels.TUTORIAL_STAGE, 0));
+				}
+			}
 		} else if (source == mainMenuButtons[1]) {
 			if (we.getCommand().equals(Button.ANIMATION_FINISHED)) {
 				prepScreenChange();

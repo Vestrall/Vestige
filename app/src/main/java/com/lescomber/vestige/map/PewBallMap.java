@@ -26,9 +26,14 @@ public class PewBallMap extends Map {
 	private PewBallScreen pewBallScreen;
 
 	private static final Point[] PORTAL_LOCATIONS = { new Point(590, 120), new Point(650, 240), new Point(590, 360) };
+	private final SpriteAnimation[] portalAnims;
+
 	private final SpriteAnimation PORTAL_ANIM;
-	private final int BALL_SPAWN_DELAY;
-	private int ballSpawnDelay;
+	private final int BALL_SPAWN_DELAY_MIN;
+	private static final int BALL_SPAWN_DELAY_RANGE = 1500;
+	private int ballOneSpawnDelay;
+	private int ballTwoSpawnDelay;
+	private int firstBallSpawnIndex;
 
 	// Difficulty scaling mechanics change at these levels (e.g. # of balls spawning at once)
 	public static final int[] KEY_LEVELS = new int[] { 10, 20 };
@@ -66,10 +71,16 @@ public class PewBallMap extends Map {
 		// Init portal spawning animation
 		PORTAL_ANIM = new SpriteAnimation(SpriteManager.spawnPortalSpawn);
 		PORTAL_ANIM.addFrames(SpriteManager.spawnPortalOpen);
-		BALL_SPAWN_DELAY = PORTAL_ANIM.getTimeRemaining();
+		final int loopStartIndex = PORTAL_ANIM.getFrameCount() - 3;
+		final int loopEndIndex = PORTAL_ANIM.getFrameCount();
+		BALL_SPAWN_DELAY_MIN = PORTAL_ANIM.getTimeRemaining();
 		PORTAL_ANIM.addFrames(SpriteManager.spawnPortalEnd);
+		PORTAL_ANIM.setLoop(loopStartIndex, loopEndIndex);
+		portalAnims = new SpriteAnimation[PORTAL_LOCATIONS.length];
 
 		balls = new ArrayList<>();
+		ballOneSpawnDelay = 0;
+		ballTwoSpawnDelay = 0;
 
 		// Calculate portal spawn interval
 		if (levelNum <= KEY_LEVELS[0])
@@ -124,31 +135,36 @@ public class PewBallMap extends Map {
 	 */
 	public void startBallSpawn() {
 		// Case: ball spawn has already started
-		if (ballSpawnDelay > 0)
+		if (ballOneSpawnDelay > 0 || ballTwoSpawnDelay > 0)
 			return;
 
 		portalSpawnCountdown = portalSpawnInterval;
-		ballSpawnDelay = BALL_SPAWN_DELAY;
+		ballOneSpawnDelay = Math.round(BALL_SPAWN_DELAY_MIN + Util.rand.nextFloat() * BALL_SPAWN_DELAY_RANGE);
+		if (levelNum >= KEY_LEVELS[0])
+			ballTwoSpawnDelay = Math.round(BALL_SPAWN_DELAY_MIN + Util.rand.nextFloat() * BALL_SPAWN_DELAY_RANGE);
 
-		for (Point p : PORTAL_LOCATIONS) {
+		for (int i = 0; i < PORTAL_LOCATIONS.length; i++) {
 			final SpriteAnimation anim = new SpriteAnimation(PORTAL_ANIM);
-			anim.offsetTo(p);
+			portalAnims[i] = anim;
+			anim.offsetTo(PORTAL_LOCATIONS[i]);
 			GameScreen.playAnimation(anim);
 		}
 	}
 
 	private void spawnBall() {
-		if (levelNum < KEY_LEVELS[0]) {
-			final int index = Util.rand.nextInt(PORTAL_LOCATIONS.length);
-			createBall(index);
-		} else {
-			final int index = Util.rand.nextInt(PORTAL_LOCATIONS.length);
-
-			for (int i = 0; i < PORTAL_LOCATIONS.length; i++) {
-				if (i != index)
-					createBall(i);
-			}
+		int index = Util.rand.nextInt(PORTAL_LOCATIONS.length);
+		while (index == firstBallSpawnIndex) {
+			index = Util.rand.nextInt(PORTAL_LOCATIONS.length);
 		}
+		createBall(index);
+		if (ballOneSpawnDelay > 0 || ballTwoSpawnDelay > 0)
+			firstBallSpawnIndex = index;
+		else {
+			firstBallSpawnIndex = -1;
+			for (SpriteAnimation portalAnim : portalAnims)
+				portalAnim.endLoop();
+		}
+		firstBallSpawnIndex = ballOneSpawnDelay > 0 || ballTwoSpawnDelay > 0 ? index : -1;
 	}
 
 	private void createBall(int portalLocationIndex) {
@@ -169,15 +185,22 @@ public class PewBallMap extends Map {
 	public void update(int deltaTime) {
 		super.update(deltaTime);
 
-		// Spawn the next ball if appropriate
-		if (ballSpawnDelay > 0) {
-			ballSpawnDelay -= deltaTime;
-			if (ballSpawnDelay <= 0)
-				spawnBall();
-		} else {
+		// Spawn one or more PewBalls if appropriate, update portalSpawnCountdown otherwise
+		if (ballOneSpawnDelay <= 0 && ballTwoSpawnDelay <= 0) {
 			portalSpawnCountdown -= deltaTime;
 			if (portalSpawnCountdown <= 0)
 				startBallSpawn();    // Note: portalSpawnCountdown = BALL_SPAWN_INTERVAL takes place in startBallSpawn()
+		} else {	// Update ball spawn delays
+			if (ballOneSpawnDelay > 0) {
+				ballOneSpawnDelay -= deltaTime;
+				if (ballOneSpawnDelay <= 0)
+					spawnBall();
+			}
+			if (ballTwoSpawnDelay > 0) {
+				ballTwoSpawnDelay -= deltaTime;
+				if (ballTwoSpawnDelay <= 0)
+					spawnBall();
+			}
 		}
 
 		// Decide which ball each goalie is tracking
